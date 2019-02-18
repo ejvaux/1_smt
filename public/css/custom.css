@@ -1,0 +1,64 @@
+.center-text
+{
+    text-align: center;
+}
+.bold-text
+{
+    font-weight: bold;
+}
+.home-image
+{
+    height: 50vh;
+}
+.nav-badge
+{
+    height: 5vh;
+}
+.white_bkg
+{
+    background-color:white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px gray;
+    padding: 2%;
+}
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+.vertical-center
+{
+    padding:0.4%;
+    margin-top: 5px;
+   
+}
+.text-right
+{
+    text-align:right;
+}
+.text-left
+{
+    text-align:left;
+}
+.details
+{
+    border-color: rgb(29, 29, 29);
+    border-radius: 5px;
+    border-width: 1px;
+    height:100%;
+}
+.text-badge
+{
+    border-width: 1px;
+    border:solid;
+    border-radius: 5px;
+    height: 60px;
+    margin-bottom: 10px;
+    border-color: rgb(241, 100, 100);
+    color:  black;
+    background-color: rgb(248, 105, 117);
+}
+.v-center
+{
+padding: 4%
+}
