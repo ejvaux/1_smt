@@ -296,7 +296,8 @@ function enterEvent(e) {
                 html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
             }
             for(var i = 0; i < data.length; i++){
-                
+                var errorcode="";
+                var machinecode="";
                 if(data[i].errorlink==null){
                     errorcode="N/A";
                 }
