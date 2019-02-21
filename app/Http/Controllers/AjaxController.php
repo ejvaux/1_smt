@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\errorcodelist;
+use App\scanrecordlist;
+use App\ProdLine;
+use App\ProcessList;
+use Response;
+
+class AjaxController extends Controller
+{
+    //
+   
+    public function errorcode()
+    {
+        $error_code = errorcodelist::all();
+        /* Response::json($error_code); */
+        /*   return $error_code; */
+        
+        return response()->json([$error_code]);
+    }
+
+    public function checkRecord(Request $request)
+    {
+        $IDtoUpdate = scanrecordlist::where('prodline_id','=',$request->input('sel_prodline'))
+        ->where('process_id','=',$request->input('sel_process'))
+        ->where('serial_number','=',$request->input('serialnum')) 
+        ->first();
+       
+        if ($IDtoUpdate) {
+            return "HAS RECORD-".$IDtoUpdate->scan_result;
+         }
+         else{
+             return "NO RECORD";
+         }
+        
+    }
+
+    public function LoadDataToTable(Request $request)
+    {
+        $prodline=$request->input('sel_prodline');
+        $processline=$request->input('sel_process');
+        $machineline=$request->input('sel_machine');
+        
+        $pline=ProdLine::all();
+        $processlist=ProcessList::all();
+        $ecode=errorcodelist::all();
+        $data=scanrecordlist::with('userlink','errorlink','prodlinelink','processlink','machinelink')
+                            ->where('scan_type',$request->input('sel_scaninput'))
+                            ->where('serial_number','LIKE','%'.$request->input('sel_sn').'%');
+
+        if($prodline!=""){
+          $data=$data->where('prodline_id',$request->input('sel_prodline'));
+        }
+        if($processline!=""){
+            $data=$data->where('prodline_id',$request->input('sel_process'));
+        }
+        if($machineline!=""){
+            $data=$data->where('prodline_id',$request->input('sel_machine'));
+        }
+        $data=$data->get();
+                     
+        return Response::json($data);
+       // return($data);
+      
+    }
+
+
+}

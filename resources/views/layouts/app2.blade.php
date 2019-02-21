@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/home') }}">
                     <img src="{{ asset('images/ptpi.png')}}" class="nav-badge">
@@ -84,13 +84,14 @@
                                     </form>
                                 </div>
                             </li>
+                            <input type="text" id="userid" value="{{Auth::user()->id}}" hidden>
                         @endguest
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4" style="margin-top:4%">
             @yield('content')
         </main>
 

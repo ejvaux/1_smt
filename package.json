@@ -24,7 +24,9 @@
         "vue-template-compiler": "^2.6.6"
     },
     "dependencies": {
+        "Select2": "^3.5.7",
         "bootstrap4-toggle": "^3.4.0",
-        "izitoast": "^1.4.0"
+        "izitoast": "^1.4.0",
+        "sweetalert2": "^8.2.1"
     }
 }

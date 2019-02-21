@@ -25,3 +25,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/scan', 'PageController@scan');
 
 /* End of Page Controller */
+
+/* AjaxController */
+Route::post('ajax/errorcode', 'AjaxController@errorcode');
+Route::post('ajax/Check_Record', 'AjaxController@checkRecord');
+Route::post('ajax/loaddatatable', 'AjaxController@LoadDataToTable');
+/* End of Ajax Controller */
+
+
+Route::resource('scanrecord','ScanrecordController');
+Route::post('scanrecord/upOUT', 'ScanrecordController@updateOUT');
