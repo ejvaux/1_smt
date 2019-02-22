@@ -13,8 +13,7 @@
         @foreach ($ecode as $ecode_item)
             <option value="{{$ecode_item->id}}">{{$ecode_item->error_code}}-{{$ecode_item->error_desc}}</option>
         @endforeach
-        
-    </select>
+        </select>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" onclick="haserrorcode()"><i class="fas fa-save"></i>&nbspSAVE RECORD</button>

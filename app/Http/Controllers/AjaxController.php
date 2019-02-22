@@ -8,6 +8,7 @@ use App\errorcodelist;
 use App\scanrecordlist;
 use App\ProdLine;
 use App\ProcessList;
+use App\SAPPlanModel;
 use Response;
 
 class AjaxController extends Controller
@@ -61,12 +62,17 @@ class AjaxController extends Controller
         if($machineline!=""){
             $data=$data->where('prodline_id',$request->input('sel_machine'));
         }
-        $data=$data->get();
-                     
+        $data=$data->get();          
         return Response::json($data);
        // return($data);
       
     }
 
+    public function SAPLoadDataToTable(Request $request)
+    {
+        $data=SAPPlanModel::where('DocNum','LIKE','1%')
+                            ->get();
+        return Response::json($data);
+    }
 
 }

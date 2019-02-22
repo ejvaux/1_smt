@@ -11,11 +11,10 @@
                     <div class="card-header bold-text"><i class="fas fa-cog"></i>&nbspSCANNING CONFIGURATION</div>
                     <div class="card-body">
                     
-                        <div class="row no-gutters">
-                            
+                        <div class="row no-gutters"> 
                             <div class="col-lg-2 bold-text vertical-center text-center">INPUT TYPE: &nbsp</div>
                             <div class="col-lg-4  vertical-center text-center">
-                                    <input id="input_type" type="checkbox" checked data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="success" data-offstyle="danger" data-width="100%" data-height="15" onchange="SetInputType()">
+                                    <input id="input_type" type="checkbox" checked data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="primary" data-offstyle="secondary" data-width="100%" data-height="15" onchange="SetInputType()">
                             </div>
 
                             <div class="col-lg-2 bold-text vertical-center text-center">PROCESS: &nbsp</div>
@@ -45,9 +44,47 @@
                                         <option value="">SELECT MACHINE</option>
                                     </select>
                             </div>
+                        </div>
 
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-3 text-right vertical-center bold-text">PLAN DATE: </div>
+                            <div class="col-lg-3">
+                                <input type="date" id="SAP_date" class="form-control">
+                            </div>
+                            <div class="col-lg-6">
+                                    <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Type anything to search.." id="SAP_searchbox" onkeypress="LoadSAPDataTable()">
+                                    </div>
+                            </div>
                         </div>
                         <br>
+                        <div class="table-responsive-xl" style="overflow-y:auto;height: 400px;">
+                                <table class="table table-striped table-bordered table-hover table-sm" id="JOdatatable" style="height: 400px;">
+                                        <thead class="thead-dark">
+                                                <tr class="text-center">
+                                                  <th scope="col">CTRLS</th>
+                                                  <th scope="col">PRODUCTION ORDER #</th>
+                                                  <th scope="col">PART CODE</th>
+                                                  <th scope="col">PART NAME</th>
+                                                  <th scope="col">PLAN QTY</th>
+                                                  <th scope="col">RESULT</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                    <tr style='height:100px'>
+                                                        <td colspan='9' class='text-center' style='font-size:1.5em'>
+                                                            No data to display.
+                                                        </td>
+                                                    </tr>
+                                              </tbody>
+                                </table>
+                        </div>
+
                     </div>
             </div>
                     
@@ -58,11 +95,30 @@
                 <div class="card shadow-sm bg-white rounded">
                         <div class="card-header bold-text"><i class="fas fa-barcode"></i>&nbspSERIAL NUMBER SCANNING AREA</div>
                         <div class="card-body">
-                            <p><b>NOTE:</b>  Make sure to configure the scanning options before scanning a serial number.</p>
+                            <b><i class="fas fa-wrench"></i>&nbspERROR CONFIG</b>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                        <input id="R_panel_input_type" type="checkbox" checked data-toggle="toggle" data-on="GOOD" data-off="NG" data-onstyle="success" data-offstyle="danger" data-width="70" data-height="25" data-size="sm" onchange="ChangeToggle()">
+                                </div>
+                                <div class="col-lg-9">
+                                        <select class="select2" id="ecode_sel" disabled>
+                                                <option value="">SELECT ERROR CODE</option>
+                                            @foreach ($ecode as $ecode_item)
+                                                <option value="{{$ecode_item->id}}">{{$ecode_item->error_code}}-{{$ecode_item->error_desc}}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
+                            </div>
                             {{-- {{Request::getClientIp()}} --}}
                             <hr>
+                            <b><i class="fas fa-qrcode"></i>&nbspSERIAL SCANNING</b>
                             <input type="text" name="input_scan" id="input_serial" placeholder="Input Serial Number here..." 
                             class="form-control" style="height: 30px" onkeypress="return enterEvent(event)">
+                            <hr>
+                            <ul>
+                                    <li>Make sure to configure the scanning options before scanning a serial number.</li>
+                                    <li>If Item is NG-NO GOOD, Please toggle the button below and select the corresponding error code for reference.</li>
+                                </ul>
                         </div>
                 </div>
 
@@ -78,10 +134,10 @@
             <div class="row">
                 <div class="col-lg-2 text-center"> 
                    <b> INPUT TYPE:</b>&nbsp
-                    <input id="bot_panel_input_type" type="checkbox" checked data-toggle="toggle" data-on="IN" data-off="OUT" data-onstyle="success" data-offstyle="danger" data-width="70" data-height="25" data-size="sm">
+                    <input id="bot_panel_input_type" type="checkbox" checked data-toggle="toggle" data-on="IN" data-off="OUT" data-onstyle="primary" data-offstyle="secondary" data-width="70" data-height="25" data-size="sm">
                 </div>
                 <div class="col-lg-2">
-                        <select class="select2" id="bot_panel_prodline_sel" name="sel2">
+                        <select class="select2" id="bot_panel_prodline_sel" onchange="LoadDataTable()">
                                 <option value="">SELECT LINE</option>
                             @foreach ($pline as $pline_item)
                                 <option value="{{$pline_item->id}}">{{$pline_item->prodline_ini}}-{{$pline_item->prodline_name}}</option>
@@ -89,7 +145,7 @@
                         </select>
                 </div>
                 <div class="col-lg-2">
-                        <select class="select2" id="bot_panel_process_sel">
+                        <select class="select2" id="bot_panel_process_sel" onchange="LoadDataTable()">
                                 <option value="">SELECT PROCESS</option>
                             @foreach ($processlist as $processlist_item)
                                 <option value="{{$processlist_item->id}}">{{$processlist_item->process_ini}}&nbsp=&nbsp[{{$processlist_item->process_name}}]</option>
@@ -97,7 +153,7 @@
                     </select>
                 </div>
                 <div class="col-lg-2">
-                        <select class="select2" id="bot_panel_machine_sel">
+                        <select class="select2" id="bot_panel_machine_sel" onchange="LoadDataTable()">
                                 <option value="">SELECT MACHINE</option>
                         </select>
                 </div>
@@ -107,7 +163,7 @@
                 </div>
                 <div class="col-lg-2">
                     <button type="button" name="load_data_button" class="btn btn-sm btn-primary bold-text" onclick="LoadDataTable()"><i class="fas fa-sync-alt"></i>&nbspLOAD</button>
-                    <button type="button" name="load_data_button" class="btn btn-sm btn-danger bold-text" onclick="LoadDataTable()"><i class="fas fa-ban"></i>&nbspCLEAR</button>
+                    <button type="button" name="load_data_button" class="btn btn-sm btn-danger bold-text" onclick="ScanRecordClearData()"><i class="fas fa-ban"></i>&nbspCLEAR</button>
                 </div>
             </div>
 <br>
@@ -144,7 +200,7 @@
 </div>
 </div>
 
-@include('modal.scanerror')
+{{-- @include('modal.scanerror') --}}
 @endsection
 {{-- 
  --}}

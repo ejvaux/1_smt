@@ -287,8 +287,8 @@ function enterEvent(e) {
             },
             success: function (data) {
                 //$('#datatable tr').not(':first').not(':last').remove();
-              
-                $('#datatable>tbody').empty();
+              console.log(JSON.stringify(data));
+            $('#datatable>tbody').empty();
             var html = '';
             
             if(data.length==0)
@@ -301,8 +301,14 @@ function enterEvent(e) {
                 if(data[i].errorlink==null){
                     errorcode="N/A";
                 }
+                else{
+                    errorcode=data[i].errorlink.error_code;
+                }
                 if(data[i].machinelink==null){
                     machinecode="N/A";
+                }
+                else{
+                    machinecode=data[i].machinelink.machine_ini;
                 }
                 html += '<tr class="text-center">'+
                             '<td>' + "ctrls" + '</td>' +  
@@ -319,6 +325,49 @@ function enterEvent(e) {
                 
             //$('#datatable tr').first().after(html);
             $('#datatable').append(html);
+            },
+            error: function (data) {
+                marker = JSON.stringify(data);
+                //alert(marker);
+            }
+        });
+    }
+
+    function LoadSAPDataTable(){
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+    
+          $.ajax({
+            url: 'ajax/saploaddatatable',
+            type:'POST',
+            data:{
+            },
+            success: function (data) {
+                //$('#datatable tr').not(':first').not(':last').remove();
+            console.log(JSON.stringify(data));
+            $('#JOdatatable>tbody').empty();
+            var html = '';
+            
+            if(data.length==0)
+            {
+                html +="<tr style='height:100px'><td colspan='6' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
+            }
+            for(var i = 0; i < data.length; i++){
+                html += '<tr class="text-center">'+
+                            '<td>' + "ctrls" + '</td>' +  
+                            '<td>' + data[i].DocNum + '</td>' +
+                            '<td>' + data[i].ItemCode  + '</td>' +
+                            '<td>' + data[i].ProdName + '</td>' +
+                            '<td>' + data[i].PlannedQty + '</td>' +
+                            '<td>' + "0" + '</td>' +
+                        '</tr>';
+                }   
+
+            //$('#datatable tr').first().after(html);
+            $('#JOdatatable').append(html);
             },
             error: function (data) {
                 marker = JSON.stringify(data);
@@ -349,4 +398,26 @@ function enterEvent(e) {
     function SetMachine()
     {
         $('#bot_panel_machine_sel').val(document.getElementById('machine_sel').value).trigger('change');;
+    }
+
+    function ScanRecordClearData()
+    {
+        document.getElementById('bot_panel_process_sel').value = "";
+        document.getElementById('bot_panel_machine_sel').value = "";
+        document.getElementById('bot_panel_prodline_sel').value = "";
+        document.getElementById('bot_panel_input_serial').value = "";
+        $('#datatable>tbody').empty();
+        var html = '';
+        html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
+        $('#datatable').append(html);
+    }
+
+    function ChangeToggle()
+    {
+        if ($('#R_panel_input_type').is(":checked")){
+            document.getElementById("ecode_sel").disabled = true;
+        }
+        else{
+            document.getElementById("ecode_sel").disabled = false;
+        }
     }

@@ -21,11 +21,11 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel fixed-top">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    <img src="{{ asset('images/ptpi.png')}}" class="nav-badge">
-                    <b>{{ config('app.name', 'Laravel') }}</b>
+                    <img src="{{ asset('images/primatech-logo.png')}}" class="nav-badge">
+                    {{-- <b>{{ config('app.name', 'Laravel') }}</b> --}}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -91,10 +91,10 @@
             </div>
         </nav>
 
-        <main class="py-4" style="margin-top:4%">
+        <main class="py-4">
             @yield('content')
         </main>
-
+        
         @include('includes.footer')
     </div>
 </body>

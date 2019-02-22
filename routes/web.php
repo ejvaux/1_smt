@@ -30,6 +30,7 @@ Route::get('/scan', 'PageController@scan');
 Route::post('ajax/errorcode', 'AjaxController@errorcode');
 Route::post('ajax/Check_Record', 'AjaxController@checkRecord');
 Route::post('ajax/loaddatatable', 'AjaxController@LoadDataToTable');
+Route::post('ajax/saploaddatatable', 'AjaxController@SAPLoadDataToTable');
 /* End of Ajax Controller */
 
 
