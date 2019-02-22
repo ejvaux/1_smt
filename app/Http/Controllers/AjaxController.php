@@ -70,8 +70,8 @@ class AjaxController extends Controller
 
     public function SAPLoadDataToTable(Request $request)
     {
-        $data=SAPPlanModel::where('DocNum','LIKE','1%')
-                            ->get();
+             //series -68 for SMT
+        $data=SAPPlanModel::where('Series','31')->where('StartDate','2019-02-22')->get();
         return Response::json($data);
     }
 

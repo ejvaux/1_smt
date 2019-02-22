@@ -65,3 +65,7 @@ padding: 4%
 .select2-container--open{
     z-index:99999;
     }
+
+ .font-small{
+     font-size: 0.8em;
+ }

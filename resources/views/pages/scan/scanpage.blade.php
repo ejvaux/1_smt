@@ -35,7 +35,7 @@
                                             <option value="">SELECT LINE</option>
                                         @foreach ($pline as $pline_item)
                                             <option value="{{$pline_item->id}}">{{$pline_item->prodline_ini}}-{{$pline_item->prodline_name}}</option>
-                                        @endforeach
+                                        @endforeach 
                                     </select>
                             </div>
                             <div class="col-lg-2 bold-text vertical-center text-center">MACHINE: &nbsp</div>
@@ -49,26 +49,27 @@
                         <hr>
 
                         <div class="row">
-                            <div class="col-sm-3 text-right vertical-center bold-text">PLAN DATE: </div>
+                            <div class="col-sm-2 text-right vertical-center bold-text">SAP PLAN DATE: </div>
                             <div class="col-lg-3">
                                 <input type="date" id="SAP_date" class="form-control">
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-5">
                                     <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                               <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="Type anything to search.." id="SAP_searchbox" onkeypress="LoadSAPDataTable()">
+                                            <input type="text" class="form-control" placeholder="Type anything to search.." id="SAP_searchbox">
                                     </div>
                             </div>
+                            <div class="col-lg-2 bold-text"><button class="btn btn-sm btn-primary" onclick="LoadSAPDataTable()" style="height:35px"><i class="fas fa-tasks"></i>&nbspLOAD PLAN</button></div>
                         </div>
                         <br>
-                        <div class="table-responsive-xl" style="overflow-y:auto;height: 400px;">
-                                <table class="table table-striped table-bordered table-hover table-sm" id="JOdatatable" style="height: 400px;">
+                        <div class="table-responsive-xl" style="overflow:auto;height: 400px;">
+                                <table class="table table-striped table-bordered table-hover table-sm" id="JOdatatable" style="height: 390px;">
                                         <thead class="thead-dark">
                                                 <tr class="text-center">
                                                   <th scope="col">CTRLS</th>
-                                                  <th scope="col">PRODUCTION ORDER #</th>
+                                                  <th scope="col">WORK ORDER #</th>
                                                   <th scope="col">PART CODE</th>
                                                   <th scope="col">PART NAME</th>
                                                   <th scope="col">PLAN QTY</th>
@@ -109,15 +110,40 @@
                                         </select>
                                 </div>
                             </div>
-                            {{-- {{Request::getClientIp()}} --}}
+
                             <hr>
+
                             <b><i class="fas fa-qrcode"></i>&nbspSERIAL SCANNING</b>
                             <input type="text" name="input_scan" id="input_serial" placeholder="Input Serial Number here..." 
                             class="form-control" style="height: 30px" onkeypress="return enterEvent(event)">
+                                                        
                             <hr>
-                            <ul>
+                            <b><i class="fas fa-info-circle"></i>&nbspSELECTED INFO:</b>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3 font-small bold-text vertical-center">WORK ORDER #:</div>
+                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                                <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3 font-small bold-text vertical-center">PART CODE:</div>
+                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                                <div class="w-100 d-none d-md-block"  style="margin-top:2%"></div>
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3 font-small bold-text vertical-center">PART NAME:</div>
+                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                                <div class="w-100 d-none d-md-block"  style="margin-top:2%"></div>
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3 font-small bold-text vertical-center">PLAN QTY:</div>
+                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                            </div>
+
+                            <hr>
+                            
+                            <b>NOTE:</b>
+                                <ul>
                                     <li>Make sure to configure the scanning options before scanning a serial number.</li>
                                     <li>If Item is NG-NO GOOD, Please toggle the button below and select the corresponding error code for reference.</li>
+                                    <li>Please select a work order first before scanning an item</li>
                                 </ul>
                         </div>
                 </div>

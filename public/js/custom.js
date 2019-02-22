@@ -357,7 +357,7 @@ function enterEvent(e) {
             }
             for(var i = 0; i < data.length; i++){
                 html += '<tr class="text-center">'+
-                            '<td>' + "ctrls" + '</td>' +  
+                            '<td>' + "<a href='#' class='btn btn-sm btn-danger' style='font-size:0.7em'><i class='fas fa-check-square'></i>&nbspSELECT</a>" + '</td>' +  
                             '<td>' + data[i].DocNum + '</td>' +
                             '<td>' + data[i].ItemCode  + '</td>' +
                             '<td>' + data[i].ProdName + '</td>' +
