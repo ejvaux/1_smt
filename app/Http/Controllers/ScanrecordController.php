@@ -45,6 +45,8 @@ class ScanrecordController extends Controller
         $ins_screcord->serial_number=$request->input('serialnum');
         $ins_screcord->scan_result=$request->input('sel_result');
         $ins_screcord->scan_type=$request->input('sel_scaninput');
+        $ins_screcord->SapPlanID=$request->input('sel_ID');
+        $ins_screcord->SapJONum=$request->input('sel_JoNum');
         $ins_screcord->save();
 
     }
@@ -111,6 +113,8 @@ class ScanrecordController extends Controller
         $SRecordUpdate->serial_number=$request->input('serialnum');
         $SRecordUpdate->scan_result=$request->input('sel_result');
         $SRecordUpdate->scan_type=$request->input('sel_scaninput');
+        /* $SRecordUpdate->SapPlanID=$request->input('sel_ID');
+        $SRecordUpdate->SapJONum=$request->input('sel_JoNum'); */
         $SRecordUpdate->save();
 
     }

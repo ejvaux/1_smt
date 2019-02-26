@@ -24,6 +24,8 @@ class Scanrecord extends Migration
             $table->string('serial_number');
             $table->string('scan_result');
             $table->string('scan_type');
+            $table->string('SapPlanID');
+            $table->string('SapJONum');
             $table->timestamps();
         });
     }

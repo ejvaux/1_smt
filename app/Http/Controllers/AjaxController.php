@@ -57,10 +57,10 @@ class AjaxController extends Controller
           $data=$data->where('prodline_id',$request->input('sel_prodline'));
         }
         if($processline!=""){
-            $data=$data->where('prodline_id',$request->input('sel_process'));
+            $data=$data->where('process_id',$request->input('sel_process'));
         }
         if($machineline!=""){
-            $data=$data->where('prodline_id',$request->input('sel_machine'));
+            $data=$data->where('machine_id',$request->input('sel_machine'));
         }
         $data=$data->get();          
         return Response::json($data);
@@ -71,7 +71,11 @@ class AjaxController extends Controller
     public function SAPLoadDataToTable(Request $request)
     {
              //series -68 for SMT
-        $data=SAPPlanModel::where('Series','31')->where('StartDate','2019-02-22')->get();
+        $pdate=$request->input('plandate');
+        $data=SAPPlanModel::where('Series','31')
+                            ->where('StartDate',$pdate)
+                            ->where('Status','R')
+                            ->get();
         return Response::json($data);
     }
 

@@ -50,8 +50,17 @@ $(document).ready(function() {
 function enterEvent(e) {
         var datainput = "";
         var input_text = document.getElementById('input_serial').value;
-        
-        
+        var joborder = document.getElementById('work_num').value;
+        var pname = document.getElementById('process_sel').value;
+        var pline = document.getElementById('prodline_sel').value;
+        var inputs="";
+        if ($('#input_type').is(":checked")){
+            inputs = "IN";
+        }
+        else{
+            inputs = "OUT";
+        }
+
         if (e.keyCode == 13){
             if(input_text==""){
                 iziToast.error({
@@ -61,8 +70,47 @@ function enterEvent(e) {
                 });
             }
             else {
-               
-                Swal.fire({
+
+                    if(pname!="" && pline!=""){
+                        if ($('#R_panel_input_type').is(":checked")){
+                            if ($('#input_type').is(":checked")){
+                                if(joborder!=""){
+                                    datainput="IN";
+                                    CheckRecord("OK",datainput);
+                                }
+                                else{
+                                    iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please select a JOBORDER NO.',});
+                                }
+                              
+                            }
+                            else {
+                                datainput="OUT";
+                                CheckRecord("OK",datainput);      
+                            }
+                        }
+                        else {
+                            if ($('#input_type').is(":checked")){
+                                if(joborder!=""){
+                                    datainput="IN";
+                                    CheckRecord("NG",datainput);
+                                }
+                                else{
+                                    iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please select a JOBORDER NO.',});
+                                }
+                               
+                            }
+                            else{
+                                datainput="OUT";
+                                CheckRecord("NG",datainput);
+                            }   
+                            
+                        }
+                    }
+                    else{
+                        iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please complete the required fields. Select a Process and Prod Line.',});
+                    }
+
+               /*  Swal.fire({
                     title: 'Select item status?',
                     text: "You won't be able to revert this!",
                     type: 'warning',
@@ -90,7 +138,7 @@ function enterEvent(e) {
 
                      }
                   
-                  })
+                  }) */
 
             } //end else of if input has text
             
@@ -118,6 +166,8 @@ function enterEvent(e) {
     var ecode = document.getElementById('ecode_sel').value;
     var snum = document.getElementById('input_serial').value;
     var userid=document.getElementById('userid').value;
+    var JO_ID = document.getElementById('jo_id').value;
+    var JO_Num=document.getElementById('work_num').value;
     var scan_input = datainput;
    // alert(snum);
     $.ajaxSetup({
@@ -138,7 +188,9 @@ function enterEvent(e) {
             'sel_ecode':ecode,
             'serialnum':snum,
             'sel_user':userid,
-            'sel_scaninput':scan_input
+            'sel_scaninput':scan_input,
+            'sel_ID':JO_ID,
+            'sel_JoNum':JO_Num
         },
         success: function (data) {
             //dt = JSON.stringify(data);
@@ -240,6 +292,9 @@ function enterEvent(e) {
                     alert(data);
                 }
 
+                document.getElementById('ecode_sel').value="";
+                            $('#ecode_sel').val("").trigger('change');
+                            $('#R_panel_input_type').prop('checked', true).change();
 
         },
         error: function (data) {
@@ -334,6 +389,7 @@ function enterEvent(e) {
     }
 
     function LoadSAPDataTable(){
+        var selectedDate = document.getElementById('SAP_date').value;
         $.ajaxSetup({
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -344,6 +400,7 @@ function enterEvent(e) {
             url: 'ajax/saploaddatatable',
             type:'POST',
             data:{
+                'plandate':selectedDate
             },
             success: function (data) {
                 //$('#datatable tr').not(':first').not(':last').remove();
@@ -353,15 +410,17 @@ function enterEvent(e) {
             
             if(data.length==0)
             {
-                html +="<tr style='height:100px'><td colspan='6' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
+                html +="<tr style='height:100px'><td colspan='6' class='text-center' style='font-size:1.5em'>No data to display.</td></tr>";
             }
             for(var i = 0; i < data.length; i++){
                 html += '<tr class="text-center">'+
-                            '<td>' + "<a href='#' class='btn btn-sm btn-danger' style='font-size:0.7em'><i class='fas fa-check-square'></i>&nbspSELECT</a>" + '</td>' +  
+                            '<td>' + "<button class='btn btn-sm btn-danger' style='font-size:0.7em'"+
+                            " onclick='JOSelectRow("+"\""+data[i].DocNum+"\",\""+data[i].ItemCode+"\",\""+data[i].ProdName+"\",\""+data[i].PlannedQty+"\",\""+data[i].DocEntry+"\")'"+
+                            "><i class='fas fa-check-square'></i>&nbspSELECT</button>" + '</td>' +  
                             '<td>' + data[i].DocNum + '</td>' +
                             '<td>' + data[i].ItemCode  + '</td>' +
                             '<td>' + data[i].ProdName + '</td>' +
-                            '<td>' + data[i].PlannedQty + '</td>' +
+                            '<td>' + Math.round(data[i].PlannedQty) + '</td>' +
                             '<td>' + "0" + '</td>' +
                         '</tr>';
                 }   
@@ -388,16 +447,16 @@ function enterEvent(e) {
 
     function SetProdLine()
     {
-        $('#bot_panel_prodline_sel').val(document.getElementById('prodline_sel').value).trigger('change');;
+        $('#bot_panel_prodline_sel').val(document.getElementById('prodline_sel').value).trigger('change');
     }
 
     function SetProcess()
     {
-        $('#bot_panel_process_sel').val(document.getElementById('process_sel').value).trigger('change');;
+        $('#bot_panel_process_sel').val(document.getElementById('process_sel').value).trigger('change');
     }
     function SetMachine()
     {
-        $('#bot_panel_machine_sel').val(document.getElementById('machine_sel').value).trigger('change');;
+        $('#bot_panel_machine_sel').val(document.getElementById('machine_sel').value).trigger('change');
     }
 
     function ScanRecordClearData()
@@ -406,6 +465,9 @@ function enterEvent(e) {
         document.getElementById('bot_panel_machine_sel').value = "";
         document.getElementById('bot_panel_prodline_sel').value = "";
         document.getElementById('bot_panel_input_serial').value = "";
+        $('#bot_panel_process_sel').val("").trigger('change');
+        $('#bot_panel_machine_sel').val("").trigger('change');
+        $('#bot_panel_prodline_sel').val("").trigger('change');
         $('#datatable>tbody').empty();
         var html = '';
         html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
@@ -420,4 +482,17 @@ function enterEvent(e) {
         else{
             document.getElementById("ecode_sel").disabled = false;
         }
+    }
+
+    function JOSelectRow(DocNum,ItemCode,ProdName,PlannedQty,jo_id){
+
+        //alert(DocNum+ItemCode+ProdName+PlannedQty);
+
+        document.getElementById('work_num').value=DocNum;
+        document.getElementById('part_code').value=ItemCode;
+        document.getElementById('part_name').value=ProdName;
+        document.getElementById('plan_qty').value=Math.round(PlannedQty);
+        document.getElementById('jo_id').value=jo_id;
+
+        iziToast.success({title: 'OK',position: 'topCenter',message: 'JOB ORDER #: '+DocNum+ ' selected successfully.'});
     }

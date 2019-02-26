@@ -51,7 +51,7 @@
                         <div class="row">
                             <div class="col-sm-2 text-right vertical-center bold-text">SAP PLAN DATE: </div>
                             <div class="col-lg-3">
-                                <input type="date" id="SAP_date" class="form-control">
+                            <input type="date" id="SAP_date" class="form-control" value="{{date('Y-m-d')}}" onchange="LoadSAPDataTable()">
                             </div>
                             <div class="col-lg-5">
                                     <div class="input-group mb-3">
@@ -122,19 +122,28 @@
                             <div class="row">
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-3 font-small bold-text vertical-center">WORK ORDER #:</div>
-                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" readonly id="work_num">
+                                </div>
                                 <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-3 font-small bold-text vertical-center">PART CODE:</div>
-                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" readonly id="part_code">
+                                </div>
                                 <div class="w-100 d-none d-md-block"  style="margin-top:2%"></div>
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-3 font-small bold-text vertical-center">PART NAME:</div>
-                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" readonly id="part_name">
+                                </div>
                                 <div class="w-100 d-none d-md-block"  style="margin-top:2%"></div>
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-3 font-small bold-text vertical-center">PLAN QTY:</div>
-                                <div class="col-lg-8"><input type="text" class="form-control" readonly></div>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" readonly id="plan_qty">
+                                    <input type="text" class="form-control" readonly hidden id="jo_id">
+                                </div>
                             </div>
 
                             <hr>
