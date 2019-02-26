@@ -72,11 +72,22 @@ class AjaxController extends Controller
     {
              //series -68 for SMT
         $pdate=$request->input('plandate');
+
         $data=SAPPlanModel::where('Series','31')
                             ->where('StartDate',$pdate)
                             ->where('Status','R')
+                            ->where($request->input('s_field'),'LIKE','%'.$request->input('searchbox').'%')
                             ->get();
         return Response::json($data);
+    }
+
+    public function TotalPerJO(Request $request)
+    {
+        $pid=$request->input('pid');
+        $data=scanrecordlist::where('SapPlanID',$pid)
+                            ->get();
+        return Response::json($data);
+
     }
 
 }

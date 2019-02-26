@@ -31,6 +31,7 @@ class scanrecordlist extends Model
     {
         return $this->belongsTo('App\MachineList','machine_id');
     }
+   
 
 
 

@@ -31,6 +31,7 @@ Route::post('ajax/errorcode', 'AjaxController@errorcode');
 Route::post('ajax/Check_Record', 'AjaxController@checkRecord');
 Route::post('ajax/loaddatatable', 'AjaxController@LoadDataToTable');
 Route::post('ajax/saploaddatatable', 'AjaxController@SAPLoadDataToTable');
+Route::post('ajax/totalpjo', 'AjaxController@TotalPerJO');
 /* End of Ajax Controller */
 
 

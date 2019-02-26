@@ -390,6 +390,8 @@ function enterEvent(e) {
 
     function LoadSAPDataTable(){
         var selectedDate = document.getElementById('SAP_date').value;
+        var searchbox = document.getElementById('SAP_searchbox').value;
+        var searchfield = document.getElementById('search_field').value;
         $.ajaxSetup({
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -400,7 +402,9 @@ function enterEvent(e) {
             url: 'ajax/saploaddatatable',
             type:'POST',
             data:{
-                'plandate':selectedDate
+                'plandate':selectedDate,
+                'searchbox':searchbox,
+                's_field':searchfield
             },
             success: function (data) {
                 //$('#datatable tr').not(':first').not(':last').remove();
@@ -408,11 +412,36 @@ function enterEvent(e) {
             $('#JOdatatable>tbody').empty();
             var html = '';
             
+            
             if(data.length==0)
             {
                 html +="<tr style='height:100px'><td colspan='6' class='text-center' style='font-size:1.5em'>No data to display.</td></tr>";
             }
             for(var i = 0; i < data.length; i++){
+
+                var total = 0;
+                $.ajaxSetup({
+                    headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                  });
+                $.ajax({
+                    url: 'ajax/totalpjo',
+                    type:'POST',
+                    data:{
+                        'pid':data[i].DocEntry
+                    },
+                    success: function (data2) {
+                        //alert(data2.length);
+                        total = data2.length
+                    },
+                    error: function (data) {
+                        marker = JSON.stringify(data);
+                        //alert(marker);
+                    }
+                });
+
+                
                 html += '<tr class="text-center">'+
                             '<td>' + "<button class='btn btn-sm btn-danger' style='font-size:0.7em'"+
                             " onclick='JOSelectRow("+"\""+data[i].DocNum+"\",\""+data[i].ItemCode+"\",\""+data[i].ProdName+"\",\""+data[i].PlannedQty+"\",\""+data[i].DocEntry+"\")'"+
@@ -421,7 +450,7 @@ function enterEvent(e) {
                             '<td>' + data[i].ItemCode  + '</td>' +
                             '<td>' + data[i].ProdName + '</td>' +
                             '<td>' + Math.round(data[i].PlannedQty) + '</td>' +
-                            '<td>' + "0" + '</td>' +
+                            '<td>' + total + '</td>' +
                         '</tr>';
                 }   
 
@@ -495,4 +524,22 @@ function enterEvent(e) {
         document.getElementById('jo_id').value=jo_id;
 
         iziToast.success({title: 'OK',position: 'topCenter',message: 'JOB ORDER #: '+DocNum+ ' selected successfully.'});
+    }
+
+    function ClearJOSearch(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+        dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+        mm = '0' + mm;
+        }
+        document.getElementById('SAP_date').value = yyyy+mm+dd;
+        document.getElementById('SAP_searchbox').value="";
+        LoadSAPDataTable();
     }

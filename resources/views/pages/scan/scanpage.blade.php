@@ -49,23 +49,31 @@
                         <hr>
 
                         <div class="row">
-                            <div class="col-sm-2 text-right vertical-center bold-text">SAP PLAN DATE: </div>
+                            <div class="col-sm-1 text-right vertical-center bold-text">DATE: </div>
                             <div class="col-lg-3">
-                            <input type="date" id="SAP_date" class="form-control" value="{{date('Y-m-d')}}" onchange="LoadSAPDataTable()">
+                            <input type="date" id="SAP_date" class="form-control" onchange="LoadSAPDataTable()">
                             </div>
                             <div class="col-lg-5">
                                     <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                              {{-- <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span> --}}
+                                              <select class="input-group-text" id="search_field">
+                                                <option value="ItemCode">PARTCODE</option>
+                                                <option value="ProdName">PARTNAME</option>
+                                                <option value="DocNum">WORKORDER</option>
+                                              </select>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="Type anything to search.." id="SAP_searchbox">
+                                            <input type="text" class="form-control" placeholder="Type anything to search.." id="SAP_searchbox" onkeypress="LoadSAPDataTable()">
                                     </div>
                             </div>
-                            <div class="col-lg-2 bold-text"><button class="btn btn-sm btn-primary" onclick="LoadSAPDataTable()" style="height:35px"><i class="fas fa-tasks"></i>&nbspLOAD PLAN</button></div>
+                            <div class="col-lg-3 bold-text">
+                                <button class="btn btn-sm btn-primary" onclick="LoadSAPDataTable()" style="height:35px"><i class="fas fa-sync-alt"></i>&nbspLOAD</button>
+                                <button class="btn btn-sm btn-danger" onclick="ClearJOSearch()" style="height:35px"><i class="fas fa-ban"></i>&nbspCLEAR</button>
+                            </div>
                         </div>
                         <br>
                         <div class="table-responsive-xl" style="overflow:auto;height: 400px;">
-                                <table class="table table-striped table-bordered table-hover table-sm" id="JOdatatable" style="height: 390px;">
+                                <table class="table table-striped table-bordered table-hover table-sm" id="JOdatatable">
                                         <thead class="thead-dark">
                                                 <tr class="text-center">
                                                   <th scope="col">CTRLS</th>
@@ -78,7 +86,7 @@
                                               </thead>
                                               <tbody>
                                                     <tr style='height:100px'>
-                                                        <td colspan='9' class='text-center' style='font-size:1.5em'>
+                                                        <td colspan='9' class='text-center' style='font-size:1.5em;height:350px'>
                                                             No data to display.
                                                         </td>
                                                     </tr>
