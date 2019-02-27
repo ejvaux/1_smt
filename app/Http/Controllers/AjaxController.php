@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\errorcodelist;
 use App\scanrecordlist;
 use App\ProdLine;
@@ -70,7 +71,7 @@ class AjaxController extends Controller
 
     public function SAPLoadDataToTable(Request $request)
     {
-             //series -68 for SMT
+             //series -68 for SMT  where Status='R' AND Series = '31' AND StartDate = ?",[$pdate]);
         $pdate=$request->input('plandate');
 
         $data=SAPPlanModel::where('Series','31')
@@ -78,16 +79,26 @@ class AjaxController extends Controller
                             ->where('Status','R')
                             ->where($request->input('s_field'),'LIKE','%'.$request->input('searchbox').'%')
                             ->get();
-        return Response::json($data);
+
+       /*  $data1= DB::connection('sqlsrv')
+                    ->select("SELECT * from OWOR where Status='R' AND Series = '31' AND StartDate = ?",[$pdate]); */
+        $data2= DB::connection('mysql')
+                    ->select("SELECT SapPlanID,count(SapPlanID) as res from scanrecord GROUP BY SapPlanID");
+
+        //$data3 = $data1->union($data2)->get();
+
+        return Response::json(array('sap_plan'=>$data,'smt_result'=>$data2));
     }
 
     public function TotalPerJO(Request $request)
     {
         $pid=$request->input('pid');
-        $data=scanrecordlist::where('SapPlanID',$pid)
+        $data=scanrecordlist::where('SapPlanID','19900')
                             ->get();
-        return Response::json($data);
 
+        //return Response::json($data);
+       
+       return ("lala");
     }
 
 }

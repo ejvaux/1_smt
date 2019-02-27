@@ -69,3 +69,39 @@ padding: 4%
  .font-small{
      font-size: 0.8em;
  }
+
+#wait{
+    display:none;
+    width:93%;
+    height:49%;
+    position:absolute;
+    text-align:center;
+    margin-top: 5%;
+    margin-left: 1%;
+    background-color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding-top:10%;
+} 
+.loading_badge{
+    height: 20%;
+}
+@media only screen and (max-width: 600px) {
+    #wait{
+        display:none;
+        width:85%;
+        height:90%;
+        border:1px solid black;
+        position:absolute;
+        text-align:center;
+        margin-top: 10%;
+        margin-left: 3%;
+        font-weight: bold;
+        background-color: white;
+    } 
+    .loading_badge{
+        height: 20%;
+    }
+  }
+
+  

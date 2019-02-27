@@ -40,7 +40,14 @@ function get_errorcode()
             }
             */
 
-
+           $(document).ready(function(){
+            $(document).ajaxStart(function(){
+              $("#wait").css("display", "block");
+            });
+            $(document).ajaxComplete(function(){
+              $("#wait").css("display", "none");
+            });
+          });
 
 $(document).ready(function() {
     $('.select2').select2({width: '100%'});
@@ -408,19 +415,17 @@ function enterEvent(e) {
             },
             success: function (data) {
                 //$('#datatable tr').not(':first').not(':last').remove();
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
             $('#JOdatatable>tbody').empty();
             var html = '';
             
-            
-            if(data.length==0)
+            if(data['sap_plan'].length==0)
             {
                 html +="<tr style='height:100px'><td colspan='6' class='text-center' style='font-size:1.5em'>No data to display.</td></tr>";
             }
-            for(var i = 0; i < data.length; i++){
+            for(var i = 0; i < data['sap_plan'].length; i++){
 
-                var total = 0;
-                $.ajaxSetup({
+                /* $.ajaxSetup({
                     headers: {
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
@@ -429,27 +434,35 @@ function enterEvent(e) {
                     url: 'ajax/totalpjo',
                     type:'POST',
                     data:{
-                        'pid':data[i].DocEntry
+                        'pid':idd
                     },
                     success: function (data2) {
                         //alert(data2.length);
-                        total = data2.length
+                        total = data2;
                     },
                     error: function (data) {
                         marker = JSON.stringify(data);
                         //alert(marker);
                     }
-                });
-
-                
+                }); */
+                var total="0";
+                for(var z = 0; z < data['smt_result'].length; z++){
+                    if(data['smt_result'][z].SapPlanID==data['sap_plan'][i].DocEntry){
+                        total = data['smt_result'][z].res;
+                        break;
+                    }
+                    else{
+                        total="0";
+                    }
+                }
                 html += '<tr class="text-center">'+
                             '<td>' + "<button class='btn btn-sm btn-danger' style='font-size:0.7em'"+
-                            " onclick='JOSelectRow("+"\""+data[i].DocNum+"\",\""+data[i].ItemCode+"\",\""+data[i].ProdName+"\",\""+data[i].PlannedQty+"\",\""+data[i].DocEntry+"\")'"+
+                            " onclick='JOSelectRow("+"\""+data['sap_plan'][i].DocNum+"\",\""+data['sap_plan'][i].ItemCode+"\",\""+data['sap_plan'][i].ProdName+"\",\""+data['sap_plan'][i].PlannedQty+"\",\""+data['sap_plan'][i].DocEntry+"\")'"+
                             "><i class='fas fa-check-square'></i>&nbspSELECT</button>" + '</td>' +  
-                            '<td>' + data[i].DocNum + '</td>' +
-                            '<td>' + data[i].ItemCode  + '</td>' +
-                            '<td>' + data[i].ProdName + '</td>' +
-                            '<td>' + Math.round(data[i].PlannedQty) + '</td>' +
+                            '<td>' + data['sap_plan'][i].DocNum + '</td>' +
+                            '<td>' + data['sap_plan'][i].ItemCode  + '</td>' +
+                            '<td>' + data['sap_plan'][i].ProdName + '</td>' +
+                            '<td>' + Math.round(data['sap_plan'][i].PlannedQty) + '</td>' +
                             '<td>' + total + '</td>' +
                         '</tr>';
                 }   

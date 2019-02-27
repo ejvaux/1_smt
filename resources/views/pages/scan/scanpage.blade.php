@@ -72,7 +72,9 @@
                             </div>
                         </div>
                         <br>
+                       
                         <div class="table-responsive-xl" style="overflow:auto;height: 400px;">
+                            <div id="wait">  <img src="{{ asset('images/loading2.gif')}}" class="loading_badge"><br>Loading...</div>
                                 <table class="table table-striped table-bordered table-hover table-sm" id="JOdatatable">
                                         <thead class="thead-dark">
                                                 <tr class="text-center">
