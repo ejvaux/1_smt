@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
 <div class="white_bkg">
-    
+   
     <div class="row">
         {{-- LEFT PANEL --}}
         <div class="col-lg-8">              
@@ -19,7 +19,7 @@
 
                             <div class="col-lg-2 bold-text vertical-center text-center">PROCESS: &nbsp</div>
                             <div class="col-lg-4  vertical-center">
-                                <select class="select2" id="process_sel" onchange="SetProcess();LoadDataTable()">
+                                <select class="select2" id="process_sel" onchange="SetProcess();">
                                             <option value="">SELECT PROCESS</option>
                                         @foreach ($processlist as $processlist_item)
                                             <option value="{{$processlist_item->id}}">{{$processlist_item->process_ini}}&nbsp=&nbsp[{{$processlist_item->process_name}}]</option>
@@ -31,7 +31,7 @@
                         
                             <div class="col-lg-2 bold-text vertical-center text-center">PROD LINE: &nbsp</div>
                             <div class="col-lg-4 vertical-center">
-                                    <select class="select2" id="prodline_sel" onchange="SetProdLine();LoadDataTable()">
+                                    <select class="select2" id="prodline_sel" onchange="SetProdLine();">
                                             <option value="">SELECT LINE</option>
                                         @foreach ($pline as $pline_item)
                                             <option value="{{$pline_item->id}}">{{$pline_item->prodline_ini}}-{{$pline_item->prodline_name}}</option>
@@ -40,7 +40,7 @@
                             </div>
                             <div class="col-lg-2 bold-text vertical-center text-center">MACHINE: &nbsp</div>
                             <div class="col-lg-4  vertical-center">
-                                    <select class="select2" id="machine_sel" onchange="SetMachine();LoadDataTable()">
+                                    <select class="select2" id="machine_sel" onchange="SetMachine();">
                                         <option value="">SELECT MACHINE</option>
                                     </select>
                             </div>
@@ -67,14 +67,14 @@
                                     </div>
                             </div>
                             <div class="col-lg-3 bold-text">
-                                <button class="btn btn-sm btn-primary" onclick="LoadSAPDataTable()" style="height:35px"><i class="fas fa-sync-alt"></i>&nbspLOAD</button>
+                                <button id="loadtbl" class="btn btn-sm btn-primary" onclick="LoadSAPDataTable()" style="height:35px"><i class="fas fa-sync-alt"></i>&nbspLOAD</button>
                                 <button class="btn btn-sm btn-danger" onclick="ClearJOSearch()" style="height:35px"><i class="fas fa-ban"></i>&nbspCLEAR</button>
                             </div>
                         </div>
                         <br>
                        
                         <div class="table-responsive-xl" style="overflow:auto;height: 400px;">
-                            <div id="wait">  <img src="{{ asset('images/loading2.gif')}}" class="loading_badge"><br>Loading...</div>
+                           
                                 <table class="table table-striped table-bordered table-hover table-sm" id="JOdatatable">
                                         <thead class="thead-dark">
                                                 <tr class="text-center">
@@ -88,7 +88,7 @@
                                               </thead>
                                               <tbody>
                                                     <tr style='height:100px'>
-                                                        <td colspan='9' class='text-center' style='font-size:1.5em;height:350px'>
+                                                        <td colspan='9' class='text-center' style='font-size:1.5em;height:355px'>
                                                             No data to display.
                                                         </td>
                                                     </tr>
@@ -161,7 +161,7 @@
                             <b>NOTE:</b>
                                 <ul>
                                     <li>Make sure to configure the scanning options before scanning a serial number.</li>
-                                    <li>If Item is NG-NO GOOD, Please toggle the button below and select the corresponding error code for reference.</li>
+                                    <li>If Item is NG-NOT GOOD, Please toggle the button below and select the corresponding error code for reference.</li>
                                     <li>Please select a work order first before scanning an item</li>
                                 </ul>
                         </div>

@@ -84,6 +84,7 @@ function enterEvent(e) {
                                 if(joborder!=""){
                                     datainput="IN";
                                     CheckRecord("OK",datainput);
+                                    
                                 }
                                 else{
                                     iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please select a JOBORDER NO.',});
@@ -92,24 +93,31 @@ function enterEvent(e) {
                             }
                             else {
                                 datainput="OUT";
-                                CheckRecord("OK",datainput);      
+                                CheckRecord("OK",datainput);  
                             }
                         }
                         else {
-                            if ($('#input_type').is(":checked")){
-                                if(joborder!=""){
-                                    datainput="IN";
-                                    CheckRecord("NG",datainput);
+                            var ecode = document.getElementById('ecode_sel').value;
+                            if(ecode!=""){
+                                if ($('#input_type').is(":checked")){
+                                    if(joborder!=""){
+                                        datainput="IN";
+                                        CheckRecord("NG",datainput);
+                                    }
+                                    else{
+                                        iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please select a JOBORDER NO.',});
+                                    }
+                                   
                                 }
                                 else{
-                                    iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please select a JOBORDER NO.',});
-                                }
-                               
+                                    datainput="OUT";
+                                    CheckRecord("NG",datainput);
+                                }  
                             }
                             else{
-                                datainput="OUT";
-                                CheckRecord("NG",datainput);
-                            }   
+                                iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please select an error code',});
+                            }
+                             
                             
                         }
                     }
@@ -117,36 +125,8 @@ function enterEvent(e) {
                         iziToast.error({ title: 'ERROR',position: 'topCenter', message: 'Please complete the required fields. Select a Process and Prod Line.',});
                     }
 
-               /*  Swal.fire({
-                    title: 'Select item status?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'OK-GOOD',
-                    cancelButtonText:'NG-NOT GOOD'
-                  }).then((result) => {
-                    if (result.value) {
-                        ///if input has no errorcode
-                            if ($('#input_type').is(":checked")){
-                                    datainput="IN";
-                                    CheckRecord("OK",datainput);
-                            }
-                            else {
-                                    datainput="OUT";
-                                    CheckRecord("OK",datainput);      
-                            }
-                    }
-                    else if(result.dismiss == 'cancel'){
-                        //if has error ->input error code on modal
-                        //document.getElementById("ecode_sel").focus();
-                        $('.modal').modal('show');
-
-                     }
-                  
-                  }) */
-
+          
+                
             } //end else of if input has text
             
         }
@@ -302,6 +282,7 @@ function enterEvent(e) {
                 document.getElementById('ecode_sel').value="";
                             $('#ecode_sel').val("").trigger('change');
                             $('#R_panel_input_type').prop('checked', true).change();
+                document.getElementById("loadtbl").click();
 
         },
         error: function (data) {
@@ -373,7 +354,7 @@ function enterEvent(e) {
                     machinecode=data[i].machinelink.machine_ini;
                 }
                 html += '<tr class="text-center">'+
-                            '<td>' + "ctrls" + '</td>' +  
+                            '<td>' + '<a href="scanrecord/'+data[i].id+'/edit"'+' class="btn btn-sm btn-danger" style="font-size:0.7em"><i class="fas fa-info-circle"></i> &nbspDETAILS</a>' + '</td>' +  
                             '<td>' + data[i].prodlinelink.prodline_ini + '</td>' +
                             '<td>' + data[i].userlink.name  + '</td>' +
                             '<td>' + data[i].serial_number  + '</td>' +
@@ -489,16 +470,16 @@ function enterEvent(e) {
 
     function SetProdLine()
     {
-        $('#bot_panel_prodline_sel').val(document.getElementById('prodline_sel').value).trigger('change');
+        //$('#bot_panel_prodline_sel').val(document.getElementById('prodline_sel').value).trigger('change');
     }
 
     function SetProcess()
     {
-        $('#bot_panel_process_sel').val(document.getElementById('process_sel').value).trigger('change');
+        //$('#bot_panel_process_sel').val(document.getElementById('process_sel').value).trigger('change');
     }
     function SetMachine()
     {
-        $('#bot_panel_machine_sel').val(document.getElementById('machine_sel').value).trigger('change');
+        //$('#bot_panel_machine_sel').val(document.getElementById('machine_sel').value).trigger('change');
     }
 
     function ScanRecordClearData()

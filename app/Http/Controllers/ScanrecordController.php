@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\scanrecordlist;
 use Illuminate\Http\Request;
+use App\ProdLine;
+use App\ProcessList;
+use App\errorcodelist;
+use App\SAPPlanModel;
+use App\MachineList;
 
 class ScanrecordController extends Controller
 {
@@ -60,6 +65,7 @@ class ScanrecordController extends Controller
     public function show(scanrecord $scanrecord)
     {
         //
+      
     }
 
     /**
@@ -68,9 +74,19 @@ class ScanrecordController extends Controller
      * @param  \App\scanrecord  $scanrecord
      * @return \Illuminate\Http\Response
      */
-    public function edit(scanrecord $scanrecord)
+    public function edit($scanrecord)
     {
         //
+        $pline=ProdLine::all();
+        $processlist=ProcessList::all();
+        $ecode=errorcodelist::all();
+        $mcode=MachineList::all();
+        $data = scanrecordlist::with('userlink','errorlink','prodlinelink','processlink','machinelink')
+                                ->where('id',$scanrecord)
+                                ->first();
+        $sapdetails = SAPPlanModel::where('DocEntry',$data->SapPlanID)->first();                        
+        return view('pages.scan.editpage',compact('data','sapdetails','pline','processlist','ecode','mcode'));
+        
     }
 
     /**

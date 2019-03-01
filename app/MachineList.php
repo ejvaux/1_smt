@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MachineList extends Model
 {
     //
-    protected $table = 'scanrecord';
+    protected $table = 'machinelist';
     public $primarykey = 'id';
     public $timestamps = true;
 }

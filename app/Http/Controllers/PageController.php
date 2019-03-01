@@ -9,8 +9,8 @@ use App\errorcodelist;
 class PageController extends Controller
 {
     //
-    public function scan()
-    {
+    public function scan(){
+
         $pline=ProdLine::all();
         $processlist=ProcessList::all();
         $ecode=errorcodelist::all();

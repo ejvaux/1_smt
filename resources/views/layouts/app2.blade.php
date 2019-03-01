@@ -21,6 +21,11 @@
 </head>
 <body>
     <div id="app">
+        <div id="wait">
+            <div class="wait_cont">
+            <img src="{{ asset('images/loading3.gif')}}" class="loading_badge"><br>LOADING...<br>Please wait for a moment.
+            </div>
+        </div>
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/home') }}">
@@ -57,10 +62,14 @@
                                 <a class="nav-link" href="/1_smt/public/scan"><i class="fas fa-barcode"></i>&nbspScan Item</a>
                             </li>
                             <li class="nav-item bold-text">
-                                <a class="nav-link" href="#"><i class="fas fa-bell"></i>&nbspNotifications</a>
+                                <a class="nav-link" href="/1_smt/public/scan"><i class="fas fa-archive"></i>&nbspMaterials</a>
                             </li>
+                            
                             <li class="nav-item bold-text">
-                                    <a class="nav-link" href="#"><i class="fas fa-download"></i>&nbspData Export</a>
+                                <a class="nav-link" href="#"><i class="fas fa-download"></i>&nbspData Export</a>
+                        </li>
+                            <li class="nav-item bold-text">
+                                <a class="nav-link" href="#"><i class="fas fa-bell"></i>&nbspNotifications</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
