@@ -23,7 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 /* PageController */
 Route::get('/scan', 'PageController@scan');
-
+Route::get('/mscan', 'PageController@mscan');
 /* End of Page Controller */
 
 /* AjaxController */

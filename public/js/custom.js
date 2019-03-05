@@ -507,6 +507,19 @@ function enterEvent(e) {
         }
     }
 
+    function IsReplenish()
+    {
+        if ($('#replenish').is(":checked")){
+            document.getElementById("scan_oldPN").disabled = false;
+            //alert('YES');
+        }
+        else{
+            
+            document.getElementById("scan_oldPN").disabled = true;
+            //alert('NO');
+        }
+    }
+
     function JOSelectRow(DocNum,ItemCode,ProdName,PlannedQty,jo_id){
 
         //alert(DocNum+ItemCode+ProdName+PlannedQty);
@@ -537,3 +550,34 @@ function enterEvent(e) {
         document.getElementById('SAP_searchbox').value="";
         LoadSAPDataTable();
     }
+
+function event_mach(e){
+    if (e.keyCode == 13){
+        document.getElementById("scan_model").focus();
+
+    }
+}
+
+function event_lastPN(e){
+    if (e.keyCode == 13){
+        document.getElementById("scan_newPN").focus();
+
+    }
+}
+
+
+
+$(document).ready(function(){
+$('#scan_employee').on('select2:select', function (e) {
+    // Do something
+    //alert('Do something');
+    if(document.getElementById('scan_employee').value!=""){
+        $('.modal').modal('show');
+    }
+   
+  });
+});
+
+function WrongPIN(){
+    $('#scan_employee').val("").trigger('change');
+}

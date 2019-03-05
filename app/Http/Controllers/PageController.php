@@ -18,4 +18,16 @@ class PageController extends Controller
         
         return view('pages.scan.scanpage',compact('pline','processlist','ecode','data'));
     }
+
+
+    public function mscan(){
+
+        $pline=ProdLine::all();
+        $processlist=ProcessList::all();
+        $ecode=errorcodelist::all();
+        $data="";
+        
+        return view('pages.materials.mscan',compact('pline','processlist','ecode','data'));
+    }
+
 }

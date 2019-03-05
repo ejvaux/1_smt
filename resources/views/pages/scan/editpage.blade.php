@@ -1,7 +1,7 @@
 @extends('layouts.app2')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="white_bkg">
             <div class="card shadow-sm bg-white rounded">
                     <div class="card-header bold-text"><i class="fas fa-info-circle"></i> &nbspRECORD DETAILS</div>
