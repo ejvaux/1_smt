@@ -1,4 +1,4 @@
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
         <div class="modal-dialog">
       
           <!-- Modal content-->
@@ -13,11 +13,11 @@
               
                 <div class="input-group">
                     <span class="vertical-center"><i class="fas fa-key" style="font-size: 20px"></i>&nbsp</span>
-                    <input id="admin_pass" type="password" class="form-control" name="admin_pwd" placeholder="Enter Administrator Password">
+                    <input id="emp_PIN" type="password" class="form-control" name="admin_pwd" placeholder="Enter Administrator Password" onkeypress="return event_PIN(event)" >
                   </div>
-            </div>
+            </div> 
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-user-check"></i>&nbspContinue</button>
+{{--               <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-user-check"></i>&nbspContinue</button> --}}
               <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="WrongPIN()"><i class="fas fa-times"></i>&nbspClose</button>
             </div>
           </div>

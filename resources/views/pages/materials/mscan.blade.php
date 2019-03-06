@@ -14,7 +14,9 @@
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_employee">
                                                         <option value="">SELECT EMPLOYEE</option>
-                                                        <option value="2018000460-GERNALE">2018000460-GERNALE</option>
+                                                        @foreach ($emp as $emp_item)
+                                                         <option value="{{$emp_item->id}}">{{$emp_item->lname}},{{$emp_item->fname}}</option>
+                                                        @endforeach 
                                                 </select>
                                         </div>
                                         <div class="col-lg-2"></div>
@@ -23,34 +25,43 @@
                                         <div class="col-lg-7"><input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)"></div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                                        <div class="col-lg-3 vertical-center text-center bold-text">MODEL:</div>
+                                        <div class="col-lg-3 vertical-center text-center bold-text">MODEL NAME:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_model">
                                                         <option value="">SELECT MODEL</option>
+                                                        @foreach ($models as $models_item)
+                                                        <option value="{{$models_item->id}}">{{$models_item->code}}</option>
+                                                        @endforeach 
                                                 </select>
                                         </div>
                                         <div class="col-lg-2"></div>
-                                        <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
+                                        {{-- <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">TABLE:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_table">
                                                         <option value="">SELECT TABLE</option>
                                                 </select>
                                         </div>
-                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-2"></div> --}}
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">CONFIG POSITION:</div>
                                         <div class="col-lg-7">
-                                                <select class="select2" id="config_pos">
-                                                    <option value="1">L-LEFT</option>
-                                                    <option value="2">R-RIGHT</option>
-                                                    <option value="0">NONE</option>
+                                                <select class="select2" id="scan_pos">
+                                                        @foreach ($position as $position_item)
+                                                        <option value="{{$position_item->id}}">{{$position_item->name}}</option>
+                                                        @endforeach 
                                                 </select>
                                         </div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">FEEDER SLOT#:</div>
-                                        <div class="col-lg-7"><input type="text" id="scan_feeder" placeholder="INPUT FEEDER SLOT CODE" class="form-control"></div>
+                                        <div class="col-lg-7">
+                                                <select class="select2" id="scan_feed_slot">
+                                                        @foreach ($mounter as $mounter_item)
+                                                        <option value="{{$mounter_item->id}}">{{$mounter_item->code}}</option>
+                                                        @endforeach 
+                                                </select>
+                                        </div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-6  vertical-center text-center bold-text">
@@ -63,7 +74,7 @@
                                             <span style="font-size:0.8em"><b>NOTE:</b>Check this toggle button if you will load the same reel component/partname. 
                                                                 This will require you to scan both reel barcodes.</span>
                                         </div>
-                                        <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
+                                        {{-- <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-6  vertical-center text-center bold-text">
                                             <div class="form-check form-check-inline">
                                                 <label for="inlineCheckbox1" class="form-check-label">&nbsp&nbsp&nbsp&nbspUSE ALTERNATIVES? &nbsp</label>
@@ -72,14 +83,14 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <span style="font-size:0.8em"><b>NOTE:</b>Check this toggle button if you will use alternative item components.</span>
-                                        </div>
+                                        </div> --}}
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">LAST PRIMA PN:</div>
                                         <div class="col-lg-7"><input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)"></div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">PRIMA PN TO LOAD:</div>
-                                        <div class="col-lg-7"><input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control"></div>
+                                        <div class="col-lg-7"><input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" ></div>
                                         <div class="col-lg-2"></div>
                                     </div>
                             </div>

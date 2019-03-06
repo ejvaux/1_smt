@@ -10,6 +10,7 @@ use App\scanrecordlist;
 use App\ProdLine;
 use App\ProcessList;
 use App\SAPPlanModel;
+use App\employee;
 use Response;
 
 class AjaxController extends Controller
@@ -101,4 +102,9 @@ class AjaxController extends Controller
        return ("lala");
     }
 
+    public function checkPINemployee(Request $request)
+    {
+        $data=employee::where('id',$request->input('empid'))->get();
+        return Response::json($data);
+    }
 }
