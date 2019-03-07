@@ -1,4 +1,4 @@
-/*   
+/*     //"Select2": "^3.5.7",
 function get_errorcode()
     {
         $.ajaxSetup({
@@ -559,7 +559,7 @@ function enterEvent(e) {
 
 function event_mach(e){
     if (e.keyCode == 13){
-        document.getElementById("scan_model").focus();
+        document.getElementById("scan_pos").focus();
         
     }
 }
@@ -606,18 +606,19 @@ function event_PIN(e){
                 }
                 else{
                     iziToast.success({
-                        title: 'SUCCESS',
+                         title: 'SUCCESS',
                         position: 'topCenter',
                         message: 'PIN matched!',
                     });
                     $('.modal').modal('hide');
-                    document.getElementById('scan_machine').focus();
+                    document.getElementById('scan_model').focus();
                 }
                 //alert(data);
             },
             error: function (data) {
                 marker = JSON.stringify(data);
-                //alert(marker);
+                //alert(marker); 
+               
             }
         });
     }
@@ -625,7 +626,6 @@ function event_PIN(e){
 
 $(document).ready(function(){
 $('#scan_employee').on('select2:select', function (e) {
-    // Do something
     //alert('Do something');
     if(document.getElementById('scan_employee').value!=""){
         document.getElementById('emp_PIN').value="";
@@ -679,8 +679,7 @@ function event_loadPN(e){
                         
                     if(old_PN==new_PN){
                         //ajax checking to feeder here..
-
-
+                        CheckFeeder();
                         
                         //reseet fields
                         resetval();
@@ -701,8 +700,8 @@ function event_loadPN(e){
 
             }
             else{
-                //replenish -NO ajax save as initial running
-
+                //replenish => NO --ajax save as initial running
+                CheckFeeder();
             }
 
 
@@ -752,5 +751,62 @@ function event_loadPN(e){
         }
 
     }
+
+}
+
+
+function CheckFeeder(){
+
+    var replenish = "";
+    if ($('#replenish').is(":checked")){
+        replenish = "YES";
+    }
+    else{
+        replenish = "NO";
+    }
+
+    var emp_name = document.getElementById('scan_employee').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var old_PN = document.getElementById('scan_oldPN').value;
+    var new_PN = document.getElementById('scan_newPN').value;
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/feedlist',
+        type:'POST',
+        data:{
+            'replenish':replenish,
+            'emp_id':emp_name,
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot,
+            'old_PN':old_PN,
+            'new_PN':new_PN
+         
+        },
+        success: function (data) {
+
+            alert(data);
+            if(replenish=="YES"){
+
+            }
+            else{
+                
+            }
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
 
 }
