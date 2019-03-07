@@ -24,8 +24,11 @@
 {{-- <link rel="stylesheet" href="/1_smt/node_modules/Select2/select2-bootstrap.css">
 <link rel="stylesheet" href="/1_smt/node_modules/Select2/select2.css">
 <script src="/1_smt/node_modules/Select2/select2.min.js" defer></script> --}}
-<link rel="stylesheet" href="/1_smt/node_modules/Select2/select2/dist/css/select2.min.css">
-<script src="/1_smt/node_modules/Select2/select2/dist/js/select2.min.js" defer></script>
+{{-- <link rel="stylesheet" href="/1_smt/node_modules/Select2/select2/dist/css/select2.min.css">
+<script src="/1_smt/node_modules/Select2/select2/dist/js/select2.min.js" defer></script> --}}
+
+<link rel="stylesheet" href="/1_smt/node_modules/select2/dist/css/select2.min.css">
+<script src="/1_smt/node_modules/select2/dist/js/select2.min.js" defer></script>
 
 <link rel="stylesheet" href="/1_smt/node_modules/sweetalert2/dist/sweetalert2.min.css">
 <script src="/1_smt/node_modules/sweetalert2/dist/sweetalert2.min.js" defer></script>

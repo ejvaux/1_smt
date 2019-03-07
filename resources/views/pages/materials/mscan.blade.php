@@ -15,14 +15,10 @@
                                                 <select class="select2" id="scan_employee">
                                                         <option value="">SELECT EMPLOYEE</option>
                                                         @foreach ($emp as $emp_item)
-                                                         <option value="{{$emp_item->id}}">{{$emp_item->lname}},{{$emp_item->fname}}</option>
+                                                         <option value="{{$emp_item->id}}">{{$emp_item->lname}}, {{$emp_item->fname}}</option>
                                                         @endforeach 
                                                 </select>
                                         </div>
-                                        <div class="col-lg-2"></div>
-                                        <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                                        <div class="col-lg-3 vertical-center text-center bold-text">MACHINE CODE:</div>
-                                        <div class="col-lg-7"><input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)"></div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">MODEL NAME:</div>
@@ -43,6 +39,10 @@
                                                 </select>
                                         </div>
                                         <div class="col-lg-2"></div> --}}
+                                        <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
+                                        <div class="col-lg-3 vertical-center text-center bold-text">MACHINE CODE:</div>
+                                        <div class="col-lg-7"><input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)"></div>
+                                        <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">CONFIG POSITION:</div>
                                         <div class="col-lg-7">
