@@ -4,19 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class feeders extends Model
+class MatLoadModel extends Model
 {
     //
-    protected $connection = 'mysql2';
-    protected $table = 'smt_feeders';
+    
+    protected $table = 'mat_load_history';
     public $primarykey = 'id';
     public $timestamps = true;
 
-
-
-    public function machine_type_rel()
+    public function machine_rel()
     {
-        return $this->belongsTo('App\machineType','machine_type_id');
+        return $this->belongsTo('App\machine','machine_id');
     }
 
     public function smt_model_rel()
@@ -46,5 +44,8 @@ class feeders extends Model
     {
         return $this->belongsTo('App\orderSMT','order_id');
     }
+    public function employee_rel()
+    {
+        return $this->belongsTo('App\employee','employee_id');
+    }
 }
-

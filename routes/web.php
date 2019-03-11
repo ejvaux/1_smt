@@ -36,10 +36,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/totalpjo', 'AjaxController@TotalPerJO');
     Route::post('ajax/empPIN', 'AjaxController@checkPINemployee');
     Route::post('ajax/feedlist', 'AjaxController@CheckFeederList');
+    Route::post('ajax/loadDetails', 'AjaxController@LoadDetailsPanel');
+    Route::post('ajax/loadhistory', 'AjaxController@LoadHistoryTable');
     /* End of Ajax Controller */
 
 
     Route::resource('scanrecord','ScanrecordController');
+    Route::resource('materialload','MaterialLoadController');
+
     Route::post('scanrecord/upOUT', 'ScanrecordController@updateOUT');
 
 
