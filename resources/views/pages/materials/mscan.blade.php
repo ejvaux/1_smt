@@ -44,7 +44,7 @@
                                         <div class="col-lg-7"><input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)"></div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                                        <div class="col-lg-3 vertical-center text-center bold-text">CONFIG POSITION:</div>
+                                        <div class="col-lg-3 vertical-center text-center bold-text">POSITION:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_pos">
                                                         <option value="" selected>SELECT POSITION</option>
@@ -110,13 +110,15 @@
                                 <thead class="thead-dark">
                                         <tr class="text-center">
                                                 <th scope="col">DATE</th>
+                                                <th scope="col">MACHINE</th>
                                                 <th scope="col">MODEL</th>
                                                 <th scope="col">TABLE</th>
                                                 <th scope="col">MOUNTER</th>
                                                 <th scope="col">POSITION</th>
                                                 <th scope="col">COMPONENT</th>
+                                                <th scope="col">AUTHOROZED VENDOR</th>
                                                 <th scope="col">EMPLOYEE</th>
-                                                <th scope="col">MACHINE</th>
+                                                
                                         </tr>
                                       </thead>
                                       <tbody>

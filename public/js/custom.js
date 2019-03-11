@@ -675,10 +675,14 @@ function WrongPIN(){
 function resetval(){
     
     $('#scan_employee').val("").trigger('change');
+    $('#scan_model').val("").trigger('change');
+    $('#scan_pos').val("").trigger('change');
+    $('#scan_feed_slot').val("").trigger('change');
     document.getElementById('scan_machine').value="";
     document.getElementById('scan_model').value="";
     document.getElementById('scan_oldPN').value="";
     document.getElementById('scan_newPN').value="";
+    document.getElementById('scan_employee').focus();
 }
 
 function event_loadPN(e){
@@ -997,7 +1001,7 @@ function InsertRecord(){
             });
             
             loaddata_panel_right();
-            
+            resetval();
         },
         error: function (data) {
             marker = JSON.stringify(data);
@@ -1070,6 +1074,7 @@ function loaddata_panel_right(){
                             '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
                             '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
                             '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
                             '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
                         '</tr>';
                 }   
