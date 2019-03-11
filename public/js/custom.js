@@ -1,4 +1,4 @@
-/*   
+/*     //"Select2": "^3.5.7",
 function get_errorcode()
     {
         $.ajaxSetup({
@@ -52,7 +52,29 @@ function get_errorcode()
 $(document).ready(function() {
     $('.select2').select2({width: '100%'});
     //$('.select22').select2({dropdownParent: $(".modal"),width: '100%'}); search_select2
+    
+});
+
+/* $(document).on('focus', '.select2', function (e) {
+        if (e.originalEvent) {
+          $(this).siblings('select').select2('open');    
+        } 
+}); */
+
+$(document).ready(function() {
+
+    $('#scan_pos').on('select2:select', function (e) {
+       
+        document.getElementById("scan_feed_slot").focus();
+        $('#scan_feed_slot').select2('open');
     });
+
+    $('#scan_model').on('select2:select', function (e) {
+       
+        $( "#scan_machine" ).focus();
+    });
+
+});
 
 function enterEvent(e) {
         var datainput = "";
@@ -330,7 +352,7 @@ function enterEvent(e) {
             },
             success: function (data) {
                 //$('#datatable tr').not(':first').not(':last').remove();
-              console.log(JSON.stringify(data));
+              //console.log(JSON.stringify(data));
             $('#datatable>tbody').empty();
             var html = '';
             
@@ -507,6 +529,19 @@ function enterEvent(e) {
         }
     }
 
+    function IsReplenish()
+    {
+        if ($('#replenish').is(":checked")){
+            document.getElementById("scan_oldPN").disabled = false;
+            //alert('YES');
+        }
+        else{
+            
+            document.getElementById("scan_oldPN").disabled = true;
+            //alert('NO');
+        }
+    }
+
     function JOSelectRow(DocNum,ItemCode,ProdName,PlannedQty,jo_id){
 
         //alert(DocNum+ItemCode+ProdName+PlannedQty);
@@ -534,6 +569,517 @@ function enterEvent(e) {
         mm = '0' + mm;
         }
         document.getElementById('SAP_date').value = yyyy+mm+dd;
-        document.getElementById('SAP_searchbox').value="";
+        
         LoadSAPDataTable();
     }
+
+function event_mach(e){
+    if (e.keyCode == 13){
+        document.getElementById("scan_pos").focus();
+        //sloaddetails();
+        loaddata_panel_right();
+        $('#scan_pos').select2('open');
+    }
+}
+
+function event_model(e){
+    if (e.keyCode == 13){
+        document.getElementById("scan_machine").focus();
+     
+       
+    }
+   
+}
+
+function event_lastPN(e){
+    if (e.keyCode == 13){
+        document.getElementById("scan_newPN").focus();
+
+    }
+}
+
+function event_PIN(e){
+    if (e.keyCode == 13){
+        var emp_id = document.getElementById("scan_employee").value;
+        var PINtoValidate=document.getElementById("emp_PIN").value;
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+    
+          $.ajax({
+            url: 'ajax/empPIN',
+            type:'POST',
+            data:{
+                'empid':emp_id
+             
+            },
+            success: function (data) {
+                for(var z = 0; z < data.length; z++){
+                    
+                    emp_PIN = data[z].pin;
+                }
+
+                if(PINtoValidate!=emp_PIN){
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Wrong PIN!',
+                    });
+                    $('#scan_employee').val("").trigger('change');
+                    document.getElementById('emp_PIN').value="";
+                    $('.modal').modal('hide');
+                }
+                else{
+                    iziToast.success({
+                         title: 'SUCCESS',
+                        position: 'topCenter',
+                        message: 'PIN matched!',
+                    });
+                    $('.modal').modal('hide');
+                    document.getElementById('scan_model').focus();
+                    $('#scan_model').select2('open');
+                }
+                //alert(data);
+            },
+            error: function (data) {
+                marker = JSON.stringify(data);
+                //alert(marker); 
+               
+            }
+        });
+    }
+}
+
+$(document).ready(function(){
+$('#scan_employee').on('select2:select', function (e) {
+    //alert('Do something');
+    if(document.getElementById('scan_employee').value!=""){
+        document.getElementById('emp_PIN').value="";
+        $('.modal').modal('show');
+        $('.modal').on('shown.bs.modal', function () {
+            $('#emp_PIN').focus();
+        })  
+    }
+   
+  });
+});
+
+function WrongPIN(){
+    $('#scan_employee').val("").trigger('change');
+    document.getElementById('emp_PIN').value="";
+}
+
+
+function resetval(){
+    
+    $('#scan_employee').val("").trigger('change');
+    document.getElementById('scan_machine').value="";
+    document.getElementById('scan_model').value="";
+    document.getElementById('scan_oldPN').value="";
+    document.getElementById('scan_newPN').value="";
+}
+
+function event_loadPN(e){
+
+    var replenish = "";
+    if ($('#replenish').is(":checked")){
+        replenish = "YES";
+    }
+    else{
+        replenish = "NO";
+    }
+
+    var emp_name = document.getElementById('scan_employee').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var old_PN = document.getElementById('scan_oldPN').value;
+    var new_PN = document.getElementById('scan_newPN').value;
+
+    if (e.keyCode == 13){
+        
+        if(emp_name && machine_code && model_code && new_PN){
+            //all req fields are good
+            if(replenish=="YES"){
+                        
+                    if(old_PN==new_PN){
+                        //ajax checking to feeder here..
+                        CheckFeeder();
+                        
+                        //reseet fields
+                        resetval();
+                        
+                    }
+                    else{
+                        iziToast.error({
+                            title: 'ERROR',
+                            position: 'topCenter',
+                            timeout: 10000,
+                            message: 'OLD PN and NEW PN must be matched. <br>If you are sure to load different PN, please set <br> the replenish toggle to NO for initial loading.',
+                        });
+
+                        document.getElementById('scan_oldPN').value="";
+                        document.getElementById('scan_newPN').value="";
+                        document.getElementById('scan_oldPN').focus();
+                    }
+
+            }
+            else{
+                //replenish => NO --ajax save as initial running
+                CheckFeeder();
+            }
+
+
+        }
+        //error handlers for required fields
+        else{
+
+            if(!emp_name){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please input employee name',
+                });
+            }
+            else if(!machine_code){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please scan the machine code',
+                });
+            }
+            else if(!model_code){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please input model name',
+                });
+            }
+            else if(!position){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please input position',
+                });
+            }
+            else if(!feeder_slot){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please input feeder slot #',
+                });
+            }
+            else if(!new_PN){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please input new PN to load',
+                });
+            }
+            else{
+
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please fill out all the required fields',
+                });
+            }
+
+
+
+        }
+
+    }
+
+}
+
+
+function CheckFeeder(){
+
+    var replenish = "";
+    if ($('#replenish').is(":checked")){
+        replenish = "YES";
+    }
+    else{
+        replenish = "NO";
+    }
+
+    var emp_name = document.getElementById('scan_employee').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var old_PN = document.getElementById('scan_oldPN').value;
+    var new_PN = document.getElementById('scan_newPN').value;
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/feedlist',
+        type:'POST',
+        data:{
+            'replenish':replenish,
+            'emp_id':emp_name,
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot,
+            'old_PN':old_PN,
+            'new_PN':new_PN
+        },
+        success: function (data) {
+
+            //alert(data);
+            if(replenish=="YES"){
+                
+            }
+            else{
+                
+                if(data=="HAS RECORD"){
+                    InsertRecord();
+                }
+                else{
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Component not found in the feeder list. Please check your input data.',
+                    });
+                }
+
+
+
+            }
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+
+}
+
+
+function loaddetails(){
+   
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/loadDetails',
+        type:'POST',
+        data:{
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot
+        },
+        success: function (data) {
+            console.log(JSON.stringify(data));
+            
+            $('#datatable2>tbody').empty();
+            var html = '';
+            
+            if(data['feedlist'].length==0)
+            {
+                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
+            }
+            var hold_data="";
+            for(var i = 0; i < data['feedlist'].length; i++){
+               var table = "";
+               if(data['feedlist'][i].smt_table_rel.name=='A')
+               {
+                   table = "TABLE 1";
+               }
+               else  if(data['feedlist'][i].smt_table_rel.name=='B')
+               {
+                   table = "TABLE 2";
+               }
+               else  if(data['feedlist'][i].smt_table_rel.name=='C')
+               {
+                   table = "TABLE 3";
+               }
+               else  if(data['feedlist'][i].smt_table_rel.name=='D')
+               {
+                   table = "TABLE 4";
+               }
+
+               var run_data = data['feedlist'][i].smt_table_rel.id;
+               if(hold_data!=run_data){
+                html += '<tr class="text-center"><td colspan="6" class="bold-text text-left row_table">'+table+'</td></tr>';
+                hold_data=run_data
+               }
+
+               if(data['feedlist'][i].order_rel.name=="PRIMARY"){
+                        html+='<tr class="text-center row_primary">';
+                }
+                else{
+                        html+='<tr class="text-center row_secondary">';
+                }
+                
+
+                html +='<td>' + data['feedlist'][i].mounter_rel.code  + '</td>' +
+                            '<td>' + data['feedlist'][i].smt_pos_rel.name  + '</td>'+
+                            '<td>' + data['feedlist'][i].order_rel.name + '</td>'+
+                            '<td>' + data['feedlist'][i].component_rel.product_number + '</td>' +
+                            '<td>' + data['feedlist'][i].component_rel.authorized_vendor + '</td>' +
+                            '<td>' + data['feedlist'][i].component_rel.vendor_pn + '</td>' +
+                        '</tr>';
+                }   
+            
+            $('#datatable2').append(html);
+           
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+
+}
+
+
+function InsertRecord(){
+    var replenish = "";
+    if ($('#replenish').is(":checked")){
+        replenish = "YES";
+    }
+    else{
+        replenish = "NO";
+    }
+
+    var emp_name = document.getElementById('scan_employee').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var old_PN = document.getElementById('scan_oldPN').value;
+    var new_PN = document.getElementById('scan_newPN').value;
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'materialload',
+        type:'POST',
+        data:{
+            'replenish':replenish,
+            'emp_id':emp_name,
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot,
+            'old_PN':old_PN,
+            'new_PN':new_PN
+        },
+        success: function (data) {
+            iziToast.success({
+                title: 'SUCCESS',
+                position: 'topCenter',
+                message: 'All inputs are correct.',
+            });
+            
+            loaddata_panel_right();
+            
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+
+}
+
+
+function loaddata_panel_right(){
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/loadhistory',
+        type:'POST',
+        data:{
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot
+        },
+        success: function (data) {
+            //console.log(JSON.stringify(data));
+            
+            $('#datatable2>tbody').empty();
+            var html = '';
+            
+            if(data.length==0)
+            {
+                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
+            }
+ 
+            for(var i = 0; i < data.length; i++){
+               var table = "";
+               if(data[i].smt_table_rel.name=='A')
+               {
+                   table = "TABLE 1";
+               }
+               else  if(data[i].smt_table_rel.name=='B')
+               {
+                   table = "TABLE 2";
+               }
+               else  if(data[i].smt_table_rel.name=='C')
+               {
+                   table = "TABLE 3";
+               }
+               else  if(data[i].smt_table_rel.name=='D')
+               {
+                   table = "TABLE 4";
+               }
+
+              
+                
+
+                html +='<tr class="text-center">'+
+                            '<td nowrap>' + data[i].created_at + '</td>' +
+                            '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
+                            '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
+                            '<td nowrap>' + table + '</td>'+
+                            '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
+                            '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
+                            '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
+                        '</tr>';
+                }   
+            
+            $('#datatable2').append(html);
+           
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+}
