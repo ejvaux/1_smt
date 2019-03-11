@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\feeder\view;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\machineType;
+use App\tableSMT;
 
-class HomeController extends Controller
+class FeederListController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,6 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('/home');
+        $machine_types = machineType::orderby('id')->get();
+        $tables = tableSMT::orderby('id')->get();
+        return view('pages.feeder.fl',compact('machine_types','tables'));
     }
 }

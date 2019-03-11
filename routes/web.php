@@ -44,3 +44,11 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 });
+
+/* Feeder List */
+Route::get('/fl', 'feeder\view\FeederListController@index');
+/* Route::get('/fl', function () {
+    return "yes";
+}); */
+
+/* END - Feeder List */
