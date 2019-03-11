@@ -5,7 +5,7 @@
     <div class="white_bkg">
         <div class="row">
             {{-- LEFT PANEL --}}
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                     <div class="card shadow-sm bg-white rounded">
                             <div class="card-header bold-text"><i class="fas fa-barcode"></i> &nbspSCAN AREA</div>
                             <div class="card-body">
@@ -24,7 +24,7 @@
                                         <div class="col-lg-3 vertical-center text-center bold-text">MODEL NAME:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_model">
-                                                        <option value="">SELECT MODEL</option>
+                                                        <option value="" selected>SELECT MODEL</option>
                                                         @foreach ($models as $models_item)
                                                         <option value="{{$models_item->id}}">{{$models_item->code}}</option>
                                                         @endforeach 
@@ -44,9 +44,10 @@
                                         <div class="col-lg-7"><input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)"></div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                                        <div class="col-lg-3 vertical-center text-center bold-text">CONFIG POSITION:</div>
+                                        <div class="col-lg-3 vertical-center text-center bold-text">POSITION:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_pos">
+                                                        <option value="" selected>SELECT POSITION</option>
                                                         @foreach ($position as $position_item)
                                                         <option value="{{$position_item->id}}">{{$position_item->name}}</option>
                                                         @endforeach 
@@ -57,6 +58,7 @@
                                         <div class="col-lg-3 vertical-center text-center bold-text">FEEDER SLOT#:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_feed_slot">
+                                                        <option value="" selected>SELECT FEEDER #</option>
                                                         @foreach ($mounter as $mounter_item)
                                                         <option value="{{$mounter_item->id}}">{{$mounter_item->code}}</option>
                                                         @endforeach 
@@ -97,11 +99,40 @@
                     </div>
             </div>
             {{-- RIGHT PANEL --}}
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                     <div class="card shadow-sm bg-white rounded">
                             <div class="card-header bold-text"><i class="fas fa-info-circle"></i> &nbspSCAN DETAILS</div>
                             <div class="card-body">
                                
+                                
+                <div class="table-responsive-xl" style="width: 100%;height: 400px;overflow:auto">
+                        <table class="table table-bordered table-hover table-sm table-striped" id="datatable2">
+                                <thead class="thead-dark">
+                                        <tr class="text-center">
+                                                <th scope="col">DATE</th>
+                                                <th scope="col">MACHINE</th>
+                                                <th scope="col">MODEL</th>
+                                                <th scope="col">TABLE</th>
+                                                <th scope="col">MOUNTER</th>
+                                                <th scope="col">POSITION</th>
+                                                <th scope="col">COMPONENT</th>
+                                                <th scope="col">AUTHOROZED VENDOR</th>
+                                                <th scope="col">EMPLOYEE</th>
+                                                
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                            <tr style='height:100px'>
+                                                <td colspan='9' class='text-center' style='font-size:1.5em'>
+                                                    No data to display. Try to configure the scanning options then load data again.
+                                                </td>
+                                            </tr>
+                                      </tbody>
+                        </table>
+                </div>
+
+
+
                             </div>
                     </div>
             </div>

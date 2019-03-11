@@ -15,6 +15,7 @@ use App\feeders;
 use App\machine;
 use App\tableSMT;
 use App\component;
+use App\MatLoadModel;
 use Response;
 
 class AjaxController extends Controller
@@ -120,7 +121,7 @@ class AjaxController extends Controller
         $m_code =substr($machine,0,7);
         $table=substr($machine,-1);
         
-        $mach_type= machine::where('code',$m_code)->first();
+        $mach_type= machine::where('barcode',$m_code)->first();
         $table_id= tableSMT::where('name',$table)->first();
         $comp_id= component::where('product_number',$component)->first();
 
@@ -160,5 +161,54 @@ class AjaxController extends Controller
                 
 
     }
+
+    public function LoadDetailsPanel(Request $request){
+        $machine = $request->input('machine_id');
+        $component = $request->input('new_PN');
+        $m_code =substr($machine,0,7);
+        $table=substr($machine,-1);
+        
+        $mach_type= machine::where('barcode',$m_code)->first();
+        $table_id= tableSMT::where('name',$table)->first();
+        $comp_id= component::where('product_number',$component)->first();
+
+        $data=feeders::with('machine_type_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel')
+                        ->where('machine_type_id',$mach_type->id)
+                        ->where('model_id',$request->input('model_id'))
+                        ->orderby('table_id','ASC')
+                        ->orderby('pos_id','ASC')
+                        ->orderby('order_id','ASC')
+                        ->get();
+
+
+        $data2= DB::connection('mysql2')
+                    ->select("SELECT table_id,mounter_id,count(mounter_id) as res from smt_feeders WHERE machine_type_id = ? AND model_id = ?  GROUP BY table_id,mounter_id",[$mach_type->id,$request->input('model_id'),'1']);
+        //return Response::json($data);
+
+
+        return Response::json(array('feedlist'=>$data,'feedcount'=>$data2));
+    }
+
+    public function LoadHistoryTable(Request $request){
+        $machine = $request->input('machine_id');
+        $component = $request->input('new_PN');
+        $m_code =substr($machine,0,7);
+        $table=substr($machine,-1);
+        
+        $mach_type= machine::where('barcode',$m_code)->first();
+        $table_id= tableSMT::where('name',$table)->first();
+        $comp_id= component::where('product_number',$component)->first();
+
+        $data=MatLoadModel::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
+                        ->orderby('table_id','ASC')
+                        ->orderby('pos_id','ASC')
+                        ->orderby('order_id','ASC')
+                        ->get();
+
+        return Response::json($data);
+        }
+
+    
+
 
 }

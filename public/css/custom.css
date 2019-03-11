@@ -96,3 +96,15 @@ padding: 4%
     padding: 2%;
 }
   
+
+.row_table{
+    background-color: rgb(230, 152, 50);
+}
+
+.row_primary{
+    background-color: rgb(26, 219, 90);
+}
+
+.row_secondary{
+    background-color: rgb(221, 101, 101);
+}
