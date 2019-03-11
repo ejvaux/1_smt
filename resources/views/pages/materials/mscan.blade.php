@@ -47,6 +47,7 @@
                                         <div class="col-lg-3 vertical-center text-center bold-text">CONFIG POSITION:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_pos">
+                                                        <option value="" selected>SELECT POSITION</option>
                                                         @foreach ($position as $position_item)
                                                         <option value="{{$position_item->id}}">{{$position_item->name}}</option>
                                                         @endforeach 
@@ -57,6 +58,7 @@
                                         <div class="col-lg-3 vertical-center text-center bold-text">FEEDER SLOT#:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_feed_slot">
+                                                        <option value="" selected>SELECT FEEDER #</option>
                                                         @foreach ($mounter as $mounter_item)
                                                         <option value="{{$mounter_item->id}}">{{$mounter_item->code}}</option>
                                                         @endforeach 
@@ -107,15 +109,14 @@
                         <table class="table table-bordered table-hover table-sm table-striped" id="datatable2">
                                 <thead class="thead-dark">
                                         <tr class="text-center">
-                                         
-                                          <th scope="col">MACHINE</th>
-                                          <th scope="col">MODEL</th>
-                                          <th scope="col">TABLE</th>
-                                          <th scope="col">MOUNTER</th>
-                                          <th scope="col">POSITION</th>
-                                          <th scope="col">COMPONENT</th>
-                                          <th scope="col">EMPLOYEE</th>
-                                          <th scope="col">DATE</th>
+                                                <th scope="col">DATE</th>
+                                                <th scope="col">MODEL</th>
+                                                <th scope="col">TABLE</th>
+                                                <th scope="col">MOUNTER</th>
+                                                <th scope="col">POSITION</th>
+                                                <th scope="col">COMPONENT</th>
+                                                <th scope="col">EMPLOYEE</th>
+                                                <th scope="col">MACHINE</th>
                                         </tr>
                                       </thead>
                                       <tbody>

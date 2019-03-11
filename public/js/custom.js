@@ -578,6 +578,7 @@ function event_mach(e){
         document.getElementById("scan_pos").focus();
         //sloaddetails();
         loaddata_panel_right();
+        $('#scan_pos').select2('open');
     }
 }
 
@@ -755,6 +756,20 @@ function event_loadPN(e){
                     title: 'ERROR',
                     position: 'topCenter',
                     message: 'Please input model name',
+                });
+            }
+            else if(!position){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please input position',
+                });
+            }
+            else if(!feeder_slot){
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Please input feeder slot #',
                 });
             }
             else if(!new_PN){
@@ -1048,6 +1063,7 @@ function loaddata_panel_right(){
                 
 
                 html +='<tr class="text-center">'+
+                            '<td nowrap>' + data[i].created_at + '</td>' +
                             '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
                             '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
                             '<td nowrap>' + table + '</td>'+
@@ -1055,7 +1071,6 @@ function loaddata_panel_right(){
                             '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
                             '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
                             '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
-                            '<td nowrap>' + data[i].created_at + '</td>' +
                         '</tr>';
                 }   
             
