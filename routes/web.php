@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/feedlist', 'AjaxController@CheckFeederList');
     Route::post('ajax/loadDetails', 'AjaxController@LoadDetailsPanel');
     Route::post('ajax/loadhistory', 'AjaxController@LoadHistoryTable');
+    Route::post('ajax/CheckRunningTable', 'AjaxController@CheckRunningTable');
     /* End of Ajax Controller */
 
 

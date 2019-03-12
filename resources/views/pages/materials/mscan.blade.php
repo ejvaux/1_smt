@@ -9,7 +9,7 @@
                     <div class="card shadow-sm bg-white rounded">
                             <div class="card-header bold-text"><i class="fas fa-barcode"></i> &nbspSCAN AREA</div>
                             <div class="card-body">
-                                    <div class="row">
+                                    <div class="row" style="height: 465px">
                                         <div class="col-lg-3 vertical-center text-center bold-text">EMPLOYEE:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_employee">
@@ -45,7 +45,7 @@
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">POSITION:</div>
-                                        <div class="col-lg-7">
+                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_pos">
                                                         <option value="" selected>SELECT POSITION</option>
                                                         @foreach ($position as $position_item)
@@ -101,42 +101,81 @@
             {{-- RIGHT PANEL --}}
             <div class="col-lg-7">
                     <div class="card shadow-sm bg-white rounded">
-                            <div class="card-header bold-text"><i class="fas fa-info-circle"></i> &nbspSCAN DETAILS</div>
+                            <div class="card-header bold-text"><i class="fas fa-info-circle"></i> &nbspSCAN HISTORY</div>
                             <div class="card-body">
                                
-                                
-                <div class="table-responsive-xl" style="width: 100%;height: 400px;overflow:auto">
-                        <table class="table table-bordered table-hover table-sm table-striped" id="datatable2">
-                                <thead class="thead-dark">
-                                        <tr class="text-center">
-                                                <th scope="col">DATE</th>
-                                                <th scope="col">MACHINE</th>
-                                                <th scope="col">MODEL</th>
-                                                <th scope="col">TABLE</th>
-                                                <th scope="col">MOUNTER</th>
-                                                <th scope="col">POSITION</th>
-                                                <th scope="col">COMPONENT</th>
-                                                <th scope="col">AUTHOROZED VENDOR</th>
-                                                <th scope="col">EMPLOYEE</th>
-                                                
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                            <tr style='height:100px'>
-                                                <td colspan='9' class='text-center' style='font-size:1.5em'>
-                                                    No data to display. Try to configure the scanning options then load data again.
-                                                </td>
-                                            </tr>
-                                      </tbody>
-                        </table>
-                </div>
+
+                                <div class="row">
+                                        <div class="col-lg-1 text-center vertical-center bold-text">DATE:</div>
+                                        <div class="col-lg-5">
+                                               <input type="date" id="mat_hist_date" class="form-control">
+                                        </div>
+                                        <div class="col-lg-3">
+                                              {{--   <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                                <select class="input-group-text" id="search_field">
+                                                                        <option value="">COMPONENT</option>
+                                                                        <option value="">MACHINE</option>
+                                                                        <option value="">MODEL</option>
+                                                                        <option value="">TABLE</option>
+                                                                        <option value="">MOUNTER</option>
+                                                                </select>
+                                                        </div>
+                                                        <input type="text" class="form-control" placeholder="Search here.." id="mat_hist_searchbox">
+                                                </div> --}}
+                                        </div>
+                                        <div class="col-lg-3 vertical-center">
+                                                <button class="btn btn-sm btn-primary bold-text" type="button" onclick="loaddata_panel_right()"><i class="fas fa-sync"></i>&nbspLOAD</button>
+                                                <button class="btn btn-sm btn-danger bold-text" type="button" onclick="clear_date()"><i class="fas fa-ban"></i>&nbspCLEAR</button>
+                                        </div>
+                                </div>
+                                <br>
+                                <div class="table-responsive-xl" style="width: 100%;height: 400px;overflow:auto">
+                                        <table class="table table-bordered table-hover table-sm table-striped" id="datatable2">
+                                                <thead class="thead-dark">
+                                                        <tr class="text-center">
+                                                                <th scope="col">DATE</th>
+                                                                <th scope="col">MACHINE</th>
+                                                                <th scope="col">MODEL</th>
+                                                                <th scope="col">TABLE</th>
+                                                                <th scope="col">MOUNTER</th>
+                                                                <th scope="col">POSITION</th>
+                                                                <th scope="col">COMPONENT</th>
+                                                                <th scope="col">VENDOR</th>
+                                                                <th scope="col">EMPLOYEE</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <tr style='height:100px'>
+                                                                <td colspan='9' class='text-center' style='font-size:1.5em'>
+                                                                No data to display. Try to configure the scanning options then load data again.
+                                                                </td>
+                                                        </tr>
+                                                </tbody>
+                                        </table>
+                                </div>
 
 
 
-                            </div>
+                             </div>
                     </div>
             </div>
+
+            <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
+
+            {{-- BOTTOM PANEL --}}
+            <div class="col-lg-12">
+                        <div class="card shadow-sm bg-white rounded">
+                                        <div class="card-header bold-text"><i class="fas fa-cogs"></i> &nbspCURRENTLY RUNNING IN MACHINES</div>
+                                        <div class="card-body">
+
+                                        </div>
+                        </div>
+            </div>
         </div>
+
+        
+
             
 
 

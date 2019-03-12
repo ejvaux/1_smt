@@ -577,7 +577,7 @@ function event_mach(e){
     if (e.keyCode == 13){
         document.getElementById("scan_pos").focus();
         //sloaddetails();
-        loaddata_panel_right();
+        //loaddata_panel_right();
         $('#scan_pos').select2('open');
     }
 }
@@ -712,10 +712,7 @@ function event_loadPN(e){
                     if(old_PN==new_PN){
                         //ajax checking to feeder here..
                         CheckFeeder();
-                        
-                        //reseet fields
-                        resetval();
-                        
+
                     }
                     else{
                         iziToast.error({
@@ -841,25 +838,27 @@ function CheckFeeder(){
         success: function (data) {
 
             //alert(data);
-            if(replenish=="YES"){
-                
-            }
-            else{
-                
-                if(data=="HAS RECORD"){
-                    InsertRecord();
+            if(data!="NO RECORD"){
+               
+                if(replenish=="YES"){
+                    CheckRunning(data);
+                   
                 }
                 else{
-                    iziToast.error({
-                        title: 'ERROR',
-                        position: 'topCenter',
-                        message: 'Component not found in the feeder list. Please check your input data.',
-                    });
+                    InsertRecord(data);
+                    resetval();
                 }
-
-
-
             }
+            else{
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Component not found in the feeder list. Please check your input data.',
+                });
+            }
+            
+
+            
         },
         error: function (data) {
             marker = JSON.stringify(data);
@@ -867,6 +866,238 @@ function CheckFeeder(){
         }
     });
 
+}
+
+
+
+
+function InsertRecord(order_id){
+    var replenish = "";
+    if ($('#replenish').is(":checked")){
+        replenish = "YES";
+    }
+    else{
+        replenish = "NO";
+    }
+
+    var emp_name = document.getElementById('scan_employee').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var old_PN = document.getElementById('scan_oldPN').value;
+    var new_PN = document.getElementById('scan_newPN').value;
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'materialload',
+        type:'POST',
+        data:{
+            'replenish':replenish,
+            'emp_id':emp_name,
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot,
+            'old_PN':old_PN,
+            'new_PN':new_PN,
+            'order_id':order_id
+        },
+        success: function (data) {
+            iziToast.success({
+                title: 'SUCCESS',
+                position: 'topCenter',
+                message: 'All inputs are correct.',
+            });
+            //alert(data);
+            loaddata_panel_right();
+            resetval();
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+
+}
+
+
+
+function CheckRunning(order_id){
+    var replenish = "";
+    if ($('#replenish').is(":checked")){
+        replenish = "YES";
+    }
+    else{
+        replenish = "NO";
+    }
+
+    var emp_name = document.getElementById('scan_employee').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var old_PN = document.getElementById('scan_oldPN').value;
+    var new_PN = document.getElementById('scan_newPN').value;
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/CheckRunningTable',
+        type:'POST',
+        data:{
+            'replenish':replenish,
+            'emp_id':emp_name,
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot,
+            'old_PN':old_PN,
+            'new_PN':new_PN,
+            'order_id':order_id
+        },
+        success: function (data) {
+         
+            if(data!="not match in running"){
+                //has match the running
+               
+                InsertRecord(order_id);
+                iziToast.success({
+                    title: 'SUCCESS',
+                    position: 'topCenter',
+                    message: 'All inputs are correct.',
+                });
+                resetval()
+            }
+            else{
+                iziToast.error({
+                    title: 'ERROR',
+                    position: 'topCenter',
+                    message: 'Component partname does not match the previous prima partname. if you are sure to load this partname,<br>toggle the replenishment button to NO for initial loading.',
+                });
+            }
+
+
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+}
+
+function clear_date(){
+    document.getElementById('mat_hist_date').value="";
+    loaddata_panel_right();
+}
+function loaddata_panel_right(){
+
+    var s_date = document.getElementById('mat_hist_date').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var today = new Date();
+
+    if(s_date!=""){
+        today = s_date;
+    }
+    else{
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+        today = yyyy+"-"+mm+"-"+dd;
+        document.getElementById('mat_hist_date').value = yyyy+"-"+mm+"-"+dd;
+    }
+
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/loadhistory',
+        type:'POST',
+        data:{
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot,
+            'sdate':today
+        },
+        success: function (data) {
+            //console.log(JSON.stringify(data));
+            
+            $('#datatable2>tbody').empty();
+            var html = '';
+            
+            if(data.length==0)
+            {
+                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
+            }
+ 
+            for(var i = 0; i < data.length; i++){
+               var table = "";
+               if(data[i].smt_table_rel.name=='A')
+               {
+                   table = "TABLE 1";
+               }
+               else  if(data[i].smt_table_rel.name=='B')
+               {
+                   table = "TABLE 2";
+               }
+               else  if(data[i].smt_table_rel.name=='C')
+               {
+                   table = "TABLE 3";
+               }
+               else  if(data[i].smt_table_rel.name=='D')
+               {
+                   table = "TABLE 4";
+               }
+
+              
+                
+
+                html +='<tr class="text-center">'+
+                            '<td nowrap>' + data[i].created_at + '</td>' +
+                            '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
+                            '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
+                            '<td nowrap>' + table + '</td>'+
+                            '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
+                            '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
+                            '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
+                        '</tr>';
+                }   
+            
+            $('#datatable2').append(html);
+           
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
 }
 
 
@@ -954,137 +1185,4 @@ function loaddetails(){
         }
     });
 
-}
-
-
-function InsertRecord(){
-    var replenish = "";
-    if ($('#replenish').is(":checked")){
-        replenish = "YES";
-    }
-    else{
-        replenish = "NO";
-    }
-
-    var emp_name = document.getElementById('scan_employee').value;
-    var machine_code = document.getElementById('scan_machine').value;
-    var model_code = document.getElementById('scan_model').value;
-    var position = document.getElementById('scan_pos').value;
-    var feeder_slot = document.getElementById('scan_feed_slot').value;
-    var old_PN = document.getElementById('scan_oldPN').value;
-    var new_PN = document.getElementById('scan_newPN').value;
-
-    $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      $.ajax({
-        url: 'materialload',
-        type:'POST',
-        data:{
-            'replenish':replenish,
-            'emp_id':emp_name,
-            'machine_id':machine_code,
-            'model_id':model_code,
-            'position':position,
-            'feeder_slot':feeder_slot,
-            'old_PN':old_PN,
-            'new_PN':new_PN
-        },
-        success: function (data) {
-            iziToast.success({
-                title: 'SUCCESS',
-                position: 'topCenter',
-                message: 'All inputs are correct.',
-            });
-            
-            loaddata_panel_right();
-            resetval();
-        },
-        error: function (data) {
-            marker = JSON.stringify(data);
-            //alert(marker);
-        }
-    });
-
-}
-
-
-function loaddata_panel_right(){
-    var machine_code = document.getElementById('scan_machine').value;
-    var model_code = document.getElementById('scan_model').value;
-    var position = document.getElementById('scan_pos').value;
-    var feeder_slot = document.getElementById('scan_feed_slot').value;
-
-    $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      $.ajax({
-        url: 'ajax/loadhistory',
-        type:'POST',
-        data:{
-            'machine_id':machine_code,
-            'model_id':model_code,
-            'position':position,
-            'feeder_slot':feeder_slot
-        },
-        success: function (data) {
-            //console.log(JSON.stringify(data));
-            
-            $('#datatable2>tbody').empty();
-            var html = '';
-            
-            if(data.length==0)
-            {
-                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
-            }
- 
-            for(var i = 0; i < data.length; i++){
-               var table = "";
-               if(data[i].smt_table_rel.name=='A')
-               {
-                   table = "TABLE 1";
-               }
-               else  if(data[i].smt_table_rel.name=='B')
-               {
-                   table = "TABLE 2";
-               }
-               else  if(data[i].smt_table_rel.name=='C')
-               {
-                   table = "TABLE 3";
-               }
-               else  if(data[i].smt_table_rel.name=='D')
-               {
-                   table = "TABLE 4";
-               }
-
-              
-                
-
-                html +='<tr class="text-center">'+
-                            '<td nowrap>' + data[i].created_at + '</td>' +
-                            '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
-                            '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
-                            '<td nowrap>' + table + '</td>'+
-                            '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
-                            '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
-                            '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
-                            '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
-                            '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
-                        '</tr>';
-                }   
-            
-            $('#datatable2').append(html);
-           
-        },
-        error: function (data) {
-            marker = JSON.stringify(data);
-            //alert(marker);
-        }
-    });
 }
