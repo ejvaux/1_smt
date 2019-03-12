@@ -14,6 +14,7 @@ use App\machine;
 use App\tableSMT;
 use App\component;
 use App\MatLoadModel;
+use App\RunningOnMachine;
 use Response;
 
 class MaterialLoadController extends Controller
@@ -83,11 +84,48 @@ class MaterialLoadController extends Controller
         $insrecord->mounter_id=$request->input('feeder_slot');
         $insrecord->pos_id=$request->input('position');
         $insrecord->component_id=$comp_id;
+        $insrecord->order_id=$request->input('order_id');
         $insrecord->employee_id=$request->input('emp_id');
         $insrecord->results="MATCH";
         $insrecord->save();
 
         
+        $running_mach = RunningOnMachine::where('machine_id',$mach_type)
+                                        ->where('model_id',$request->input('model_id'))
+                                        ->where('table_id',$table_id)
+                                        ->where('mounter_id',$request->input('feeder_slot'))
+                                        ->where('pos_id',$request->input('position'))
+                                        ->first();
+
+
+        if($running_mach){
+            
+            $RunUpdate = RunningOnMachine::find($running_mach->id);
+            $RunUpdate->machine_id=$mach_type;
+            $RunUpdate->model_id=$request->input('model_id');
+            $RunUpdate->table_id=$table_id;
+            $RunUpdate->mounter_id=$request->input('feeder_slot');
+            $RunUpdate->pos_id=$request->input('position');
+            $RunUpdate->component_id=$comp_id;
+            $RunUpdate->order_id=$request->input('order_id');
+            $RunUpdate->employee_id=$request->input('emp_id');
+            $RunUpdate->save();
+            return "update";
+        }
+        else{
+            $RunInsert=new RunningOnMachine();
+            $RunInsert->machine_id=$mach_type;
+            $RunInsert->model_id=$request->input('model_id');
+            $RunInsert->table_id=$table_id;
+            $RunInsert->mounter_id=$request->input('feeder_slot');
+            $RunInsert->pos_id=$request->input('position');
+            $RunInsert->component_id=$comp_id;
+            $RunInsert->order_id=$request->input('order_id');
+            $RunInsert->employee_id=$request->input('emp_id');
+            $RunInsert->save();
+            return "insert";
+        }
+
 
     }
 

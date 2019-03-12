@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/feedlist', 'AjaxController@CheckFeederList');
     Route::post('ajax/loadDetails', 'AjaxController@LoadDetailsPanel');
     Route::post('ajax/loadhistory', 'AjaxController@LoadHistoryTable');
+    Route::post('ajax/CheckRunningTable', 'AjaxController@CheckRunningTable');
     /* End of Ajax Controller */
 
 
@@ -48,3 +49,11 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 });
+
+/* Feeder List */
+Route::get('/fl', 'feeder\view\FeederListController@index');
+/* Route::get('/fl', function () {
+    return "yes";
+}); */
+
+/* END - Feeder List */
