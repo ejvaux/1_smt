@@ -16,6 +16,7 @@ use App\machine;
 use App\tableSMT;
 use App\component;
 use App\MatLoadModel;
+use App\RunningOnMachine;
 use Response;
 
 class AjaxController extends Controller
@@ -153,7 +154,7 @@ class AjaxController extends Controller
                        ->first();
         
         if ($data) {
-            return "HAS RECORD";
+            return $data->order_id;
         }
         else{
             return "NO RECORD";
@@ -200,6 +201,7 @@ class AjaxController extends Controller
         $comp_id= component::where('product_number',$component)->first();
 
         $data=MatLoadModel::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
+                        ->where('created_at', 'LIKE',$request->input('sdate').'%')
                         ->orderby('table_id','ASC')
                         ->orderby('pos_id','ASC')
                         ->orderby('order_id','ASC')
@@ -209,6 +211,52 @@ class AjaxController extends Controller
         }
 
     
+        public function CheckRunningTable(Request $request){
+            $machine = $request->input('machine_id');
+            $component = $request->input('new_PN');
+            //$machine = "CM60201A";
+            $m_code =substr($machine,0,7);
+            $table=substr($machine,-1);
+            
+            $mach_type= machine::where('barcode',$m_code)->first();
+            $table_id= tableSMT::where('name',$table)->first();
+            $comp_id= component::where('product_number',$component)->first();
+    
+            if($mach_type){
+                $mach_type=$mach_type->id;
+            }
+            else{
+                $mach_type = "0";
+            }
+            if($table_id){
+                $table_id=$table_id->id;
+            }
+            else{
+                $table_id = "0";
+            }
+            if($comp_id){
+                $comp_id=$comp_id->id;
+            }
+            else{
+                $comp_id = "0";
+            }
 
+             
+        $running_mach = RunningOnMachine::where('machine_id',$mach_type)
+                                        ->where('model_id',$request->input('model_id'))
+                                        ->where('table_id',$table_id)
+                                        ->where('mounter_id',$request->input('feeder_slot'))
+                                        ->where('pos_id',$request->input('position'))
+                                        ->where('component_id',$comp_id)
+                                        ->first();
+
+            if($running_mach){
+                return "update";
+            }
+            else{
+                return "not match in running";
+            }
+
+        }
 
 }
