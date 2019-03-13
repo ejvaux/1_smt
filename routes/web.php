@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/loadDetails', 'AjaxController@LoadDetailsPanel');
     Route::post('ajax/loadhistory', 'AjaxController@LoadHistoryTable');
     Route::post('ajax/CheckRunningTable', 'AjaxController@CheckRunningTable');
+    Route::post('ajax/MatHistExport', 'AjaxController@ExportMatHistory')->name('Matexport');
+    Route::post('ajax/LoadRunning', 'AjaxController@LoadRunningTbl');
     /* End of Ajax Controller */
 
 

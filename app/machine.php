@@ -11,4 +11,15 @@ class machine extends Model
     protected $table = 'smt_machines';
     public $primarykey = 'id';
     public $timestamps = true;
+
+    public function machine_type_rel()
+    {
+        return $this->belongsTo('App\machineType','machine_type_id');
+    }
+    public function line_rel()
+    {
+        return $this->belongsTo('App\lineSMT','line_id');
+    }
+
+
 }

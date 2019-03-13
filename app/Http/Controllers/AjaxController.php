@@ -17,14 +17,15 @@ use App\tableSMT;
 use App\component;
 use App\MatLoadModel;
 use App\RunningOnMachine;
+use App\mounter;
+use App\Exports\MaterialLoadExport;
 use Response;
 
 class AjaxController extends Controller
 {
     //
    
-    public function errorcode()
-    {
+    public function errorcode(){
         $error_code = errorcodelist::all();
         /* Response::json($error_code); */
         /*   return $error_code; */
@@ -32,8 +33,7 @@ class AjaxController extends Controller
         return response()->json([$error_code]);
     }
 
-    public function checkRecord(Request $request)
-    {
+    public function checkRecord(Request $request){
         $IDtoUpdate = scanrecordlist::where('prodline_id','=',$request->input('sel_prodline'))
         ->where('process_id','=',$request->input('sel_process'))
         ->where('serial_number','=',$request->input('serialnum')) 
@@ -48,8 +48,7 @@ class AjaxController extends Controller
         
     }
 
-    public function LoadDataToTable(Request $request)
-    {
+    public function LoadDataToTable(Request $request){
         $prodline=$request->input('sel_prodline');
         $processline=$request->input('sel_process');
         $machineline=$request->input('sel_machine');
@@ -76,8 +75,7 @@ class AjaxController extends Controller
       
     }
 
-    public function SAPLoadDataToTable(Request $request)
-    {
+    public function SAPLoadDataToTable(Request $request){
              //series -68 for SMT  where Status='R' AND Series = '31' AND StartDate = ?",[$pdate]);
         $pdate=$request->input('plandate');
 
@@ -97,8 +95,7 @@ class AjaxController extends Controller
         return Response::json(array('sap_plan'=>$data,'smt_result'=>$data2));
     }
 
-    public function TotalPerJO(Request $request)
-    {
+    public function TotalPerJO(Request $request){
         $pid=$request->input('pid');
         $data=scanrecordlist::where('SapPlanID','19900')
                             ->get();
@@ -108,8 +105,7 @@ class AjaxController extends Controller
        return ("lala");
     }
 
-    public function checkPINemployee(Request $request)
-    {
+    public function checkPINemployee(Request $request){
         $data=employee::where('id',$request->input('empid'))->get();
         return Response::json($data);
     }
@@ -202,61 +198,76 @@ class AjaxController extends Controller
 
         $data=MatLoadModel::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
                         ->where('created_at', 'LIKE',$request->input('sdate').'%')
-                        ->orderby('table_id','ASC')
-                        ->orderby('pos_id','ASC')
-                        ->orderby('order_id','ASC')
+                        ->orderby('created_at','DESC')
                         ->get();
 
         return Response::json($data);
-        }
+    }
 
     
-        public function CheckRunningTable(Request $request){
-            $machine = $request->input('machine_id');
-            $component = $request->input('new_PN');
-            //$machine = "CM60201A";
-            $m_code =substr($machine,0,7);
-            $table=substr($machine,-1);
+    public function CheckRunningTable(Request $request){
+        $machine = $request->input('machine_id');
+        $component = $request->input('new_PN');
+        //$machine = "CM60201A";
+        $m_code =substr($machine,0,7);
+        $table=substr($machine,-1);
+        
+        $mach_type= machine::where('barcode',$m_code)->first();
+        $table_id= tableSMT::where('name',$table)->first();
+        $comp_id= component::where('product_number',$component)->first();
+
+        if($mach_type){
+            $mach_type=$mach_type->id;
+        }
+        else{
+            $mach_type = "0";
+        }
+        if($table_id){
+            $table_id=$table_id->id;
+        }
+        else{
+            $table_id = "0";
+        }
+        if($comp_id){
+            $comp_id=$comp_id->id;
+        }
+        else{
+            $comp_id = "0";
+        }
+
             
-            $mach_type= machine::where('barcode',$m_code)->first();
-            $table_id= tableSMT::where('name',$table)->first();
-            $comp_id= component::where('product_number',$component)->first();
-    
-            if($mach_type){
-                $mach_type=$mach_type->id;
-            }
-            else{
-                $mach_type = "0";
-            }
-            if($table_id){
-                $table_id=$table_id->id;
-            }
-            else{
-                $table_id = "0";
-            }
-            if($comp_id){
-                $comp_id=$comp_id->id;
-            }
-            else{
-                $comp_id = "0";
-            }
-
-             
         $running_mach = RunningOnMachine::where('machine_id',$mach_type)
-                                        ->where('model_id',$request->input('model_id'))
-                                        ->where('table_id',$table_id)
-                                        ->where('mounter_id',$request->input('feeder_slot'))
-                                        ->where('pos_id',$request->input('position'))
-                                        ->where('component_id',$comp_id)
-                                        ->first();
+                                    ->where('table_id',$table_id)
+                                    ->where('mounter_id',$request->input('feeder_slot'))
+                                    ->where('pos_id',$request->input('position'))
+                                    ->where('component_id',$comp_id)
+                                    ->first();
 
-            if($running_mach){
-                return "update";
-            }
-            else{
-                return "not match in running";
-            }
-
+        if($running_mach){
+            return "update";
+        }
+        else{
+            return "not match in running";
         }
 
+    }
+
+    public function ExportMatHistory(Request $request){
+        return (new MaterialLoadExport($request->input('s_date')))->download('Material History.xlsx');
+    }
+
+    public function LoadRunningTbl(){
+
+        $data = RunningOnMachine::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
+                                ->orderby('machine_id','ASC')
+                                ->orderby('table_id','ASC')
+                                ->orderby('pos_id','ASC')
+                                ->get();
+        $mounter = mounter::orderby('id','ASC')->get();
+        $machine = machine::with('machine_type_rel','line_rel')
+                            ->get();
+        //return Response::json($data);        
+        return Response::json(array('running'=>$data,'mounter'=>$mounter,'machine'=>$machine));         
+
+    }
 }
