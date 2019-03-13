@@ -10,6 +10,8 @@ use App\modelSMT;
 use App\LRPosition;
 use App\mounter;
 use App\employee;
+use App\machine;
+use App\lineSMT;
 
 class PageController extends Controller
 {
@@ -31,9 +33,12 @@ class PageController extends Controller
         $position=LRPosition::all();
         $mounter=mounter::all();
         $emp=employee::all();
+        $mounters=mounter::all();
+        $machine=machine::all();
+        $line=lineSMT::all();
         $data="";
         
-        return view('pages.materials.mscan',compact('models','position','mounter','emp'));
+        return view('pages.materials.mscan',compact('models','position','mounter','emp','mounters','machine','line'));
     }
 
 }
