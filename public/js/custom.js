@@ -971,11 +971,6 @@ function CheckRunning(order_id){
                 //has match the running
                
                 InsertRecord(order_id);
-                iziToast.success({
-                    title: 'SUCCESS',
-                    position: 'topCenter',
-                    message: 'All inputs are correct.',
-                });
                 resetval()
             }
             else{
@@ -1027,6 +1022,7 @@ function loaddata_panel_right(){
         document.getElementById('mat_hist_date').value = yyyy+"-"+mm+"-"+dd;
     }
 
+    document.getElementById('hidDateParam').value=today;
 
     $.ajaxSetup({
         headers: {
@@ -1052,7 +1048,7 @@ function loaddata_panel_right(){
             
             if(data.length==0)
             {
-                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
+                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the date parameters to load data.</td></tr>";
             }
  
             for(var i = 0; i < data.length; i++){
@@ -1079,13 +1075,13 @@ function loaddata_panel_right(){
 
                 html +='<tr class="text-center">'+
                             '<td nowrap>' + data[i].created_at + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
                             '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
                             '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
                             '<td nowrap>' + table + '</td>'+
                             '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
                             '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
-                            '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
-                            '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
                             '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
                         '</tr>';
                 }   
@@ -1098,8 +1094,129 @@ function loaddata_panel_right(){
             //alert(marker);
         }
     });
+    load_running_machine_tbl();
 }
 
+
+function clear_running(){
+
+    $('#datatable3>tbody').empty();
+    var html = '';
+    html +="<tr style='height:100px'><td colspan='32' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the date parameters to load data.</td></tr>";
+    $('#datatable3').append(html);
+}
+function load_running_machine_tbl(){
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/LoadRunning',
+        type:'POST',
+        data:{
+        },
+        success: function (data) {
+            console.log(JSON.stringify(data));
+            $('#datatable3>tbody').empty();
+            var html = '';
+            
+            if(data['running'].length==0)
+            {
+                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the date parameters to load data.</td></tr>";
+            }
+            
+                for(var i = 0; i < data['running'].length; i++){
+                   
+                }
+                   // alert(data['machine'].length);
+                    for(var a = 0; a < data['machine'].length; a++){
+                        var rowcount = 1;
+                        for(var b = 1; b <= data['machine'][a].machine_type_rel.table_count; b++){
+                           var rowspan_count = data['machine'][a].machine_type_rel.table_count * 3;
+                           
+                            for(var c = 1; c <= 3; c++){
+                                html +='<tr class="text-center">';
+                                if(c==1){
+                                    position = "LEFT";
+                                    if(rowcount==1){
+                                        html+='<td rowspan="'+rowspan_count+'" nowrap class="bold-text" id="L'+data['machine'][a].line_id +'">' +  data['machine'][a].line_rel.code+ '</td>';
+                                        html+='<td rowspan="'+rowspan_count+'" nowrap class="bold-text" id="M'+data['machine'][a].id +'">' +  data['machine'][a].code+ '</td>';
+                                    }
+                                   
+                                    
+                                    var table = "";
+                                    if(b==1)
+                                    {
+                                        table = "TABLE 1";
+                                        html+='<td rowspan="3" nowrap class="tbl1 bold-text">' + table + '</td>';
+                                    }
+                                    else  if(b==2)
+                                    {
+                                        table = "TABLE 2";
+                                        html+='<td rowspan="3" nowrap class="tbl2 bold-text">' + table + '</td>';
+                                    }
+                                    else  if(b==3)
+                                    {
+                                        table = "TABLE 3";
+                                        html+='<td rowspan="3" nowrap class="tbl3 bold-text">' + table + '</td>';
+                                    }
+                                    else  if(b==4)
+                                    {
+                                        table = "TABLE 4";
+                                        html+='<td rowspan="3" nowrap class="tbl4 bold-text">' + table + '</td>';
+                                    }
+                                }
+                                else if(c==2){
+                                    position = "RIGHT";
+                                   
+                                }
+                                else if(c==3){
+                                    position = "NONE";
+                                  
+                                }
+                                html+='<td nowrap>' + position + '</td>';
+                                for(var x = 0; x < data['mounter'].length; x++){
+                                    html+='<td id="'+data['machine'][a].id+'-'+b+'-'+c+'-'+ data['mounter'][x].id+'">-</td>';
+                                }
+
+                                html+='</tr>';
+                                rowcount+=1;
+                            }
+
+                            if(rowcount==rowspan_count){
+                                rowcount=1;
+                            }
+
+                        }
+                    }
+
+                    $('#datatable3').append(html);
+
+                    for(var y = 0; y < data['running'].length; y++){
+                        $('#'+data['running'][y].machine_id+'-'+data['running'][y].table_id+'-'+data['running'][y].pos_id+'-'+data['running'][y].mounter_id).empty();
+                        var runPN = "";
+                        runPN=data['running'][y].component_rel.product_number;
+                        $('#'+data['running'][y].machine_id+'-'+data['running'][y].table_id+'-'+data['running'][y].pos_id+'-'+data['running'][y].mounter_id).append(runPN);
+                    }
+
+               
+  
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+        
+}
+
+function gotosearch(){
+    var targetloc = document.getElementById('goto_search').value;
+
+    window.location.href = "#"+targetloc;
+}
 
 function loaddetails(){
    
@@ -1184,5 +1301,51 @@ function loaddetails(){
             //alert(marker);
         }
     });
+
+}
+
+
+function exportMatloading(){
+
+    var s_date = document.getElementById('mat_hist_date').value;
+    if(s_date!=""){
+        today = s_date;
+    }
+    else{
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+        today = yyyy+"-"+mm+"-"+dd;
+    }
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/MatHistExport',
+        type:'POST',
+        data:{
+            'sdate':today
+        },
+        success: function (data) {
+            //console.log(JSON.stringify(data));
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+
 
 }
