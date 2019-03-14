@@ -123,7 +123,7 @@ class AjaxController extends Controller
         $comp_id= component::where('product_number',$component)->first();
 
         if($mach_type){
-            $mach_type=$mach_type->id;
+            $mach_type=$mach_type->machine_type_id;
         }
         else{
             $mach_type = "0";
@@ -256,9 +256,11 @@ class AjaxController extends Controller
         return (new MaterialLoadExport($request->input('s_date')))->download('Material History.xlsx');
     }
 
-    public function LoadRunningTbl(){
+    public function LoadRunningTbl(Request $request){
 
         $data = RunningOnMachine::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
+                                ->where('created_at','LIKE',$request->input('today').'%')
+                                ->orwhere('updated_at','LIKE',$request->input('today').'%')
                                 ->orderby('machine_id','ASC')
                                 ->orderby('table_id','ASC')
                                 ->orderby('pos_id','ASC')
