@@ -5,11 +5,11 @@
     <div class="white_bkg">
         <div class="row">
             {{-- LEFT PANEL --}}
-            <div class="col-lg-5">
+            <div class="col-lg-5" style="margin-top: 20px">
                     <div class="card shadow-sm bg-white rounded">
                             <div class="card-header bold-text"><i class="fas fa-barcode"></i> &nbspSCAN AREA</div>
                             <div class="card-body">
-                                    <div class="row" style="height: 465px">
+                                    <div class="row">
                                         <div class="col-lg-3 vertical-center text-center bold-text">EMPLOYEE:</div>
                                         <div class="col-lg-7">
                                                 <select class="select2" id="scan_employee">
@@ -95,11 +95,12 @@
                                         <div class="col-lg-7"><input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" ></div>
                                         <div class="col-lg-2"></div>
                                     </div>
+                                    <br><br>
                             </div>
                     </div>
             </div>
             {{-- RIGHT PANEL --}}
-            <div class="col-lg-7">
+            <div class="col-lg-7" style="margin-top: 20px">
                     <div class="card shadow-sm bg-white rounded">
                             <div class="card-header bold-text"><i class="fas fa-info-circle"></i> &nbspSCAN HISTORY</div>
                             <div class="card-body">
@@ -169,7 +170,7 @@
             <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
 
             {{-- BOTTOM PANEL --}}
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="margin-top: 20px">
                         <div class="card shadow-sm bg-white rounded">
                                         <div class="card-header bold-text"><i class="fas fa-cogs"></i> &nbspCURRENTLY RUNNING IN MACHINES</div>
                                         <div class="card-body">
@@ -181,7 +182,7 @@
                                                  <div class="row">
                                                          <div class="col-lg-3"></div>
                                                          <div class="col-lg-3"></div>
-                                                         <div class="col-lg-3">
+                                                         <div class="col-lg-3" style="margin-top: 10px">
                                                                 <select id="goto_search" class="select2" onchange="gotosearch()">
                                                                         <option value="#">SELECT MACHINE</option>
                                                                         @foreach ($machine as $machine_item)
@@ -190,7 +191,7 @@
                                                                         
                                                                 </select>
                                                          </div>
-                                                         <div class="col-lg-3"> 
+                                                         <div class="col-lg-3" style="margin-top: 10px"> 
                                                                 <button class="btn btn-sm btn-primary bold-text" type="button" onclick="load_running_machine_tbl()"><i class="fas fa-sync"></i>&nbspLOAD TABLE</button> 
                                                                 <button class="btn btn-sm btn-danger bold-text" type="button" onclick="clear_running()"><i class="fas fa-ban"></i>&nbspCLEAR TABLE</button>         
                                                         </div>

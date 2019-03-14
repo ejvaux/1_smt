@@ -850,6 +850,9 @@ function CheckFeeder(){
                 }
             }
             else{
+                document.getElementById('scan_oldPN').value="";
+                document.getElementById('scan_newPN').value="";
+                document.getElementById('scan_oldPN').focus();
                 iziToast.error({
                     title: 'ERROR',
                     position: 'topCenter',
@@ -1106,6 +1109,21 @@ function clear_running(){
     $('#datatable3').append(html);
 }
 function load_running_machine_tbl(){
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd = '0'+dd
+    } 
+
+    if(mm<10) {
+        mm = '0'+mm
+    } 
+    today = yyyy+"-"+mm+"-"+dd;
+
+    //alert(today);
     $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1116,17 +1134,13 @@ function load_running_machine_tbl(){
         url: 'ajax/LoadRunning',
         type:'POST',
         data:{
+            'today':today
         },
         success: function (data) {
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
             $('#datatable3>tbody').empty();
             var html = '';
-            
-            if(data['running'].length==0)
-            {
-                html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the date parameters to load data.</td></tr>";
-            }
-            
+        
                 for(var i = 0; i < data['running'].length; i++){
                    
                 }
