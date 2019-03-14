@@ -8,7 +8,7 @@
                 <div class="card-header">SMT System</div>
 
                 <div class="card-body center-text">
-                        <img src="{{ asset('images/prima.jpg')}}" class="home-image"><br>
+                        <img src="{{ asset('images/prima.jpg')}}" class="home-image img-fluid"><br>
                         
                     {{-- <h1>PRIMA TECH PHILS., INC.</h1>  --}}
                     <br>
