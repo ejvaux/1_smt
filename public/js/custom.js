@@ -850,6 +850,9 @@ function CheckFeeder(){
                 }
             }
             else{
+                document.getElementById('scan_oldPN').value="";
+                document.getElementById('scan_newPN').value="";
+                document.getElementById('scan_oldPN').focus();
                 iziToast.error({
                     title: 'ERROR',
                     position: 'topCenter',
@@ -1120,7 +1123,7 @@ function load_running_machine_tbl(){
     } 
     today = yyyy+"-"+mm+"-"+dd;
 
-    alert(today);
+    //alert(today);
     $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
