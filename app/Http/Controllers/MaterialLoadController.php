@@ -109,6 +109,7 @@ class MaterialLoadController extends Controller
             $RunUpdate->component_id=$comp_id;
             $RunUpdate->order_id=$request->input('order_id');
             $RunUpdate->employee_id=$request->input('emp_id');
+            $RunUpdate->datetime_update= date("Y-m-d");
             $RunUpdate->save();
             return "update";
         }
@@ -122,6 +123,7 @@ class MaterialLoadController extends Controller
             $RunInsert->component_id=$comp_id;
             $RunInsert->order_id=$request->input('order_id');
             $RunInsert->employee_id=$request->input('emp_id');
+            $RunInsert->datetime_update= date("Y-m-d");
             $RunInsert->save();
             return "insert";
         }
