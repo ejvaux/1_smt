@@ -18,6 +18,8 @@
                                                          <option value="{{$emp_item->id}}">{{$emp_item->lname}}, {{$emp_item->fname}}</option>
                                                         @endforeach 
                                                 </select>
+                                                {{-- <input type="text" id="scan_emp" placeholder="SCAN EMPLOYEE BARCODE" class="form-control" onkeypress="return event_emp(event)">
+                                                <input hidden type="text" id="scan_employee" placeholder="SCAN EMPLOYEE BARCODE" class="form-control"> --}}
                                         </div>
                                         <div class="col-lg-2"></div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
@@ -174,7 +176,9 @@
                         <div class="card shadow-sm bg-white rounded">
                                         <div class="card-header bold-text"><i class="fas fa-cogs"></i> &nbspCURRENTLY RUNNING IN MACHINES</div>
                                         <div class="card-body">
-                                                <p>The data below shows the current material running on a specific machine,table,feeder and tray. The data below are generated based on the record saved through material checking scanning.</p>
+                                                <p>&nbsp&nbsp&nbsp&nbsp&nbspThe data below shows the current material running on a specific machine,table,feeder and tray. This data are generated based on the record saved through material checking scanning
+                                                 for the sole purpose of visual monitoring. Any data alterations must be scanned to the material checking to save data changes.
+                                                </p>
                                                  <div style="text-align: right">
                                                       
                                                        
@@ -201,16 +205,18 @@
                                                                         
                                                                         <table class="table table-bordered table-hover table-sm table-striped fixed_table" id="datatable3">
                                                                                 <thead class="thead-dark">
-                                                                                        <tr class="text-center">
-                                                                                                <th scope="col">LINE</th>
-                                                                                                <th scope="col">MACHINE</th>
-                                                                                                <th scope="col">TABLE</th>
-                                                                                                <th scope="col">POSITION</th>
+                                                                                        <tr class="text-center" id="theads">
+                                                                                                <th scope="col" rowspan="2">LINE</th>
+                                                                                                <th scope="col" rowspan="2">MACHINE</th>
+                                                                                                <th scope="col" rowspan="2">TABLE</th>
+                                                                                                <th scope="col" rowspan="2">POSITION</th>
                                                                                                 
-                                                                                                @foreach ($mounters as $mounters_item)
+                                                                                               {{--  @foreach ($mounters as $mounters_item)
                                                                                                         <th scope="col" id="{{$mounters_item->id}}">{{$mounters_item->code}}</th>
-                                                                                                @endforeach 
+                                                                                                @endforeach  --}}
                                                                                         </tr>
+                                                                                        <tr id="FvsA"></tr>
+                                                                                        
                                                                                 </thead>
                                                                                 <tbody>
                                                                                         <tr style='height:100px'>

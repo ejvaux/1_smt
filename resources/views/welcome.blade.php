@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">SMT System</div>
+                <div class="card-header">Welcome users!</div>
 
                 <div class="card-body center-text">
                         <img src="{{ asset('images/prima.jpg')}}" class="home-image img-fluid"><br>
