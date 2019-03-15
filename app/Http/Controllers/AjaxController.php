@@ -261,15 +261,41 @@ class AjaxController extends Controller
         $data = RunningOnMachine::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
                                 ->where('created_at','LIKE',$request->input('today').'%')
                                 ->orwhere('updated_at','LIKE',$request->input('today').'%')
-                                ->orderby('machine_id','ASC')
-                                ->orderby('table_id','ASC')
-                                ->orderby('pos_id','ASC')
+                                ->orderby('mounter_id','ASC')
                                 ->get();
-        $mounter = mounter::orderby('id','ASC')->get();
+       
         $machine = machine::with('machine_type_rel','line_rel')
                             ->get();
-        //return Response::json($data);        
-        return Response::json(array('running'=>$data,'mounter'=>$mounter,'machine'=>$machine));         
 
+                            
+        //return Response::json($data);        
+        return Response::json(array('running'=>$data,'machine'=>$machine));         
+
+    }
+
+    public function LoadFeederRunningTable(Request $request){
+
+        $mach_type= machine::where('id',$request->input('machine_id'))->first();
+        $mach_type=$mach_type->machine_type_id;
+        $data = feeders::with('component_rel','order_rel')
+                        ->where('machine_type_id',$mach_type)
+                        ->where('table_id',$request->input('table_id'))
+                        ->where('pos_id',$request->input('position_id'))
+                        ->where('mounter_id',$request->input('mounter_id'))
+                        ->where('model_id',$request->input('model_id'))
+                        ->get();
+        
+        return Response::json($data);
+    }
+    public function ScanEmpID(Request $request){
+        $data=employee::where('pin',$request->input('empCode'))->first();
+
+        if($data){
+            $data=$data->id;
+        }
+        else{
+            $data = "no match";
+        }
+        return $data;
     }
 }

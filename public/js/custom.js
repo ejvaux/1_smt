@@ -598,6 +598,48 @@ function event_lastPN(e){
     }
 }
 
+function event_emp(e){
+    if (e.keyCode == 13){
+        var emp_id = document.getElementById("scan_emp").value;
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+    
+          $.ajax({
+            url: 'ajax/ScanEmpID',
+            type:'POST',
+            data:{
+                'empCode':emp_id
+             
+            },
+            success: function (data) {
+                alert(data);
+                if(data=="no match"){
+                    iziToast.error({title: 'ERROR',position: 'topCenter',message: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',});
+                    document.getElementById("scan_emp").value="";
+                    document.getElementById("scan_employee").value="";
+                    document.getElementById("scan_emp").focus();
+                }
+                else{
+                    $('#scan_model').select2('open');
+                    document.getElementById("scan_employee").value = data;
+
+                }
+            },
+            error: function (data) {
+                marker = JSON.stringify(data);
+                //alert(marker); 
+               
+            }
+        });
+            
+
+       
+    }
+}
+
 function event_PIN(e){
     if (e.keyCode == 13){
         var emp_id = document.getElementById("scan_employee").value;
@@ -1104,9 +1146,16 @@ function loaddata_panel_right(){
 function clear_running(){
 
     $('#datatable3>tbody').empty();
+    $('#theads').empty();
+    $('#FvsA').empty();
     var html = '';
     html +="<tr style='height:100px'><td colspan='32' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the date parameters to load data.</td></tr>";
     $('#datatable3').append(html);
+    var trhead = '<th scope="col" rowspan="2">LINE</th>'+
+                        '<th scope="col" rowspan="2">MACHINE</th>'+
+                        '<th scope="col" rowspan="2">TABLE</th>'+
+                        '<th scope="col" rowspan="2">POSITION</th>';
+    $('#theads').append(trhead);
 }
 function load_running_machine_tbl(){
     var today = new Date();
@@ -1137,14 +1186,30 @@ function load_running_machine_tbl(){
             'today':today
         },
         success: function (data) {
-            //console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data)); '<th scope="col">col1</th>'
             $('#datatable3>tbody').empty();
+            $('#theads').empty();
+            $('#FvsA').empty();
             var html = '';
-        
+            var trhead = '<th scope="col" rowspan="2">LINE</th>'+
+                        '<th scope="col" rowspan="2">MACHINE</th>'+
+                        '<th scope="col" rowspan="2">TABLE</th>'+
+                        '<th scope="col" rowspan="2">POSITION</th>';
+            var fvsa = '';
+            $('#theads').append(trhead);
+            var col_head = 0;
                 for(var i = 0; i < data['running'].length; i++){
-                   
+                        
+                        if(col_head<data['running'][i].mounter_id){
+                            col_head = data['running'][i].mounter_id;
+                            trhead = '<th scope="col" colspan="2">'+data['running'][i].mounter_rel.code+'</th>';
+                            $('#theads').append(trhead);
+                            fvsa = '<th scope="col" class="text-center">FEEDERLIST</th><th scope="col" class="text-center">SCAN</th>';
+                            $('#FvsA').append(fvsa);
+                        }
+
                 }
-                   // alert(data['machine'].length);
+                  
                     for(var a = 0; a < data['machine'].length; a++){
                         var rowcount = 1;
                         for(var b = 1; b <= data['machine'][a].machine_type_rel.table_count; b++){
@@ -1191,9 +1256,19 @@ function load_running_machine_tbl(){
                                   
                                 }
                                 html+='<td nowrap>' + position + '</td>';
-                                for(var x = 0; x < data['mounter'].length; x++){
+                               /*  for(var x = 0; x < data['mounter'].length; x++){
                                     html+='<td id="'+data['machine'][a].id+'-'+b+'-'+c+'-'+ data['mounter'][x].id+'">-</td>';
-                                }
+                                } */
+                                col_head = 0;
+                                for(var d = 0; d < data['running'].length; d++){
+                                    
+                                    if(col_head<data['running'][d].mounter_id){
+                                        col_head = data['running'][d].mounter_id;
+                                        html+='<td id="F'+data['machine'][a].id+'-'+b+'-'+c+'-'+ data['running'][d].mounter_id+'">-</td>';
+                                        html+='<td id="A'+data['machine'][a].id+'-'+b+'-'+c+'-'+ data['running'][d].mounter_id+'">-</td>';
+                                    }
+            
+                            }
 
                                 html+='</tr>';
                                 rowcount+=1;
@@ -1209,10 +1284,13 @@ function load_running_machine_tbl(){
                     $('#datatable3').append(html);
 
                     for(var y = 0; y < data['running'].length; y++){
-                        $('#'+data['running'][y].machine_id+'-'+data['running'][y].table_id+'-'+data['running'][y].pos_id+'-'+data['running'][y].mounter_id).empty();
+                        $('#A'+data['running'][y].machine_id+'-'+data['running'][y].table_id+'-'+data['running'][y].pos_id+'-'+data['running'][y].mounter_id).empty();
                         var runPN = "";
                         runPN=data['running'][y].component_rel.product_number;
-                        $('#'+data['running'][y].machine_id+'-'+data['running'][y].table_id+'-'+data['running'][y].pos_id+'-'+data['running'][y].mounter_id).append(runPN);
+                        $('#A'+data['running'][y].machine_id+'-'+data['running'][y].table_id+'-'+data['running'][y].pos_id+'-'+data['running'][y].mounter_id).append(runPN);
+                        
+                        //ajax for F
+                        LoadFeederRunningTable(data['running'][y].machine_id,data['running'][y].table_id,data['running'][y].pos_id,data['running'][y].mounter_id,data['running'][y].model_id);
                     }
 
                
@@ -1224,6 +1302,44 @@ function load_running_machine_tbl(){
         }
     });
         
+}
+
+function LoadFeederRunningTable(machine_id,table_id,position_id,mounter_id,model_id){
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/LoadFeederRunningTable',
+        type:'POST',
+        data:{
+            'machine_id':machine_id,
+            'table_id':table_id,
+            'position_id':position_id,
+            'mounter_id':mounter_id,
+            'model_id':model_id
+        },
+        success: function (data) {
+            //console.log(JSON.stringify(data));
+            $('#F'+machine_id+'-'+table_id+'-'+position_id+'-'+mounter_id).empty();
+            var FeedList = "<select class='bold-text'>";
+            for(var y = 0; y < data.length; y++){
+                FeedList+='<option>'+data[y].component_rel.product_number+' - '+data[y].order_rel.name+'</option>';
+                /* data[y].component_rel.product_number; */
+                
+            }
+            FeedList += "</select>";
+            $('#F'+machine_id+'-'+table_id+'-'+position_id+'-'+mounter_id).append(FeedList);
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+
+
 }
 
 function gotosearch(){
