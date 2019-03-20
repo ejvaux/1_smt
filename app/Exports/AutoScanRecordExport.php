@@ -68,23 +68,18 @@ public function headings(): array
         $WorkOrder =  $this->WorkOrder;
 
       
-
         $query=scanrecordlist::with('userlink','errorlink','prodlinelink','processlink','machinelink')
                             ->where('SapPlanID', $WorkOrder)
-                            ->where('process_id', $process_sel)
-                            ->where('updated_at', 'LIKE',$date.'%')
-                            ->orwhere('created_at','LIKE',$date.'%');
+                            ->where('ExportStatus', '!=','1');
 
-
-
-        scanrecordlist::where('SapPlanID', $date)
+        /* scanrecordlist::where('SapPlanID', $date)
                         ->where('process_id', $process_sel)
                         ->where('updated_at', 'LIKE',$date.'%')
                         ->orwhere('created_at','LIKE',$date.'%')
                         ->update([
                             'ExportStatus' => '1',
                             'ExportTime' => now()
-                        ]);               
+                        ]);                */
 
         return $query;
     }

@@ -669,6 +669,7 @@ function event_emp(e){
                     document.getElementById("scan_emp").readOnly = true;
                     //for model input text
                     document.getElementById("scan_model").focus();
+                    $('#scan_model').select2('open');
 
                 }
                 else{
@@ -791,8 +792,9 @@ function resetval(){
 
     document.getElementById("scan_emp").value="";
     document.getElementById("scan_employee").value="";
-    document.getElementById("scan_emp").focus();
+    
     document.getElementById("scan_emp").readOnly=false;
+    document.getElementById("scan_emp").focus();
 }
 
 function event_loadPN(e){

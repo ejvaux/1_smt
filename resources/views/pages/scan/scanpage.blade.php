@@ -176,8 +176,7 @@
         <div class="card-header bold-text"><i class="fas fa-cog"></i>&nbspSCAN DATA TABLE</div>
         <div class="card-body">
 
-            
-
+        
                             <div class="row">
                                 {{-- LEFT --}}
                                 <div class="col-lg-4">
