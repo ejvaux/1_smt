@@ -12,14 +12,14 @@
                                     <div class="row no-gutters">
                                         <div class="col-lg-3 vertical-center text-center bold-text">EMPLOYEE:</div>
                                         <div class="col-lg-7">
-                                                <select class="select2" id="scan_employee">
+                                                {{-- <select class="select2" id="scan_employee">
                                                         <option value="">SELECT EMPLOYEE</option>
                                                         @foreach ($emp as $emp_item)
                                                          <option value="{{$emp_item->id}}">{{$emp_item->lname}}, {{$emp_item->fname}}</option>
                                                         @endforeach 
-                                                </select>
-                                                {{-- <input type="text" id="scan_emp" placeholder="SCAN EMPLOYEE BARCODE" class="form-control" onkeypress="return event_emp(event)">
-                                                <input hidden  type="text" id="scan_employee" placeholder="SCAN EMPLOYEE BARCODE" class="form-control"> --}}
+                                                </select> --}}
+                                                <input type="text" id="scan_emp" placeholder="SCAN EMPLOYEE BARCODE" class="form-control" onkeypress="return event_emp(event)">
+                                                <input hidden  type="text" id="scan_employee" placeholder="SCAN EMPLOYEE BARCODE" class="form-control">
                                         </div>
                                         <div class="col-lg-2 text-center bold-text text-center vertical-center">
                                                 <button type="button" class="btn btn-sm btn-danger bold-text" onclick='document.getElementById("scan_emp").value="";document.getElementById("scan_employee").value="";document.getElementById("scan_emp").focus();document.getElementById("scan_emp").readOnly = false;'><i class="fas fa-times"></i>&nbspCLEAR</button>
