@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/CheckRunningTable', 'AjaxController@CheckRunningTable');
     Route::post('ajax/MatHistExport', 'AjaxController@ExportMatHistory')->name('Matexport');
     Route::post('ajax/LoadRunning', 'AjaxController@LoadRunningTbl');
+    Route::post('ajax/LoadFeederRunningTable', 'AjaxController@LoadFeederRunningTable');
+    Route::post('ajax/ScanEmpID', 'AjaxController@ScanEmpID');
+    Route::post('ajax/ScanRecordExport', 'AjaxController@ExportScanRecord')->name('ScanRecordexport');
     /* End of Ajax Controller */
 
 
