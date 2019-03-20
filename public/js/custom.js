@@ -61,6 +61,10 @@ $(document).ready(function() {
         } 
 }); */
 
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+  });
+
 $(document).ready(function() {
 
     $('#scan_pos').on('select2:select', function (e) {
@@ -323,10 +327,28 @@ function enterEvent(e) {
         else{
             datainput="OUT";
         }
+        var IO_date = document.getElementById('scan_IO_date').value;
         var pname = document.getElementById('bot_panel_process_sel').value;
         var pline = document.getElementById('bot_panel_prodline_sel').value;
         var snum = document.getElementById('bot_panel_input_serial').value;
         var mach = document.getElementById('bot_panel_machine_sel').value;
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(IO_date==""){
+
+            if (dd < 10) {
+                dd = '0' + dd;
+                }
+        
+                if (mm < 10) {
+                mm = '0' + mm;
+                }
+                document.getElementById('scan_IO_date').value = yyyy+"-"+mm+"-"+dd;
+                IO_date = yyyy+"-"+mm+"-"+dd;
+        }
         /* 
         var ecode = document.getElementById('ecode_sel').value;
         var snum = document.getElementById('input_serial').value;
@@ -348,7 +370,8 @@ function enterEvent(e) {
                 'sel_prodline':pline,
                 'sel_scaninput':scan_input,
                 'sel_sn':snum,
-                'sel_machine':mach
+                'sel_machine':mach,
+                'io_date':IO_date
             },
             success: function (data) {
                 //$('#datatable tr').not(':first').not(':last').remove();
@@ -402,6 +425,24 @@ function enterEvent(e) {
         var selectedDate = document.getElementById('SAP_date').value;
         var searchbox = document.getElementById('SAP_searchbox').value;
         var searchfield = document.getElementById('search_field').value;
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(selectedDate==""){
+
+            if (dd < 10) {
+                dd = '0' + dd;
+                }
+        
+                if (mm < 10) {
+                mm = '0' + mm;
+                }
+                document.getElementById('SAP_date').value = yyyy+"-"+mm+"-"+dd;
+                selectedDate = yyyy+"-"+mm+"-"+dd;
+        }
         $.ajaxSetup({
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -510,9 +551,12 @@ function enterEvent(e) {
         document.getElementById('bot_panel_machine_sel').value = "";
         document.getElementById('bot_panel_prodline_sel').value = "";
         document.getElementById('bot_panel_input_serial').value = "";
-        $('#bot_panel_process_sel').val("").trigger('change');
-        $('#bot_panel_machine_sel').val("").trigger('change');
-        $('#bot_panel_prodline_sel').val("").trigger('change');
+        //$('#bot_panel_process_sel').val("").trigger('change');
+        $('#bot_panel_process_sel option:eq(0)').prop('selected',true);
+        //$('#bot_panel_machine_sel').val("").trigger('change');
+        $('#bot_panel_machine_sel option:eq(0)').prop('selected',true);
+       // $('#bot_panel_prodline_sel').val("").trigger('change');
+        $('#bot_panel_prodline_sel option:eq(0)').prop('selected',true);
         $('#datatable>tbody').empty();
         var html = '';
         html +="<tr style='height:100px'><td colspan='9' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the scanning options then load data again.</td></tr>";
@@ -568,8 +612,8 @@ function enterEvent(e) {
         if (mm < 10) {
         mm = '0' + mm;
         }
-        document.getElementById('SAP_date').value = yyyy+mm+dd;
-        
+        document.getElementById('SAP_date').value = yyyy+"-"+mm+"-"+dd;
+        document.getElementById('SAP_searchbox').value = "";
         LoadSAPDataTable();
     }
 
@@ -592,9 +636,11 @@ function event_model(e){
 }
 
 function event_lastPN(e){
+
     if (e.keyCode == 13){
         document.getElementById("scan_newPN").focus();
 
+        
     }
 }
 
@@ -615,7 +661,24 @@ function event_emp(e){
              
             },
             success: function (data) {
-                alert(data);
+                
+                if(data.length>0){
+                    //$('#scan_model').select2('open');
+                    document.getElementById("scan_employee").value = data[0].id;
+                    document.getElementById("scan_emp").value = data[0].lname+', '+data[0].fname;
+                    document.getElementById("scan_emp").readOnly = true;
+                    //for model input text
+                    document.getElementById("scan_model").focus();
+
+                }
+                else{
+                    iziToast.error({title: 'ERROR',position: 'topCenter',message: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',});
+                    document.getElementById("scan_emp").value="";
+                    document.getElementById("scan_employee").value="";
+                    document.getElementById("scan_emp").focus();
+                }   
+
+                /* 
                 if(data=="no match"){
                     iziToast.error({title: 'ERROR',position: 'topCenter',message: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',});
                     document.getElementById("scan_emp").value="";
@@ -626,7 +689,7 @@ function event_emp(e){
                     $('#scan_model').select2('open');
                     document.getElementById("scan_employee").value = data;
 
-                }
+                } */
             },
             error: function (data) {
                 marker = JSON.stringify(data);
@@ -725,6 +788,11 @@ function resetval(){
     document.getElementById('scan_oldPN').value="";
     document.getElementById('scan_newPN').value="";
     document.getElementById('scan_employee').focus();
+
+    document.getElementById("scan_emp").value="";
+    document.getElementById("scan_employee").value="";
+    document.getElementById("scan_emp").focus();
+    document.getElementById("scan_emp").readOnly=false;
 }
 
 function event_loadPN(e){
@@ -745,95 +813,124 @@ function event_loadPN(e){
     var old_PN = document.getElementById('scan_oldPN').value;
     var new_PN = document.getElementById('scan_newPN').value;
 
-    if (e.keyCode == 13){
+   
+
+        if ($('#replenish').is(":checked")){
+            var temp1 = new Array();
+            temp1 = old_PN.split(";");
+    
+            for (a in temp1 ) {
+                temp1[a] = (temp1[a]); 
+            }
+            if(a!=0){
+                old_PN = temp1[4].substr(3);
+            }
+            
+           
+        }
+       
+
+        var temp2 = new Array();
+        temp2 = new_PN.split(";");
+
+        for (b in temp2 ) {
+            temp2[b] = (temp2[b]);
+        }
+        if(b!=0){
+            new_PN = temp2[4].substr(3);
+        }
         
-        if(emp_name && machine_code && model_code && new_PN){
-            //all req fields are good
-            if(replenish=="YES"){
-                        
-                    if(old_PN==new_PN){
-                        //ajax checking to feeder here..
-                        CheckFeeder();
+    if (e.keyCode == 13){
+      
+            if(emp_name && machine_code && model_code && new_PN){
+                //all req fields are good
+                if(replenish=="YES"){
+                            
+                        if(old_PN==new_PN){
+                            //ajax checking to feeder here..
+                            CheckFeeder();
 
-                    }
-                    else{
-                        iziToast.error({
-                            title: 'ERROR',
-                            position: 'topCenter',
-                            timeout: 10000,
-                            message: 'OLD PN and NEW PN must be matched. <br>If you are sure to load different PN, please set <br> the replenish toggle to NO for initial loading.',
-                        });
+                        }
+                        else{
+                            iziToast.error({
+                                title: 'ERROR',
+                                position: 'topCenter',
+                                timeout: 10000,
+                                message: 'OLD PN and NEW PN must be matched. <br>If you are sure to load different PN, please set <br> the replenish toggle to NO for initial loading.',
+                            });
 
-                        document.getElementById('scan_oldPN').value="";
-                        document.getElementById('scan_newPN').value="";
-                        document.getElementById('scan_oldPN').focus();
-                    }
+                            document.getElementById('scan_oldPN').value="";
+                            document.getElementById('scan_newPN').value="";
+                            document.getElementById('scan_oldPN').focus();
+                        }
+
+                }
+                else{
+                    //replenish => NO --ajax save as initial running
+                    CheckFeeder();
+                }
+
 
             }
-            else{
-                //replenish => NO --ajax save as initial running
-                CheckFeeder();
-            }
-
-
-        }
-        //error handlers for required fields
-        else{
-
-            if(!emp_name){
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Please input employee name',
-                });
-            }
-            else if(!machine_code){
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Please scan the machine code',
-                });
-            }
-            else if(!model_code){
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Please input model name',
-                });
-            }
-            else if(!position){
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Please input position',
-                });
-            }
-            else if(!feeder_slot){
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Please input feeder slot #',
-                });
-            }
-            else if(!new_PN){
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Please input new PN to load',
-                });
-            }
+            //error handlers for required fields
             else{
 
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Please fill out all the required fields',
-                });
+                if(!emp_name){
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Please input employee name',
+                    });
+                }
+                else if(!machine_code){
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Please scan the machine code',
+                    });
+                }
+                else if(!model_code){
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Please input model name',
+                    });
+                }
+                else if(!position){
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Please input position',
+                    });
+                }
+                else if(!feeder_slot){
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Please input feeder slot #',
+                    });
+                }
+                else if(!new_PN){
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Please input new PN to load',
+                    });
+                }
+                else{
+
+                    iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Please fill out all the required fields',
+                    });
+                }
+
+
+
             }
 
-
-
-        }
+       
 
     }
 
@@ -857,6 +954,31 @@ function CheckFeeder(){
     var feeder_slot = document.getElementById('scan_feed_slot').value;
     var old_PN = document.getElementById('scan_oldPN').value;
     var new_PN = document.getElementById('scan_newPN').value;
+
+    if ($('#replenish').is(":checked")){
+        var temp1 = new Array();
+        temp1 = old_PN.split(";");
+
+        for (a in temp1 ) {
+            temp1[a] = (temp1[a]); 
+        }
+        if(a!=0){
+            old_PN = temp1[4].substr(3);
+        }
+        
+       
+    }
+   
+
+        var temp2 = new Array();
+        temp2 = new_PN.split(";");
+
+        for (b in temp2 ) {
+            temp2[b] = (temp2[b]);
+        }
+        if(b!=0){
+            new_PN = temp2[4].substr(3);
+        }
 
     $.ajaxSetup({
         headers: {
@@ -932,6 +1054,31 @@ function InsertRecord(order_id){
     var feeder_slot = document.getElementById('scan_feed_slot').value;
     var old_PN = document.getElementById('scan_oldPN').value;
     var new_PN = document.getElementById('scan_newPN').value;
+    var reelInfo = document.getElementById('scan_newPN').value;
+    if ($('#replenish').is(":checked")){
+        var temp1 = new Array();
+        temp1 = old_PN.split(";");
+
+        for (a in temp1 ) {
+            temp1[a] = (temp1[a]); 
+        }
+        if(a!=0){
+            old_PN = temp1[4].substr(3);
+        }
+        
+       
+    }
+   
+
+    var temp2 = new Array();
+    temp2 = new_PN.split(";");
+
+    for (b in temp2 ) {
+        temp2[b] = (temp2[b]);
+    }
+    if(b!=0){
+        new_PN = temp2[4].substr(3);
+    }
 
     $.ajaxSetup({
         headers: {
@@ -951,7 +1098,8 @@ function InsertRecord(order_id){
             'feeder_slot':feeder_slot,
             'old_PN':old_PN,
             'new_PN':new_PN,
-            'order_id':order_id
+            'order_id':order_id,
+            'reelInfo':reelInfo
         },
         success: function (data) {
             iziToast.success({
@@ -989,6 +1137,31 @@ function CheckRunning(order_id){
     var feeder_slot = document.getElementById('scan_feed_slot').value;
     var old_PN = document.getElementById('scan_oldPN').value;
     var new_PN = document.getElementById('scan_newPN').value;
+
+    if ($('#replenish').is(":checked")){
+            var temp1 = new Array();
+            temp1 = old_PN.split(";");
+    
+            for (a in temp1 ) {
+                temp1[a] = (temp1[a]); 
+            }
+            if(a!=0){
+                old_PN = temp1[4].substr(3);
+            }
+            
+           
+        }
+       
+
+        var temp2 = new Array();
+        temp2 = new_PN.split(";");
+
+        for (b in temp2 ) {
+            temp2[b] = (temp2[b]);
+        }
+        if(b!=0){
+            new_PN = temp2[4].substr(3);
+        }
 
     $.ajaxSetup({
         headers: {
@@ -1157,6 +1330,7 @@ function clear_running(){
                         '<th scope="col" rowspan="2">POSITION</th>';
     $('#theads').append(trhead);
 }
+
 function load_running_machine_tbl(){
     var today = new Date();
     var dd = today.getDate();
