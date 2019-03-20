@@ -332,15 +332,13 @@ class AjaxController extends Controller
     public function AutoExportScanRecord(Request $request){
 
         $data = scanrecordlist::where('ExportStatus','!=','1')
-                                ->groupBy('SapPlanID')
-                                ->get();
+                                ->groupBy('SapPlanID');
 
         foreach ($data as $workorder) {
-        echo $workorder->name;
 
         return (new ScanRecordExport(
             $workorder->SapPlanID
-        ))->download('Material History.xlsx');
+        ))->download('PRIMA_SMT_'.$workorder->SapJONum.'.xlsx');
 
         }
     }
