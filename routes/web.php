@@ -49,10 +49,31 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-/* Feeder List */
-Route::get('/fl', 'feeder\view\FeederListController@index');
-/* Route::get('/fl', function () {
-    return "yes";
-}); */
+/* ----- MES ----- */
+Route::get('smtmasterdb/{id}', 'MES\view\MasterController@index');
+Route::get('fl', 'MES\view\MasterController@feederlist');
+Route::get('mp', 'MES\view\MasterController@modelparts');
+Route::get('lm', 'MES\view\MasterController@linemach');
+Route::get('el', 'MES\view\MasterController@employee');
 
-/* END - Feeder List */
+// create feederlist
+Route::get('cflh', 'MES\view\MasterController@createfeederlisthome');
+Route::get('cfln', 'MES\view\MasterController@createfeederlistnew');
+Route::get('cflv', 'MES\view\MasterController@createfeederlistversion');
+
+// view feeder list details
+Route::get('fld/{id}', 'MES\view\MasterController@feederlistdetails');
+// rendering tables per machine
+Route::get('fldmach/{mach}/{id}', 'MES\view\MasterController@getmachtables');
+
+// Tables
+Route::resources([
+    'feeders' => 'MES\api\FeedersController'    
+]);
+
+// Testing
+Route::get('testt', function () {
+    return \App\Http\Controllers\MES\model\Feeder::where('model_id',1)->where('machine_type_id',1)->where('table_id',1)->where('mounter_id',5)->count();
+});
+
+/* ----- MES END ----- */ 
