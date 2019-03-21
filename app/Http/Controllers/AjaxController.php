@@ -16,14 +16,18 @@ use App\machine;
 use App\tableSMT;
 use App\component;
 use App\MatLoadModel;
+use App\RunningOnMachine;
+use App\mounter;
+use App\modelSMT;
+use App\Exports\MaterialLoadExport;
+use App\Exports\ScanRecordExport;
 use Response;
 
 class AjaxController extends Controller
 {
     //
    
-    public function errorcode()
-    {
+    public function errorcode(){
         $error_code = errorcodelist::all();
         /* Response::json($error_code); */
         /*   return $error_code; */
@@ -31,8 +35,7 @@ class AjaxController extends Controller
         return response()->json([$error_code]);
     }
 
-    public function checkRecord(Request $request)
-    {
+    public function checkRecord(Request $request){
         $IDtoUpdate = scanrecordlist::where('prodline_id','=',$request->input('sel_prodline'))
         ->where('process_id','=',$request->input('sel_process'))
         ->where('serial_number','=',$request->input('serialnum')) 
@@ -47,8 +50,7 @@ class AjaxController extends Controller
         
     }
 
-    public function LoadDataToTable(Request $request)
-    {
+    public function LoadDataToTable(Request $request){
         $prodline=$request->input('sel_prodline');
         $processline=$request->input('sel_process');
         $machineline=$request->input('sel_machine');
@@ -58,7 +60,10 @@ class AjaxController extends Controller
         $ecode=errorcodelist::all();
         $data=scanrecordlist::with('userlink','errorlink','prodlinelink','processlink','machinelink')
                             ->where('scan_type',$request->input('sel_scaninput'))
-                            ->where('serial_number','LIKE','%'.$request->input('sel_sn').'%');
+                            ->where('serial_number','LIKE','%'.$request->input('sel_sn').'%')
+                            ->where('updated_at','LIKE',$request->input('io_date').'%')
+                            ->orwhere('created_at','LIKE',$request->input('io_date').'%');
+                            
 
         if($prodline!=""){
           $data=$data->where('prodline_id',$request->input('sel_prodline'));
@@ -75,12 +80,11 @@ class AjaxController extends Controller
       
     }
 
-    public function SAPLoadDataToTable(Request $request)
-    {
-             //series -68 for SMT  where Status='R' AND Series = '31' AND StartDate = ?",[$pdate]);
+    public function SAPLoadDataToTable(Request $request){
+             //series -68 for SMT, 31 for INJ  where Status='R' AND Series = '31' AND StartDate = ?",[$pdate]);
         $pdate=$request->input('plandate');
 
-        $data=SAPPlanModel::where('Series','31')
+        $data=SAPPlanModel::where('Series','68')
                             ->where('StartDate',$pdate)
                             ->where('Status','R')
                             ->where($request->input('s_field'),'LIKE','%'.$request->input('searchbox').'%')
@@ -96,8 +100,7 @@ class AjaxController extends Controller
         return Response::json(array('sap_plan'=>$data,'smt_result'=>$data2));
     }
 
-    public function TotalPerJO(Request $request)
-    {
+    public function TotalPerJO(Request $request){
         $pid=$request->input('pid');
         $data=scanrecordlist::where('SapPlanID','19900')
                             ->get();
@@ -107,14 +110,12 @@ class AjaxController extends Controller
        return ("lala");
     }
 
-    public function checkPINemployee(Request $request)
-    {
+    public function checkPINemployee(Request $request){
         $data=employee::where('id',$request->input('empid'))->get();
         return Response::json($data);
     }
 
-    public function CheckFeederList(Request $request)
-    {
+    public function CheckFeederList(Request $request) {
         $machine = $request->input('machine_id');
         $component = $request->input('new_PN');
         //$machine = "CM60201A";
@@ -124,9 +125,9 @@ class AjaxController extends Controller
         $mach_type= machine::where('barcode',$m_code)->first();
         $table_id= tableSMT::where('name',$table)->first();
         $comp_id= component::where('product_number',$component)->first();
-
+        $model_id = modelSMT::where('code',$request->input('model_id'))->first();
         if($mach_type){
-            $mach_type=$mach_type->id;
+            $mach_type=$mach_type->machine_type_id;
         }
         else{
             $mach_type = "0";
@@ -143,6 +144,12 @@ class AjaxController extends Controller
         else{
             $comp_id = "0";
         }
+        if($model_id){
+            $model_id = $model_id->id;
+        }
+        else{
+            $model_id = "0";
+        }
         
         $data=feeders::where('machine_type_id',$mach_type)
                        ->where('table_id',$table_id)
@@ -152,8 +159,16 @@ class AjaxController extends Controller
                        ->where('component_id',$comp_id)
                        ->first();
         
+           /*  $data=feeders::where('machine_type_id',$mach_type)
+                       ->where('table_id',$table_id)
+                       ->where('model_id',$model_id)
+                       ->where('mounter_id',$request->input('feeder_slot'))
+                       ->where('pos_id',$request->input('position'))
+                       ->where('component_id',$comp_id)
+                       ->first(); */
+
         if ($data) {
-            return "HAS RECORD";
+            return $data->order_id;
         }
         else{
             return "NO RECORD";
@@ -200,15 +215,133 @@ class AjaxController extends Controller
         $comp_id= component::where('product_number',$component)->first();
 
         $data=MatLoadModel::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
-                        ->orderby('table_id','ASC')
-                        ->orderby('pos_id','ASC')
-                        ->orderby('order_id','ASC')
+                        ->where('created_at', 'LIKE',$request->input('sdate').'%')
+                        ->orderby('created_at','DESC')
                         ->get();
 
         return Response::json($data);
-        }
+    }
 
     
+    public function CheckRunningTable(Request $request){
+        $machine = $request->input('machine_id');
+        $component = $request->input('new_PN');
+        //$machine = "CM60201A";
+        $m_code =substr($machine,0,7);
+        $table=substr($machine,-1);
+        
+        $mach_type= machine::where('barcode',$m_code)->first();
+        $table_id= tableSMT::where('name',$table)->first();
+        $comp_id= component::where('product_number',$component)->first();
+
+        if($mach_type){
+            $mach_type=$mach_type->id;
+        }
+        else{
+            $mach_type = "0";
+        }
+        if($table_id){
+            $table_id=$table_id->id;
+        }
+        else{
+            $table_id = "0";
+        }
+        if($comp_id){
+            $comp_id=$comp_id->id;
+        }
+        else{
+            $comp_id = "0";
+        }
+
+            
+        $running_mach = RunningOnMachine::where('machine_id',$mach_type)
+                                    ->where('table_id',$table_id)
+                                    ->where('mounter_id',$request->input('feeder_slot'))
+                                    ->where('pos_id',$request->input('position'))
+                                    ->where('component_id',$comp_id)
+                                    ->first();
+
+        if($running_mach){
+            return "update";
+        }
+        else{
+            return "not match in running";
+        }
+
+    }
+
+    public function ExportMatHistory(Request $request){
+        return (new MaterialLoadExport($request->input('s_date')))->download('Material History.xlsx');
+    }
+
+    public function LoadRunningTbl(Request $request){
+
+        $data = RunningOnMachine::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
+                                ->where('created_at','LIKE',$request->input('today').'%')
+                                ->orwhere('updated_at','LIKE',$request->input('today').'%')
+                                ->orderby('mounter_id','ASC')
+                                ->get();
+       
+        $machine = machine::with('machine_type_rel','line_rel')
+                            ->get();
+
+                            
+        //return Response::json($data);        
+        return Response::json(array('running'=>$data,'machine'=>$machine));         
+
+    }
+
+    public function LoadFeederRunningTable(Request $request){
+
+        $mach_type= machine::where('id',$request->input('machine_id'))->first();
+        $mach_type=$mach_type->machine_type_id;
+        $data = feeders::with('component_rel','order_rel')
+                        ->where('machine_type_id',$mach_type)
+                        ->where('table_id',$request->input('table_id'))
+                        ->where('pos_id',$request->input('position_id'))
+                        ->where('mounter_id',$request->input('mounter_id'))
+                        ->where('model_id',$request->input('model_id'))
+                        ->get();
+        
+        return Response::json($data);
+    }
+    public function ScanEmpID(Request $request){
+        $data=employee::where('pin',$request->input('empCode'))->get();
+
+       /*  if($data){
+            
+            
+        }
+        else{
+            $data = "no match";
+        }
+        return $data; */
+        return Response::json($data);
+    }
+
+    public function ExportScanRecord(Request $request){
+        return (new ScanRecordExport(
+            $request->input('io_date'),
+            $request->input('pline_sel'),
+            $request->input('process_sel'),
+            $request->input('machine_sel'),
+            $request->input('bot_panel_input_scan')
+        ))->download('Material History.xlsx');
+    }
+
+    public function AutoExportScanRecord(Request $request){
+
+        $data = scanrecordlist::where('ExportStatus','!=','1')
+                                ->groupBy('SapPlanID');
+
+        foreach ($data as $workorder) {
+
+        return (new ScanRecordExport(
+            $workorder->SapPlanID
+        ))->download('PRIMA_SMT_'.$workorder->SapJONum.'.xlsx');
+
+        }
+    }
 
 
 }

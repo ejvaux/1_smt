@@ -38,6 +38,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/feedlist', 'AjaxController@CheckFeederList');
     Route::post('ajax/loadDetails', 'AjaxController@LoadDetailsPanel');
     Route::post('ajax/loadhistory', 'AjaxController@LoadHistoryTable');
+    Route::post('ajax/CheckRunningTable', 'AjaxController@CheckRunningTable');
+    Route::post('ajax/MatHistExport', 'AjaxController@ExportMatHistory')->name('Matexport');
+    Route::post('ajax/LoadRunning', 'AjaxController@LoadRunningTbl');
+    Route::post('ajax/LoadFeederRunningTable', 'AjaxController@LoadFeederRunningTable');
+    Route::post('ajax/ScanEmpID', 'AjaxController@ScanEmpID');
+    Route::post('ajax/ScanRecordExport', 'AjaxController@ExportScanRecord')->name('ScanRecordexport');
+    Route::post('ajax/AutoScanRecordExport', 'AjaxController@AutoExportScanRecord')->name('AutoScanRecordExport');
     /* End of Ajax Controller */
 
 
