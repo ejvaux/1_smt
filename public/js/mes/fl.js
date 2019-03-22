@@ -1,12 +1,3 @@
-/* $('.viewModel').on('click', function(){
-    alert('View');
-});
-$('.editModel').on('click', function(){
-    alert('Edit');
-});
-$('.deleteModel').on('click', function(){
-    alert('Delete');
-}); */
 function viewfeederlist($m_id,$mt_id){
     $.ajax({
         type		: "GET",
@@ -81,33 +72,61 @@ $("#fltable").on('click', '.cmp_delete', function(){
 });
 $("#fdrmodl").on('click','#add_comp_submit', function(){
     /* alert('TEST'); */
-    $.ajax(
-        {
-        method:'POST',
-        url:"/1_smt/public/feeders",
-        data: 
-        {
-            /* "_token":           $('meta[name="csrf-token"]').attr('content'), */
-            'model_id':         $('#amodel_id').val(),
-            'machine_type_id':  $('#amachine_type_id').val(),
-            'table_id':         $('#atable_id').val(),
-            'mounter_id':       $('#amounter_id').val(),
-            'pos_id':           $('#apos_id').val(),
-            'order_id':         $('#aorder_id').val(),
-            'component_id':     $('#acomponent_id').val(),
-            'user_id':          $('meta[name="user_num"]').attr('content')
-        },
-        success: function(data) {          
-            iziToast.success({
-                message: data,
-                position: 'topCenter',
-                timeout: 5000,
-                displayMode: 'replace'
-            });
-            $('#add_comp').modal('hide');
-            viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val());
-        }
-    });
+    var err;
+    var err_msg = '';
+    if($('#amounter_id').val() == ''){
+        err_msg += 'Mounter is required.<br>';
+        err = 1;
+    }
+    if($('#apos_id').val() == ''){
+        err_msg += 'Position is required.<br>';
+        err = 1;
+    }
+    if($('#aorder_id').val() == ''){
+        err_msg += 'Preference is required.<br>';
+        err = 1;
+    }
+    if($('#acomponent_id').val() == ''){
+        err_msg += 'Component is required.<br>';
+        err = 1;
+    }
+    if( err == 0 ){
+        $.ajax(
+            {
+            method:'POST',
+            url:"/1_smt/public/feeders",
+            data: 
+            {
+                /* "_token":           $('meta[name="csrf-token"]').attr('content'), */
+                'model_id':         $('#amodel_id').val(),
+                'machine_type_id':  $('#amachine_type_id').val(),
+                'table_id':         $('#atable_id').val(),
+                'mounter_id':       $('#amounter_id').val(),
+                'pos_id':           $('#apos_id').val(),
+                'order_id':         $('#aorder_id').val(),
+                'component_id':     $('#acomponent_id').val(),
+                'user_id':          $('meta[name="user_num"]').attr('content')
+            },
+            success: function(data) {          
+                iziToast.success({
+                    message: data,
+                    position: 'topCenter',
+                    timeout: 5000,
+                    displayMode: 'replace'
+                });
+                $('#add_comp').modal('hide');
+                viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val());
+            }
+        });
+    }
+    else{
+        iziToast.warning({
+            message: err_msg,
+            position: 'topCenter',
+            timeout: 5000,
+            displayMode: 'replace'
+        });
+    }
 });
 $("#fdrmodl").on('click','#edit_comp_submit', function(){
     /* alert('TEST'); */
@@ -134,4 +153,59 @@ $("#fdrmodl").on('click','#edit_comp_submit', function(){
             viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val());
         }
     });
+});
+$('#add_mach').on('click', function(){
+    /* alert('Test'); */
+    $(this).hide();
+    $('#flviewmachine').hide();
+    $('#insert_mach').show();
+    $('#cancel_mach').show();
+    $('#addmachlist').show();
+});
+$('#cancel_mach').on('click', function(){
+    /* alert('Test'); */
+    $('#add_mach').show();
+    $('#flviewmachine').show();
+    $('#insert_mach').hide();
+    $(this).hide();
+    $('#addmachlist').hide();
+});
+$('#insert_mach').on('click', function(){
+    if($('#addmachlist').val() != ''){
+        $.ajax(
+            {
+            method:'POST',
+            url:"/1_smt/public/feeders",
+            global: false,
+            data: 
+            {
+                /* "_token":           $('meta[name="csrf-token"]').attr('content'), */
+                'model_id':         $('#mdl_id').val(),
+                'machine_type_id':  $('#addmachlist').val(),
+                'table_id':         0,
+                'mounter_id':       0,
+                'pos_id':           0,
+                'order_id':         0,
+                'component_id':     0,
+                'user_id':          $('meta[name="user_num"]').attr('content')
+            },
+            success: function(data) {          
+                /* iziToast.success({
+                    message: data,
+                    position: 'topCenter',
+                    timeout: 5000,
+                    displayMode: 'replace'
+                }); */
+                location.reload(true);
+            }
+        });
+    }
+    else{
+        iziToast.warning({
+            message: 'Please select machine.',
+            position: 'topCenter',
+            timeout: 5000,
+            displayMode: 'replace'
+        });
+    }
 });

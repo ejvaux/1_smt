@@ -10,16 +10,17 @@
 @section('content')
     <div class="container mt-5" id="table_display" style="width: 100%;">
         <div class="row">
-            <div class="col-md">
+            <div class="col-md"></div>
+            <div class="col-md-5">
                 <div class="row mb-2">
                     <div class="col-md">
                         <div class="btn-group" role="group" aria-label="Basic example">                    
-                            <a class="btn btn-outline-secondary py-0 p-1" href='{{'cflh'}}'><i class="fas fa-ban"></i> Cancel</a>                
+                            <a class="btn btn-outline-danger py-0 p-1" href='{{'cflh'}}'><i class="fas fa-ban"></i> Cancel</a>                
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md" >
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
                                 Create New Feeder List
@@ -31,6 +32,7 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md"></div>
         </div>
     </div>
 @endsection

@@ -13,7 +13,7 @@
             <div class="col-md">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     {{-- <a class="btn btn-secondary" href='/1_atms/public/it/aq'>Handled</a> --}}
-                    <a class="btn btn-outline-info py-0 p-1" href='{{url('cflh')}}'>Add list</a>                
+                    {{-- <a class="btn btn-outline-info py-0 p-1" href='{{url('cflh')}}'>Add list</a> --}}                
                 </div>
             </div>
             <div class="col-md-3 ml-0 pl-1 ">

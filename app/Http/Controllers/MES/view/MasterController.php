@@ -77,6 +77,8 @@ class MasterController extends Controller
         $tb = 0;
         $mt = 0;
         $ps = 0;
+        $chk = 0;
+        $machinetypes = $this->machinetypes;
         $machid = Feeder::where('model_id',$id)->groupBy('machine_type_id')->pluck('machine_type_id')->first();
         $model = ModName::where('id',$id)->first();
         $mounters = $this->mounters;
@@ -93,7 +95,9 @@ class MasterController extends Controller
             'positions',
             'prefs',
             'components',
-            'machid'
+            'machid',
+            'machinetypes',
+            'chk'
         ));
     }
     public function getmachtables($mach,$id)

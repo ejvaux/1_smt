@@ -3,11 +3,11 @@
         <div class="row">
             <div class="col-md">
                 <span class='font-weight-bold text-muted'>Table {{$i}}</span>
-                <button class='addCmp'
+                <button class='addCmp'  style='font-size:.8rem'
                     data-model='{{$model->id}}'
                     data-mach='{{$machid}}'
                     data-table='{{$i}}'
-                >Add Component</button>
+                ><i class="fas fa-plus"></i> Component</button>
             </div>
         </div>
         <table class="table">

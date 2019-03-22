@@ -14,7 +14,7 @@
                 <div class="row mb-2">
                     <div class="col-md">
                         <div class="btn-group" role="group" aria-label="Basic example">                    
-                            <a class="btn btn-outline-secondary py-0 p-1" href='{{'cflh'}}'><i class="fas fa-ban"></i> Cancel</a>                
+                            <a class="btn btn-outline-danger py-0 p-1" href='{{'cflh'}}'><i class="fas fa-ban"></i> Cancel</a>                
                         </div>
                     </div>
                 </div>
