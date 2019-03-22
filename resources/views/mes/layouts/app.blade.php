@@ -8,7 +8,7 @@
             if(isset($_SESSION['username'])){
                 $username = $_SESSION['username'];
             }
-            if(!($auth == 'A' || $auth == 'B')) {          
+            if(!($auth == 'A' || $auth == 'SA')) {          
                 echo "<script type='text/javascript'>alert('Access Denied!');window.location.href='/1_mes/_php/portal.php';</script>";        
             }
             $user_num = $_SESSION['user_num'];
