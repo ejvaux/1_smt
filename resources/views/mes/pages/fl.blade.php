@@ -10,10 +10,9 @@
 @section('content')
     <div class="container mt-5" id="table_display" style="width: 100%;">
         <div class="row mb-2">
-            <div class="col-md">
+            {{-- <div class="col-md">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    {{-- <a class="btn btn-secondary" href='/1_atms/public/it/aq'>Handled</a> --}}
-                    {{-- <a class="btn btn-outline-info py-0 p-1" href='{{url('cflh')}}'>Add list</a> --}}                
+                    <a class="btn btn-outline-info py-0 p-1" href='{{url('cflh')}}'>Add list</a>                
                 </div>
             </div>
             <div class="col-md-3 ml-0 pl-1 ">
@@ -23,7 +22,7 @@
                         <button type="button" value="" id="search"><i class="fa fa-search"></i></button>
                     </div>               
                 </form>
-            </div>
+            </div> --}}
         </div>
         <div class="row">
             <div class="col-md" >
