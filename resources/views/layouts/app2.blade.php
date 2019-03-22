@@ -62,9 +62,6 @@
                                 <a class="nav-link" href="/1_smt/public/scan"><i class="fas fa-barcode"></i>&nbspScan Item</a>
                             </li>
                             <li class="nav-item bold-text">
-                                <a class="nav-link" href="{{url('/fl')}}"><i class="fas fa-list"></i> Feeder List</a>
-                            </li>
-                            <li class="nav-item bold-text">
                                 <a class="nav-link" href="/1_smt/public/mscan"><i class="fas fa-archive"></i>&nbspMaterials</a>
                             </li>
                             
