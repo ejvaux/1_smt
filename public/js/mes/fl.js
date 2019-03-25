@@ -72,7 +72,7 @@ $("#fltable").on('click', '.cmp_delete', function(){
 });
 $("#fdrmodl").on('click','#add_comp_submit', function(){
     /* alert('TEST'); */
-    var err;
+    var err = 0;
     var err_msg = '';
     if($('#amounter_id').val() == ''){
         err_msg += 'Mounter is required.<br>';
@@ -90,7 +90,7 @@ $("#fdrmodl").on('click','#add_comp_submit', function(){
         err_msg += 'Component is required.<br>';
         err = 1;
     }
-    if( err == 0 ){
+    if( err != 1 ){
         $.ajax(
             {
             method:'POST',
