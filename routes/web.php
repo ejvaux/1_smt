@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     /* PageController */
     Route::get('/scan', 'PageController@scan');
     Route::get('/mscan', 'PageController@mscan');
+    Route::get('/errorlog', 'PageController@errorlogs');
     /* End of Page Controller */
 
     /* AjaxController */
@@ -45,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/ScanEmpID', 'AjaxController@ScanEmpID');
     Route::post('ajax/ScanRecordExport', 'AjaxController@ExportScanRecord')->name('ScanRecordexport');
     Route::post('ajax/AutoScanRecordExport', 'AjaxController@AutoExportScanRecord')->name('AutoScanRecordExport');
+    Route::post('ajax/ErrorIns', 'AjaxController@ErrorInsert');
+    Route::post('ajax/loadError', 'AjaxController@LoadError');
     /* End of Ajax Controller */
 
 
