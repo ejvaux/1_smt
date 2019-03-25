@@ -22,7 +22,7 @@
                                                 <input hidden  type="text" id="scan_employee" placeholder="SCAN EMPLOYEE BARCODE" class="form-control">
                                         </div>
                                         <div class="col-lg-2 text-center bold-text text-center vertical-center">
-                                                <button type="button" class="btn btn-sm btn-danger bold-text" onclick='document.getElementById("scan_emp").value="";document.getElementById("scan_employee").value="";document.getElementById("scan_emp").focus();document.getElementById("scan_emp").readOnly = false;'><i class="fas fa-times"></i>&nbspCLEAR</button>
+                                                <button type="button" class="btn btn-sm btn-danger bold-text" onclick='document.getElementById("scan_emp").value="";document.getElementById("scan_employee").value="";document.getElementById("scan_emp").focus();document.getElementById("scan_emp").readOnly = false;$("#scan_employee").val("").trigger("change");$("#scan_model").val("").trigger("change");'><i class="fas fa-times"></i>&nbspCLEAR</button>
                                         </div>
                                         <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
                                         <div class="col-lg-3 vertical-center text-center bold-text">MODEL NAME:</div>
@@ -162,7 +162,8 @@
                                                                 <th scope="col">MODEL</th>
                                                                 <th scope="col">TABLE</th>
                                                                 <th scope="col">MOUNTER</th>
-                                                                <th scope="col">POSITION</th><th scope="col">EMPLOYEE</th>
+                                                                <th scope="col">POSITION</th>
+                                                                <th scope="col">EMPLOYEE</th>
                                                         </tr>
                                                 </thead>
                                                 <tbody>

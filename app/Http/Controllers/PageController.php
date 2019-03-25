@@ -41,4 +41,18 @@ class PageController extends Controller
         return view('pages.materials.mscan',compact('models','position','mounter','emp','mounters','machine','line'));
     }
 
+    public function errorlogs(){
+
+        $models=modelSMT::all();
+        $position=LRPosition::all();
+        $mounter=mounter::all();
+        $emp=employee::all();
+        $mounters=mounter::all();
+        $machine=machine::all();
+        $line=lineSMT::all();
+        $data="";
+        
+        return view('pages.materials.errorlogs',compact('models','position','mounter','emp','mounters','machine','line'));
+    }
+
 }
