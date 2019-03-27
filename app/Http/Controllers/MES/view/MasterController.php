@@ -27,9 +27,8 @@ class MasterController extends Controller
         $this->prefs = Preference::all();
         $this->components = Component::all();
     }
-    public function index($id)
+    public function index()
     {
-        session(['user_num' => $id]);
         return redirect('fl');
     }
     public function feederlist()
@@ -115,21 +114,5 @@ class MasterController extends Controller
             'tb',
             'machid'
         ));
-        /* if($id == 1){
-            return view('mes.inc.table.cm602',compact('model','mt','ps','tb'));  
-        }
-        elseif ($id == 2) {
-            return view('mes.inc.table.cm402',compact('model','mt','ps','tb'));
-        }
-        elseif ($id == 3) {
-            return view('mes.inc.table.dt401',compact('model','mt','ps','tb'));
-        }
-        elseif ($id == 4) {
-            return view('mes.inc.table.cm212',compact('model','mt','ps','tb'));
-        }
-        elseif ($id == 5) {
-            return view('mes.inc.table.sm320',compact('model','mt','ps','tb'));
-        } */
-        /* return view('mes.pages.cflv'); */
     }
 }
