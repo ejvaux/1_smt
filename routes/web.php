@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 /* ----- MES ----- */
-Route::get('smtmasterdb/{id}', 'MES\view\MasterController@index');
+Route::get('smtmasterdb', 'MES\view\MasterController@index');
 Route::get('fl', 'MES\view\MasterController@feederlist');
 Route::get('mp', 'MES\view\MasterController@modelparts');
 Route::get('lm', 'MES\view\MasterController@linemach');
@@ -78,9 +78,12 @@ Route::resources([
     'feeders' => 'MES\api\FeedersController'    
 ]);
 
+// deleting mount
+Route::post('del_mount', 'MES\api\FeedersController@del_mount');
+
 // Testing
 Route::get('testt', function () {
-    return \App\Http\Controllers\MES\model\Feeder::where('model_id',1)->where('machine_type_id',1)->where('table_id',1)->where('mounter_id',5)->count();
+    return \App\Http\Controllers\MES\model\Feeder::where('model_id',1)->where('machine_type_id',1)->where('table_id',1)->groupBy('mounter_id')->pluck('mounter_id');
 });
 
 /* ----- MES END ----- */ 
