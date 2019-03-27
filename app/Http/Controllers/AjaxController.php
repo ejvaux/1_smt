@@ -22,6 +22,7 @@ use App\modelSMT;
 use App\ErrorMatLoading;
 use App\Exports\MaterialLoadExport;
 use App\Exports\ScanRecordExport;
+use App\Exports\ErrorExport;
 use Response;
 
 class AjaxController extends Controller
@@ -404,6 +405,12 @@ class AjaxController extends Controller
 
         
         return Response::json($data);
+    }
+
+    public function ExportError(Request $request){
+        return (new ErrorExport(
+            $request->input('s_date')
+        ))->download('Error Logs.xlsx');
     }
 
 

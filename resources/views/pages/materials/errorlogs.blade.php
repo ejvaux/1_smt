@@ -6,21 +6,24 @@
             <div class="card shadow-sm bg-white rounded">
                     <div class="card-header bold-text"><i class="fas fa-times-circle"></i> &nbspERROR MATERIAL SCANNING CHECKING</div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-4"></div>
-                            <div class="col-lg-3"></div>
-                            <div class="col-lg-3">
-                                <input type="date" name="date_name" class="form-control" id="date_error">
-                            </div>
-                            <div class="col-lg-2">
-                                <button class="btn btn-sm btn-primary bold-text" type="button" onclick="LoadErrorTbl()"><i class="fas fa-sync"></i>&nbspLOAD</button>
-                                <form  action = "#" method = "POST" id="vsearchitem1" name="vsearch_form1" style="display:inline-block">
+                       
+                                <div class="row">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-3">
+                                        <input type="date" name="s_date" class="form-control" id="date_error">
+                                </div>
+                                <div class="col-lg-3">
+                                        <button class="btn btn-sm btn-primary bold-text" type="button" onclick="LoadErrorTbl()"><i class="fas fa-sync"></i>&nbspLOAD</button>
+                                        <button class="btn btn-sm btn-danger bold-text" type="button" onclick="error_clear_date()"><i class="fas fa-times"></i>&nbspCLEAR</button>
+                                        <form  action = "{{ route('ErrorExport') }}" method = "POST" id="vsearchitem1" name="vsearch_form1" style="display:inline-block">
                                         @csrf
-                                        <button class="btn btn-sm btn-success bold-text" type="submit"><i class="fas fa-file-excel"></i>&nbspEXPORT</button>
-                                        <input hidden type="text" name="s_date" id="hidDateParam">
-                                </form>
-                            </div>
-                        </div>
+                                                <button class="btn btn-sm btn-success bold-text" type="submit"><i class="fas fa-file-excel"></i>&nbspEXPORT</button>
+                                                <input hidden type="text" name="s_date" id="hidDateParam">
+                                        </form>
+                                </div>
+                                </div>
+                       
                         <br>
                         <div class="table-responsive-xl" style="width: 100%;height: 410px;overflow:auto">
                                 <table class="table table-bordered table-hover table-sm table-striped" id="datatable2">

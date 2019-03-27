@@ -768,7 +768,6 @@ $('#scan_employee').on('select2:select', function (e) {
             $('#emp_PIN').focus();
         })  
     }
-   
   });
 });
 
@@ -779,16 +778,11 @@ function WrongPIN(){
 
 
 function resetval(){
-  
     $('#scan_pos').val("").trigger('change');
     $('#scan_feed_slot').val("").trigger('change');
     document.getElementById('scan_machine').value="";
-   
     document.getElementById('scan_oldPN').value="";
     document.getElementById('scan_newPN').value="";
-    document.getElementById('scan_employee').focus();
-
-
     document.getElementById("scan_machine").focus();
 }
 
@@ -1754,7 +1748,7 @@ function LoadErrorTbl(){
         document.getElementById('date_error').value = yyyy+"-"+mm+"-"+dd;
     }
 
-
+    document.getElementById('hidDateParam').value=today;
     $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1823,4 +1817,10 @@ function LoadErrorTbl(){
         }
     });
 
+}
+
+
+function error_clear_date(){
+    document.getElementById('date_error').value="";
+    LoadErrorTbl();
 }
