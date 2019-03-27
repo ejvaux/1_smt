@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ajax/ScanEmpID', 'AjaxController@ScanEmpID');
     Route::post('ajax/ScanRecordExport', 'AjaxController@ExportScanRecord')->name('ScanRecordexport');
     Route::post('ajax/AutoScanRecordExport', 'AjaxController@AutoExportScanRecord')->name('AutoScanRecordExport');
+    Route::post('ajax/ErrorExpo', 'AjaxController@ExportError')->name('ErrorExport');
     Route::post('ajax/ErrorIns', 'AjaxController@ErrorInsert');
     Route::post('ajax/loadError', 'AjaxController@LoadError');
     /* End of Ajax Controller */
