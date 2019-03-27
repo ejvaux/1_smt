@@ -64,8 +64,10 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                        <i class="fas fa-check-circle"></i>&nbsp{{ __('Register') }}
                                 </button>
+
+                                <a href="{{ url('/') }}" class="btn btn-danger"><i class="fas fa-arrow-left"></i>&nbspReturn Home</a>
                             </div>
                         </div>
                     </form>
