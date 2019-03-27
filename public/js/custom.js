@@ -779,22 +779,17 @@ function WrongPIN(){
 
 
 function resetval(){
-    
-    $('#scan_employee').val("").trigger('change');
-    $('#scan_model').val("").trigger('change');
+  
     $('#scan_pos').val("").trigger('change');
     $('#scan_feed_slot').val("").trigger('change');
     document.getElementById('scan_machine').value="";
-    document.getElementById('scan_model').value="";
+   
     document.getElementById('scan_oldPN').value="";
     document.getElementById('scan_newPN').value="";
     document.getElementById('scan_employee').focus();
 
-    document.getElementById("scan_emp").value="";
-    document.getElementById("scan_employee").value="";
-    
-    document.getElementById("scan_emp").readOnly=false;
-    document.getElementById("scan_emp").focus();
+
+    document.getElementById("scan_machine").focus();
 }
 
 function event_loadPN(e){
@@ -851,7 +846,6 @@ function event_loadPN(e){
                         if(old_PN==new_PN){
                             //ajax checking to feeder here..
                             CheckFeeder();
-
                         }
                         else{
                             iziToast.error({
@@ -860,7 +854,7 @@ function event_loadPN(e){
                                 timeout: 10000,
                                 message: 'OLD PN and NEW PN must be matched. <br>If you are sure to load different PN, please set <br> the replenish toggle to NO for initial loading.',
                             });
-
+                            ErrorIns("OLD PN and NEW PN not matched");
                             document.getElementById('scan_oldPN').value="";
                             document.getElementById('scan_newPN').value="";
                             document.getElementById('scan_oldPN').focus();
@@ -883,6 +877,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please input employee name',
                     });
+                    
                 }
                 else if(!machine_code){
                     iziToast.error({
@@ -1024,6 +1019,7 @@ function CheckFeeder(){
                     position: 'topCenter',
                     message: 'Component not found in the feeder list. Please check your input data.',
                 });
+                ErrorIns("Component not found in feeder list.");
             }
             
 
@@ -1199,6 +1195,7 @@ function CheckRunning(order_id){
                     position: 'topCenter',
                     message: 'Component partname does not match the previous prima partname. if you are sure to load this partname,<br>toggle the replenishment button to NO for initial loading.',
                 });
+                ErrorIns("Component PN does not match the currently running PN");
             }
 
 
@@ -1653,5 +1650,177 @@ function exportMatloading(){
         }
     });
 
+
+}
+
+function ErrorIns(errorType){
+
+    var replenish = "";
+    if ($('#replenish').is(":checked")){
+        replenish = "YES";
+    }
+    else{
+        replenish = "NO";
+    }
+
+    var emp_name = document.getElementById('scan_employee').value;
+    var machine_code = document.getElementById('scan_machine').value;
+    var model_code = document.getElementById('scan_model').value;
+    var position = document.getElementById('scan_pos').value;
+    var feeder_slot = document.getElementById('scan_feed_slot').value;
+    var old_PN = document.getElementById('scan_oldPN').value;
+    var new_PN = document.getElementById('scan_newPN').value;
+    var reelInfo = document.getElementById('scan_newPN').value;
+    if ($('#replenish').is(":checked")){
+        var temp1 = new Array();
+        temp1 = old_PN.split(";");
+
+        for (a in temp1 ) {
+            temp1[a] = (temp1[a]); 
+        }
+        if(a!=0){
+            old_PN = temp1[4].substr(3);
+        }
+        
+       
+    }
+   
+
+    var temp2 = new Array();
+    temp2 = new_PN.split(";");
+
+    for (b in temp2 ) {
+        temp2[b] = (temp2[b]);
+    }
+    if(b!=0){
+        new_PN = temp2[4].substr(3);
+    }
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/ErrorIns',
+        type:'POST',
+        data:{
+            'replenish':replenish,
+            'emp_id':emp_name,
+            'machine_id':machine_code,
+            'model_id':model_code,
+            'position':position,
+            'feeder_slot':feeder_slot,
+            'old_PN':old_PN,
+            'new_PN':new_PN,
+            'errorType':errorType,
+            'reelInfo':reelInfo
+        },
+        success: function (data) {
+            
+            //alert(data);
+           
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
+
+}
+
+function LoadErrorTbl(){
+
+    var s_date = document.getElementById('date_error').value;
+    var today = new Date();
+
+    if(s_date!=""){
+        today = s_date;
+    }
+    else{
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
+        today = yyyy+"-"+mm+"-"+dd;
+        document.getElementById('date_error').value = yyyy+"-"+mm+"-"+dd;
+    }
+
+
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $.ajax({
+        url: 'ajax/loadError',
+        type:'POST',
+        data:{
+            'sdate':today
+        },
+        success: function (data) {
+            //console.log(JSON.stringify(data));
+            
+            $('#datatable2>tbody').empty();
+            var html = '';
+            
+            if(data.length==0)
+            {
+                html +="<tr style='height:100px'><td colspan='10' class='text-center' style='font-size:1.5em'>No data to display. Try to configure the date parameters to load data.</td></tr>";
+            }
+ 
+            for(var i = 0; i < data.length; i++){
+               var table = "";
+               if(data[i].smt_table_rel.name=='A')  
+               {
+                   table = "TABLE 1";
+               }
+               else  if(data[i].smt_table_rel.name=='B')
+               {
+                   table = "TABLE 2";
+               }
+               else  if(data[i].smt_table_rel.name=='C')
+               {
+                   table = "TABLE 3";
+               }
+               else  if(data[i].smt_table_rel.name=='D')
+               {
+                   table = "TABLE 4";
+               }
+
+              
+                
+
+                html +='<tr class="text-center">'+
+                            '<td nowrap>' + data[i].created_at + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
+                            '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
+                            '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
+                            '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
+                            '<td nowrap>' + table + '</td>'+
+                            '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
+                            '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
+                            '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
+                            '<td nowrap>' + data[i].ErrorType + '</td>' +
+                        '</tr>';
+                }   
+            
+            $('#datatable2').append(html);
+           
+        },
+        error: function (data) {
+            marker = JSON.stringify(data);
+            //alert(marker);
+        }
+    });
 
 }

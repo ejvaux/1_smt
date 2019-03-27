@@ -61,8 +61,16 @@
                             <li class="nav-item bold-text">
                                 <a class="nav-link" href="/1_smt/public/scan"><i class="fas fa-barcode"></i>&nbspScan Item</a>
                             </li>
-                            <li class="nav-item bold-text">
-                                <a class="nav-link" href="/1_smt/public/mscan"><i class="fas fa-archive"></i>&nbspMaterials</a>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <i class="fas fa-archive"></i>&nbspMaterials <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                   
+                                    <a class="nav-link" href="/1_smt/public/mscan"><i class="fas fa-archive"></i>&nbspScan Materials</a>
+                                    <a class="nav-link" href="/1_smt/public/errorlog"><i class="fas fa-times-circle"></i>&nbspError Logs</a>
+                                </div>
                             </li>
                             
                             <li class="nav-item bold-text">

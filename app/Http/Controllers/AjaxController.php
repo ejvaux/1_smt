@@ -19,6 +19,7 @@ use App\MatLoadModel;
 use App\RunningOnMachine;
 use App\mounter;
 use App\modelSMT;
+use App\ErrorMatLoading;
 use App\Exports\MaterialLoadExport;
 use App\Exports\ScanRecordExport;
 use Response;
@@ -341,6 +342,68 @@ class AjaxController extends Controller
         ))->download('PRIMA_SMT_'.$workorder->SapJONum.'.xlsx');
 
         }
+    }
+
+
+    public function ErrorInsert(Request $request){
+        $machine = $request->input('machine_id');
+        $component = $request->input('new_PN');
+        //$machine = "CM60201A";
+        $m_code =substr($machine,0,7);
+        $table=substr($machine,-1);
+        
+        $mach_type= machine::where('barcode',$m_code)->first();
+        $table_id= tableSMT::where('name',$table)->first();
+        $comp_id= component::where('product_number',$component)->first();
+        $model_id = modelSMT::where('code',$request->input('model_id'))->first();
+        if($mach_type){
+            $mach_type=$mach_type->id;
+        }
+        else{
+            $mach_type = "0";
+        }
+        if($table_id){
+            $table_id=$table_id->id;
+        }
+        else{
+            $table_id = "0";
+        }
+        if($comp_id){
+            $comp_id=$comp_id->id;
+        }
+        else{
+            $comp_id = "0";
+        }
+        if($model_id){
+            $model_id = $model_id->id;
+        }
+        else{
+            $model_id = "0";
+        }
+
+        $insrecord=new ErrorMatLoading();
+        $insrecord->machine_id=$mach_type;
+        $insrecord->model_id=$request->input('model_id');
+        $insrecord->table_id=$table_id;
+        $insrecord->mounter_id=$request->input('feeder_slot');
+        $insrecord->pos_id=$request->input('position');
+        $insrecord->component_id=$comp_id;
+        $insrecord->employee_id=$request->input('emp_id');
+        $insrecord->ReelInfo=$request->input('reelInfo');
+        $insrecord->ErrorType=$request->input('errorType');
+        $insrecord->save();
+
+    }
+
+    public function LoadError(Request $request){
+
+        $data=ErrorMatLoading::with('machine_rel','smt_model_rel','smt_table_rel','mounter_rel','smt_pos_rel','component_rel','order_rel','employee_rel')
+        ->where('created_at', 'LIKE',$request->input('sdate').'%')
+        ->orderby('created_at','DESC')
+        ->get();
+
+        
+        return Response::json($data);
     }
 
 
