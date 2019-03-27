@@ -783,7 +783,7 @@ function resetval(){
     $('#scan_pos').val("").trigger('change');
     $('#scan_feed_slot').val("").trigger('change');
     document.getElementById('scan_machine').value="";
-    document.getElementById('scan_model').value="";
+   
     document.getElementById('scan_oldPN').value="";
     document.getElementById('scan_newPN').value="";
     document.getElementById('scan_employee').focus();

@@ -8,12 +8,17 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-4"></div>
-                            <div class="col-lg-4"></div>
+                            <div class="col-lg-3"></div>
                             <div class="col-lg-3">
                                 <input type="date" name="date_name" class="form-control" id="date_error">
                             </div>
-                            <div class="col-lg-1">
-                                        <button class="btn btn-sm btn-primary bold-text" type="button" onclick="LoadErrorTbl()"><i class="fas fa-sync"></i>&nbspLOAD</button>
+                            <div class="col-lg-2">
+                                <button class="btn btn-sm btn-primary bold-text" type="button" onclick="LoadErrorTbl()"><i class="fas fa-sync"></i>&nbspLOAD</button>
+                                <form  action = "#" method = "POST" id="vsearchitem1" name="vsearch_form1" style="display:inline-block">
+                                        @csrf
+                                        <button class="btn btn-sm btn-success bold-text" type="submit"><i class="fas fa-file-excel"></i>&nbspEXPORT</button>
+                                        <input hidden type="text" name="s_date" id="hidDateParam">
+                                </form>
                             </div>
                         </div>
                         <br>
