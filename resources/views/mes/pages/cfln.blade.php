@@ -12,21 +12,50 @@
         <div class="row">
             <div class="col-md"></div>
             <div class="col-md-5">
-                <div class="row mb-2">
+                {{-- <div class="row mb-2">
                     <div class="col-md">
                         <div class="btn-group" role="group" aria-label="Basic example">                    
                             <a class="btn btn-outline-danger py-0 p-1" href='{{'cflh'}}'><i class="fas fa-ban"></i> Cancel</a>                
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md">
                         <div class="card">
                             <div class="card-header">
                                 Create New Feeder List
                             </div>
                             <div class="card-body">
-                                <h1>New</h1>        
+                                <div class="form-group row">
+                                    <div class="col-md">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <label for="code" class="col-form-label-sm">MOUNTER:</label>                  
+                                            </div>
+                                            <div class="col-7">
+                                                <input id="code" class="form-control form-control-sm sel" name="code" placeholder="" required>               
+                                            </div>
+                                        </div>
+                                    </div>                                                                   
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <label for="program_name" class="col-form-label-sm">POSITION:</label>                  
+                                            </div>
+                                            <div class="col-7">
+                                                <input id="program_name" class="form-control form-control-sm" name="program_name" placeholder="" required>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md">
+                                        <button type="button" class="btn btn-primary" name="submit" id="add_comp_submit"><i class="far fa-save"></i> Save</button>
+                                        <a class="btn btn-outline-danger py-0 p-1" href='{{'cflh'}}'><i class="fas fa-ban"></i> Cancel</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

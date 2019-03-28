@@ -22,5 +22,8 @@ class VerifyCsrfToken extends Middleware
         'feeders',
         'feeders/*',
         'feederupdate/*',
+        'del_mount',
+        'change_mount',
+        'transfer_mount',
     ];
 }

@@ -28,7 +28,7 @@
         </div>
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">
+                <a class="navbar-brand" href="http://172.16.1.13:8000/">
                     <img src="{{ asset('images/primatech-logo.png')}}" class="nav-badge">
                     {{-- <b>{{ config('app.name', 'Laravel') }}</b> --}}
                 </a>

@@ -57,7 +57,7 @@ class FeedersController extends Controller
         $f->component_id = $request->input('component_id');
 
         $m = ModName::find($request->input('model_id'));
-        $m->updated_by = session('user_num');
+        $m->updated_by = $request->input('user_id');
         $m->touch();
 
         if($f->save()){
@@ -114,7 +114,7 @@ class FeedersController extends Controller
         if($request->input('component_id') != ""){ $f->component_id = $request->input('component_id');}
 
         $m = ModName::find($request->input('model_id'));
-        $m->updated_by = session('user_num');
+        $m->updated_by = $request->input('user_id');
         $m->touch();
 
         if($f->save()){
@@ -131,18 +131,60 @@ class FeedersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $mid = Feeder::where('id',$id)->pluck('model_id')->first();
-        $m = ModName::find($mid);
-        $m->updated_by = session('user_num');
-        $m->touch();
+        $mid = Feeder::where('id',$id)->pluck('model_id')->first(); 
         if(Feeder::where('id',$id)->delete()){
-
-            return 'Component Deleted Successfully.';
+            $m = ModName::find($mid);
+            $m->updated_by = $request->input('user_id');
+            $m->touch();
+            return redirect()->back()->with('success','Component Deleted Successfully.');
+            /* return 'Component Deleted Successfully.'; */
         }
         else{
-            return 'Update Failed.';
+            return redirect()->back()->with('error','Update Failed.');
+            /* return 'Update Failed.'; */
         }
-    }    
+    }
+    public function del_mount(Request $request)
+    {
+        /* Feeder::where('model_id',$id)->where('model_id',$id)->where('model_id',$id)->where('model_id',$id); */        
+        if(Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->delete()){
+            $m = ModName::find($request->input('model_id'));
+            $m->updated_by = $request->input('user_id');
+            $m->touch();
+            return redirect()->back()->with('success','Mounter Deleted Successfully.');
+            /* return 'Mounter Deleted Successfully.'; */
+        }
+        else{
+            return redirect()->back()->with('error','Update Failed.');
+            /* return 'Update Failed.'; */
+        }
+        /* return $request->input('model_id') . '-' . $request->input('machine_type_id') . '-' . $request->input('table_id') . '-' . $request->input('mounter_id'); */
+    }
+    public function change_mount(Request $request)
+    {
+        /* $mts = Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id_from'))->update(['mounter_id' => $request->input('mounter_id_to')]); */
+        if(Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id_from'))->update(['mounter_id' => $request->input('mounter_id_to')])){
+            $m = ModName::find($request->input('model_id'));
+            $m->updated_by = $request->input('user_id');
+            $m->touch();
+            return redirect()->back()->with('success','Mounter Changed Successfully.');
+        }
+        else{
+            return redirect()->back()->with('error','Update Failed.');
+        }
+    }
+    public function transfer_mount(Request $request)
+    {
+        if(Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->update(['table_id' => $request->input('table_id_to')])){
+            $m = ModName::find($request->input('model_id'));
+            $m->updated_by = $request->input('user_id');
+            $m->touch();
+            return redirect()->back()->with('success','Mounter Transferred Successfully.');
+        }
+        else{
+            return redirect()->back()->with('error','Update Failed.');
+        }
+    }
 }

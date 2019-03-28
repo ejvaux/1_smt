@@ -84,6 +84,10 @@ Route::resources([
 
 // deleting mount
 Route::post('del_mount', 'MES\api\FeedersController@del_mount');
+// changing mount
+Route::post('change_mount', 'MES\api\FeedersController@change_mount');
+// transferring mount
+Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 
 // Testing
 Route::get('testt', function () {

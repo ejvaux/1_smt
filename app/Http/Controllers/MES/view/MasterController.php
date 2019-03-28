@@ -105,6 +105,7 @@ class MasterController extends Controller
         $mt = 0;
         $ps = 0;
         $machid = $id;
+        $mounters = $this->mounters;
         $model = ModName::where('id',$mach)->first();
         /* $mounters = Mounter::all(); */
         return view('mes.inc.table.mach',compact(
@@ -112,6 +113,7 @@ class MasterController extends Controller
             'mt',
             'ps',
             'tb',
+            'mounters',
             'machid'
         ));
     }

@@ -14,7 +14,11 @@
             $user_num = $_SESSION['user_num'];
         @endphp
         <meta name="username" content="{{$username}}">
-        <meta name="user_num" content="{{$user_num}}">
+        <meta name="user_num" content="
+        @php
+            echo $user_num;
+        @endphp
+        ">
 
         <!-- Header start -->
         <title>SMT Master Database</title>
