@@ -1,3 +1,7 @@
+$('.form_to_submit').on('submit',function(){
+    $('.form_submit_button').prop('disabled', true);
+    $('.form_submit_button').html('Please Wait...');
+});
 function viewfeederlist($m_id,$mt_id){
     $.ajax({
         type		: "GET",
@@ -8,11 +12,9 @@ function viewfeederlist($m_id,$mt_id){
     });
 }
 $('#flviewmachine').on('change', function(){
-    /* alert($(this).val()); */
     viewfeederlist($('#mdl_id').val(),$(this).val());
 });
 $("#fltable").on('click','.addCmp', function(){
-    /* alert($(this).data('model')+'---'+$(this).data('mach')+'---'+$(this).data('table')); */
     $('#amodel_id').val($(this).data('model'));
     $('#amachine_type_id').val($(this).data('mach'));
     $('#atable_id').val($(this).data('table'));
@@ -22,7 +24,6 @@ $("#fltable").on('click','.addCmp', function(){
     $('.sel').select2({width: '100%'});
 });
 $("#fltable").on('click', '.cmp_edit', function(){
-    /* alert($(this).data('model')+'---'+$(this).data('mach')+'---'+$(this).data('table')+'---'+$(this).data('mount')+'---'+$(this).data('pos')+'---'+$(this).data('pref')+'---'+$(this).data('cmp')); */
     $('#model_id').val($(this).data('model'));
     $('#machine_type_id').val($(this).data('mach'));
     $('#table_id').val($(this).data('table'));
@@ -37,8 +38,6 @@ $("#fltable").on('click', '.cmp_edit', function(){
     $('.sel').select2({width: '100%'});
 });
 $("#fltable").on('click', '.cmp_delete', function(){
-    /* alert($(this).data('model')+'---'+$(this).data('mach')+'---'+$(this).data('table')+'---'+$(this).data('mount')+'---'+$(this).data('pos')+'---'+$(this).data('pref')+'---'+$(this).data('cmp')); */    
-    /* alert($(this).data('id')); */
     swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -49,13 +48,10 @@ $("#fltable").on('click', '.cmp_delete', function(){
         confirmButtonText: 'Yes, Delete it!'
     }).then((result) => {
         if (result.value) {
-            $.ajax(
+            /* $.ajax(
                 {
                 method:'DELETE',
                 url:"/1_smt/public/feeders/"+$(this).data('id'),
-                /* data: {
-                    "_token":$('meta[name="csrf-token"]').attr('content')
-                }, */
                 success: function(data) {          
                     iziToast.success({
                         message: data,
@@ -66,12 +62,13 @@ $("#fltable").on('click', '.cmp_delete', function(){
                     $('#add_comp').modal('hide');
                     viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val());
                 }
-            });
+            }); */
+            $('#del_com_user_id').val($('meta[name="user_num"]').attr('content'));
+            $('#del_cmpt_'+$(this).data('id')).trigger('submit');
         }
     })    
 });
 $("#fdrmodl").on('click','#add_comp_submit', function(){
-    /* alert('TEST'); */
     var err = 0;
     var err_msg = '';
     if($('#amounter_id').val() == ''){
@@ -115,7 +112,8 @@ $("#fdrmodl").on('click','#add_comp_submit', function(){
                     displayMode: 'replace'
                 });
                 $('#add_comp').modal('hide');
-                viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val());
+                location.reload(true);
+                /* viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val()); */                
             }
         });
     }
@@ -129,7 +127,6 @@ $("#fdrmodl").on('click','#add_comp_submit', function(){
     }
 });
 $("#fdrmodl").on('click','#edit_comp_submit', function(){
-    /* alert('TEST'); */
     $.ajax(
         {
         method:'PUT',
@@ -140,7 +137,8 @@ $("#fdrmodl").on('click','#edit_comp_submit', function(){
             'mounter_id':       $('#mounter_id').val(),
             'pos_id':           $('#pos_id').val(),
             'order_id':         $('#order_id').val(),
-            'component_id':     $('#component_id').val()
+            'component_id':     $('#component_id').val(),
+            'user_id':          $('meta[name="user_num"]').attr('content')
         },
         success: function(data) {          
             iziToast.success({
@@ -150,12 +148,12 @@ $("#fdrmodl").on('click','#edit_comp_submit', function(){
                 displayMode: 'replace'
             });
             $('#edit_comp').modal('hide');
-            viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val());
+            location.reload(true);
+            /* viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val()); */
         }
     });
 });
 $('#add_mach').on('click', function(){
-    /* alert('Test'); */
     $(this).hide();
     $('#flviewmachine').hide();
     $('#insert_mach').show();
@@ -163,7 +161,6 @@ $('#add_mach').on('click', function(){
     $('#addmachlist').show();
 });
 $('#cancel_mach').on('click', function(){
-    /* alert('Test'); */
     $('#add_mach').show();
     $('#flviewmachine').show();
     $('#insert_mach').hide();
@@ -209,3 +206,136 @@ $('#insert_mach').on('click', function(){
         });
     }
 });
+/* HIDE/SHOW */
+    /* transfer mounter */
+        $('.transfer_mounter_button').on('click', function(){
+            $('#fl_toolbar_'+$(this).data('id')).hide();
+            $('#transfer_mounter_inputs_'+$(this).data('id')).show();
+        });
+        $('.cancel_transfer_mounter').on('click', function(){
+            $('#fl_toolbar_'+$(this).data('id')).show();
+            $('#transfer_mounter_inputs_'+$(this).data('id')).hide();
+        });
+
+    /* delete mounter */
+        $('.label_mounter').on('click', function(){
+            $('#fl_toolbar_'+$(this).data('id')).hide();
+            $('#list_mounter_inputs_'+$(this).data('id')).show();
+        });
+        $('.cancel_del_mounter').on('click', function(){
+            $('#list_mounter_inputs_'+$(this).data('id')).hide();
+            $('#fl_toolbar_'+$(this).data('id')).show();
+            $('#delmountform').trigger('reset');
+        });
+    /* Change mounter */
+        $('.change_mounter_button').on('click', function(){
+            $('#fl_toolbar_'+$(this).data('id')).hide();
+            $('#change_mounter_inputs_'+$(this).data('id')).show();
+            $('#change_list_mounterto_'+$(this).data('id')).select2({width: '20%'});
+        });
+        $('.cancel_change_mounter').on('click', function(){
+            $('#change_mounter_inputs_'+$(this).data('id')).hide();
+            $('#fl_toolbar_'+$(this).data('id')).show();
+            $('#change_list_mounterto_'+$(this).data('id')).select2('destroy');
+            $('#chngemountform').trigger('reset');
+        });
+
+/* DROPDOWN CHANGE EVENT */
+    /* transfer mounter */
+        $('.transfer_list_mounter').on('change', function(){
+            $('#trns_mounter_id').val($(this).val());
+        });
+        $('.transfer_list_table').on('change', function(){
+            $('#trns_table_id_to').val($(this).val());
+        });
+    /* delete mounter */
+        $('.list_mounter').on('change', function(){
+            $('#del_mounter_id').val($(this).val());
+        });
+    /* Change mounter */
+        $('.change_list_mounterfrom').on('change', function(){
+            $('#exc_mounter_id_from').val($(this).val());
+        });
+        $('.change_list_mounterto').on('change', function(){
+            $('#exc_mounter_id_to').val($(this).val());
+        });
+
+/* SENDING FORMS */
+    /* transfer mounter */
+        $('.transfer_mounter').on('click', function(){
+            if($('#trns_mounter_id').val() != '' && $('#trns_table_id_to').val() != ''){
+                $('#trns_model_id').val($(this).data('model'));
+                $('#trns_machine_type_id').val($(this).data('mach'));
+                $('#trns_table_id').val($(this).data('table'));
+                $('#trns_user_id').val($('meta[name="user_num"]').attr('content'));
+                $('#transfermountform').trigger('submit');
+            }
+            else{
+                iziToast.warning({
+                    message: 'Please complete the empty fields.',
+                    position: 'topCenter',
+                    timeout: 5000,
+                    displayMode: 'replace'
+                });
+            }
+        });        
+    /* delete mounter */
+        $('.del_mounter').on('click', function(){
+            if($('#del_mounter_id').val()){
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, close it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $('#del_model_id').val($(this).data('model'));
+                        $('#del_machine_type_id').val($(this).data('mach'));
+                        $('#del_table_id').val($(this).data('table'));
+                        $('#del_user_id').val($('meta[name="user_num"]').attr('content'));
+                        $('#delmountform').trigger('submit');
+                    }
+                })
+            }
+            else{
+                iziToast.warning({
+                    message: 'Please select mounter.',
+                    position: 'topCenter',
+                    timeout: 5000,
+                    displayMode: 'replace'
+                });
+            }
+        });
+    /* Change mounter */
+        $('.change_mounter').on('click', function(){
+            if($('#exc_mounter_id_from').val() != '' && $('#exc_mounter_id_to').val() != ''){
+                if($('#exc_mounter_id_from').val() != $('#exc_mounter_id_to').val()){
+                    $('#exc_model_id').val($(this).data('model'));
+                    $('#exc_machine_type_id').val($(this).data('mach'));
+                    $('#exc_table_id').val($(this).data('table'));
+                    $('#exc_mounter_id_from').val($('#exc_mounter_id_from').val());
+                    $('#exc_mounter_id_to').val($('#exc_mounter_id_to').val());
+                    $('#exc_user_id').val($('meta[name="user_num"]').attr('content'));
+                    $('#chngemountform').trigger('submit');
+                }
+                else{
+                    iziToast.warning({
+                        message: 'Mounters are identical.',
+                        position: 'topCenter',
+                        timeout: 5000,
+                        displayMode: 'replace'
+                    });
+                }
+            }
+            else{
+                iziToast.warning({
+                    message: 'Please complete the empty fields.',
+                    position: 'topCenter',
+                    timeout: 5000,
+                    displayMode: 'replace'
+                });
+            }
+        });

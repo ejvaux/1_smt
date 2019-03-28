@@ -2,9 +2,9 @@
 @section('tabs')
     <ul class="navbar-nav nav-tabs mr-auto mt-1" id="tb">
         <li><a id="tb1" class="nav-link tbl active" href="{{url('fl')}}">Feeder List</a></li>
-        <li><a id="tb2" class="nav-link tbl" href="{{url('mp')}}">Model - Parts</a></li>
+        {{-- <li><a id="tb2" class="nav-link tbl" href="{{url('mp')}}">Model - Parts</a></li>
         <li><a id="tb3" class="nav-link tbl" href="{{url('lm')}}">Line - Machine Structure</a></li>
-        <li><a id="tb4" class="nav-link tbl" href="{{url('el')}}">Employees</a></li>
+        <li><a id="tb4" class="nav-link tbl" href="{{url('el')}}">Employees</a></li> --}}
     </ul>
 @endsection
 @section('content')
@@ -94,7 +94,7 @@
                                                         @endforeach                                                    
                                                     </select>  
                                                 @endif                                                
-                                                <button id='add_mach' style='font-size:.8rem'><i class="fas fa-plus"></i> Machine</button>
+                                                <button id='add_mach' style='font-size:.8rem' title="Add Machine"><i class="fas fa-plus"></i> Machine</button>
                                                 <select style='display:none' name="" id="addmachlist">
                                                     <option value="">- Select Machine -</option>                                                    
                                                     @foreach ($machinetypes as $machinetype)
@@ -127,15 +127,64 @@
                                                 Updated by:
                                             </div>
                                             <div class="col-md-5">
-                                                {{$model->updatedBy->USER_NAME}}
+                                                @if ($model->updated_by)
+                                                    {{$model->updatedBy->USER_NAME}}
+                                                @else
+                                                    Error: No update user.
+                                                @endif
                                             </div>
                                         </div>                                        
                                     </div>
                                 </div>
+                                {{-- <div class="row">
+                                    <div class="col-md">
+                                        <ul class="nav nav-tabs">
+                                                <li class="nav-item">
+                                                  <a class="nav-link active" href="#">Active</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                  <a class="nav-link" href="#">Link</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                  <a class="nav-link" href="#">Link</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                                                </li>
+                                              </ul>
+                                    </div>
+                                </div> --}}
                                 <div class="row mt-3">
                                     <div class="col-md">
+                                        {{-- delete mounter form --}}
+                                            <form class='form_to_submit' id='delmountform' method='POST' action='/1_smt/public/del_mount'>
+                                                <input id='del_model_id' name='model_id' type="hidden" value="">
+                                                <input id='del_machine_type_id' name='machine_type_id' type="hidden" value="">
+                                                <input id='del_table_id' name='table_id' type="hidden" value="">
+                                                <input id='del_mounter_id' name='mounter_id' type="hidden" value="">
+                                                <input id='del_user_id' name='user_id' type="hidden" value="">
+                                            </form>
+                                        {{-- change mounter form --}}
+                                            <form class='form_to_submit' id='chngemountform' method='POST' action='/1_smt/public/change_mount'>
+                                                <input id='exc_model_id' name='model_id' type="hidden" value="">
+                                                <input id='exc_machine_type_id' name='machine_type_id' type="hidden" value="">
+                                                <input id='exc_table_id' name='table_id' type="hidden" value="">
+                                                <input id='exc_mounter_id_from' name='mounter_id_from' type="hidden" value="">
+                                                <input id='exc_mounter_id_to' name='mounter_id_to' type="hidden" value="">
+                                                <input id='exc_user_id' name='user_id' type="hidden" value="">
+                                            </form>
+                                        {{-- transfer mounter form --}}
+                                            <form class='form_to_submit' id='transfermountform' method='POST' action='/1_smt/public/transfer_mount'>
+                                                <input id='trns_model_id' name='model_id' type="hidden" value="">
+                                                <input id='trns_machine_type_id' name='machine_type_id' type="hidden" value="">
+                                                <input id='trns_table_id' name='table_id' type="hidden" value="">
+                                                <input id='trns_table_id_to' name='table_id_to' type="hidden" value="">
+                                                <input id='trns_mounter_id' name='mounter_id' type="hidden" value="">
+                                                <input id='trns_user_id' name='user_id' type="hidden" value="">
+                                            </form>
                                         <div id="fltable">
                                             {{-- <h5>No selected machine.</h5> --}}
+                                            @include('mes.inc.messages')
                                             @include('mes.inc.table.mach')
                                         </div>
                                     </div>    

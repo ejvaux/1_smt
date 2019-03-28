@@ -20,7 +20,13 @@
                             <th>{{$model->code}}</th>
                             <th>{{$model->program_name}}</th>
                             <th>{{$model->version}}</th>
-                            <th>{{$model->updatedBy->USER_NAME}}</th>
+                            <th>
+                                @if ($model->updated_by)
+                                    {{$model->updatedBy->USER_NAME}}
+                                @else
+                                    Error: No update user.
+                                @endif                                
+                            </th>
                             <th>{{$model->updated_at}}</th>
                             <th>
                                 <div class="btn-group" role="group" aria-label="Basic example">
