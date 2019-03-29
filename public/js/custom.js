@@ -673,7 +673,13 @@ function event_emp(e){
 
                 }
                 else{
-                    iziToast.error({title: 'ERROR',position: 'topCenter',message: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',});
+                    /* iziToast.error({title: 'ERROR',position: 'topCenter',message: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',}); */
+                    Swal.fire({
+                        title: 'Employee does not exists',
+                        text: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',
+                        type: 'error',
+                        timer: 3000
+                      })
                     document.getElementById("scan_emp").value="";
                     document.getElementById("scan_employee").value="";
                     document.getElementById("scan_emp").focus();
@@ -694,7 +700,18 @@ function event_emp(e){
             },
             error: function (data) {
                 marker = JSON.stringify(data);
-                //alert(marker); 
+                  Swal.fire({
+                    title: 'Session Expires',
+                    text: 'Reload the page',
+                    type: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                  }).then((result) => {
+                    if (result.value) {
+                        window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan";
+                    }
+                  })
+                
                
             }
         });
@@ -842,12 +859,20 @@ function event_loadPN(e){
                             CheckFeeder();
                         }
                         else{
-                            iziToast.error({
+                          /*   iziToast.error({
                                 title: 'ERROR',
                                 position: 'topCenter',
                                 timeout: 10000,
+                                messageSize:'20',
                                 message: 'OLD PN and NEW PN must be matched. <br>If you are sure to load different PN, please set <br> the replenish toggle to NO for initial loading.',
-                            });
+                            }); */
+                            Swal.fire({
+                                title: 'OLD PN and NEW PN does not matched',
+                                text: 'OLD PN and NEW PN must be matched. If you are sure to load different PN, please set the replenish toggle to NO for initial loading.',
+                                type: 'error',
+                                timer: 3000
+                              })
+                              
                             ErrorIns("OLD PN and NEW PN not matched");
                             document.getElementById('scan_oldPN').value="";
                             document.getElementById('scan_newPN').value="";
@@ -866,55 +891,97 @@ function event_loadPN(e){
             else{
 
                 if(!emp_name){
-                    iziToast.error({
+                   /*  iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
                         message: 'Please input employee name',
-                    });
+                    }); */
+                    Swal.fire({
+                        title: 'Employee Field is required',
+                        text: 'Please input employee name',
+                        type: 'error',
+                        timer: 1500
+                      })
                     
                 }
                 else if(!machine_code){
-                    iziToast.error({
+                    /* iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
                         message: 'Please scan the machine code',
-                    });
+                    }); */
+                    Swal.fire({
+                        title: 'Machine Code Field is required',
+                        text: 'Please scan the machine code',
+                        type: 'error',
+                        timer: 1500
+                      })
                 }
                 else if(!model_code){
-                    iziToast.error({
+                    /* iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
                         message: 'Please input model name',
-                    });
+                    }); */
+                    Swal.fire({
+                        title: 'Model Name Field is required',
+                        text: 'Please input model name',
+                        type: 'error',
+                        timer: 1500
+                      })
                 }
                 else if(!position){
-                    iziToast.error({
+                    /* iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
                         message: 'Please input position',
-                    });
+                    }); */
+                    Swal.fire({
+                        title: 'Position Field is required',
+                        text: 'Please input position',
+                        type: 'error',
+                        timer: 1500
+                      })
                 }
                 else if(!feeder_slot){
-                    iziToast.error({
+                    /* iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
                         message: 'Please input feeder slot #',
-                    });
+                    }); */
+                    Swal.fire({
+                        title: 'Feeder Slot # is required',
+                        text: 'Please input feeder slot #',
+                        type: 'error',
+                        timer: 1500
+                      })
                 }
                 else if(!new_PN){
-                    iziToast.error({
+                    /* iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
                         message: 'Please input new PN to load',
-                    });
+                    }); */
+                    Swal.fire({
+                        title: 'PN is required',
+                        text: 'Please input new PN to load',
+                        type: 'error',
+                        timer: 1500
+                      })
                 }
                 else{
 
-                    iziToast.error({
+                    /* iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
                         message: 'Please fill out all the required fields',
-                    });
+                    }); */
+                    Swal.fire({
+                        title: 'ERROR',
+                        text: 'Please fill out all the required fields',
+                        type: 'error',
+                        timer: 1500
+                      })
                 }
 
 
@@ -1008,11 +1075,18 @@ function CheckFeeder(){
                 document.getElementById('scan_oldPN').value="";
                 document.getElementById('scan_newPN').value="";
                 document.getElementById('scan_oldPN').focus();
-                iziToast.error({
-                    title: 'ERROR',
-                    position: 'topCenter',
-                    message: 'Component not found in the feeder list. Please check your input data.',
-                });
+                    /* iziToast.error({
+                        title: 'ERROR',
+                        position: 'topCenter',
+                        message: 'Component not found in the feeder list. Please check your input data.',
+                    }); */
+                Swal.fire({
+                    title: 'Check Feeder List or the QR Code to scan',
+                    text: 'Component not found in the feeder list. Please check your input data.',
+                    type: 'error',
+                    timer: 2000
+                  })
+
                 ErrorIns("Component not found in feeder list.");
             }
             
@@ -1022,6 +1096,17 @@ function CheckFeeder(){
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
+            Swal.fire({
+                title: 'Session Expires',
+                text: 'Reload the page',
+                type: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+              }).then((result) => {
+                if (result.value) {
+                    window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan";
+                }
+              })
         }
     });
 
@@ -1094,11 +1179,18 @@ function InsertRecord(order_id){
             'reelInfo':reelInfo
         },
         success: function (data) {
-            iziToast.success({
+           /*  iziToast.success({
                 title: 'SUCCESS',
                 position: 'topCenter',
                 message: 'All inputs are correct.',
-            });
+            }); */
+
+            Swal.fire({
+                title: 'Data Recorded!',
+                text: 'All inputs are correct.',
+                type: 'success',
+                timer: 1500
+              })
             //alert(data);
             loaddata_panel_right();
             resetval();
@@ -1184,11 +1276,19 @@ function CheckRunning(order_id){
                 resetval()
             }
             else{
-                iziToast.error({
+               /*  iziToast.error({
                     title: 'ERROR',
                     position: 'topCenter',
                     message: 'Component partname does not match the previous prima partname. if you are sure to load this partname,<br>toggle the replenishment button to NO for initial loading.',
-                });
+                }); */
+
+                Swal.fire({
+                    title: 'OLD PN does NOT matched the current running data',
+                    text: 'Component partname does not match the previous prima partname. if you are sure to load this partname,toggle the replenishment button to NO for initial loading.',
+                    type: 'error',
+                    timer: 3000
+                  })
+
                 ErrorIns("Component PN does not match the currently running PN");
             }
 
