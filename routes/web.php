@@ -73,7 +73,7 @@ Route::get('cfln', 'MES\view\MasterController@createfeederlistnew');
 Route::get('cflv', 'MES\view\MasterController@createfeederlistversion');
 
 // view feeder list details
-Route::get('fld/{id}', 'MES\view\MasterController@feederlistdetails');
+Route::get('fld/{id}/{mid}', 'MES\view\MasterController@feederlistdetails');
 // rendering tables per machine
 Route::get('fldmach/{mach}/{id}', 'MES\view\MasterController@getmachtables');
 

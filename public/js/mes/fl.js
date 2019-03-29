@@ -12,7 +12,8 @@ function viewfeederlist($m_id,$mt_id){
     });
 }
 $('#flviewmachine').on('change', function(){
-    viewfeederlist($('#mdl_id').val(),$(this).val());
+    /* viewfeederlist($('#mdl_id').val(),$(this).val()); */
+    window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $(this).val();
 });
 $("#fltable").on('click','.addCmp', function(){
     $('#amodel_id').val($(this).data('model'));
@@ -20,6 +21,7 @@ $("#fltable").on('click','.addCmp', function(){
     $('#atable_id').val($(this).data('table'));
     $('#add_comp_form').trigger("reset");
     $('#atable_number').text($(this).data('table'));
+    $('#auser_id').val($('meta[name="user_num"]').attr('content'));
     $('#add_comp').modal('show');
     $('.sel').select2({width: '100%'});
 });
@@ -31,7 +33,10 @@ $("#fltable").on('click', '.cmp_edit', function(){
     $('#pos_id').val($(this).data('pos'));
     $('#order_id').val($(this).data('pref'));
     $('#component_id').val($(this).data('cmp'));
-    $('#feeder_id').val($(this).data('id'));
+    /* $('#feeder_id').val($(this).data('id')); */
+    $('#edit_comp_form').attr('action', '/1_smt/public/feeders/'+$(this).data('id'));
+    $('#user_id').val($('meta[name="user_num"]').attr('content'));
+
 
     $('#table_number').text($(this).data('table'));
     $('#edit_comp').modal('show');
@@ -68,7 +73,7 @@ $("#fltable").on('click', '.cmp_delete', function(){
         }
     })    
 });
-$("#fdrmodl").on('click','#add_comp_submit', function(){
+$("#fdrmodl").on('click','#dd_comp_submit', function(){
     var err = 0;
     var err_msg = '';
     if($('#amounter_id').val() == ''){
@@ -126,7 +131,7 @@ $("#fdrmodl").on('click','#add_comp_submit', function(){
         });
     }
 });
-$("#fdrmodl").on('click','#edit_comp_submit', function(){
+$("#fdrmodl").on('click','#dit_comp_submit', function(){
     $.ajax(
         {
         method:'PUT',
@@ -153,20 +158,7 @@ $("#fdrmodl").on('click','#edit_comp_submit', function(){
         }
     });
 });
-$('#add_mach').on('click', function(){
-    $(this).hide();
-    $('#flviewmachine').hide();
-    $('#insert_mach').show();
-    $('#cancel_mach').show();
-    $('#addmachlist').show();
-});
-$('#cancel_mach').on('click', function(){
-    $('#add_mach').show();
-    $('#flviewmachine').show();
-    $('#insert_mach').hide();
-    $(this).hide();
-    $('#addmachlist').hide();
-});
+
 $('#insert_mach').on('click', function(){
     if($('#addmachlist').val() != ''){
         $.ajax(
@@ -238,6 +230,25 @@ $('#insert_mach').on('click', function(){
             $('#fl_toolbar_'+$(this).data('id')).show();
             $('#change_list_mounterto_'+$(this).data('id')).select2('destroy');
             $('#chngemountform').trigger('reset');
+        });
+    /* Add Machine */
+        $('#add_mach').on('click', function(){
+            /* $(this).hide();
+            $('#flviewmachine').hide();
+            $('#insert_mach').show();
+            $('#cancel_mach').show();
+            $('#addmachlist').show(); */
+            $('#add_machine_input1').hide();
+            $('#add_machine_input2').show();
+        });
+        $('#cancel_mach').on('click', function(){
+            /* $('#add_mach').show();
+            $('#flviewmachine').show();
+            $('#insert_mach').hide();
+            $(this).hide();
+            $('#addmachlist').hide(); */
+            $('#add_machine_input2').hide();
+            $('#add_machine_input1').show();
         });
 
 /* DROPDOWN CHANGE EVENT */

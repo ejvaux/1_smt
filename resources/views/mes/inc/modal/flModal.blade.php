@@ -8,11 +8,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="edit_comp_form"  method="PUT">
+            <form id="edit_comp_form"  method="POST" action=''>
+            @method('PUT')
             <input type="hidden" id="model_id" name="model_id">
             <input type="hidden" id="machine_type_id" name="machine_type_id">
             <input type="hidden" id="table_id" name="table_id">
             <input type="hidden" id="feeder_id" name="feeder_id">
+            <input type="hidden" id="user_id" name="user_id">            
             <div class="modal-body" style="">
                 <h6>TABLE <span id='table_number'></span></h6>
                 <!-- ____________ FORM __________________ -->
@@ -80,7 +82,7 @@
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" name="submit" id="edit_comp_submit"><i class="far fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-primary" name="submit" id="edit_comp_submit"><i class="far fa-save"></i> Save</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>
@@ -98,10 +100,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="add_comp_form"  method="post">
+            <form id="add_comp_form"  method="post" action='{{url('feeders')}}'>
             <input type="hidden" id="amodel_id" name="model_id">
             <input type="hidden" id="amachine_type_id" name="machine_type_id">
             <input type="hidden" id="atable_id" name="table_id">
+            <input type="hidden" id="auser_id" name="user_id">
             <div class="modal-body" style="">
                 <h6>TABLE <span id='atable_number'></span></h6>
                 <!-- ____________ FORM __________________ -->
@@ -173,7 +176,7 @@
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" name="submit" id="add_comp_submit"><i class="far fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-primary" name="submit" id="add_comp_submit"><i class="far fa-save"></i> Save</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>
