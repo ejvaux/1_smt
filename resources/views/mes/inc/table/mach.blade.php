@@ -10,9 +10,9 @@
                         data-mach='{{$machid}}'
                         data-table='{{$i}}'
                     ><i class="fas fa-plus"></i> Component</button>
-                    <button class='label_mounter' id='label_mounter_{{$i}}' data-id='{{$i}}' style='font-size:.8rem' title="Delete Mounter"><i class="far fa-trash-alt"></i> Mounter</button>
-                    <button class='change_mounter_button' id='change_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Change Mounter"><i class="fas fa-exchange-alt"></i> Mounter</button>
-                    <button class='transfer_mounter_button' id='transfer_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Transfer Mounter"><i class="fas fa-long-arrow-alt-right"></i><i class="fas fa-table"></i> Mounter</button>
+                    <button class='label_mounter' id='label_mounter_{{$i}}' data-id='{{$i}}' style='font-size:.8rem' title="Delete Mounter and its components."><i class="far fa-trash-alt"></i> Delete Mounter</button>
+                    <button class='change_mounter_button' id='change_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Change Mounter into another mounter"><i class="fas fa-exchange-alt"></i> Change Mounter</button>
+                    <button class='transfer_mounter_button' id='transfer_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Transfer Mounter into another table"><i class="fas fa-long-arrow-alt-right"></i><i class="fas fa-table"></i> Transfer Mounter</button>
                 </div>
             {{-- FORMS --}}
                 <div id="fl_toolbar_inputs" class='mb-2'>

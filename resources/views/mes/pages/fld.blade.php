@@ -86,36 +86,47 @@
                                                 Machine Name:
                                             </div>
                                             <div class="col-md-6">
-                                                @if (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->count()>0)
-                                                    <select name="" id="flviewmachine">
-                                                        {{-- <option value="">- Select Machine -</option> --}}
-                                                        @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->get() as $mach1)
-                                                            <option value="{{$mach1->machine_type_id}}">{{$mach1->machinetype->name}}</option>
-                                                        @endforeach                                                    
-                                                    </select>  
-                                                @endif                                                
-                                                <button id='add_mach' style='font-size:.8rem' title="Add Machine"><i class="fas fa-plus"></i> Machine</button>
-                                                <select style='display:none' name="" id="addmachlist">
-                                                    <option value="">- Select Machine -</option>                                                    
-                                                    @foreach ($machinetypes as $machinetype)
-                                                        @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->get() as $mach2)
-                                                            @if ($machinetype->id == $mach2->machine_type_id)
-                                                                @php
-                                                                    $chk = 1;
-                                                                @endphp
-                                                            @endif                                                            
-                                                        @endforeach
-                                                        @if ($chk == 0)
-                                                            <option value="{{$machinetype->id}}">{{$machinetype->name}}</option>
-                                                        @else
-                                                            @php
-                                                                $chk = 0;
-                                                            @endphp
-                                                        @endif
-                                                    @endforeach                                                                                                       
-                                                </select><br>
-                                                <button id='insert_mach' style='color:green;font-size:.8rem;display:none'><i class="fas fa-plus"></i> ADD</button>
-                                                <button id='cancel_mach' style='color:red;font-size:.8rem;display:none'><i class="fas fa-ban"></i> CANCEL</button>
+                                                <div id="add_machine_input1">
+                                                    @if (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->count()>0)
+                                                        <select name="" id="flviewmachine" value='{{$machid}}'>
+                                                            {{-- <option value="">- Select Machine -</option> --}}
+                                                            @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->get() as $mach1)
+                                                                @if ($mach1->machine_type_id == $machid)
+                                                                    <option value="{{$mach1->machine_type_id}}" selected>{{$mach1->machinetype->name}}</option>
+                                                                @else
+                                                                    <option value="{{$mach1->machine_type_id}}">{{$mach1->machinetype->name}}</option>
+                                                                @endif                                                            
+                                                            @endforeach                                                    
+                                                        </select>  
+                                                    @endif                                                
+                                                    <button id='add_mach' style='font-size:.8rem' title="Add Machine"><i class="fas fa-plus"></i> Machine</button>
+                                                </div>                                                
+                                                <div id="add_machine_input2" style='display:none'>
+                                                    {{-- Adding machine Form --}}
+                                                    <form id='add_machine_form' method='POST' action="{{url('feeders')}}">
+                                                        <select name="" id="addmachlist">
+                                                            <option value="">- Select Machine -</option>                                                    
+                                                            @foreach ($machinetypes as $machinetype)
+                                                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->get() as $mach2)
+                                                                    @if ($machinetype->id == $mach2->machine_type_id)
+                                                                        @php
+                                                                            $chk = 1;
+                                                                        @endphp
+                                                                    @endif                                                            
+                                                                @endforeach
+                                                                @if ($chk == 0)
+                                                                    <option value="{{$machinetype->id}}">{{$machinetype->name}}</option>
+                                                                @else
+                                                                    @php
+                                                                        $chk = 0;
+                                                                    @endphp
+                                                                @endif
+                                                            @endforeach                                                                                                       
+                                                        </select><br>
+                                                        <button id='insert_mach' style='color:green;font-size:.8rem;'><i class="fas fa-plus"></i> ADD</button>
+                                                        <button id='cancel_mach' style='color:red;font-size:.8rem;'><i class="fas fa-ban"></i> CANCEL</button>
+                                                    </form>
+                                                </div>                                                
                                             </div>
                                             <div class="col-md"></div>
                                         </div>

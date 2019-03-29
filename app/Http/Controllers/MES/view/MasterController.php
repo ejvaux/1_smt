@@ -71,14 +71,19 @@ class MasterController extends Controller
         $machinetypes = $this->machinetypes;
         return view('mes.pages.cflv',compact('machinetypes'));
     }
-    public function feederlistdetails($id)
+    public function feederlistdetails($id,$mid)
     {
         $tb = 0;
         $mt = 0;
         $ps = 0;
         $chk = 0;
         $machinetypes = $this->machinetypes;
-        $machid = Feeder::where('model_id',$id)->groupBy('machine_type_id')->pluck('machine_type_id')->first();
+        if ($mid == 0) {
+            $machid = Feeder::where('model_id',$id)->groupBy('machine_type_id')->pluck('machine_type_id')->first();
+        }
+        else{
+            $machid = $mid;
+        }     
         $model = ModName::where('id',$id)->first();
         $mounters = $this->mounters;
         $positions = $this->positions;

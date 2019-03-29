@@ -61,10 +61,12 @@ class FeedersController extends Controller
         $m->touch();
 
         if($f->save()){
-            return 'Data Saved Successfully.';
+            return redirect()->back()->with('success','Data Saved Successfully.');
+            /* return 'Data Saved Successfully.'; */
         }
         else{
-            return 'Saving Failed.';
+            return redirect()->back()->with('error','Saving Failed.');
+            /* return 'Saving Failed.'; */
         }
     }
 
@@ -118,10 +120,12 @@ class FeedersController extends Controller
         $m->touch();
 
         if($f->save()){
-            return 'Component Updated Successfully.';
+            return redirect()->back()->with('success','Component Updated Successfully.');
+            /* return 'Component Updated Successfully.'; */
         }
         else{
-            return 'Update Failed.';
+            return redirect()->back()->with('error','Update Failed.');
+            /* return 'Update Failed.'; */
         }
     }
 
