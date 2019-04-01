@@ -35,12 +35,12 @@
                                         data-pn="{{$component->product_number}}"
                                         data-av="{{$component->authorized_vendor}}"
                                         data-vpn="{{$component->vendor_pn}}"
-                                    title="Edit"><i class="far fa-edit"></i></button>
-                                    <form id='del_comp_form_{{$component->id}}' action="{{url('components/'.$component->id)}}" method="post">
-                                        @method('DELETE')
-                                        <button type='button' class='btn btn-outline-danger deleteComponent' data-id="{{$component->id}}" type='button' title="Delete"><i class="far fa-trash-alt"></i></button>
-                                    </form>
-                                </div>                                
+                                    title="Edit Component"><i class="far fa-edit"></i></button>
+                                    <button type='button' class='btn btn-outline-danger deleteComponent' data-id="{{$component->id}}" type='button' title="Delete Component"><i class="far fa-trash-alt"></i></button>                                    
+                                </div>
+                                <form id='del_comp_form_{{$component->id}}' action="{{url('components/'.$component->id)}}" method="post">
+                                    @method('DELETE')                                        
+                                </form>                              
                             </th>
                         </tr>
                     @endforeach                
