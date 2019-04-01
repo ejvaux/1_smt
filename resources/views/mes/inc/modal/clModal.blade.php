@@ -17,20 +17,20 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="product_number" class="col-form-label-sm">Product Number:</label>                  
+                                <label for="product_number" class="col-form-label">Product Number:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control-sm' type="text" name="product_number" id="product_number">
+                                <input class='form-control form-control' type="text" name="product_number" id="product_number">
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="authorized_vendor" class="col-form-label-sm">Authorized Vendor:</label>                  
+                                <label for="authorized_vendor" class="col-form-label">Authorized Vendor:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control-sm' type="text" name="authorized_vendor" id="authorized_vendor">
+                                <input class='form-control form-control' type="text" name="authorized_vendor" id="authorized_vendor">
                             </div>
                         </div>
                     </div>                                
@@ -39,10 +39,10 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="vendor_pn" class="col-form-label-sm">Vendor P/N:</label>                  
+                                <label for="vendor_pn" class="col-form-label">Vendor P/N:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control-sm' type="text" name="vendor_pn" id="vendor_pn">                 
+                                <input class='form-control form-control' type="text" name="vendor_pn" id="vendor_pn">                 
                             </div>
                         </div>
                     </div>                               
@@ -78,20 +78,20 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="eproduct_number" class="col-form-label-sm">Product Number:</label>                  
+                                <label for="eproduct_number" class="col-form-label">Product Number:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control-sm' type="text" name="product_number" id="eproduct_number">
+                                <input class='form-control form-control' type="text" name="product_number" id="eproduct_number">
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="eauthorized_vendor" class="col-form-label-sm">Authorized Vendor:</label>                  
+                                <label for="eauthorized_vendor" class="col-form-label">Authorized Vendor:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control-sm' type="text" name="authorized_vendor" id="eauthorized_vendor">
+                                <input class='form-control form-control' type="text" name="authorized_vendor" id="eauthorized_vendor">
                             </div>
                         </div>
                     </div>                                
@@ -100,10 +100,10 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="evendor_pn" class="col-form-label-sm">Vendor P/N:</label>                  
+                                <label for="evendor_pn" class="col-form-label">Vendor P/N:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control-sm' type="text" name="vendor_pn" id="evendor_pn">                 
+                                <input class='form-control form-control' type="text" name="vendor_pn" id="evendor_pn">                 
                             </div>
                         </div>
                     </div>                               
