@@ -25,8 +25,3 @@ $(document).on({
     ajaxStart: function() { /* $body.addClass("loading"); */ $('.mdl').show();  },   
     ajaxStop: function() { /* $body.removeClass("loading"); */$('.mdl').fadeOut(700); }    
 });
-
-$('#app').on('submit','.form_to_submit',function(){
-    $('.form_submit_button').prop('disabled', true);
-    $('.form_submit_button').html('Processing ...');
-});
