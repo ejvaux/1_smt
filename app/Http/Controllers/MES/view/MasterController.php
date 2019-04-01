@@ -36,12 +36,13 @@ class MasterController extends Controller
         $models = ModName::sortable()->orderby('updated_at','DESC')->paginate('10');
         return view('mes.pages.fl',compact('username','models'));
     }
-    public function modelparts()
+    public function components()
     {
         /* $machine_types = machineType::orderby('id')->get();
         $tables = tableSMT::orderby('id')->get(); */
+        $components = Component::sortable()->orderby('id','DESC')->paginate('100');
         $username = '';
-        return view('mes.pages.mp',compact('username'));
+        return view('mes.pages.cl',compact('username','components'));
     }
     public function linemach()
     {

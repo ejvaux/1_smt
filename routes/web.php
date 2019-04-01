@@ -63,7 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
 /* ----- MES ----- */
 Route::get('smtmasterdb', 'MES\view\MasterController@index');
 Route::get('fl', 'MES\view\MasterController@feederlist');
-Route::get('mp', 'MES\view\MasterController@modelparts');
+Route::get('cl', 'MES\view\MasterController@components');
 Route::get('lm', 'MES\view\MasterController@linemach');
 Route::get('el', 'MES\view\MasterController@employee');
 
@@ -79,7 +79,8 @@ Route::get('fldmach/{mach}/{id}', 'MES\view\MasterController@getmachtables');
 
 // Tables
 Route::resources([
-    'feeders' => 'MES\api\FeedersController'
+    'feeders' => 'MES\api\FeedersController',
+    'components' => 'MES\api\ComponentsController'
 ]);
 
 // deleting mount
