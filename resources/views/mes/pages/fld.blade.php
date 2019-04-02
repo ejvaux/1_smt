@@ -115,7 +115,7 @@
                                                         <input id='pos_id' type="hidden" name="pos_id" value="0">
                                                         <input id='order_id' type="hidden" name="order_id" value="0">
                                                         <input id='component_id' type="hidden" name="component_id" value="0">
-                                                        <input id='amupdated_by' type="hidden" name="updated_by" value="">
+                                                        <input id='amupdated_by' type="hidden" name="user_id" value="">
                                                         <select id="addmachlist" name="machine_type_id">
                                                             <option value="">- Select Machine -</option>                                                    
                                                             @foreach ($machinetypes as $machinetype)
