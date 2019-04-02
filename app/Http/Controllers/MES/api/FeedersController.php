@@ -139,7 +139,7 @@ class FeedersController extends Controller
     {
         $mid = Feeder::where('id',$id)->pluck('model_id')->first(); 
         if(Feeder::where('id',$id)->delete()){
-            $m = ModName::find($mid);
+            $m = ModName::where('id',$mid)->first();
             $m->updated_by = $request->input('user_id');
             $m->touch();
             return redirect()->back()->with('success','Component Deleted Successfully.');

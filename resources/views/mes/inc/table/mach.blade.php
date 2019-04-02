@@ -1,8 +1,14 @@
+<div class="tab-content">
 @for ($i = 1; $i <= \App\Http\Controllers\MES\model\MachineType::where('id',$machid)->pluck('table_count')->first(); $i++)
+    @if ($i == 1)
+        <div class="tab-pane active" id="tab{{$i}}">
+    @else
+        <div class="tab-pane" id="tab{{$i}}">
+    @endif
     {{-- @if (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('machine_type_id',$machid)->where('table_id',$i)->count()) --}}
         <div class="row">
             <div class="col-md">
-                <span class='font-weight-bold text-muted'>Table {{$i}}</span>
+                {{-- <span class='font-weight-bold text-muted'>Table {{$i}}</span> --}}
             {{-- TOOLBAR --}}
                 <div id="fl_toolbar_{{$i}}" class='mb-2'>
                     <button class='addCmp'  style='font-size:.8rem' title="Add Component"
@@ -109,7 +115,7 @@
                         @endphp
                         <td>{{$feeder->preference->name}}</td>
                         <td>{{$feeder->component->product_number}}</td>
-                        <td>
+                        <td>                            
                             <button class='cmp_edit'
                                 data-id='{{$feeder->id}}'
                                 data-model='{{$model->id}}'
@@ -120,15 +126,13 @@
                                 data-pref='{{$feeder->order_id}}'
                                 data-cmp='{{$feeder->component_id}}'
                             >Edit</button>                            
-                            <button class='cmp_delete form_submit_button' type='button' data-id='{{$feeder->id}}'>Delete</button>
-                            <form class='form_to_submit' id='del_cmpt_{{$feeder->id}}' action="/1_smt/public/feeders/{{$feeder->id}}" method="post">
-                                @method('DELETE')  
-                                <input id='del_com_user_id' name='user_id' type="hidden" value="">                                                         
-                            </form>
+                            <button class='cmp_delete form_submit_button' type='button' data-id='{{$feeder->id}}'>Delete</button>                            
                         </td>
-                    </tr> 
+                    </tr>                    
                 @endforeach                                                                                                     
             </tbody>
         </table>
+        </div>
     {{-- @endif --}}
 @endfor
+</div>
