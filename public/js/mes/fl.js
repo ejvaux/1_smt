@@ -142,7 +142,7 @@ $("#fdrmodl").on('click','#dit_comp_submit', function(){
     });
 });
 
-$('#insert_mach').on('click', function(){
+$('#insert_mach1').on('click', function(){
     if($('#addmachlist').val() != ''){
         $.ajax(
             {
@@ -180,6 +180,12 @@ $('#insert_mach').on('click', function(){
             displayMode: 'replace'
         });
     }
+});
+/* ADDING MACHINE */
+$('#insert_mach').on('click',function(){
+    $('#amupdated_by').val($('meta[name="user_num"]').attr('content'));
+    /* alert($('#amupdated_by').val()); */
+    $('#add_machine_form').trigger('submit');
 });
 /* HIDE/SHOW */
     /* transfer mounter */

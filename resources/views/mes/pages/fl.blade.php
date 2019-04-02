@@ -12,7 +12,7 @@
         <div class="row mb-2">
             <div class="col-md">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    {{-- <a class="btn btn-outline-info py-0 p-1" href='{{url('cflh')}}'>Add list</a>  --}}               
+                    <button id='add_model_button' class="btn btn-outline-info py-0 p-1">Add Model</button>
                 </div>
             </div>
             {{-- <div class="col-md-3 ml-0 pl-1 ">
@@ -25,10 +25,15 @@
             </div> --}}
         </div>
         <div class="row">
+            <div class="col-md">
+                @include('mes.inc.messages')
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md" >
                 @include('mes.inc.table.flTable')
             </div>
         </div>
     </div>
-    {{-- @include('mes.inc.modal.flModal') --}}
+    @include('mes.inc.modal.modModal')
 @endsection

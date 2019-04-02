@@ -80,7 +80,8 @@ Route::get('fldmach/{mach}/{id}', 'MES\view\MasterController@getmachtables');
 // Tables
 Route::resources([
     'feeders' => 'MES\api\FeedersController',
-    'components' => 'MES\api\ComponentsController'
+    'components' => 'MES\api\ComponentsController',
+    'models' => 'MES\api\ModelsController'
 ]);
 
 // deleting mount

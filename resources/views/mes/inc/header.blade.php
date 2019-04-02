@@ -7,3 +7,4 @@
 <script src="{{ asset('js/mes/app2.js') }}"></script>
 <script src="{{ asset('js/mes/fl.js') }}" defer></script>
 <script src="{{ asset('js/mes/cl.js') }}" defer></script>
+<script src="{{ asset('js/mes/ml.js') }}" defer></script>
