@@ -20,6 +20,11 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md">                        
+                        @include('mes.inc.messages')
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md" >
                         <div class="card">
                             <div class="card-header">
@@ -193,9 +198,37 @@
                                                 <input id='trns_mounter_id' name='mounter_id' type="hidden" value="">
                                                 <input id='trns_user_id' name='user_id' type="hidden" value="">
                                             </form>
+                                        {{-- Delete components form --}}
+                                            <form class='form_to_submit' id='del_cmpt' action="" method="post">
+                                                @method('DELETE')  
+                                                <input id='del_com_user_id' type="hidden" name='user_id' value="">                                                         
+                                            </form>
                                         <div id="fltable">
                                             {{-- <h5>No selected machine.</h5> --}}
-                                            @include('mes.inc.messages')
+                                            <ul class="nav nav-pills mb-2">
+                                                @for ($i = 1; $i <= \App\Http\Controllers\MES\model\MachineType::where('id',$machid)->pluck('table_count')->first(); $i++)
+                                                    @if ($i == 1)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" href="#tab{{$i}}" data-toggle="tab">Table {{$i}}</a>
+                                                        </li> 
+                                                    @else
+                                                        <li class="nav-item">
+                                                            <a class="nav-link " href="#tab{{$i}}" data-toggle="tab">Table {{$i}}</a>
+                                                        </li>
+                                                    @endif                                                                                                   
+                                                @endfor
+                                            </ul>
+                                              {{-- <div class="tab-content">
+                                                <div class="tab-pane active" id="firsttab">
+                                                  <h1>I'm in first tab</h1>
+                                                </div>
+                                                <div class="tab-pane" id="secondtab">
+                                                  <h1>I'm in second tab</h1>
+                                                </div>
+                                                <div class="tab-pane" id="thirdtab">
+                                                  <h1>I'm in third tab</h1>
+                                                </div>
+                                              </div> --}}
                                             @include('mes.inc.table.mach')
                                         </div>
                                     </div>    

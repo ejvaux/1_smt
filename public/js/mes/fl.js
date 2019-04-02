@@ -38,7 +38,7 @@ $("#fltable").on('click', '.cmp_edit', function(){
     $('#edit_comp').modal('show');
     $('.sel').select2({width: '100%'});
 });
-$("#fltable").on('click', '.cmp_delete', function(){
+$("#fltable").on('click', '.cmp_delete', function(){    
     swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -49,23 +49,10 @@ $("#fltable").on('click', '.cmp_delete', function(){
         confirmButtonText: 'Yes, Delete it!'
     }).then((result) => {
         if (result.value) {
-            /* $.ajax(
-                {
-                method:'DELETE',
-                url:"/1_smt/public/feeders/"+$(this).data('id'),
-                success: function(data) {          
-                    iziToast.success({
-                        message: data,
-                        position: 'topCenter',
-                        timeout: 5000,
-                        displayMode: 'replace'
-                    });
-                    $('#add_comp').modal('hide');
-                    viewfeederlist($('#mdl_id').val(),$('#flviewmachine').val());
-                }
-            }); */
-            $('#del_com_user_id').val($('meta[name="user_num"]').attr('content'));
-            $('#del_cmpt_'+$(this).data('id')).trigger('submit');
+            $('#del_com_user_id').val($("meta[name='user_num']").attr('content').replace(/\s+/g, ''));           
+            /* alert("||"+$('#del_com_user_id').val()+"||"); */
+            $('#del_cmpt').attr('action', '/1_smt/public/feeders/'+$(this).data('id'));
+            $('#del_cmpt').trigger('submit');
         }
     })    
 });
