@@ -31,10 +31,21 @@ class MasterController extends Controller
     {
         return redirect('fl');
     }
-    public function feederlist()
+    public function feederlist(Request $request)
     {
-        $models = ModName::sortable()->orderby('updated_at','DESC')->paginate('10');
-        return view('mes.pages.fl',compact('username','models'));
+        $t = $request->input('text');        
+        if($t == ''){
+            $models = ModName::sortable()->orderby('updated_at','DESC')->paginate('10');
+        }
+        else{
+            $models = ModName::sortable()
+                ->where('code','LIKE','%'.$t.'%')
+                ->orwhere('program_name','LIKE','%'.$t.'%')
+                ->orwhere('updated_by','LIKE','%'.$t.'%')
+                ->orwhere('updated_at','LIKE','%'.$t.'%')
+            ->orderby('updated_at','DESC')->paginate('10');
+        }        
+        return view('mes.pages.fl',compact('models'));
     }
     public function components()
     {
@@ -122,5 +133,18 @@ class MasterController extends Controller
             'mounters',
             'machid'
         ));
+    }
+
+    /* SEARCHING */
+    public function searchmodel(Request $request)
+    {   
+        $t = $request->input('text');
+        $models = ModName::sortable()
+                ->where('code','LIKE','%'.$t.'%')
+                ->orwhere('program_name','LIKE','%'.$t.'%')
+                ->orwhere('updated_by','LIKE','%'.$t.'%')
+                ->orwhere('updated_at','LIKE','%'.$t.'%')
+        ->orderby('updated_at','DESC')->paginate('10');
+        return view('mes.pages.fl',compact('models'));        
     }
 }

@@ -72,6 +72,9 @@ Route::get('cflh', 'MES\view\MasterController@createfeederlisthome');
 Route::get('cfln', 'MES\view\MasterController@createfeederlistnew');
 Route::get('cflv', 'MES\view\MasterController@createfeederlistversion');
 
+// Searching
+Route::post('fl/search', 'MES\view\MasterController@searchmodel');
+
 // view feeder list details
 Route::get('fld/{id}/{mid}', 'MES\view\MasterController@feederlistdetails');
 // rendering tables per machine
@@ -83,7 +86,6 @@ Route::resources([
     'components' => 'MES\api\ComponentsController',
     'models' => 'MES\api\ModelsController'
 ]);
-
 // deleting mount
 Route::post('del_mount', 'MES\api\FeedersController@del_mount');
 // changing mount

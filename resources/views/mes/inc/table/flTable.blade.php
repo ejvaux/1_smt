@@ -6,7 +6,7 @@
                     <th>#</th>
                     <th>@sortablelink('code','Model Name')</th>
                     <th>@sortablelink('program_name','Program Name')</th>
-                    <th>@sortablelink('revision','Version')</th>
+                    {{-- <th>@sortablelink('revision','Version')</th> --}}
                     <th>@sortablelink('updated_by','Updated by')</th>
                     <th>@sortablelink('updated_at','Updated at')</th>
                     <th>Action</th>
@@ -19,7 +19,7 @@
                             <th>{{ $loop->iteration + (($models->currentPage() - 1) * 10) }}</th>
                             <th>{{$model->code}}</th>
                             <th>{{$model->program_name}}</th>
-                            <th>{{$model->version}}</th>
+                            {{-- <th>{{$model->version}}</th> --}}
                             <th>
                                 @if ($model->updated_by)
                                     {{$model->updatedBy->USER_NAME}}
@@ -37,7 +37,11 @@
                         </tr>
                     @endforeach                
                 @else
-                    <p>No Models Found.</p>
+                    <tr>
+                        <td colspan="6" class='text-center'>
+                            <h3>No Models Found.</h3>
+                        </td>
+                    </tr>                    
                 @endif 
             </tbody>
         </table>

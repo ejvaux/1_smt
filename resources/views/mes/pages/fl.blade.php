@@ -15,14 +15,14 @@
                     <button id='add_model_button' class="btn btn-outline-info py-0 p-1">Add Model</button>
                 </div>
             </div>
-            {{-- <div class="col-md-3 ml-0 pl-1 ">
-                <form>
-                    <div class="input-group">                    
-                        <input type="text" class="form-control" id="searchtextbox" placeholder="Search list . . .">
-                        <button type="button" value="" id="search"><i class="fa fa-search"></i></button>
-                    </div>               
+            <div class="col-md-3 ml-0 pl-1 ">
+                <form method="get" action="{{url('fl')}}">
+                    <div class="input-group">                        
+                        <input type="text" class="form-control" id="" name="text" placeholder="Search model . . .">
+                        <button type="submit" class='btn btn-outline-secondary' id=""><i class="fa fa-search"></i></button>                                            
+                    </div>
                 </form>
-            </div> --}}
+            </div>
         </div>
         <div class="row">
             <div class="col-md">

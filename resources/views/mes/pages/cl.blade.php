@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 py-0 mr-0 text-center" >
+            <div class="col-md py-0 mr-0 text-center" >
                 {{-- <h1>MODEL - PARTS TEST PAGE</h1> --}}                
                 @include('mes.inc.table.clTable')
             </div>

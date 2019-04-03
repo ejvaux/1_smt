@@ -26,6 +26,7 @@ class VerifyCsrfToken extends Middleware
         'feeders',
         'feeders/*',
         'feederupdate/*',
+        'fl',
         'del_mount',
         'change_mount',
         'transfer_mount',
