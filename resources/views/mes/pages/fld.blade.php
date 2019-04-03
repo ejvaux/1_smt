@@ -2,8 +2,8 @@
 @section('tabs')
     <ul class="navbar-nav nav-tabs mr-auto mt-1" id="tb">
         <li><a id="tb1" class="nav-link tbl active" href="{{url('fl')}}">Feeder List</a></li>
-        {{-- <li><a id="tb2" class="nav-link tbl" href="{{url('mp')}}">Model - Parts</a></li>
-        <li><a id="tb3" class="nav-link tbl" href="{{url('lm')}}">Line - Machine Structure</a></li>
+        <li><a id="tb2" class="nav-link tbl" href="{{url('cl')}}">Components</a></li>
+        {{-- <li><a id="tb3" class="nav-link tbl" href="{{url('lm')}}">Line - Machine Structure</a></li>
         <li><a id="tb4" class="nav-link tbl" href="{{url('el')}}">Employees</a></li> --}}
     </ul>
 @endsection
@@ -109,7 +109,14 @@
                                                 <div id="add_machine_input2" style='display:none'>
                                                     {{-- Adding machine Form --}}
                                                     <form id='add_machine_form' method='POST' action="{{url('feeders')}}">
-                                                        <select name="" id="addmachlist">
+                                                        <input id='model_id' type="hidden" name="model_id" value="{{$model->id}}">
+                                                        <input id='table_id' type="hidden" name="table_id" value="0">
+                                                        <input id='mounter_id' type="hidden" name="mounter_id" value="0">
+                                                        <input id='pos_id' type="hidden" name="pos_id" value="0">
+                                                        <input id='order_id' type="hidden" name="order_id" value="0">
+                                                        <input id='component_id' type="hidden" name="component_id" value="0">
+                                                        <input id='amupdated_by' type="hidden" name="user_id" value="">
+                                                        <select id="addmachlist" name="machine_type_id">
                                                             <option value="">- Select Machine -</option>                                                    
                                                             @foreach ($machinetypes as $machinetype)
                                                                 @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->get() as $mach2)
@@ -128,8 +135,8 @@
                                                                 @endif
                                                             @endforeach                                                                                                       
                                                         </select><br>
-                                                        <button id='insert_mach' style='color:green;font-size:.8rem;'><i class="fas fa-plus"></i> ADD</button>
-                                                        <button id='cancel_mach' style='color:red;font-size:.8rem;'><i class="fas fa-ban"></i> CANCEL</button>
+                                                        <button type='button' id='insert_mach' style='color:green;font-size:.8rem;'><i class="fas fa-plus"></i> ADD</button>
+                                                        <button type='button' id='cancel_mach' style='color:red;font-size:.8rem;'><i class="fas fa-ban"></i> CANCEL</button>
                                                     </form>
                                                 </div>                                                
                                             </div>
@@ -152,24 +159,6 @@
                                         </div>                                        
                                     </div>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-md">
-                                        <ul class="nav nav-tabs">
-                                                <li class="nav-item">
-                                                  <a class="nav-link active" href="#">Active</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                  <a class="nav-link" href="#">Link</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                  <a class="nav-link" href="#">Link</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                                                </li>
-                                              </ul>
-                                    </div>
-                                </div> --}}
                                 <div class="row mt-3">
                                     <div class="col-md">
                                         {{-- delete mounter form --}}
@@ -218,17 +207,6 @@
                                                     @endif                                                                                                   
                                                 @endfor
                                             </ul>
-                                              {{-- <div class="tab-content">
-                                                <div class="tab-pane active" id="firsttab">
-                                                  <h1>I'm in first tab</h1>
-                                                </div>
-                                                <div class="tab-pane" id="secondtab">
-                                                  <h1>I'm in second tab</h1>
-                                                </div>
-                                                <div class="tab-pane" id="thirdtab">
-                                                  <h1>I'm in third tab</h1>
-                                                </div>
-                                              </div> --}}
                                             @include('mes.inc.table.mach')
                                         </div>
                                     </div>    
