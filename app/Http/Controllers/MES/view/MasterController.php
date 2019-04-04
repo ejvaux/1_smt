@@ -47,11 +47,19 @@ class MasterController extends Controller
         }        
         return view('mes.pages.fl',compact('models'));
     }
-    public function components()
+    public function components(Request $request)
     {
-        /* $machine_types = machineType::orderby('id')->get();
-        $tables = tableSMT::orderby('id')->get(); */
-        $components = Component::sortable()->orderby('id','DESC')->paginate('100');
+        $t = $request->input('text');
+        if($t == ''){
+            $components = Component::sortable()->orderby('id','DESC')->paginate('100');
+        }
+        else{            
+            $components = Component::sortable()
+                ->where('product_number','LIKE','%'.$t.'%')
+                ->orwhere('authorized_vendor','LIKE','%'.$t.'%')
+                ->orwhere('vendor_pn','LIKE','%'.$t.'%')
+            ->orderby('id','DESC')->paginate('100');
+        }        
         $username = '';
         return view('mes.pages.cl',compact('username','components'));
     }
