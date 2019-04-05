@@ -25,6 +25,8 @@ class VerifyCsrfToken extends Middleware
         'components/*',
         'feeders',
         'feeders/*',
+        'lines',
+        'lines/*',
         'feederupdate/*',
         'fl',
         'del_mount',

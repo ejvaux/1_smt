@@ -5,12 +5,14 @@ namespace App\Http\Controllers\MES\view;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MES\model\ModName;
+use App\Http\Controllers\MES\model\Machine;
 use App\Http\Controllers\MES\model\MachineType;
 use App\Http\Controllers\MES\model\Feeder;
 use App\Http\Controllers\MES\model\Mounter;
 use App\Http\Controllers\MES\model\Position;
 use App\Http\Controllers\MES\model\Preference;
 use App\Http\Controllers\MES\model\Component;
+use App\Http\Controllers\MES\model\Line;
 
 class MasterController extends Controller
 {
@@ -26,6 +28,7 @@ class MasterController extends Controller
         $this->positions = Position::all();
         $this->prefs = Preference::all();
         $this->components = Component::all();
+        $this->machines = Machine::all();
     }
     public function index()
     {
@@ -63,12 +66,11 @@ class MasterController extends Controller
         $username = '';
         return view('mes.pages.cl',compact('username','components'));
     }
-    public function linemach()
+    public function linestruc()
     {
-        /* $machine_types = machineType::orderby('id')->get();
-        $tables = tableSMT::orderby('id')->get(); */
-        $username = '';
-        return view('mes.pages.lm',compact('username'));
+        $machines = $this->machines;
+        $lines = Line::sortable()->orderBy('id','DESC')->paginate('10');
+        return view('mes.pages.ls',compact('lines','machines'));
     }
     public function employee()
     {

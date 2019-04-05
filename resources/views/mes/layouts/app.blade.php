@@ -38,6 +38,8 @@
                 <!-- <span class="navbar-toggler-icon"></span> -->MENU <i class="fas fa-caret-down"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    
+                    @include('mes.inc.tabs')
                     @yield('tabs')
                             
                 <!-- ICONS ON LEFT -->
