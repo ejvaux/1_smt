@@ -12,14 +12,14 @@
                     <button id='addlinemach' class="btn btn-outline-secondary" href='#'><i class="fas fa-plus"></i> New Line - Machine</button>           
                 </div>
             </div>
-            <div class="col-md-3 ml-0 pl-1 ">
+            {{-- <div class="col-md-3 ml-0 pl-1 ">
                 <form>
                     <div class="input-group">                    
                         <input type="text" class="form-control" id="searchtextbox" placeholder="Search line - machine . . .">
                         <button type="button" value="" id="search"><i class="fa fa-search"></i></button>
                     </div>               
                 </form>
-            </div>
+            </div> --}}
         </div>
         <div class="row">
             <div class="col-md">
