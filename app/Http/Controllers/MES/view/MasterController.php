@@ -66,10 +66,18 @@ class MasterController extends Controller
         $username = '';
         return view('mes.pages.cl',compact('username','components'));
     }
-    public function linestruc()
+    public function linestruc(Request $request)
     {
+        $t = $request->input('text');
         $machines = $this->machines;
-        $lines = Line::sortable()->orderBy('id','DESC')->paginate('10');
+        if($t == ''){
+            $lines = Line::sortable()->orderBy('id','DESC')->paginate('10');
+        }
+        else{            
+            $lines = Line::sortable()
+                ->where('code','LIKE','%'.$t.'%')
+            ->orderBy('id','DESC')->paginate('10');
+        } 
         return view('mes.pages.ls',compact('lines','machines'));
     }
     public function employee()
