@@ -45,7 +45,11 @@
                         </tr>
                     @endforeach                
                 @else
-                    <p>No Components Found.</p>
+                <tr>
+                    <td colspan="7">
+                        <h4>No Components Found.</h4>
+                    </td>
+                </tr>                    
                 @endif 
             </tbody>
         </table>

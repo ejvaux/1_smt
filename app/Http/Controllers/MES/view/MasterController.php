@@ -13,6 +13,7 @@ use App\Http\Controllers\MES\model\Position;
 use App\Http\Controllers\MES\model\Preference;
 use App\Http\Controllers\MES\model\Component;
 use App\Http\Controllers\MES\model\Line;
+use App\Http\Controllers\MES\model\Employee;
 
 class MasterController extends Controller
 {
@@ -80,12 +81,19 @@ class MasterController extends Controller
         } 
         return view('mes.pages.ls',compact('lines','machines'));
     }
-    public function employee()
+    public function employee(Request $request)
     {
-        /* $machine_types = machineType::orderby('id')->get();
-        $tables = tableSMT::orderby('id')->get(); */
-        $username = '';
-        return view('mes.pages.el',compact('username'));
+        $t = $request->input('text');
+        if($t == ''){
+            $employees = Employee::sortable()->orderBy('id')->paginate('20');
+        }
+        else{
+            $employees = Employee::sortable()
+                ->where('fname','LIKE','%'.$t.'%')
+                ->orwhere('lname','LIKE','%'.$t.'%')
+            ->orderBy('id')->paginate('20');
+        }       
+        return view('mes.pages.el',compact('employees'));
     }
     public function createfeederlisthome()
     {
