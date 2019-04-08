@@ -15,7 +15,7 @@
         @endphp
         <meta name="username" content="{{$username}}">
         <meta name="user_num" content="{{$user_num}}">{{-- @php echo $user_num; @endphp --}}
-
+        <meta name="google" content="notranslate">
         <!-- Header start -->
         <title>SMT Master Database</title>
         @include('mes.inc.header')
