@@ -2,6 +2,7 @@ $('.editEmployee').on('click', function(){
     /* alert('Test'); */
     $('#fname').val($(this).data('fn'));
     $('#lname').val($(this).data('ln'));
+    $('#edit_emp_form').attr('action', '/1_smt/public/employees/'+$(this).data('id'));
     $('#edit_emp_details').modal('show');
 });
 $('.deleteEmployee').on('click', function(){    

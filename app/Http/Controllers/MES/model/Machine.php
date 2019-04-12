@@ -13,5 +13,14 @@ class Machine extends Model
 
     use Sortable;
 
-    public $sortable = ['id'];
+    public $sortable = ['id','code','machine_type_id','line_id'];
+
+    public function type()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\MachineType','machine_type_id');
+    }
+    public function line()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\Line','line_id');
+    }
 }

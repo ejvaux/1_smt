@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\MES\api;
 
 use App\Http\Controllers\MES\model\Machine;
+use App\Http\Controllers\MES\model\MachineType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -36,7 +37,27 @@ class MachinesController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'machine_type_id' => 'integer|required'
+        ]);
+
+        $cc = Machine::where('machine_type_id',$request->input('machine_type_id'))->orderBy('id','DESC')->pluck('code')->first();
+        $c = substr($cc,6,2)+1;
+        if($c < 10){
+            $c = '0'.$c;
+        }
+        $t = MachineType::where('id',$request->input('machine_type_id'))->first();
+        $m = new Machine;
+        $m->code = $t->name.'-'.$c;
+        $m->barcode = $t->name.$c;
+        $m->machine_type_id = $request->input('machine_type_id');
+        $m->line_id = 0;
+        if($m->save()){
+            return redirect()->back()->with('success','Machine Saved Successfully.<br><b>Machine code: '.$t->name.'-'.$c.'</b>');
+        }
+        else{
+            return redirect()->back()->with('error','Saving Failed.');
+        }
     }
 
     /**
@@ -45,7 +66,7 @@ class MachinesController extends Controller
      * @param  \App\Http\Controllers\MES\model\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function show(Machine $machine)
+    public function show($id)
     {
         //
     }
@@ -56,7 +77,7 @@ class MachinesController extends Controller
      * @param  \App\Http\Controllers\MES\model\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function edit(Machine $machine)
+    public function edit($id)
     {
         //
     }
@@ -68,7 +89,7 @@ class MachinesController extends Controller
      * @param  \App\Http\Controllers\MES\model\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Machine $machine)
+    public function update(Request $request, $id)
     {
         
     }
@@ -79,8 +100,13 @@ class MachinesController extends Controller
      * @param  \App\Http\Controllers\MES\model\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Machine $machine)
+    public function destroy($id)
     {
-        //
+        if(Machine::where('id',$id)->delete()){
+            return redirect()->back()->with('success','Data Deleted Successfully.');
+        }
+        else{
+            return redirect()->back()->with('error','Update Failed.');
+        }
     }
 }

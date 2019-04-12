@@ -66,6 +66,8 @@ Route::get('fl', 'MES\view\MasterController@feederlist');
 Route::get('cl', 'MES\view\MasterController@components');
 Route::get('ls', 'MES\view\MasterController@linestruc');
 Route::get('el', 'MES\view\MasterController@employee');
+Route::get('ml', 'MES\view\MasterController@machine');
+Route::get('ln', 'MES\view\MasterController@line');
 
 // create feederlist
 Route::get('cflh', 'MES\view\MasterController@createfeederlisthome');
@@ -73,7 +75,7 @@ Route::get('cfln', 'MES\view\MasterController@createfeederlistnew');
 Route::get('cflv', 'MES\view\MasterController@createfeederlistversion');
 
 // Searching
-Route::post('fl/search', 'MES\view\MasterController@searchmodel');
+/* Route::post('fl/search', 'MES\view\MasterController@searchmodel'); */
 
 // view feeder list details
 Route::get('fld/{id}/{mid}', 'MES\view\MasterController@feederlistdetails');
@@ -85,7 +87,10 @@ Route::resources([
     'feeders' => 'MES\api\FeedersController',
     'components' => 'MES\api\ComponentsController',
     'models' => 'MES\api\ModelsController',
-    'lines' => 'MES\api\LinesController'
+    'lines' => 'MES\api\LinesController',
+    'employees' =>  'MES\api\EmployeesController',
+    'machines' =>  'MES\api\MachinesController',
+    'linenames' =>  'MES\api\LineNamesController'
 ]);
 // deleting mount
 Route::post('del_mount', 'MES\api\FeedersController@del_mount');
@@ -96,7 +101,8 @@ Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 
 // Testing
 Route::get('testt', function () {
-    return \App\Http\Controllers\MES\model\Feeder::where('model_id',1)->where('machine_type_id',1)->where('table_id',1)->groupBy('mounter_id')->pluck('mounter_id');
+    $a = \App\Http\Controllers\MES\model\Machine::where('machine_type_id',1)->orderBy('id','DESC')->pluck('code')->first();
+    return substr($a,6,2)+1;
 });
 
 /* ----- MES END ----- */ 

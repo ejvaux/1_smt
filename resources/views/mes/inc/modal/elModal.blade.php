@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="edit_emp_form" method="POST" action=''>
+            <form id="edit_emp_form" method="POST" action='{{}}'>
             @method('PUT')           
             <div class="modal-body" style="">
                 <!-- ____________ FORM __________________ -->

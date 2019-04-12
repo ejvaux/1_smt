@@ -13,6 +13,7 @@ use App\Http\Controllers\MES\model\Position;
 use App\Http\Controllers\MES\model\Preference;
 use App\Http\Controllers\MES\model\Component;
 use App\Http\Controllers\MES\model\Line;
+use App\Http\Controllers\MES\model\LineName;
 use App\Http\Controllers\MES\model\Employee;
 
 class MasterController extends Controller
@@ -94,6 +95,31 @@ class MasterController extends Controller
             ->orderBy('id')->paginate('20');
         }       
         return view('mes.pages.el',compact('employees'));
+    }
+    public function machine(Request $request)
+    {
+        $t = $request->input('text');
+        $machinetypes = $this->machinetypes;
+        if($t == ''){
+            $machines = Machine::sortable()->orderBy('machine_type_id')->paginate('20');
+        } else{
+            $machines = Machine::sortable()
+                ->where('code','LIKE','%'.$t.'%')
+            ->orderBy('machine_type_id')->paginate('20');
+        }
+        return view('mes.pages.ml',compact('machines','machinetypes'));
+    }
+    public function line(Request $request)
+    {
+        $t = $request->input('text');
+        if($t == ''){
+            $linenames = LineName::sortable()->orderBy('id')->paginate('20');
+        } else{
+            $linenames = LineName::sortable()
+                ->where('name','LIKE','%'.$t.'%')
+            ->orderBy('id')->paginate('20');
+        }
+        return view('mes.pages.ln',compact('linenames'));
     }
     public function createfeederlisthome()
     {

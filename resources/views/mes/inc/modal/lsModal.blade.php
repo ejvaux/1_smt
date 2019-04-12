@@ -42,7 +42,7 @@
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" name="submit" id="add_comp_submit"><i class="far fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-primary" name="submit" id="add_line_submit"><i class="far fa-save"></i> Save</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>
@@ -96,7 +96,7 @@
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" name="submit" id="edit_comp_submit"><i class="far fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-primary" name="submit" id="edit_line_submit"><i class="far fa-save"></i> Save</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>

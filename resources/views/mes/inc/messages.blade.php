@@ -10,7 +10,7 @@
 
 @if(session('success'))
     <div class='alert alert-success alert-dismissible mt-2'>
-        {{session('success')}}
+        {!!session('success')!!}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

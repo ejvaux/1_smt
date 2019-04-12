@@ -4,9 +4,9 @@ namespace App\Http\Controllers\MES\api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\MES\model\Employee;
+use App\Http\Controllers\MES\model\LineName;
 
-class EmployeesController extends Controller
+class LineNamesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,7 +36,19 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        // Please use 'adler32' to hash the 'id' of the employee        
+        $request->validate([
+            'name' => 'string|required',
+        ]);
+
+        $c = new LineName;
+        $c->name = $request->input('name');
+
+        if($c->save()){
+            return redirect()->back()->with('success','Line Saved Successfully.');
+        }
+        else{
+            return redirect()->back()->with('error','Saving Failed.');
+        }
     }
 
     /**
@@ -69,14 +81,17 @@ class EmployeesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {        
-        $x = Employee::find($id);
+    {
+        $request->validate([
+            'name' => 'string|required',
+        ]);
+        
+        $c = LineName::where('id',$id)->first();
 
-        if($request->input('fname') != ""){ $x->fname = $request->input('fname');}
-        if($request->input('lname') != ""){ $x->lname = $request->input('lname');}
+        if($request->input('name') != ""){ $c->name = $request->input('name');}
 
-        if($x->save()){
-            return redirect()->back()->with('success','Employee Details Updated Successfully.');
+        if($c->save()){
+            return redirect()->back()->with('success','Data Updated Successfully.');
         }
         else{
             return redirect()->back()->with('error','Update Failed.');
@@ -91,6 +106,11 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(LineName::where('id',$id)->delete()){
+            return redirect()->back()->with('success','Data Deleted Successfully.');
+        }
+        else{
+            return redirect()->back()->with('error','Update Failed.');
+        }
     }
 }
