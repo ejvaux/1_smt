@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-7">
                                 <select id="machine_id" class="form-control form-control-sm" name="machine_id" placeholder="" required>
-                                        <option value="">- Please select -</option>
+                                        {{-- <option value="">- Please select -</option> --}}
                                     @foreach ($machines1 as $machine)
                                         <option value="{{$machine->id}}">{{$machine->code}}</option>
                                     @endforeach        
