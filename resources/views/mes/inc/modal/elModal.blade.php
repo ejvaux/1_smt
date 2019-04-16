@@ -20,7 +20,7 @@
                                 <label for="fname" class="col-form-label">First Name:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control' type="text" name="fname" id="fname" required>
+                                <input class='form-control' type="text" name="fname" id="fname" required>
                             </div>
                         </div>
                     </div>
@@ -30,7 +30,23 @@
                                 <label for="lname" class="col-form-label">Last Name:</label>                  
                             </div>
                             <div class="col-7">
-                                <input class='form-control form-control' type="text" name="lname" id="lname" required>
+                                <input class='form-control' type="text" name="lname" id="lname" required>
+                            </div>
+                        </div>
+                    </div>                                
+                </div>
+                <div class="form-group row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-5">
+                                <label for="repair" class="col-form-label">Repair:</label>                  
+                            </div>
+                            <div class="col-7">
+                                {{-- <select class='form-control' name="repair" id="repair">
+                                    <option value="1">YES</option>
+                                    <option value="0">NO</option>
+                                </select> --}}
+                                <input id="repair" name='repair' type="checkbox" data-onstyle="success" data-offstyle="danger">
                             </div>
                         </div>
                     </div>                                

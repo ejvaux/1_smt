@@ -31,6 +31,7 @@ class MasterController extends Controller
         $this->prefs = Preference::all();
         $this->components = Component::all();
         $this->machines = Machine::all();
+        $this->linenames = LineName::all();
     }
     public function index()
     {
@@ -71,16 +72,17 @@ class MasterController extends Controller
     public function linestruc(Request $request)
     {
         $t = $request->input('text');
-        $machines = $this->machines;
+        $machines = Machine::where('line_id',0)->get();
+        $linenames = $this->linenames;
         if($t == ''){
-            $lines = Line::sortable()->orderBy('id','DESC')->paginate('10');
+            $lines = Line::sortable()->orderBy('line_name_id','DESC')->paginate('10');
         }
         else{            
             $lines = Line::sortable()
                 ->where('code','LIKE','%'.$t.'%')
-            ->orderBy('id','DESC')->paginate('10');
+            ->orderBy('line_name_id','DESC')->paginate('10');
         } 
-        return view('mes.pages.ls',compact('lines','machines'));
+        return view('mes.pages.ls',compact('lines','machines','linenames'));
     }
     public function employee(Request $request)
     {
@@ -101,11 +103,11 @@ class MasterController extends Controller
         $t = $request->input('text');
         $machinetypes = $this->machinetypes;
         if($t == ''){
-            $machines = Machine::sortable()->orderBy('machine_type_id')->paginate('20');
+            $machines = Machine::sortable()->orderBy('line_id')->paginate('20');
         } else{
             $machines = Machine::sortable()
                 ->where('code','LIKE','%'.$t.'%')
-            ->orderBy('machine_type_id')->paginate('20');
+            ->orderBy('line_id')->paginate('20');
         }
         return view('mes.pages.ml',compact('machines','machinetypes'));
     }

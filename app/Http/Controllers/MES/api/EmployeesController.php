@@ -74,6 +74,13 @@ class EmployeesController extends Controller
 
         if($request->input('fname') != ""){ $x->fname = $request->input('fname');}
         if($request->input('lname') != ""){ $x->lname = $request->input('lname');}
+        if($request->input('repair') != null){
+            $x->repair = 1;
+        }
+        else{
+            $x->repair = 0;
+        }
+        /* if($request->input('repair') != ""){ $x->repair = $request->input('repair');} */
 
         if($x->save()){
             return redirect()->back()->with('success','Employee Details Updated Successfully.');

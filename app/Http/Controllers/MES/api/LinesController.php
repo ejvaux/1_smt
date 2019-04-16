@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\MES\api;
 
 use App\Http\Controllers\MES\model\Line;
+use App\Http\Controllers\MES\model\LineName;
+use App\Http\Controllers\MES\model\Machine;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -37,21 +39,28 @@ class LinesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'string|required',
+            'line_name_id' => 'integer|required',
             'machine_id' => 'integer|required',
         ]);
-
+        $code = LineName::where('id',$request->input('line_name_id'))->pluck('name')->first();
         $c = new Line;
-        $c->code = $request->input('code');
-        $c->machine_id = $request->input('machine_id');
+        $c->code = $code;
+        $c->line_name_id = $request->input('line_name_id');
+        $c->machine_id = $request->input('machine_id');        
 
         if($c->save()){
-            return redirect()->back()->with('success','Line - Machine Saved Successfully.');
-            /* return 'Data Saved Successfully.'; */
+            // update line in machine list
+            $m = Machine::where('id',$request->input('machine_id'))->first();
+            $m->line_id = $c->id;
+            if($m->save()){
+                return redirect()->back()->with('success','Line - Machine Saved Successfully.');
+            }
+            else{
+                return redirect()->back()->with('error','Updating Machine Failed.');
+            }          
         }
         else{
-            return redirect()->back()->with('error','Saving Failed.');
-            /* return 'Saving Failed.'; */
+            return redirect()->back()->with('error','Saving Line - Machine Structure Failed.');
         }
     }
 

@@ -1,7 +1,19 @@
+$('#repair').bootstrapToggle({
+    on: 'Yes',
+    off: 'No'
+  });
+
 $('.editEmployee').on('click', function(){
     /* alert('Test'); */
     $('#fname').val($(this).data('fn'));
     $('#lname').val($(this).data('ln'));
+    /* $('#repair').val($(this).data('rp')); */
+    if($(this).data('rp')){
+        $('#repair').bootstrapToggle('on');
+    }
+    else{
+        $('#repair').bootstrapToggle('off');
+    }
     $('#edit_emp_form').attr('action', '/1_smt/public/employees/'+$(this).data('id'));
     $('#edit_emp_details').modal('show');
 });

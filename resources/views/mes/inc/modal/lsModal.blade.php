@@ -1,4 +1,4 @@
-{{-- ADD Component --}}
+{{-- ADD --}}
 <div class="modal hide fade in" role="dialog" id="add_line_modal" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -16,10 +16,16 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="acode" class="col-form-label-sm">LINE:</label>                  
+                                <label for="aline_name_id" class="col-form-label">LINE:</label>                  
                             </div>
                             <div class="col-7">
-                                <input id='acode' type="text" class='form-control form-control-sm' name="code">                   
+                                {{-- <input id='acode' type="text" class='form-control form-control-sm' name="code"> --}}                   
+                                <select id="aline_name_id" class="form-control" name="line_name_id" placeholder="" required>
+                                    <option value="">- Please select -</option>
+                                @foreach ($linenames as $linename)
+                                    <option value="{{$linename->id}}">{{$linename->name}}</option>
+                                @endforeach        
+                            </select>
                             </div>
                         </div>
                     </div>
@@ -50,7 +56,7 @@
     </div>
 </div>
 
-{{-- EDIT Component --}}
+{{-- EDIT --}}
 <div class="modal hide fade in" role="dialog" id="edit_line_modal" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

@@ -13,7 +13,7 @@ class Line extends Model
 
     use Sortable;
 
-    public $sortable = ['id','code','machine_id'];
+    public $sortable = ['id','line_name_id','code','machine_id'];
 
     public function machine()
     {

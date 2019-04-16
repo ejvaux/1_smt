@@ -15,7 +15,7 @@
                     @foreach($lines as $line)
                         <tr>
                             <th>{{ $loop->iteration + (($lines->currentPage() - 1) * 10) }}</th>
-                            <th>{{$line->code}}</th>
+                            <th>{{$line->linename->name}}</th>
                             <th>{{$line->machine->code}}</th>
                             <th>{{$line->updated_at}}</th>
                             <th>

@@ -15,5 +15,5 @@ class Employee extends Model
 
     /* protected $fillable = ['id']; */
 
-    public $sortable = ['id','fname','lname','updated_at'];
+    public $sortable = ['id','fname','lname','repair','updated_at'];
 }

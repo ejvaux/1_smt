@@ -22,7 +22,8 @@
                                 @if ($machine->line_id == 0)
                                    <span>No Line</span> 
                                 @else
-                                    {{$machine->line->linename->name}}
+                                    {{-- {{$machine->line->linename->name}} --}}
+                                    {{$machine->line->code}}
                                 @endif                                
                             </th>
                             <th>{{$machine->updated_at}}</th>
