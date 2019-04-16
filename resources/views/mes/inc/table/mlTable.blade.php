@@ -20,7 +20,7 @@
                             <th>{{$machine->type->name}}</th>
                             <th>
                                 @if ($machine->line_id == 0)
-                                   <span>No Line</span> 
+                                   <span style='color:tomato'>- No Line -</span> 
                                 @else
                                     {{-- {{$machine->line->linename->name}} --}}
                                     {{$machine->line->code}}

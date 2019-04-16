@@ -7,7 +7,6 @@ $('.editEmployee').on('click', function(){
     /* alert('Test'); */
     $('#fname').val($(this).data('fn'));
     $('#lname').val($(this).data('ln'));
-    /* $('#repair').val($(this).data('rp')); */
     if($(this).data('rp')){
         $('#repair').bootstrapToggle('on');
     }
