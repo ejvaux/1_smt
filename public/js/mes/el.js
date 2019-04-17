@@ -1,6 +1,8 @@
 $('#repair').bootstrapToggle({
     on: 'Yes',
-    off: 'No'
+    off: 'No',
+    onstyle: 'success',
+    offstyle: 'danger'
   });
 
 $('.editEmployee').on('click', function(){

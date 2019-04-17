@@ -42,11 +42,7 @@
                                 <label for="repair" class="col-form-label">Repair:</label>                  
                             </div>
                             <div class="col-7">
-                                {{-- <select class='form-control' name="repair" id="repair">
-                                    <option value="1">YES</option>
-                                    <option value="0">NO</option>
-                                </select> --}}
-                                <input id="repair" name='repair' type="checkbox" data-onstyle="success" data-offstyle="danger">
+                                <input id="repair" name='repair' type="checkbox" >
                             </div>
                         </div>
                     </div>                                
