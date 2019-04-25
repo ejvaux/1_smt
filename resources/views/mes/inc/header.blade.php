@@ -13,3 +13,4 @@
 <script src="{{ asset('js/mes/ls.js') }}" defer></script>
 <script src="{{ asset('js/mes/el.js') }}" defer></script>
 <script src="{{ asset('js/mes/ln.js') }}" defer></script>
+<script src="{{ asset('js/mes/modl.js') }}" defer></script>
