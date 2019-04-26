@@ -60,6 +60,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
+/* Defect Scanning */
+Route::get('ds', 'DefectController@index');
+/* Check Employee PIN */
+Route::post('scanpinemp', 'DefectController@scanpinemp');
+/* temp store defect mats */
+Route::post('defectmats_temp', 'Api\DefectController@tempstore');
+
 /* ----- MES ----- */
 Route::get('smtmasterdb', 'MES\view\MasterController@index');
 Route::get('fl', 'MES\view\MasterController@feederlist');
@@ -90,7 +97,8 @@ Route::resources([
     'lines' => 'MES\api\LinesController',
     'employees' =>  'MES\api\EmployeesController',
     'machines' =>  'MES\api\MachinesController',
-    'linenames' =>  'MES\api\LineNamesController'
+    'linenames' =>  'MES\api\LineNamesController',
+    'defectmats' => 'Api\DefectController'
 ]);
 // deleting mount
 Route::post('del_mount', 'MES\api\FeedersController@del_mount');

@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="white_bkg">
             <div class="card shadow-sm bg-white rounded">
-                    <div class="card-header bold-text"><i class="fas fa-times-circle"></i> &nbspERROR MATERIAL SCANNING CHECKING</div>
+                    <div class="card-header bold-text"><i class="fas fa-exclamation-circle"></i> ERROR MATERIAL SCANNING CHECKING</div>
                     <div class="card-body">
                        
                                 <div class="row">

@@ -51,6 +51,7 @@ function get_errorcode()
 
 $(document).ready(function() {
     $('.select2').select2({width: '100%'});
+    $('.sel2').select2({height: '100%'});
     //$('.select22').select2({dropdownParent: $(".modal"),width: '100%'}); search_select2
     
 });
@@ -1918,9 +1919,38 @@ function LoadErrorTbl(){
     });
 
 }
-
-
 function error_clear_date(){
     document.getElementById('date_error').value="";
     LoadErrorTbl();
 }
+
+/* Clickable table row */
+$(document).on('click', '.clickable-rowa', function(e) {        
+    if($(this).hasClass("highlight1"))
+    {
+        $(this).removeClass('highlight1');
+        /* $('#repair_btn_'+$(this).data('id')).hide(); */
+        $('#action_div_'+$(this).data('id')).hide();
+        $('#details_div_'+$(this).data('id')).show();
+    }        
+    else
+    {
+        $(this).addClass('highlight1').siblings().removeClass('highlight1');
+        $('.action_div').hide();     
+        /* clickeddanplarow = $(this).data('id'); */
+        /* alert($(this).data('id')); */
+        /* $('#repair_btn_'+$(this).data('id')).show(); */
+        $('#action_div_'+$(this).data('id')).show();
+        $('#details_div_'+$(this).data('id')).hide();
+    }
+});
+$('.form_to_submit').on('submit',function(){
+    $('.form_submit_button').prop('disabled', true);
+    $('.form_submit_button').html('Processing... Please Wait...');
+});
+$(function () {
+    $('[data-toggle="popover"]').popover({ html : true});
+    $('[data-toggle="popover"]').on('click', function (e) {
+        $('[data-toggle="popover"]').not(this).popover('hide');
+    });
+})

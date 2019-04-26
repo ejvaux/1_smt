@@ -1,3 +1,7 @@
+.highlight{
+    background: linear-gradient(#5DADE2, #2E86C1);
+    color:  white;
+}
 .center-text
 {
     text-align: center;

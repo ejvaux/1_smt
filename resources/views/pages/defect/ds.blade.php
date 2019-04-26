@@ -1,0 +1,86 @@
+@extends('layouts.app2')
+
+@section('content')
+<div class="container-fluid">
+    <div class="white_bkg">
+        <div class="card shadow-sm bg-white rounded">
+            <div class="card-header bold-text"><i class="fas fa-times-circle"></i> DEFECT MATERIALS LIST</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md">
+                            @include('includes.messages')
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <a id="addDefect_btn" class='btn btn-outline-secondary'><i class="fas fa-plus"></i> Add Defect</a>
+                                {{-- <a id='repair_btn' class='btn btn-outline-secondary'><i class="fas fa-hammer"></i> Repair</a> --}}
+                            </div>
+                        </div>
+                        <div class="col-md"></div>
+                        {{-- <div class="col-md-3">                        
+                            <form action="" method="post">                                
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Sort by:</span>
+                                    </div>
+                                    <select id="group_id" class="form-control" name="group_id" placeholder="" required>
+                                        <option value="">- Please select -</option>  
+                                    </select>
+                                    <select id="process_id" class="form-control" name="process_id" placeholder="" required>
+                                        <option value="">- Please select -</option>  
+                                    </select>
+                                    <input type="date" class='form-control' name="datetime" id="datetime" value="{{date('Y-m-d')}}">
+                                    <button type="submit">Go</button>
+                                </div>
+                            </form>
+                        </div> --}}
+                        <div class="col-md-3">
+                            <form method="get" action="{{url('ds')}}">
+                                <div class="input-group">                        
+                                    <input type="text" class="form-control" id="" name="text" placeholder="Search Serial Number . . .">
+                                    <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {{-- <div class="row form-group">
+                        <div class="col-md">                        
+                            <form action="" method="post">                                
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Sort by:</span>
+                                    </div>
+                                    <select id="group_id" class="form-control" name="group_id" placeholder="" required>
+                                        <option value="">- Please select -</option>  
+                                    </select>
+                                    <select id="process_id" class="form-control" name="process_id" placeholder="" required>
+                                        <option value="">- Please select -</option>  
+                                    </select>
+                                    <input type="date" class='form-control' name="datetime" id="datetime" value="{{date('Y-m-d')}}">
+                                    <button type="submit">Go</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4">
+                            <form method="get" action="{{}}">
+                                <div class="input-group">                        
+                                    <input type="text" class="form-control" id="" name="text" placeholder="Search S/N . . .">
+                                    <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
+                                </div>
+                            </form>
+                        </div>
+                    </div> --}}                    
+                    <div class="row">
+                        <div class="col-md">
+                            @include('includes.table.dsTable')
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@include('includes.modal.dsModal')
+@endsection
