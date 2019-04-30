@@ -1925,23 +1925,30 @@ function error_clear_date(){
 }
 
 /* Clickable table row */
-$(document).on('click', '.clickable-rowa', function(e) {        
-    if($(this).hasClass("highlight1"))
+$(document).on('click', '.clickable-row', function(e) {        
+    if($(this).hasClass("highlight"))
     {
-        $(this).removeClass('highlight1');
+        $(this).removeClass('highlight');
         /* $('#repair_btn_'+$(this).data('id')).hide(); */
-        $('#action_div_'+$(this).data('id')).hide();
-        $('#details_div_'+$(this).data('id')).show();
+        /* $('#action_div_'+$(this).data('id')).hide();
+        $('#details_div_'+$(this).data('id')).show(); */
+        var toast = document.querySelector('.iziToast');
+        iziToast.hide({
+            transitionOut: 'fadeOutUp'
+        }, toast);
+        /* iziToast.destroy(); */
     }        
     else
     {
-        $(this).addClass('highlight1').siblings().removeClass('highlight1');
-        $('.action_div').hide();     
+        $(this).addClass('highlight').siblings().removeClass('highlight');
+        /* $('.action_div').hide();   */   
         /* clickeddanplarow = $(this).data('id'); */
         /* alert($(this).data('id')); */
         /* $('#repair_btn_'+$(this).data('id')).show(); */
-        $('#action_div_'+$(this).data('id')).show();
-        $('#details_div_'+$(this).data('id')).hide();
+        /* $('#action_div_'+$(this).data('id')).show();
+        $('#details_div_'+$(this).data('id')).hide(); */
+        iziToast.destroy();
+        displaymenu($(this).data('sn'),$(this).data('rep'),$(this).data('id'),$(this).data('div'),$(this).data('arr'));
     }
 });
 $('.form_to_submit').on('submit',function(){
@@ -1954,3 +1961,86 @@ $(function () {
         $('[data-toggle="popover"]').not(this).popover('hide');
     });
 })
+function ddpop(id,id1,id2){
+    $.get("processes/"+ id, 
+        { id: id }, 
+        function(data) {
+            var model = $('#'+id1);
+            model.empty();
+            model.attr('disabled',false);
+            if(data.length > 0){
+                $.each(data, function(index, element) {
+                    model.append("<option value='"+ element.id +"'>" + element.name + "</option>");
+                });
+            }
+            else{
+                model.attr('disabled',true);
+                model.append("<option value=''>No Process Found.</option>");
+            }
+            
+        });
+    $.get("defects/"+ id, 
+        { id: id }, 
+        function(data) {
+            var model1 = $('#'+id2);
+            model1.empty();
+            model1.attr('disabled',false);
+            if(data.length > 0){
+                $.each(data, function(index, element) {
+                    model1.append("<option value='"+ element.DEFECT_ID +"'>" + element.DEFECT_NAME + "</option>");
+                });
+            }
+            else{
+                model1.attr('disabled',true);
+                model1.append("<option value=''>No Defect Found.</option>");
+            }
+            
+        });
+}
+function displaymenu(sn,rep,id,div,arr){
+    /* var arr1 = JSON.parse(arr); */
+    /* alert(JSON.stringify(arr)); */
+    var df = arr.defected_at;
+    var df2 = df.substr(0,10)+'T'+df.substr(11);    
+    if(rep == 0){
+        buttons = [
+            ["<a id='edit_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm edit_defectmat_btn py-1 px-2' title='Edit' data-id='{{$defect_mat->id}}'><i class='fas fa-edit'></i> Edit</a>", function (instance, toast) {
+                ddpop(div,'aprocess_id','adefect_id');
+                $('#aserial_number').val(sn);
+                $('#adivision_id').val(div);
+                $('#aline_id').val(arr.line_id);
+                $('#adefect_datetime').val(df2);
+                $('#aprocess_id').val(arr.process_id);
+                $('#adefect_id').val(arr.defect_id);
+                $('#edit_defect_form').attr('action', '/1_smt/public/defectmats/'+arr.id);
+                $('#edit_defect_modal').modal('show');
+
+            }],
+            ["<a id='repair_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm repair_defectmat_btn py-1 px-2' title='Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-hammer'></i> Repair</a>", function (instance, toast) { 
+                $('#repair_defectmat_form').attr('action', '/1_smt/public/defectmats_rep/'+id);
+                $('#repair_modal').modal('show');
+            }],
+        ]
+    }
+    else{
+        buttons = [
+            ["<a id='details_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm details_defectmat_btn py-1 px-2' title='View Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-eye'></i> Details</a>", function (instance, toast) { 
+                alert('Details');
+            }],
+        ]
+    }
+    iziToast.info({
+        timeout: false,
+        /* overlay: true, */
+        /* layout: 2, */
+        icon: 'fas fa-cog',
+        displayMode: 'once',
+        id: 'inputs',
+        zindex: 999,
+        title: 'S/N:',
+        message: ''+sn+'',
+        position: 'bottomCenter',
+        close: false,
+        buttons: buttons
+    });
+}

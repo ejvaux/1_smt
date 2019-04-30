@@ -13,5 +13,5 @@ class Division extends Model
 
     use Sortable;
 
-    public $sortable = ['DIVISION_ID'];
+    public $sortable = ['DIVISION_ID','DIVISION_NAME'];
 }

@@ -54,4 +54,8 @@ class DefectMat extends Model
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Employee','repair_by');
     }
+    public function defect1()
+    {
+        return $this->hasOne('App\Models\Defect','DEFECT_ID','defect_id');
+    }
 }

@@ -66,6 +66,8 @@ Route::get('ds', 'DefectController@index');
 Route::post('scanpinemp', 'DefectController@scanpinemp');
 /* temp store defect mats */
 Route::post('defectmats_temp', 'Api\DefectController@tempstore');
+/* Repairing Defect mats */
+Route::post('defectmats_rep/{id}', 'Api\DefectController@repairdef');
 
 /* ----- MES ----- */
 Route::get('smtmasterdb', 'MES\view\MasterController@index');
@@ -98,7 +100,9 @@ Route::resources([
     'employees' =>  'MES\api\EmployeesController',
     'machines' =>  'MES\api\MachinesController',
     'linenames' =>  'MES\api\LineNamesController',
-    'defectmats' => 'Api\DefectController'
+    'defectmats' => 'Api\DefectController',
+    'processes' => 'Api\ProcessController',
+    'defects' => 'Api\DefectCodeController'
 ]);
 // deleting mount
 Route::post('del_mount', 'MES\api\FeedersController@del_mount');

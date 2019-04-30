@@ -72,7 +72,24 @@ class DefectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $e = DefectMat::where('id',$id)->first();
+        if($request->input('defect_id') != ""){ $e->defect_id = $request->input('defect_id');}
+        if($request->input('defected_at') != ""){
+            $date = new DateTime($request->input('defected_at'));
+            $dte = $date->format('Y-m-d H:i');
+            $e->defected_at = $dte;
+        }
+        if($request->input('process_id') != ""){ $e->process_id = $request->input('process_id');}
+        if($request->input('line_id') != ""){ $e->line_id = $request->input('line_id');}
+        if($request->input('shift') != ""){ $e->shift = $request->input('shift');}
+        if($request->input('employee_id') != ""){ $e->employee_id = $request->input('employee_id');}
+                       
+        if($e->save()){
+            return redirect()->back()->with('success','Data Updated Successfully.');
+        }
+        else{
+            return redirect()->back()->with('error','Updating Failed.');
+        }
     }
 
     /**
@@ -92,6 +109,7 @@ class DefectController extends Controller
             'serial_number' => 'string|required',
             'defect_id' => 'integer|required',
             'defected_at' => 'string|required',
+            'process_id' => 'integer|required',
             'line_id' => 'integer|required',
             'shift' => 'integer|required',
             'employee_id' => 'integer|required',
@@ -107,14 +125,14 @@ class DefectController extends Controller
             $b->pcb_id = $a->id;
             $b->defect_id = $request->input('defect_id');
             $b->defected_at = $dte;
-            /* if($request->input('process_id') != ""){ $c->product_number = $request->input('product_number');} */
+            $b->process_id = $request->input('process_id');            
             $b->line_id = $request->input('line_id');
             $b->shift = $request->input('shift');
             $b->employee_id = $request->input('employee_id');
             $b->repair = 0;
             if($b->save())
             {
-                return redirect()->back()->with('success','Data Saved Sucessfully.');
+                return redirect()->back()->with('success','Data Saved Successfully.');
             }
             else
             {
@@ -126,5 +144,24 @@ class DefectController extends Controller
             return redirect()->back()->with('error','Saving Serial Number Failed.');
         }
         /* return redirect()->back()->with('success','TEST'); */
+    }
+    public function repairdef(Request $request, $id)
+    {
+        $request->validate([
+            'remarks' => 'string|required',
+            'repaired_by' => 'integer|required',
+        ]);
+        $e = DefectMat::where('id',$id)->first();
+        $e->remarks = $request->input('remarks');
+        $e->repair_by = $request->input('repaired_by');
+        $e->repair = 1;
+        $e->repaired_at = Date('Y-m-d H:i:s');
+        
+        if($e->save()){
+            return redirect()->back()->with('success','Data Updated Successfully.');
+        }
+        else{
+            return redirect()->back()->with('error','Updating Failed.');
+        }
     }
 }
