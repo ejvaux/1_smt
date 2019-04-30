@@ -117,4 +117,9 @@ Route::get('testt', function () {
     return substr($a,6,2)+1;
 });
 
-/* ----- MES END ----- */ 
+/* ----- MES END ----- */
+
+/* ----- MES2 start ----- */
+Route::resource('process','MES2\ProcessController');
+Route::get('processDelete', 'MES2\ProcessController@destroy');
+/* ----- MES2 END ----- */

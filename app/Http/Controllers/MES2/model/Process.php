@@ -1,0 +1,14 @@
+<?php
+namespace App\Http\Controllers\MES2\model;
+use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Model;
+class Process extends Model
+{
+    //
+    protected $connection= 'mysql2';
+    protected $table = 'smt_processes';
+    public $primaryKey ='id';
+    use Sortable;
+    public $sortable = ['code'];
+
+}
