@@ -31,3 +31,11 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app'
 });
+
+var $ = require("jquery");
+
+window.moment = require('moment');
+require('select2');
+window.iziToast = require('izitoast');
+window.swal = require('sweetalert2');
+require('bootstrap4-toggle');

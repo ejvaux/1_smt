@@ -8,6 +8,18 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Font Awesome
+@import "/1_smt/node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+
+// Izitoast
+@import "/1_smt/node_modules/izitoast/dist/css/iziToast.css";
+
+// select2
+@import "/1_smt/node_modules/select2/dist/css/select2.min.css";
+
+// Bootstrap Toggle
+@import "/1_smt/node_modules/bootstrap4-toggle/css/bootstrap4-toggle.css";
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

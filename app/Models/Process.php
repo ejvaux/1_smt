@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
-class ErrorGrade extends Model
+class Process extends Model
 {
     protected $connection= 'mysql2';
 
-    protected $table = 'smt_error_grades';
+    protected $table = 'smt_processes';
 
     use Sortable;
 
-    public $sortable = ['id','name','updated_by','updated_at'];
+    public $sortable = ['id'];
 }
