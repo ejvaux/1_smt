@@ -14,3 +14,6 @@
 <script src="{{ asset('js/mes/el.js') }}" defer></script>
 <script src="{{ asset('js/mes/ln.js') }}" defer></script>
 <script src="{{ asset('js/mes/modl.js') }}" defer></script>
+
+{{-- Process Modals --}}
+<script src="{{ asset('js/mes2/process.js') }}" defer></script>

@@ -38,5 +38,6 @@ class VerifyCsrfToken extends Middleware
         'del_mount',
         'change_mount',
         'transfer_mount',
+        'process/*',
     ];
 }
