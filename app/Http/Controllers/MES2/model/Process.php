@@ -11,4 +11,13 @@ class Process extends Model
     use Sortable;
     public $sortable = ['code'];
 
+    public function division()
+    {
+        return $this->belongsTo('App\Models\Division','division_id','DIVISION_ID');
+    }
+    public function updatedBy()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\User','updated_by','NO');
+    }
+
 }

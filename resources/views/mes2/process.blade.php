@@ -151,8 +151,9 @@
                         <tr>
                         <td><strong>{{$process->code}}</strong></td>
                         <td><strong>{{$process->name}}</strong></td>
-                        <td><strong>{{$process->division_id}}</strong></td>
-                        <td><strong>{{$process->updated_by}}</strong></td>
+                        <td><strong>{{$process->division->DIVISION_NAME}}</strong></td>
+                        <td><strong>{{$process->updatedBy->USER_NAME}}</strong></td>
+                        {{-- <td><strong>{{$process->updated_by}}</strong></td> --}}
                         <td><strong>{{$process->created_at}}</strong></td>
                         <td><strong>{{$process->updated_at}}</strong></td>
                         <!-- Button FOR ACTIONS -->
@@ -160,9 +161,7 @@
                             <form method="post" id="DeleteProcessForm_{{$process->id}}"  action='{{url('process/'.$process->id)}}'>
                                 @csrf
                                 @method('DELETE')
-
                                 {{-- <div class="container-fluid" style="overflow-x:auto;" > --}}
-
                                 <button type='button'  data-id='{{$process->id}}'
                                         data-code='{{$process->code}}'
                                         data-name='{{$process->name}}'
