@@ -36,14 +36,14 @@
                                 </div>
                             </form>
                         </div> --}}
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <form method="get" action="{{url('ds')}}">
                                 <div class="input-group">                        
                                     <input type="text" class="form-control" id="" name="text" placeholder="Search Serial Number . . .">
                                     <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
                     </div>
                     {{-- <div class="row form-group">
                         <div class="col-md">                        
