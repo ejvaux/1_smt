@@ -19,7 +19,14 @@
             <tbody class='text-center'>
                 @if (count($defect_mats)>0)
                     @foreach($defect_mats as $defect_mat)
-                        <tr class='clickable-row' data-div='{{$defect_mat->defect->division->DIVISION_ID}}' data-arr='{{$defect_mat}}' data-id='{{$defect_mat->id}}' data-sn='{{$defect_mat->pcb->serial_number}}' data-rep='{{$defect_mat->repair}}'>
+                        <tr class='clickable-row'
+                            @if ($defect_mat->repair)
+                            data-repby='{{$defect_mat->repairby->fname}} {{$defect_mat->repairby->lname}}'
+                            @endif
+                            data-div='{{$defect_mat->defect->division->DIVISION_ID}}'
+                            data-arr='{{$defect_mat}}' data-id='{{$defect_mat->id}}'
+                            data-sn='{{$defect_mat->pcb->serial_number}}'
+                            data-rep='{{$defect_mat->repair}}'>
                             {{-- Col1  --}}
                                 @if ($defect_mat->repair != true)
                                     <th class='border-bottom-0 border-top-0 border-right border-danger p-0 m-0' style='border-width:6px !important'>

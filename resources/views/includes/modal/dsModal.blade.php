@@ -260,7 +260,7 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
-                                <label for="process_id" class="col-form-label-sm">PROCESS:</label>                  
+                                <label for="aprocess_id" class="col-form-label-sm">PROCESS:</label>                  
                             </div>
                             <div class="col-8">
                                 <select id="aprocess_id" class="form-control" name="process_id" placeholder="" disabled>
@@ -322,6 +322,49 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary form_submit_button" name="submit" id="edit_defect_submit"><i class="far fa-save"></i> Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{-- Repair Details --}}
+<div class="modal hide fade in" role="dialog" id="repair_details_modal" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Repair Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="repair_defectmat_form" class='form_to_submit' method="post" action=''>
+                @csrf
+            <div class="modal-body" style="">
+
+                <!-- ____________ FORM __________________ -->        
+                <div class="form-group row">
+                    <div class="col-md">
+                        <label for="drepair_by" class="col-form-label-sm">REPAIRED BY:</label>
+                        <input id="drepair_by" type="text" class='form-control' name="" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md">
+                        <label for="dremarks" class="col-form-label-sm">REMARKS:</label>
+                        <textarea id='dremarks' class='form-control' name="remarks" cols="30" rows="4" readonly></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md">
+                        <label for="drepaired_at" class="col-form-label-sm">REPAIRED AT:</label>
+                        <input id='drepaired_at' class='form-control' name="remarks" readonly>
+                    </div>
+                </div>
+                <!-- ____________ FORM END __________________ -->
+            </div>
+            <div class="modal-footer">
+                {{-- <button type="submit" class="btn btn-primary form_submit_button" name="submit" id="add_repair_submit"><i class="far fa-save"></i> Save</button> --}}
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>
