@@ -122,4 +122,7 @@ Route::get('testt', function () {
 /* ----- MES2 start ----- */
 Route::resource('process','MES2\ProcessController');
 Route::get('processDelete', 'MES2\ProcessController@destroy');
+
+Route::resource('defecttype','MES2\DefectTypeController');
 /* ----- MES2 END ----- */
+
