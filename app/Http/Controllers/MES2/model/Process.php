@@ -9,7 +9,7 @@ class Process extends Model
     protected $table = 'smt_processes';
     public $primaryKey ='id';
     use Sortable;
-    public $sortable = ['code'];
+    public $sortable = ['code','name','division_id'];
 
     public function division()
     {

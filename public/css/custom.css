@@ -37,7 +37,7 @@
 {
     padding:0.4%;
     margin-top: 5px;
-   
+
 }
 .text-right
 {
@@ -87,9 +87,9 @@ padding: 4%
     font-weight: bold;
     font-size: 2em;
     padding-top:10%;
-    background: rgba(232, 232, 232, 0.5); 
+    background: rgba(232, 232, 232, 0.5);
     color: rgb(247, 89, 89);
-} 
+}
 .loading_badge{
     height: 100px;
 }
@@ -102,7 +102,7 @@ padding: 4%
     border-radius: 200px;
     padding: 2%;
 }
-  
+
 
 .row_table{
     background-color: rgb(230, 152, 50);
@@ -130,4 +130,5 @@ background-color:#5682c9;
 .tbl4{
     background-color:#d085fc;
 }
+
 

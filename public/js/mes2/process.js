@@ -1,11 +1,43 @@
  /* Modals for editing employees */
-$('.editProcess').on('click', function(){
-    $('#code').val($(this).data('code'));
+
+ $('.editProcess').on('click', function(){
+    /*  $('#code').val($(this).data('code'));
+     $('#name').val($(this).data('name'));
+     $('#division_id').val($(this).data('division_id')); */
+     $('#code').val($(this).data('code'));
+     $('#name').val($(this).data('name'));
+     $('#division_id').val($(this).data('division_id'));
+     $('#editFormProcessModal').attr('action', '/1_smt/public/process/'+$(this).data('id'));
+     $('#editProcessModal').modal('show');
+ });
+
+$('.editProcess1').on('click', function(){
+   /*  $('#code').val($(this).data('code'));
     $('#name').val($(this).data('name'));
-    $('#division_id').val($(this).data('division_id'));
+    $('#division_id').val($(this).data('division_id')); */
 
     $('#editFormProcessModal').attr('action', '/1_smt/public/process/'+$(this).data('id'));
     $('#editProcessModal').modal('show');
+});
+
+
+ /* Modals for editing employees */
+ $('.tableClick').on('click', function(){
+
+    $('#code1').val($(this).data('code1'));
+    $('#name1').val($(this).data('name1'));
+    $('#division_id1').val($(this).data('division_id1'));
+    //Check to see if background color is set or if it's set to white.
+    if(this.style.background == "" || this.style.background =="white") {
+        $(this).css('background', 'lightblue');
+
+
+    }
+    else {
+        $(this).css('background', 'white');
+    }
+
+
 });
 
 

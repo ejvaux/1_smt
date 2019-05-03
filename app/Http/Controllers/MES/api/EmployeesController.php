@@ -36,7 +36,7 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        // Please use 'adler32' to hash the 'id' of the employee        
+        // Please use 'adler32' to hash the 'id' of the employee
     }
 
     /**
@@ -69,7 +69,7 @@ class EmployeesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {        
+    {
         $x = Employee::find($id);
 
         if($request->input('fname') != ""){ $x->fname = $request->input('fname');}

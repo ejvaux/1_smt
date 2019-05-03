@@ -58,7 +58,7 @@
 
 <!-- Start Edit Modal -->
 <div class="modal fade" id="editProcessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Employee Management</h5>
@@ -107,9 +107,6 @@
 </div>
 <!-- End Edit Modal -->
 
-
-
-
 <div class="container-fluid mt-5" id="table_display" style="width: 100%;">
     <div class="row mb-2">
         <div class="col-md">
@@ -126,19 +123,21 @@
                     <div class="row mt-2">
                             <div class="col-md-4 mr-auto">
                                 <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#addProcessModal"><i class="far fa-plus-square"></i> New Data</button>
+                                {{-- <button type='button' class="btn btn-outline-success mb-1 editProcess1"><i class="fa fa-edit"></i>Update Data</button> --}}
                             </div>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" id="myInput" onkeyup="myFunctionTableDtr()" placeholder="Search Data Here..." title="Type in a name">
                             </div>
                         </div>
 
-                <table  id = "myTable" class="table table-hover table-reflow  table-bordered mt-1 mb-4" style="overflow-x:auto;">
+                <table  id = "myTable" class="table table-hover table-reflow  table-bordered mt-1 mb-4 " style="overflow-x:auto;">
                         <thead class="thead-light" >
-                        <tr>
+
+                            <tr>
 
                         <th >@sortablelink('code','Code')</th>
                         <th >@sortablelink('name','Name') </th>
-                        <th >@sortablelink('division_id','Divission_id') </th>
+                        <th >@sortablelink('division_id','Divission_NAME') </th>
                         <th > Updated_by</th>
                         <th > Created_at</th>
                         <th > Updated_at</th>
@@ -148,7 +147,11 @@
                         <tbody>
                         @if(count($processes) > 0)
                         @foreach($processes as $process)
-                        <tr>
+                        <tr class="tableClick" id = "tablerowvalue" data-id1='{{$process->id}}'
+                                data-code1='{{$process->code}}'
+                                data-name1='{{$process->name}}'
+                                data-division_id1='{{$process->division_id}}'>
+
                         <td><strong>{{$process->code}}</strong></td>
                         <td><strong>{{$process->name}}</strong></td>
                         <td><strong>{{$process->division->DIVISION_NAME}}</strong></td>
