@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePcbTable extends Migration
+class CreateSmtDefectTypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreatePcbTable extends Migration
      */
     public function up()
     {
-        Schema::create('pcb', function (Blueprint $table) {
+        Schema::connection('mysql2')->create('smt_defect_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('serial_number');
-            $table->integer('heat');
-            $table->boolean('defect');
+            $table->string('code');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreatePcbTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pcb');
+        Schema::connection('mysql2')->dropIfExists('smt_defect_types');
     }
 }

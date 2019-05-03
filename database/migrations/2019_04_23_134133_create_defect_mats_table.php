@@ -18,7 +18,6 @@ class CreateDefectMatsTable extends Migration
             $table->integer('pcb_id');
             $table->integer('division_id');
             $table->integer('defect_id');
-            $table->string('defected_at');
             $table->integer('process_id')->nullable();
             $table->integer('employee_id');
             $table->integer('line_id');
