@@ -24,6 +24,7 @@ class ProcessController extends Controller
         $processes = Process::sortable()->get();
         $divisions = Divisionid::get();
         return view('mes2.process',compact('divisions','processes'));
+
     }
 
     /**
