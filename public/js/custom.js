@@ -1948,7 +1948,7 @@ $(document).on('click', '.clickable-row', function(e) {
         /* $('#action_div_'+$(this).data('id')).show();
         $('#details_div_'+$(this).data('id')).hide(); */
         iziToast.destroy();
-        displaymenu($(this).data('sn'),$(this).data('rep'),$(this).data('id'),$(this).data('div'),$(this).data('arr'));
+        displaymenu($(this).data('sn'),$(this).data('rep'),$(this).data('id'),$(this).data('div'),$(this).data('repby'),$(this).data('arr'));
     }
 });
 $('.form_to_submit').on('submit',function(){
@@ -1997,14 +1997,15 @@ function ddpop(id,id1,id2){
             
         });
 }
-function displaymenu(sn,rep,id,div,arr){
+function displaymenu(sn,rep,id,div,repby,arr){
     /* var arr1 = JSON.parse(arr); */
     /* alert(JSON.stringify(arr)); */
+    /* alert(repby); */
     var df = arr.defected_at;
     var df2 = df.substr(0,10)+'T'+df.substr(11);    
     if(rep == 0){
         buttons = [
-            ["<a id='edit_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm edit_defectmat_btn py-1 px-2' title='Edit' data-id='{{$defect_mat->id}}'><i class='fas fa-edit'></i> Edit</a>", function (instance, toast) {
+            ["<a id='edit_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm edit_defectmat_btn py-1 px-2' title='Edit' data-id='{{$defect_mat->id}}'><i class='fas fa-edit'></i> Edit</a>", function (instance, toast) {
                 ddpop(div,'aprocess_id','adefect_id');
                 $('#aserial_number').val(sn);
                 $('#adivision_id').val(div);
@@ -2016,7 +2017,7 @@ function displaymenu(sn,rep,id,div,arr){
                 $('#edit_defect_modal').modal('show');
 
             }],
-            ["<a id='repair_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm repair_defectmat_btn py-1 px-2' title='Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-hammer'></i> Repair</a>", function (instance, toast) { 
+            ["<a id='repair_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm repair_defectmat_btn py-1 px-2' title='Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-hammer'></i> Repair</a>", function (instance, toast) { 
                 $('#repair_defectmat_form').attr('action', '/1_smt/public/defectmats_rep/'+id);
                 $('#repair_modal').modal('show');
             }],
@@ -2024,8 +2025,12 @@ function displaymenu(sn,rep,id,div,arr){
     }
     else{
         buttons = [
-            ["<a id='details_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm details_defectmat_btn py-1 px-2' title='View Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-eye'></i> Details</a>", function (instance, toast) { 
-                alert('Details');
+            ["<a id='details_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm details_defectmat_btn py-1 px-2' title='View Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-eye'></i> Details</a>", function (instance, toast) { 
+                /* alert(repby); */
+                $('#drepair_by').val(repby);
+                $('#dremarks').val(arr.remarks);
+                $('#drepaired_at').val(arr.repaired_at);
+                $('#repair_details_modal').modal('show');
             }],
         ]
     }
@@ -2033,6 +2038,10 @@ function displaymenu(sn,rep,id,div,arr){
         timeout: false,
         /* overlay: true, */
         /* layout: 2, */
+        titleSize: 25,
+        titleLineHeight: 26,
+        messageSize: 25,
+        messageLineHeight: 26,
         icon: 'fas fa-cog',
         displayMode: 'once',
         id: 'inputs',

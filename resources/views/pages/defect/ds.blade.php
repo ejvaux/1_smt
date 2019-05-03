@@ -19,59 +19,28 @@
                             </div>
                         </div>
                         <div class="col-md"></div>
-                        {{-- <div class="col-md-3">                        
-                            <form action="" method="post">                                
+                        {{-- <div class="col-md-2">
+                            <button id='ds_advancesearch_btn' type="button" class="btn btn-outline-secondary">
+                                <i class="fas fa-search"></i> Advanced Search
+                            </button>
+                        </div> --}}
+                        <div class="col-md-3">                        
+                            <form action="{{url('ds')}}" method="get">                   
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="">Sort by:</span>
-                                    </div>
-                                    <select id="group_id" class="form-control" name="group_id" placeholder="" required>
-                                        <option value="">- Please select -</option>  
-                                    </select>
-                                    <select id="process_id" class="form-control" name="process_id" placeholder="" required>
-                                        <option value="">- Please select -</option>  
-                                    </select>
-                                    <input type="date" class='form-control' name="datetime" id="datetime" value="{{date('Y-m-d')}}">
+                                    <input type="date" class='form-control' name="sdate" id="sdate" value="{{$dte}}">
                                     <button type="submit">Go</button>
                                 </div>
                             </form>
-                        </div> --}}
-                        {{-- <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
                             <form method="get" action="{{url('ds')}}">
                                 <div class="input-group">                        
                                     <input type="text" class="form-control" id="" name="text" placeholder="Search Serial Number . . .">
                                     <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
                                 </div>
                             </form>
-                        </div> --}}
-                    </div>
-                    {{-- <div class="row form-group">
-                        <div class="col-md">                        
-                            <form action="" method="post">                                
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="">Sort by:</span>
-                                    </div>
-                                    <select id="group_id" class="form-control" name="group_id" placeholder="" required>
-                                        <option value="">- Please select -</option>  
-                                    </select>
-                                    <select id="process_id" class="form-control" name="process_id" placeholder="" required>
-                                        <option value="">- Please select -</option>  
-                                    </select>
-                                    <input type="date" class='form-control' name="datetime" id="datetime" value="{{date('Y-m-d')}}">
-                                    <button type="submit">Go</button>
-                                </div>
-                            </form>
                         </div>
-                        <div class="col-md-4">
-                            <form method="get" action="{{}}">
-                                <div class="input-group">                        
-                                    <input type="text" class="form-control" id="" name="text" placeholder="Search S/N . . .">
-                                    <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
-                                </div>
-                            </form>
-                        </div>
-                    </div> --}}                    
+                    </div>                  
                     <div class="row">
                         <div class="col-md">
                             @include('includes.table.dsTable')

@@ -1,16 +1,20 @@
 function empcheckpin(pin,set)
 {
+    var chck;
     if (set == '1'){
         $('#scan_employee').val('Please Wait . . .');
         $('#scan_employee').attr('readonly', true);
+        chck = 1;
     }
     else if(set == '2'){
         $('#ascan_employee').val('Please Wait . . .');
         $('#ascan_employee').attr('readonly', true);
+        chck = 2;
     }
     else if(set == '3'){
         $('#escan_employee').val('Please Wait . . .');
         $('#escan_employee').attr('readonly', true);
+        chck = 1;
     }
 
     $.ajaxSetup({
@@ -23,7 +27,8 @@ function empcheckpin(pin,set)
         type:'POST',
         global: false,
         data:{
-            'pin': pin
+            'pin': pin,
+            'check' : chck
         },
         success: function (data) {
             if(data != 0)
@@ -59,11 +64,20 @@ function empcheckpin(pin,set)
             else
             {
                 resetemp(set);
-                iziToast.warning({
-                    title: 'ERROR',
-                    message: 'Employee not found!',
-                    position: 'topCenter'
-                });
+                if(chck == 1){
+                    iziToast.warning({
+                        title: 'ERROR',
+                        message: 'Employee not found!',
+                        position: 'topCenter'
+                    });
+                }
+                else if(chck == 2){
+                    iziToast.warning({
+                        title: 'ERROR',
+                        message: 'Employee not found or not authorized for repair!',
+                        position: 'topCenter'
+                    });
+                }                
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -239,4 +253,7 @@ $('#division_id').on('change',function(){
 })
 $('#adivision_id').on('change',function(){
     ddpop($(this).val(),'aprocess_id','adefect_id');
+})
+$('#ds_advancesearch_btn').on('click',function(){
+    $('#ds_advancedsearch_modal').modal('show');
 })
