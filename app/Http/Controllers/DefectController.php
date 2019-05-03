@@ -8,6 +8,7 @@ use App\Models\DefectMat;
 use App\Models\Division;
 use App\Models\Process;
 use App\Models\Pcb;
+use App\Models\DefectType;
 use App\Http\Controllers\MES\model\LineName;
 use App\Http\Controllers\MES\model\Employee;
 
@@ -21,6 +22,7 @@ class DefectController extends Controller
         $this->defects = Defect::all();
         $this->processes = Process::all();
         $this->employee = Employee::all();
+        $this->defect_types = DefectType::all();
     }
 
     public function index(Request $request)
@@ -48,8 +50,9 @@ class DefectController extends Controller
         $linenames = $this->linenames;
         $defects = $this->defects;
         $processes = $this->processes;
+        $defect_types = $this->defect_types;
 
-        return view('pages.defect.ds',compact('defect_mats','divisions','linenames','defects','processes','dte'));
+        return view('pages.defect.ds',compact('defect_mats','divisions','linenames','defects','processes','dte','defect_types'));
     }
     public function scanpinemp(Request $request)
     {

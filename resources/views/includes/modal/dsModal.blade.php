@@ -60,13 +60,13 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
-                                <label for="process_id" class="col-form-label-sm">PROCESS:</label>                  
+                                <label for="defect_id" class="col-form-label-sm">DEFECT:</label>                  
                             </div>
                             <div class="col-8">
-                                <select id="process_id" class="form-control" name="process_id" placeholder="" disabled>
+                                <select id="defect_id" class="form-control" name="defect_id" placeholder="" required disabled>
                                         <option value="">- Select division first -</option>
-                                        {{-- @foreach ($processes as $process)
-                                        <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
+                                        {{-- @foreach ($defects as $defect)
+                                        <option value="{{$defect->DEFECT_ID}}" data-div_id='{{$defect->division_id}}'>{{$defect->DEFECT_GROUP}} - {{$defect->DEFECT_CODE}} - {{$defect->DEFECT_NAME}}</option>
                                         @endforeach --}}
                                 </select>                  
                             </div>
@@ -80,42 +80,57 @@
                                 <label for="line_id" class="col-form-label-sm">LINE:</label>                  
                             </div>
                             <div class="col-8">
-                                <select id="line_id" class="form-control" name="line_id" placeholder="" required>
-                                        <option value="">- Please select -</option>
-                                        @foreach ($linenames as $linename)
+                                <select id="line_id" class="form-control" name="line_id" placeholder="" required disabled>
+                                        <option value="">- Select division first -</option>
+                                        {{-- @foreach ($linenames as $linename)
                                         <option value="{{$linename->id}}">{{$linename->name}}</option>
+                                        @endforeach --}}
+                                </select>                  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="defect_type_id" class="col-form-label-sm">DEFECT TYPE:</label>                  
+                            </div>
+                            <div class="col-8">
+                                <select id="defect_type_id" class="form-control" name="defect_type_id" placeholder="" required>
+                                        <option value="">- Please select -</option>
+                                        @foreach ($defect_types as $defect_type)
+                                        <option value="{{$defect_type->id}}">{{$defect_type->code}} - {{$defect_type->name}}</option>
                                         @endforeach
                                 </select>                  
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="defect_id" class="col-form-label-sm">DEFECT:</label>                  
-                            </div>
-                            <div class="col-8">
-                                <select id="defect_id" class="form-control" name="defect_id" placeholder="" required disabled>
-                                        <option value="">- Select division first -</option>
-                                        {{-- @foreach ($defects as $defect)
-                                        <option value="{{$defect->DEFECT_ID}}" data-div_id='{{$defect->division_id}}'>{{$defect->DEFECT_GROUP}} - {{$defect->DEFECT_CODE}} - {{$defect->DEFECT_NAME}}</option>
-                                        @endforeach --}}
-                                </select>                  
-                            </div>
-                        </div>
-                    </div>                                                   
                 </div>
                 <div class="form-group row">
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
-                                <label for="defect_datetime" class="col-form-label-sm">DEFECTED AT:</label>                  
+                                <label for="process_id" class="col-form-label-sm">PROCESS:</label>                  
                             </div>
                             <div class="col-8">
-                                <input class='form-control' type="datetime-local" name="defected_at" id="defect_datetime" {{-- value="{{date('Y-m-d')}}T00:00:00" --}} required>                               
+                                <select id="process_id" class="form-control" name="process_id" placeholder="" disabled>
+                                        <option value="">- Select division first -</option>
+                                        {{-- @foreach ($processes as $process)
+                                        <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
+                                        @endforeach --}}
+                                </select>                  
                             </div>
                         </div>
                     </div>
+                    {{-- <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="defect_datetime" class="col-form-label-sm">DEFECTED AT:</label>                  
+                            </div>
+                            <div class="col-8">
+                                <input class='form-control' type="datetime-local" name="defected_at" id="defect_datetime" required>                               
+                            </div>
+                        </div>
+                    </div> --}}
                     {{-- <div class="col-6">
                         <div class="row">
                             <div class="col-4">
@@ -136,7 +151,7 @@
                             </div>
                         </div>
                     </div> --}}
-                    <input type="hidden" id='shift' name='shift'>                                                  
+                    {{-- <input type="hidden" id='shift' name='shift'> --}}                                                  
                 </div>
                 <!-- ____________ FORM END __________________ -->
             </div>
@@ -260,13 +275,13 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
-                                <label for="aprocess_id" class="col-form-label-sm">PROCESS:</label>                  
+                                <label for="defect_id" class="col-form-label-sm">DEFECT:</label>                  
                             </div>
                             <div class="col-8">
-                                <select id="aprocess_id" class="form-control" name="process_id" placeholder="" disabled>
+                                <select id="adefect_id" class="form-control" name="defect_id" placeholder="" required disabled>
                                         <option value="">- Select division first -</option>
-                                        {{-- @foreach ($processes as $process)
-                                        <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
+                                        {{-- @foreach ($defects as $defect)
+                                        <option value="{{$defect->DEFECT_ID}}" data-div_id='{{$defect->division_id}}'>{{$defect->DEFECT_GROUP}} - {{$defect->DEFECT_CODE}} - {{$defect->DEFECT_NAME}}</option>
                                         @endforeach --}}
                                 </select>                  
                             </div>
@@ -277,7 +292,7 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
-                                <label for="line_id" class="col-form-label-sm">LINE:</label>                  
+                                <label for="aline_id" class="col-form-label-sm">LINE:</label>                  
                             </div>
                             <div class="col-8">
                                 <select id="aline_id" class="form-control" name="line_id" placeholder="" required>
@@ -292,14 +307,14 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
-                                <label for="defect_id" class="col-form-label-sm">DEFECT:</label>                  
+                                <label for="adefect_type_id" class="col-form-label-sm">DEFECT TYPE:</label>                  
                             </div>
                             <div class="col-8">
-                                <select id="adefect_id" class="form-control" name="defect_id" placeholder="" required disabled>
-                                        <option value="">- Select division first -</option>
-                                        {{-- @foreach ($defects as $defect)
-                                        <option value="{{$defect->DEFECT_ID}}" data-div_id='{{$defect->division_id}}'>{{$defect->DEFECT_GROUP}} - {{$defect->DEFECT_CODE}} - {{$defect->DEFECT_NAME}}</option>
-                                        @endforeach --}}
+                                <select id="adefect_type_id" class="form-control" name="defect_type_id" placeholder="" required>
+                                        <option value="">- Please select -</option>
+                                        @foreach ($defect_types as $defect_type)
+                                        <option value="{{$defect_type->id}}">{{$defect_type->code}} - {{$defect_type->name}}</option>
+                                        @endforeach
                                 </select>                  
                             </div>
                         </div>
@@ -309,14 +324,28 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
+                                <label for="aprocess_id" class="col-form-label-sm">PROCESS:</label>                  
+                            </div>
+                            <div class="col-8">
+                                <select id="aprocess_id" class="form-control" name="process_id" placeholder="" disabled>
+                                        <option value="">- Select division first -</option>
+                                        {{-- @foreach ($processes as $process)
+                                        <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
+                                        @endforeach --}}
+                                </select>                  
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="defect_datetime" class="col-form-label-sm">DEFECTED AT:</label>                  
                             </div>
                             <div class="col-8">
                                 <input class='form-control' type="datetime-local" name="defected_at" id="adefect_datetime" value="{{date('Y-m-d')}}T00:00:00" required>                               
                             </div>
                         </div>
-                    </div>                    
-                    <input type="hidden" id='ashift' name='shift'>                                                  
+                    </div>  --}}                                                                   
                 </div>
                 <!-- ____________ FORM END __________________ -->
             </div>
@@ -328,6 +357,7 @@
         </div>
     </div>
 </div>
+
 {{-- Repair Details --}}
 <div class="modal hide fade in" role="dialog" id="repair_details_modal" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog" role="document">
@@ -374,7 +404,7 @@
 
 {{-- Advanced Search --}}
 <div class="modal hide fade in" role="dialog" id="ds_advancedsearch_modal" data-keyboard="false" data-backdrop="static" >
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Advanced Search</h5>
@@ -385,34 +415,50 @@
             <form id="ds_advancedsearch_form" class='form_to_submit' method="post" action=''>
                 @csrf
             <div class="modal-body" style="">
-
                 <!-- ____________ FORM __________________ -->
         
                 <div class="form-group row">
                     <div class="col-4">
-                        <label for="ascan_employee" class="col-form-label-sm">EMPLOYEE:</label>                  
+                        <label for="search_division_id" class="col-form-label-sm">DIVISION:</label>                  
                     </div>
                     <div class="col-8">
-                        <input class='form-control' type="text" id='ascan_employee' placeholder="Scan employee barcode">                
-                        <div class="input-group" style='display:none' id='ascan_name_div'>
-                            <input class='form-control' type="text" id='ascan_name' readonly>
-                            <button type="button" class='' id="areset_emp"><i class="fas fa-redo"></i></button>
-                        </div>
-                        <input type="hidden" id='aemployee_id' name="repaired_by">
+                        <select id="search_division_id" class="form-control" name="division_id" placeholder="">
+                            <option value="">- Please select -</option>
+                            @foreach ($divisions as $division)
+                                <option value="{{$division->DIVISION_ID}}">{{$division->DIVISION_NAME}}</option>
+                            @endforeach
+                        </select> 
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-4">
-                        <label for="aremarks" class="col-form-label-sm">REMARKS:</label>                  
+                        <label for="search_shift" class="col-form-label-sm">SHIFT:</label>                  
                     </div>
                     <div class="col-8">
-                        <textarea id='aremarks' class='form-control' id="" name="remarks" cols="30" rows="4" required></textarea>
+                        <select id="search_shift" class="form-control" name="shift" placeholder="">
+                            <option value="">- Please select -</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="search_employee_id" class="col-form-label-sm">EMPLOYEE:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <select id="search_employee_id" class="form-control" name="employee_id" placeholder="">
+                            <option value="">- Please select -</option>
+                            {{-- @foreach ($divisions as $division)
+                                <option value="{{$division->DIVISION_ID}}">{{$division->DIVISION_NAME}}</option>
+                            @endforeach --}}
+                        </select> 
                     </div>
                 </div>
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary form_submit_button" name="submit" id="ds_advancedsearch_submit"><i class="far fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-primary form_submit_button" name="submit" id="ds_advancedsearch_submit"><i class="fas fa-search"></i> Search</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>

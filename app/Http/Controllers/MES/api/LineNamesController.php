@@ -59,7 +59,7 @@ class LineNamesController extends Controller
      */
     public function show($id)
     {
-        //
+        return LineName::where('division_id',$id)->get();
     }
 
     /**

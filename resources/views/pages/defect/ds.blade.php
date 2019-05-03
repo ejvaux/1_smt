@@ -19,11 +19,11 @@
                             </div>
                         </div>
                         <div class="col-md"></div>
-                        {{-- <div class="col-md-2">
+                        <div class="col-md-2">
                             <button id='ds_advancesearch_btn' type="button" class="btn btn-outline-secondary">
                                 <i class="fas fa-search"></i> Advanced Search
                             </button>
-                        </div> --}}
+                        </div>
                         <div class="col-md-3">                        
                             <form action="{{url('ds')}}" method="get">                   
                                 <div class="input-group">

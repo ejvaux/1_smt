@@ -48,14 +48,14 @@ class DefectMat extends Model
     }
     public function line()
     {
-        return $this->belongsTo('App\Http\Controllers\MES\model\Line','line_id');
+        return $this->belongsTo('App\Http\Controllers\MES\model\LineName','line_id');
     }
     public function repairby()
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Employee','repair_by');
     }
-    public function defect1()
+    public function defectType()
     {
-        return $this->hasOne('App\Models\Defect','DEFECT_ID','defect_id');
+        return $this->belongsTo('App\Models\DefectType','defect_type_id');
     }
 }

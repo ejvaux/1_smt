@@ -249,10 +249,10 @@ $('.details_defectmat_btn').on('click', function(){
 });
 
 $('#division_id').on('change',function(){
-    ddpop($(this).val(),'process_id','defect_id');
+    ddpop($(this).val(),'process_id','defect_id','line_id');
 })
 $('#adivision_id').on('change',function(){
-    ddpop($(this).val(),'aprocess_id','adefect_id');
+    ddpop($(this).val(),'aprocess_id','adefect_id','aline_id');
 })
 $('#ds_advancesearch_btn').on('click',function(){
     $('#ds_advancedsearch_modal').modal('show');

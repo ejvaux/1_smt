@@ -10,6 +10,7 @@
                     <th>@sortablelink('process_id','PROCESS')</th>
                     <th>@sortablelink('pcb_id','S/N')</th>
                     <th>@sortablelink('defect_id','DEFECT')</th>
+                    <th>@sortablelink('defect_type_id','DEFECT TYPE')</th>
                     <th>@sortablelink('employee_id','EMPLOYEE')</th>
                     <th>@sortablelink('defected_at','DEFECTED AT')</th>
                     {{-- <th>@sortablelink('created_at','INSERTED AT')</th> --}}
@@ -38,7 +39,7 @@
                             {{-- Col 2 --}}
                                 <td>{{$defect_mat->defect->division->DIVISION_NAME}}</td>
                             {{-- Col 3 --}}
-                                <td>{{$defect_mat->line->code}}</td>
+                                <td>{{$defect_mat->line->name}}</td>
                             {{-- Col 4 --}}                            
                                 <td>{{$defect_mat->shift}}</td>
                             {{-- Col 5 --}}
@@ -77,11 +78,13 @@
                             {{-- Col 7 --}}
                                 <td>{{$defect_mat->defect->DEFECT_NAME}}</td>
                             {{-- Col 8 --}}
-                                <td>{{$defect_mat->employee->fname}} {{$defect_mat->employee->lname}}</td>
+                                <td>{{$defect_mat->defectType->name}}</td>
                             {{-- Col 9 --}}
-                                <td>{{$defect_mat->defected_at}}</td>
-                                {{-- <td>{{$defect_mat->created_at}}</td> --}}
+                                <td>{{$defect_mat->employee->fname}} {{$defect_mat->employee->lname}}</td>
                             {{-- Col 10 --}}
+                                {{-- <td>{{$defect_mat->defected_at}}</td> --}}
+                                <td>{{$defect_mat->created_at}}</td>
+                            {{-- Col 11 --}}
                                 <th>
                                     @if ($defect_mat->repair)
                                         <span class='text-success'>{{CustomFunctions::datetimefinished($defect_mat->created_at,$defect_mat->repaired_at)}}</span>

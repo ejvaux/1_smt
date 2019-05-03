@@ -1961,7 +1961,7 @@ $(function () {
         $('[data-toggle="popover"]').not(this).popover('hide');
     });
 })
-function ddpop(id,id1,id2){
+function ddpop(id,id1,id2,id3){
     $.get("processes/"+ id, 
         { id: id }, 
         function(data) {
@@ -1996,13 +1996,30 @@ function ddpop(id,id1,id2){
             }
             
         });
+    $.get("linenames/"+ id, 
+        { id: id }, 
+        function(data) {
+            var model2 = $('#'+id3);
+            model2.empty();
+            model2.attr('disabled',false);
+            if(data.length > 0){
+                $.each(data, function(index, element) {
+                    model2.append("<option value='"+ element.id +"'>" + element.name + "</option>");
+                });
+            }
+            else{
+                model2.attr('disabled',true);
+                model2.append("<option value=''>No Line Found.</option>");
+            }
+            
+        });
 }
 function displaymenu(sn,rep,id,div,repby,arr){
     /* var arr1 = JSON.parse(arr); */
     /* alert(JSON.stringify(arr)); */
     /* alert(repby); */
-    var df = arr.defected_at;
-    var df2 = df.substr(0,10)+'T'+df.substr(11);    
+    /* var df = arr.defected_at;
+    var df2 = df.substr(0,10)+'T'+df.substr(11);    */ 
     if(rep == 0){
         buttons = [
             ["<a id='edit_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm edit_defectmat_btn py-1 px-2' title='Edit' data-id='{{$defect_mat->id}}'><i class='fas fa-edit'></i> Edit</a>", function (instance, toast) {
@@ -2010,9 +2027,10 @@ function displaymenu(sn,rep,id,div,repby,arr){
                 $('#aserial_number').val(sn);
                 $('#adivision_id').val(div);
                 $('#aline_id').val(arr.line_id);
-                $('#adefect_datetime').val(df2);
+                /* $('#adefect_datetime').val(df2); */
                 $('#aprocess_id').val(arr.process_id);
                 $('#adefect_id').val(arr.defect_id);
+                $('#adefect_type_id').val(arr.defect_type_id);
                 $('#edit_defect_form').attr('action', '/1_smt/public/defectmats/'+arr.id);
                 $('#edit_defect_modal').modal('show');
 

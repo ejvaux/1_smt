@@ -75,11 +75,7 @@ class DefectController extends Controller
         $e = DefectMat::where('id',$id)->first();
         if($request->input('division_id') != ""){ $e->division_id = $request->input('division_id');}
         if($request->input('defect_id') != ""){ $e->defect_id = $request->input('defect_id');}
-        if($request->input('defected_at') != ""){
-            $date = new DateTime($request->input('defected_at'));
-            $dte = $date->format('Y-m-d H:i');
-            $e->defected_at = $dte;
-        }
+        if($request->input('defect_type_id') != ""){ $e->defect_type_id = $request->input('defect_type_id');}
         if($request->input('process_id') != ""){ $e->process_id = $request->input('process_id');}
         if($request->input('line_id') != ""){ $e->line_id = $request->input('line_id');}
         if($request->input('shift') != ""){ $e->shift = $request->input('shift');}
@@ -110,32 +106,59 @@ class DefectController extends Controller
             'serial_number' => 'string|required',
             'division_id' => 'integer|required',
             'defect_id' => 'integer|required',
-            'defected_at' => 'string|required',
+            'defect_type_id' => 'integer|required',
             'process_id' => 'integer|required',
             'line_id' => 'integer|required',
-            'shift' => 'integer|required',
             'employee_id' => 'integer|required',
         ]);
         
-        $a = new Pcb;
-        $a->serial_number = $request->input('serial_number');
+        if($a = Pcb::where('serial_number',$request->input('serial_number'))->first()){
+            if($a->heat <= 6){
+                $a->heat = $a->heat + 1;
+                $a->defect = 1;
+            }
+            else{
+                $a->heat = $a->heat + 1;
+                return redirect()->back()->with('error','Max Heat Cycles Reached!');
+            }
+        }
+        else{
+            $a = new Pcb;
+            $a->serial_number = $request->input('serial_number');
+            $a->defect = 1;
+            $a->heat = 1;
+        }
+        
         if($a->save())
         {
-            $date = new DateTime($request->input('defected_at'));
-            $dte = $date->format('Y-m-d H:i');
+            $date = Date('H:i');
+            if($date > '05:59' && $date < '18:00'){
+                $shift = 1;
+            }
+            else if($date >= '18:00' || $date < '06:00'){
+                $shift = 2;
+            }
+            else{
+                $shift = 0;
+            }
             $b = new DefectMat;
             $b->pcb_id = $a->id;
             $b->division_id = $request->input('division_id');
             $b->defect_id = $request->input('defect_id');
-            $b->defected_at = $dte;
+            $b->defect_type_id = $request->input('defect_type_id');
             $b->process_id = $request->input('process_id');            
             $b->line_id = $request->input('line_id');
-            $b->shift = $request->input('shift');
+            $b->shift = $shift;
             $b->employee_id = $request->input('employee_id');
             $b->repair = 0;
             if($b->save())
             {
-                return redirect()->back()->with('success','Data Saved Successfully.');
+                if($a->heat == 7){
+                    return redirect()->back()->with('success','Data Saved Successfully. Max Heat Cycles Reached!');
+                }
+                else{
+                    return redirect()->back()->with('success','Data Saved Successfully.');
+                }                
             }
             else
             {
