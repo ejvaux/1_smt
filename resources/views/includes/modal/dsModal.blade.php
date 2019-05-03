@@ -371,3 +371,51 @@
         </div>
     </div>
 </div>
+
+{{-- Advanced Search --}}
+<div class="modal hide fade in" role="dialog" id="ds_advancedsearch_modal" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Advanced Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="ds_advancedsearch_form" class='form_to_submit' method="post" action=''>
+                @csrf
+            <div class="modal-body" style="">
+
+                <!-- ____________ FORM __________________ -->
+        
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="ascan_employee" class="col-form-label-sm">EMPLOYEE:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <input class='form-control' type="text" id='ascan_employee' placeholder="Scan employee barcode">                
+                        <div class="input-group" style='display:none' id='ascan_name_div'>
+                            <input class='form-control' type="text" id='ascan_name' readonly>
+                            <button type="button" class='' id="areset_emp"><i class="fas fa-redo"></i></button>
+                        </div>
+                        <input type="hidden" id='aemployee_id' name="repaired_by">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="aremarks" class="col-form-label-sm">REMARKS:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <textarea id='aremarks' class='form-control' id="" name="remarks" cols="30" rows="4" required></textarea>
+                    </div>
+                </div>
+                <!-- ____________ FORM END __________________ -->
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary form_submit_button" name="submit" id="ds_advancedsearch_submit"><i class="far fa-save"></i> Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -73,6 +73,7 @@ class DefectController extends Controller
     public function update(Request $request, $id)
     {
         $e = DefectMat::where('id',$id)->first();
+        if($request->input('division_id') != ""){ $e->division_id = $request->input('division_id');}
         if($request->input('defect_id') != ""){ $e->defect_id = $request->input('defect_id');}
         if($request->input('defected_at') != ""){
             $date = new DateTime($request->input('defected_at'));
@@ -107,6 +108,7 @@ class DefectController extends Controller
     {
         $request->validate([
             'serial_number' => 'string|required',
+            'division_id' => 'integer|required',
             'defect_id' => 'integer|required',
             'defected_at' => 'string|required',
             'process_id' => 'integer|required',
@@ -123,6 +125,7 @@ class DefectController extends Controller
             $dte = $date->format('Y-m-d H:i');
             $b = new DefectMat;
             $b->pcb_id = $a->id;
+            $b->division_id = $request->input('division_id');
             $b->defect_id = $request->input('defect_id');
             $b->defected_at = $dte;
             $b->process_id = $request->input('process_id');            

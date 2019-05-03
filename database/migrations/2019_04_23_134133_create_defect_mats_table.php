@@ -16,6 +16,7 @@ class CreateDefectMatsTable extends Migration
         Schema::create('defect_mats', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pcb_id');
+            $table->integer('division_id');
             $table->integer('defect_id');
             $table->string('defected_at');
             $table->integer('process_id')->nullable();

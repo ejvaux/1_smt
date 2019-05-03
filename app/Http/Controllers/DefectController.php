@@ -32,7 +32,13 @@ class DefectController extends Controller
         }
         else{
             $pcb = Pcb::where('serial_number',$t)->first();
-            $defect_mats = DefectMat::sortable()->where('pcb_id',$pcb->id)->orderBy('id','DESC')->paginate('20');
+            if($pcb){
+                $defect_mats = DefectMat::sortable()->where('pcb_id',$pcb->id)->orderBy('id','DESC')->paginate('20');
+            }
+            else{
+                $defect_mats =DefectMat::sortable()->where('pcb_id',0)->orderBy('id','DESC')->paginate('20');;
+            }
+            /* $defect_mats = DefectMat::sortable()->where('pcb_id',$pcb->id)->orderBy('id','DESC')->paginate('20'); */
             /* $defect_mats = DefectMat::whereHas('pcb', function ($query) use ($request) {
                 $query->where('serial_number', 'like', "%{$request->text}%")->paginate('20');
             }); */

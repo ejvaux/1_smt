@@ -254,3 +254,6 @@ $('#division_id').on('change',function(){
 $('#adivision_id').on('change',function(){
     ddpop($(this).val(),'aprocess_id','adefect_id');
 })
+$('#ds_advancesearch_btn').on('click',function(){
+    $('#ds_advancedsearch_modal').modal('show');
+})
