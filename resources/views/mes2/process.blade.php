@@ -137,7 +137,7 @@
 
                         <th >@sortablelink('code','Code')</th>
                         <th >@sortablelink('name','Name') </th>
-                        <th >@sortablelink('division_id','Divission_NAME') </th>
+                        <th >@sortablelink('division_id','Division Name') </th>
                         <th > Updated_by</th>
                         <th > Created_at</th>
                         <th > Updated_at</th>
