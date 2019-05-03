@@ -22,7 +22,7 @@ $('.editProcess1').on('click', function(){
 
 
  /* Modals for editing employees */
- $('.tableClick').on('click', function(){
+ /* $('.tableClick').on('click', function(){
 
     $('#code1').val($(this).data('code1'));
     $('#name1').val($(this).data('name1'));
@@ -38,7 +38,7 @@ $('.editProcess1').on('click', function(){
     }
 
 
-});
+}); */
 
 
 

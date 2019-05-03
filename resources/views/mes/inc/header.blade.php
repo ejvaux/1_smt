@@ -17,3 +17,5 @@
 
 {{-- Process Modals --}}
 <script src="{{ asset('js/mes2/process.js') }}" defer></script>
+{{-- Defect Type Modals --}}
+<script src="{{ asset('js/mes2/defect.js') }}" defer></script>
