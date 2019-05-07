@@ -108,6 +108,7 @@ function resetemp(set)
 {
     if(set == 1){
         $('#scan_employee').val('');
+        $('#employee_id').val('');
         $('#scan_employee').attr('readonly', false);
         $('#scan_name_div').hide();
         $('#scan_employee').show();
@@ -115,6 +116,7 @@ function resetemp(set)
     }
     else if(set == 2){
         $('#ascan_employee').val('');
+        $('#aemployee_id').val('');
         $('#ascan_employee').attr('readonly', false);
         $('#ascan_name_div').hide();
         $('#ascan_employee').show();
@@ -122,6 +124,7 @@ function resetemp(set)
     }
     else if(set == 3){
         $('#escan_employee').val('');
+        $('#eemployee_id').val('');
         $('#escan_employee').attr('readonly', false);
         $('#escan_name_div').hide();
         $('#escan_employee').show();
@@ -190,10 +193,10 @@ $('#areset_emp').on('click', function(){
 $('#ereset_emp').on('click', function(){
     resetemp('3');
 });
-$('#defect_id').on('change', function(){
+/* $('#defect_id').on('change', function(){
     var selected = $(this).find('option:selected');
     $('#division_id').val(selected.data('div_id'));
-});
+}); */
 $('#add_defect_form').on('submit', function(){
     if ($('#employee_id').val() == '') {
         iziToast.warning({
