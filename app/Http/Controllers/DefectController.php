@@ -16,7 +16,7 @@ class DefectController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        /* $this->middleware('auth'); */
         $this->divisions = Division::all();
         $this->linenames = LineName::all();
         $this->defects = Defect::all();

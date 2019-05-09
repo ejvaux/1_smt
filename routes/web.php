@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -60,14 +62,36 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
+/* PCB scanning */
+Route::get('sp', 'ScanPcbController@index');
+/* Scan Setting */
+Route::get('scansetting', 'ScanPcbController@scansetting');
 /* Defect Scanning */
 Route::get('ds', 'DefectController@index');
 /* Check Employee PIN */
 Route::post('scanpinemp', 'DefectController@scanpinemp');
-/* temp store defect mats */
-Route::post('defectmats_temp', 'Api\DefectController@tempstore');
-/* Repairing Defect mats */
-Route::post('defectmats_rep/{id}', 'Api\DefectController@repairdef');
+/* QR Generate */
+/* Route::get('qr-code', 'ScanPcbController@qrgen'); */
+Route::get('qr-code', function (Request $request) {
+    return QrCode::size(250)->generate($request->url);
+});
+
+/* ---------- API NAMESPACE --------------- */
+Route::namespace('Api')->group(function () {
+
+    /* temp store defect mats */
+    Route::post('defectmats_temp', 'DefectController@tempstore');
+    /* Repairing Defect mats */
+    Route::post('defectmats_rep/{id}', 'DefectController@repairdef');
+
+    Route::prefix('api')->group(function () {
+        /* Check Employee PIN */
+        Route::get('scanpinemp', 'ApiController@scanpinemp');
+        Route::get('divprocesses/{id}', 'ApiController@divprocesses');
+        Route::get('linenames/{id}', 'ApiController@linenames');
+        Route::get('loadWOtable', 'ApiController@loadWOtable');
+    }); 
+});
 
 /* ----- MES ----- */
 Route::get('smtmasterdb', 'MES\view\MasterController@index');
@@ -102,7 +126,8 @@ Route::resources([
     'linenames' =>  'MES\api\LineNamesController',
     'defectmats' => 'Api\DefectController',
     'processes' => 'Api\ProcessController',
-    'defects' => 'Api\DefectCodeController'
+    'defects' => 'Api\DefectCodeController',
+    'divprocesses' => 'Api\DivProcessController'
 ]);
 // deleting mount
 Route::post('del_mount', 'MES\api\FeedersController@del_mount');

@@ -1,6 +1,6 @@
 <div class="row mb-1">
     <div class="table-responsive-lg w-100 text-nowrap" style='min-height: 400px;overflow:auto'{{-- style="width: 100%;height: 410px;overflow:auto" --}}>
-        <table class="table table-sm" id="datatable2">
+        <table class="table" id="datatable2">
             <thead class="thead-light">
                 <tr class="text-center">
                     <th>#</th>

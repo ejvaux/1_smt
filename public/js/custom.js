@@ -1926,9 +1926,9 @@ function error_clear_date(){
 
 /* Clickable table row */
 $(document).on('click', '.clickable-row', function(e) {        
-    if($(this).hasClass("highlight"))
+    if($(this).hasClass("highlight2"))
     {
-        $(this).removeClass('highlight');
+        $(this).removeClass('highlight2');
         /* $('#repair_btn_'+$(this).data('id')).hide(); */
         /* $('#action_div_'+$(this).data('id')).hide();
         $('#details_div_'+$(this).data('id')).show(); */
@@ -1940,7 +1940,7 @@ $(document).on('click', '.clickable-row', function(e) {
     }        
     else
     {
-        $(this).addClass('highlight').siblings().removeClass('highlight');
+        $(this).addClass('highlight2').siblings().removeClass('highlight2');
         /* $('.action_div').hide();   */   
         /* clickeddanplarow = $(this).data('id'); */
         /* alert($(this).data('id')); */

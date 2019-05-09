@@ -1,5 +1,9 @@
 @extends('layouts.app2')
 
+@section('js')    
+    <script src="{{ asset('js/defect/ds.js')}}" defer></script>
+@endsection
+
 @section('content')
 <div class="container-fluid">
     <div class="white_bkg">
