@@ -16,8 +16,8 @@ class CreatePcbTable extends Migration
         Schema::create('pcb', function (Blueprint $table) {
             $table->increments('id');
             $table->string('serial_number');
-            $table->integer('heat');
-            $table->boolean('defect');
+            $table->string('heat');
+            $table->string('defect');
             $table->timestamps();
         });
     }
