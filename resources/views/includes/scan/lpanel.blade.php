@@ -6,10 +6,22 @@
         <div class="form-group row">
             <div class="col-md">
                 <div class="card" style='border-color:black'>
-                    <div class="card-body bold-text{{--  bg-warning --}}">
+                    <div class="card-header bold-text">
                         <div class="row">
                             <div class="col-md">
-                                <label for="" class='bold-text'><i class="fas fa-cog"></i> CONFIGURATION:</label>
+                                <i class="fas fa-cog"></i> CONFIGURATION:
+                            </div>
+                            <div class="col-md ml-auto text-right">
+                                <button id='config-collapse-btn' class="btn btn-outline-secondary p-0 px-2" type="button" data-toggle="collapse" data-target="#collapseConfig">
+                                    <i class="fas fa-caret-up"></i>
+                                </button>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="card-body bold-text collapse show" id='collapseConfig'>
+                        <div class="row">
+                            <div class="col-md">                                
+                                <input id="configL" type="checkbox" checked data-toggle="toggle" data-size="small" data-on="<i class='fas fa-lock-open'></i>" data-off='<i class="fas fa-lock"></i>' data-onstyle="secondary" data-offstyle="secondary">
                             </div>
                         </div>
                         <div class="row mb-1">
@@ -19,8 +31,11 @@
                                         <label for="pcb_input_type" class="col-form-label">TYPE:</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <input class='form-control pcbconfig' type="text" id='sel_division' value='{{ ($type == 1 ? 'IN' : 'OUT')}}' readonly>                    
-                                        <input id='pcb_input_type' name='pcb_input_type' type="hidden" value='{{ $type }}'>
+                                        <input class='form-control pcbconfig configlock' type="text" id='display-input' value='{{ ($type == 1 ? 'IN' : 'OUT')}}' readonly>                    
+                                        <div class="configunlock">
+                                            <input class='configunlock' checked id="pcb_input" type="checkbox" data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="primary" data-offstyle="secondary" data-width="100%" data-height="15">
+                                        </div>                                        
+                                        {{-- <input id='pcb_input_type' name='pcb_input_type' type="hidden" value='{{ $type }}'> --}}
                                     </div>
                                 </div>
                             </div>
@@ -30,9 +45,15 @@
                                         <label for="sel_division" class="col-form-label">DIVISION:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig' type="text" id='sel_division' value='{{ (count($sel_division)>0 ? $sel_division->DIVISION_NAME : '')}}' readonly>                    
-                                        <input id='sel_division_id' name='sel_division_id' type="hidden" value='{{ (count($sel_division)>0 ? $sel_division->DIVISION_ID : '')}}'>
-                                        <input id='sel_division_sap_id' name='sel_division_sap_id' type="hidden" value='{{ (count($sel_division)>0 ? $sel_division->SAP_DIVISION_CODE : '')}}'>
+                                        <input class='form-control pcbconfig configlock' type="text" id='display-division' value='{{ (count($sel_division)>0 ? $sel_division->DIVISION_NAME : '')}}' readonly>                    
+                                        <select id="pcb_division_id" class="form-control configunlock" name="division_id" placeholder="" required>
+                                                <option value="0">- Please select -</option>
+                                                @foreach ($divisions as $division)
+                                                    <option value="{{$division->DIVISION_ID}}">{{$division->DIVISION_NAME}}</option>
+                                                @endforeach
+                                        </select>
+                                        {{-- <input id='sel_division_id' name='sel_division_id' type="hidden" value='{{ (count($sel_division)>0 ? $sel_division->DIVISION_ID : '')}}'>
+                                        <input id='sel_division_sap_id' name='sel_division_sap_id' type="hidden" value='{{ (count($sel_division)>0 ? $sel_division->SAP_DIVISION_CODE : '')}}'> --}}
                                     </div>
                                 </div>
                             </div>                                                
@@ -44,8 +65,11 @@
                                         <label for="sel_line" class="col-form-label">LINE:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig' type="text" id='sel_line' value='{{ (count($sel_line)>0 ? $sel_line->name : '')}}' readonly>
-                                        <input id='sel_div_process_id' name='sel_div_process_id' type="hidden" value='{{ (count($sel_line)>0 ? $sel_line->id : '')}}'>
+                                        <input class='form-control pcbconfig configlock' type="text" id='display-line' value='{{ (count($sel_line)>0 ? $sel_line->name : '')}}' readonly>
+                                        <select id="pcb_line_id" class="form-control configunlock" name="line_id" placeholder="" disabled required>
+                                            <option value="0">- Select Division First -</option>
+                                        </select>
+                                        {{-- <input id='sel_div_process_id' name='sel_div_process_id' type="hidden" value='{{ (count($sel_line)>0 ? $sel_line->id : '')}}'> --}}
                                     </div>
                                 </div>
                             </div>
@@ -55,8 +79,11 @@
                                         <label for="sel_div_process" class="col-form-label">PROCESS:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig' type="text" id='sel_div_process' value='{{ (count($sel_div_process)>0 ? $sel_div_process->name : '')}}' readonly>                    
-                                        <input id='sel_div_process_id' name='sel_div_process_id' type="hidden" value='{{ (count($sel_div_process)>0 ? $sel_div_process->id : '')}}'>
+                                        <input class='form-control pcbconfig configlock' type="text" id='display-process' value='{{ (count($sel_div_process)>0 ? $sel_div_process->name : '')}}' readonly>                    
+                                        <select class="form-control configunlock" id="pcb_process_id" disabled required>
+                                            <option value="0">- Select Division First -</option>
+                                        </select>
+                                        {{-- <input id='sel_div_process_id' name='sel_div_process_id' type="hidden" value='{{ (count($sel_div_process)>0 ? $sel_div_process->id : '')}}'> --}}
                                     </div>
                                 </div>
                             </div>    
@@ -81,6 +108,7 @@
                     </div>
                 </div>
             </div>
+            @include('includes.scan.scanform')
         </div>
         <div class="form-group row">
             <div class="col-md">
@@ -89,16 +117,16 @@
                         <a class="nav-link active" href="#wotab" role="tab" data-toggle="tab">Work Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#serials" role="tab" data-toggle="tab">Serial Numbers</a>
+                        <a class="nav-link" href="#serials" role="tab" data-toggle="tab">S/N</a>
                     </li>
                 </ul>
                 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane container active" id="wotab" style='height: 350px'>
+                    <div class="tab-pane container active" id="wotab" style='height: 400px'>
                         @include('includes.scan.wotab')
                     </div>
-                    <div class="tab-pane container" id="serials" style='height: 350px;overflow: auto'>
+                    <div class="tab-pane container" id="serials" style='height: 400px'>
                         @include('includes.scan.sntab')
                     </div>                    
                 </div>

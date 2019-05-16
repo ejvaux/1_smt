@@ -42,9 +42,12 @@ class ScanPcbController extends Controller
         $sel_div_process = DivProcess::where('id',$div_proc_id)->first();
         $sel_line = LineName::where('id',$line_id)->first();
 
-        $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$sel_division->SAP_DIVISION_CODE}%")->where('DATE_',$date1)->paginate('100');
-        
+        /* $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$sel_division->SAP_DIVISION_CODE}%")->where('DATE_',$date1)->paginate('100'); */
+        /* $pcbs = ''; */
+        /* $pcbs = Pcb::paginate('100'); */
+
         return view('pages.scan.sp',compact(
+            'pcbs',
             'date1',
             'workorders',
             'divisions',

@@ -10,19 +10,13 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="row">
-            <div class="col-md">
-                <div class="btn-group" role="group">
-                    <button id="loadwotable" class="btn btn-primary"><i class="fas fa-sync-alt"></i> LOAD</button>
-                    <button id='setWO' data-wodata='' class="btn btn-success d-none"><i class="fas fa-wrench"></i> SET</button>
-                </div>
-            </div>                                                
+        <div class="btn-group" role="group">
+            <button id="loadwotable" class="btn btn-primary"><i class="fas fa-sync-alt"></i> LOAD</button>
+            <button id='setWO' data-wodata='' class="btn btn-success d-none"><i class="fas fa-wrench"></i> SET</button>
         </div>
     </div>
-</div>
-<div class="row mb-1">
     <div class="col-md">
-            <span class='text-danger bold-text'>Work Orders are based on the selected division.</span>
+        <span class='text-danger bold-text'>Work Orders are based on the selected division.</span>
     </div>
 </div>
 <div id='spTablediv'>
