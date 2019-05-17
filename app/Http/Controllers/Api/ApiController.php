@@ -147,4 +147,15 @@ class ApiController extends Controller
             'out' => $out
         ];
     }
+    /* DEFECTS */
+    public function checksn(Request $request)
+    {
+        $a = Pcb::where('serial_number',$request->sn)->orderBy('id','DESC');
+        if($a->first()){
+            return $a->first();
+        }
+        else{
+            return 0;
+        }
+    }
 }

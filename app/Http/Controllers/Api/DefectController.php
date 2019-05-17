@@ -112,7 +112,7 @@ class DefectController extends Controller
             'employee_id' => 'integer|required',
         ]);
         
-        if($a = Pcb::where('serial_number',$request->input('serial_number'))->first()){
+        /* if($a = Pcb::where('serial_number',$request->input('serial_number'))->first()){
             if($a->heat <= 6){
                 $a->heat = $a->heat + 1;
                 $a->defect = 1;
@@ -168,8 +168,59 @@ class DefectController extends Controller
         else
         {
             return redirect()->back()->with('error','Saving Serial Number Failed.');
+        } */
+        
+        if($a = Pcb::where('serial_number',$request->input('serial_number'))->orderBy('id','DESC')->first()){
+            if($a->heat <= 6){
+                $a->heat = $a->heat + 1;
+                $a->defect = 1;
+            }
+            else{
+                $a->heat = $a->heat + 1;
+                return redirect()->back()->with('error','Max Heat Cycles Reached!');
+            }
         }
-        /* return redirect()->back()->with('success','TEST'); */
+        
+        if($a->save())
+        {
+            $date = Date('H:i');
+            if($date > '05:59' && $date < '18:00'){
+                $shift = 1;
+            }
+            else if($date >= '18:00' || $date < '06:00'){
+                $shift = 2;
+            }
+            else{
+                $shift = 0;
+            }
+            $b = new DefectMat;
+            $b->pcb_id = $a->id;
+            $b->division_id = $request->input('division_id');
+            $b->defect_id = $request->input('defect_id');
+            $b->defect_type_id = $request->input('defect_type_id');
+            $b->process_id = $request->input('process_id');            
+            $b->line_id = $request->input('line_id');
+            $b->shift = $shift;
+            $b->employee_id = $request->input('employee_id');
+            $b->repair = 0;
+            if($b->save())
+            {
+                if($a->heat == 7){
+                    return redirect()->back()->with('success','Data Saved Successfully. Max Heat Cycles Reached!');
+                }
+                else{
+                    return redirect()->back()->with('success','Data Saved Successfully.');
+                }                
+            }
+            else
+            {
+                return redirect()->back()->with('error','Saving Defect Material Failed.');
+            }
+        }
+        else
+        {
+            return redirect()->back()->with('error','Saving Serial Number Failed.');
+        }
     }
     public function repairdef(Request $request, $id)
     {
