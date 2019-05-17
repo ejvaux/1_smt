@@ -22,6 +22,7 @@ class AddColumnPcbTable extends Migration
             $table->integer('div_process_id')->after('line_id');
             $table->boolean('type')->after('div_process_id');
             $table->integer('employee_id')->after('type');
+            
         });
     }
 
