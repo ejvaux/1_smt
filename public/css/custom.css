@@ -3,6 +3,24 @@
     background: linear-gradient(#AED6F1,#5DADE2);
     color:  white;
 }
+.highlight2{
+    background: linear-gradient(#5DADE2, #2E86C1);
+    /* background: linear-gradient(#AED6F1,#5DADE2); */
+    color:  white;
+}
+
+.pcbconfig:read-only
+{
+    /* background: #007bff; */
+    border-color: black;
+    background: #FFEB3B;
+    color: black;
+    font-weight: bold;
+}
+
+.configlock{
+    display: none;
+}
 
 /* ----------------------- */
 .center-text
