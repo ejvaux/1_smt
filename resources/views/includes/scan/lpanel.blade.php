@@ -31,9 +31,9 @@
                                         <label for="pcb_input_type" class="col-form-label">TYPE:</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <input class='form-control pcbconfig configlock' type="text" id='display-input' value='{{ ($type == 1 ? 'IN' : 'OUT')}}' readonly>                    
-                                        <div class="configunlock">
-                                            <input class='configunlock' checked id="pcb_input" type="checkbox" data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="primary" data-offstyle="secondary" data-width="100%" data-height="15">
+                                        {{-- <input class='form-control pcbconfig configlock' type="text" id='display-input' value='{{ ($type == 1 ? 'IN' : 'OUT')}}' readonly> --}}                    
+                                        <div class="">
+                                            <input class='' checked id="pcb_input" type="checkbox" data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="primary" data-offstyle="secondary" data-width="100%" data-height="15">
                                         </div>                                        
                                         {{-- <input id='pcb_input_type' name='pcb_input_type' type="hidden" value='{{ $type }}'> --}}
                                     </div>
@@ -95,7 +95,7 @@
                                         <label for="scan_employee" class="col-form-label bold-text">EMPLOYEE:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control border-success' type="text" id='scan_employee' placeholder="Scan employee barcode" style='border-width:medium'>                
+                                        <input class='form-control border-success' type="text" id='scan_employee' autocomplete="off" placeholder="Scan employee barcode" style='border-width:medium'>                
                                         <div class="input-group" style='display:none' id='scan_name_div'>
                                             <input class='form-control pcbconfig' type="text" id='scan_name' readonly>
                                             <button type="button" class='' id="reset_emp"><i class="fas fa-redo"></i></button>

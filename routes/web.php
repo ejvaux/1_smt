@@ -93,6 +93,9 @@ Route::namespace('Api')->group(function () {
         /* Load Tables */
         Route::get('loadWOtable', 'ApiController@loadWOtable');
         Route::get('loadpcbtable', 'ApiController@loadpcbtable');
+
+        /* Total Scan */
+        Route::get('totalscan', 'ApiController@totalscan');
     }); 
 });
 

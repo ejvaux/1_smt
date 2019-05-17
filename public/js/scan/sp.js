@@ -106,6 +106,7 @@ function serialscan()
             if(data.type == 'success'){
                 /* Reload Pcb table */
                 loadpcbtable();
+                getscantotal($('#scanform-jo_id').val());
                 iziToast.success({
                     message: data.message,
                     position: 'topCenter'
@@ -168,8 +169,8 @@ function setWO(wo){
     $('#wo-pcode').val(wo.ITEM_CODE).addClass('pcbconfig');
     $('#wo-pname').val(wo.ITEM_NAME).addClass('pcbconfig');
     $('#wo-rem').val('').addClass('pcbconfig');
-    $('#wo-input').val('').addClass('pcbconfig');
-    $('#wo-output').val('').addClass('pcbconfig');
+    $('#wo-input').addClass('pcbconfig');
+    $('#wo-output').addClass('pcbconfig');
 
     /* form input insert */
     $('#scanform-jo_id').val(wo.ID);
@@ -179,6 +180,9 @@ function setWO(wo){
 
     /* check scan status */
     checkscan();
+
+    /* load total */
+    getscantotal(wo.ID);    
 
     /* iziToast.success({
         message: 'Work Order Set!',
@@ -276,6 +280,17 @@ function loadpcbtable(txt = ''){
             position: 'topCenter'
         });
     }
+}
+function getscantotal(wo){
+    $.get("api/totalscan",
+        { 
+            jo:  wo
+        }, 
+        function(data) {
+            $('#wo-input').val(data.in);
+            $('#wo-output').val(data.out);
+            $('#wo-rem').val($('#wo-quantity').val() - data.out);
+    });    
 }
 
 /* --------------- E-V-E-N-T-S -------------- */
@@ -387,7 +402,7 @@ $('#unsetWO').on('click', function(e){
     })    
 });
 $('#refreshWO').on('click', function(e){
-    alert('TEST');
+    getscantotal($('#scanform-jo_id').val());
 });
 $('#collapseConfig').on('hide.bs.collapse', function () {
     $('#config-collapse-btn').html('<i class="fas fa-caret-down"></i>');
@@ -467,11 +482,11 @@ $('#configL').on('change', function(e){
     else{        
         if($('#pcb_input').prop('checked') == 1){
             t = 'IN';
-            inputt = 1;
+            inputt = 0;
         }
         else{
             t = 'OUT';
-            inputt = 0;
+            inputt = 1;
         }
         var chk = 0;
         if($('#pcb_division_id').val() == 0){
@@ -528,4 +543,13 @@ $('#searchpcbtable').on('keypress', function(e){
         loadpcbtable($(this).val());
         $(this).val('');
     }
+})
+$('#pcb_input').on('change', function(e){
+    if($(this).prop('checked') == 1){
+        inputt = 0;
+    }
+    else{
+        inputt = 1;
+    }    
+    $('#scanform-type').val(inputt);
 })

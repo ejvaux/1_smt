@@ -59,17 +59,22 @@ class ApiController extends Controller
     public function scanserial(Request $request)
     {
         /* checking input */
-        if($request->type == 2){
+        if($request->type == 1){
             $sn = Pcb::where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
-                ->where('type',1)
-                ->first();
-            if($sn->count() > 0){
+                ->where('type',0);
+                /* ->get(); */
+            if($sn->first()){
                 return $this->checkdup($request);
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Serial Number has no INPUT record.'
+                ];
             }
         }
         else{
-            /*  */
             /* Checking for bottom */
             if($request->division_id == 2 && $request->div_process_id == 2){
                 $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1)->first();
@@ -131,5 +136,15 @@ class ApiController extends Controller
                 'message' => 'Scan Failed!'
             ];
         }
+    }
+    public function totalscan(Request $request)
+    {
+        $in = Pcb::where('jo_id',$request->jo)->where('type',0)->count();
+        $out = Pcb::where('jo_id',$request->jo)->where('type',1)->count();
+
+        return [
+            'in' => $in,
+            'out' => $out
+        ];
     }
 }

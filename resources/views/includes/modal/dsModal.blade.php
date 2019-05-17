@@ -31,7 +31,7 @@
                                 <label for="scan_employee" class="col-form-label-sm">EMPLOYEE:</label>                  
                             </div>
                             <div class="col-8">
-                                <input class='form-control' type="text" id='scan_employee' placeholder="Scan employee barcode">                
+                                <input class='form-control' type="text" id='scan_employee' placeholder="Scan employee barcode" autocomplete="off">                
                                 <div class="input-group" style='display:none' id='scan_name_div'>
                                     <input class='form-control' type="text" id='scan_name' readonly>
                                     <button type="button" class='' id="reset_emp"><i class="fas fa-redo"></i></button>
@@ -185,7 +185,7 @@
                         <label for="ascan_employee" class="col-form-label-sm">EMPLOYEE:</label>                  
                     </div>
                     <div class="col-8">
-                        <input class='form-control' type="text" id='ascan_employee' placeholder="Scan employee barcode">                
+                        <input class='form-control' type="text" id='ascan_employee' placeholder="Scan employee barcode" autocomplete="off">                
                         <div class="input-group" style='display:none' id='ascan_name_div'>
                             <input class='form-control' type="text" id='ascan_name' readonly>
                             <button type="button" class='' id="areset_emp"><i class="fas fa-redo"></i></button>
@@ -246,7 +246,7 @@
                                 <label for="escan_employee" class="col-form-label-sm">EMPLOYEE:</label>                  
                             </div>
                             <div class="col-8">
-                                <input class='form-control' type="text" id='escan_employee' placeholder="Scan employee barcode">                
+                                <input class='form-control' type="text" id='escan_employee' placeholder="Scan employee barcode" autocomplete="off">                
                                 <div class="input-group" style='display:none' id='escan_name_div'>
                                     <input class='form-control' type="text" id='escan_name' readonly>
                                     <button type="button" class='' id="ereset_emp"><i class="fas fa-redo"></i></button>
