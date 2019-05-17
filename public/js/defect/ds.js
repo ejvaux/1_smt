@@ -1,3 +1,4 @@
+/* ---------- FUNCTIONS ---------- */
 function empcheckpin(pin,set)
 {
     var chck;
@@ -131,6 +132,43 @@ function resetemp(set)
         $('#escan_employee').focus();
     }
 }
+function checksn(sn){
+    $('#scan_sn').val('Please Wait . . .');
+    $('#scan_sn').attr('readonly', true);
+    $.get("api/checksn",
+            { 
+                sn:  sn
+            }, 
+            function(data) {
+                if(data != 0){
+                    $('#scan_sn').hide();
+                    $('#scan_lbl').val(data.serial_number);
+                    $('#scan_serial_number').val(data.serial_number);
+                    $('#scan_lbl_div').show();
+                    $('#division_id').val(data.division_id);
+                    ddpop(data.division_id,'process_id','defect_id','line_id');
+                    $('#division_id option:not(:selected)').attr('disabled', true);
+                    $('#line_id').val(data.line_id);
+                    $('#scan_employee').focus();
+                }
+                else{
+                    resetsn();
+                    iziToast.warning({
+                        message: 'Serial Number not found!',
+                        position: 'topCenter'
+                    });
+                }
+            });
+}
+function resetsn(){
+    $('#scan_sn').val('');
+    $('#scan_serial_number').val('');
+    $('#scan_sn').attr('readonly', false);
+    $('#scan_lbl_div').hide();
+    $('#scan_sn').show();
+    $('#scan_sn').focus();
+}
+/* ---------- EVENTS ---------- */
 $('#addDefect_btn').on('click', function(){
     $('#add_defect_modal').modal('show');
 });
@@ -193,10 +231,6 @@ $('#areset_emp').on('click', function(){
 $('#ereset_emp').on('click', function(){
     resetemp('3');
 });
-/* $('#defect_id').on('change', function(){
-    var selected = $(this).find('option:selected');
-    $('#division_id').val(selected.data('div_id'));
-}); */
 $('#add_defect_form').on('submit', function(){
     if ($('#employee_id').val() == '') {
         iziToast.warning({
@@ -250,7 +284,6 @@ $('.repair_defectmat_btn').on('click', function(){
 $('.details_defectmat_btn').on('click', function(){
     alert('Details');
 });
-
 $('#division_id').on('change',function(){
     ddpop($(this).val(),'process_id','defect_id','line_id');
 })
@@ -260,3 +293,13 @@ $('#adivision_id').on('change',function(){
 $('#ds_advancesearch_btn').on('click',function(){
     $('#ds_advancedsearch_modal').modal('show');
 })
+$('#scan_sn').on('keypress', function(e){    
+    if(e.keyCode == 13)
+    {
+        e.preventDefault();
+        checksn($(this).val());
+    }
+});
+$('#reset_sn').on('click', function(e){
+    resetsn();
+});

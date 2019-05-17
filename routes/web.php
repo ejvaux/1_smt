@@ -86,6 +86,9 @@ Route::namespace('Api')->group(function () {
         /* Check Employee PIN */        
         Route::get('scanpinemp', 'ApiController@scanpinemp');
 
+        /* Check Serial NO */
+        Route::get('checksn', 'ApiController@checksn');
+
         Route::post('scanserial', 'ApiController@scanserial');
         Route::get('divprocesses/{id}', 'ApiController@divprocesses');
         Route::get('linenames/{id}', 'ApiController@linenames');

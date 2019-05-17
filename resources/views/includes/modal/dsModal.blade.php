@@ -21,7 +21,12 @@
                                 <label for="serial_number" class="col-form-label-sm">S/N:</label>                  
                             </div>
                             <div class="col-8">
-                                <input id='serial_number' name='serial_number' class='form-control' type="text" required>                 
+                                <input id='scan_sn' class='form-control' type="text" placeholder="Scan Serial Number here . . ." autocomplete='off'>                 
+                                <div class="input-group" style='display:none' id='scan_lbl_div'>
+                                    <input class='form-control' type="text" id='scan_lbl' readonly>
+                                    <button type="button" class='' id="reset_sn"><i class="fas fa-redo"></i></button>
+                                </div>
+                                <input type="hidden" id='scan_serial_number' name="serial_number">
                             </div>
                         </div>
                     </div>
