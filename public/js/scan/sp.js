@@ -182,7 +182,13 @@ function setWO(wo){
     checkscan();
 
     /* load total */
-    getscantotal(wo.ID);    
+    getscantotal(wo.ID);
+
+    /* Change tab */
+    $('#serntab').tab('show');
+
+    /* Collapse Config */
+    $('#collapseConfig').collapse('hide');
 
     /* iziToast.success({
         message: 'Work Order Set!',
