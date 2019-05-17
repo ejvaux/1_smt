@@ -95,7 +95,7 @@
                                         <label for="scan_employee" class="col-form-label bold-text">EMPLOYEE:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control border-success' type="text" id='scan_employee' placeholder="Scan employee barcode" style='border-width:medium'>                
+                                        <input class='form-control border-success' type="text" id='scan_employee' autocomplete="off" placeholder="Scan employee barcode" style='border-width:medium'>                
                                         <div class="input-group" style='display:none' id='scan_name_div'>
                                             <input class='form-control pcbconfig' type="text" id='scan_name' readonly>
                                             <button type="button" class='' id="reset_emp"><i class="fas fa-redo"></i></button>
