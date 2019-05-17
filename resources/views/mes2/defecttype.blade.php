@@ -26,14 +26,11 @@
                 <label>Code</label>
                 <input type="text" class="form-control" name="code" placeholder="Enter Code" required>
             </div>
-
             <div class="form-group">
                 <label>Defect Type</label>
                 <input type="text" class="form-control" name="name"  placeholder="Enter Defect Type" required>
             </div>
             <div class="form-group">
-
-
             </div>
 </div>
 <div class="modal-footer">
@@ -155,12 +152,12 @@
                         </tbody>
                         </table>
 
-            </div>
-        </div>
+                        </div>
+                        </div>
 
-        @else
-        <p>No Posts Found</p>
-        @endif
+                        @else
+                        <p>No Posts Found</p>
+                        @endif
         {{--End TABLE  --}}
         </div>
     </div>

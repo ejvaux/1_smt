@@ -15,13 +15,12 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        </div>
+    </div>
 <form method="POST" action='{{url('process')}}' >
 @csrf
 <div class="modal-body">
 
     <!-- Body of Modal Modal -->
-
             <div class="form-group">
                 <label>CODE</label>
                 <input type="text" class="form-control" name="code" placeholder="Enter Code" required>
