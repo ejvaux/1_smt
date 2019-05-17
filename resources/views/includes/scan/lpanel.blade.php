@@ -117,7 +117,7 @@
                         <a class="nav-link active" href="#wotab" role="tab" data-toggle="tab">Work Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#serials" role="tab" data-toggle="tab">S/N</a>
+                        <a id='serntab' class="nav-link" href="#serials" role="tab" data-toggle="tab">S/N</a>
                     </li>
                 </ul>
                 
