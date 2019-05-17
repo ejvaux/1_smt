@@ -31,9 +31,9 @@
                                         <label for="pcb_input_type" class="col-form-label">TYPE:</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <input class='form-control pcbconfig configlock' type="text" id='display-input' value='{{ ($type == 1 ? 'IN' : 'OUT')}}' readonly>                    
-                                        <div class="configunlock">
-                                            <input class='configunlock' checked id="pcb_input" type="checkbox" data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="primary" data-offstyle="secondary" data-width="100%" data-height="15">
+                                        {{-- <input class='form-control pcbconfig configlock' type="text" id='display-input' value='{{ ($type == 1 ? 'IN' : 'OUT')}}' readonly> --}}                    
+                                        <div class="">
+                                            <input class='' checked id="pcb_input" type="checkbox" data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="primary" data-offstyle="secondary" data-width="100%" data-height="15">
                                         </div>                                        
                                         {{-- <input id='pcb_input_type' name='pcb_input_type' type="hidden" value='{{ $type }}'> --}}
                                     </div>

@@ -35,7 +35,7 @@
             <div class="col-md">
                 <div id="info_btnWO" class="btn-group d-none p-0" role="group">
                     <button id='unsetWO' class='btn btn-primary bold-text p-0 px-1'><i class="fas fa-unlink"></i> UNSET</button>
-                    {{-- <button id='refreshWO' class='btn btn-primary bold-text p-0 px-1'><i class="fas fa-sync-alt"></i></button> --}}
+                    <button id='refreshWO' class='btn btn-primary bold-text p-0 px-1'><i class="fas fa-sync-alt"></i></button>
                 </div>
             </div>
         </div>

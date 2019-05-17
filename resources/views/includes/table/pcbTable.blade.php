@@ -28,7 +28,7 @@
                                 <td>{{$pcb->line->name}}</td>
                                 <td>{{$pcb->divprocess->name}}</td>
                                 <td>
-                                    @if ($pcb->type == 1)
+                                    @if ($pcb->type == 0)
                                         IN
                                     @else
                                         OUT
