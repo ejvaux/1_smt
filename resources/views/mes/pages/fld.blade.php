@@ -184,7 +184,7 @@
                                             </form>
                                         @else
                                             <div id="add_ml_input">
-                                                <button id='add_line' style='font-size:.8rem' title="Add New Black Line"><i class="fas fa-plus"></i> Line</button>
+                                                <button id='add_line' style='font-size:.8rem' title="Add New Blank Line"><i class="fas fa-plus"></i> Line</button>
                                                 {{-- <button id='copy_new_line' style='font-size:.8rem' title="Copy List into New Line"><i class="far fa-copy"></i> Copy <span class='text-danger font-weight-bold'>CURRENT</span> List into New Line</button> --}}
                                                 <button id='add_mach' style='font-size:.8rem' title="Add Machine"><i class="fas fa-plus"></i> Machine</button>
                                             </div>
