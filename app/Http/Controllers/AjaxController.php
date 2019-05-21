@@ -121,7 +121,7 @@ class AjaxController extends Controller
         $machine = $request->input('machine_id');
         $component = $request->input('new_PN');
         //$machine = "CM60201A";
-        $m_code =substr($machine,0,7);
+        $m_code =substr($machine,0,-1);
         $table=substr($machine,-1);
         
         $mach_type= machine::where('barcode',$m_code)->first();

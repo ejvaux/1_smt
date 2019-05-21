@@ -103,6 +103,7 @@
             <form id="add_comp_form"  method="post" action='{{url('feeders')}}'>
             <input type="hidden" id="amodel_id" name="model_id">
             <input type="hidden" id="amachine_type_id" name="machine_type_id">
+            <input type="hidden" id="aline_id" name="line_id">
             <input type="hidden" id="atable_id" name="table_id">
             <input type="hidden" id="auser_id" name="user_id">
             <div class="modal-body" style="">

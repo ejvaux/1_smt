@@ -40,6 +40,7 @@ class FeedersController extends Controller
         $request->validate([
             'model_id' => 'integer|required',
             'machine_type_id' => 'integer|required',
+            'line_id' => 'integer|required',
             'table_id' => 'integer|required',
             'mounter_id' => 'integer|required',
             'pos_id' => 'integer|required',
@@ -50,6 +51,7 @@ class FeedersController extends Controller
         $f = new Feeder;
         $f->model_id = $request->input('model_id');
         $f->machine_type_id = $request->input('machine_type_id');
+        $f->line_id = $request->input('line_id');
         $f->table_id = $request->input('table_id');
         $f->mounter_id = $request->input('mounter_id');
         $f->pos_id = $request->input('pos_id');
