@@ -31,7 +31,7 @@ class MasterController extends Controller
         $this->prefs = Preference::all();
         $this->components = Component::all();
         $this->machines = Machine::all();
-        $this->linenames = LineName::all();
+        $this->linenames = LineName::orderBy('division_id')->get();
     }
     public function index()
     {
@@ -138,19 +138,27 @@ class MasterController extends Controller
         $machinetypes = $this->machinetypes;
         return view('mes.pages.cflv',compact('machinetypes'));
     }
-    public function feederlistdetails($id,$mid)
+    public function feederlistdetails($id,$mid,$linid)
     {
         $tb = 0;
         $mt = 0;
         $ps = 0;
         $chk = 0;
+        $chk2 = 0;
         $machinetypes = $this->machinetypes;
+        $linenames = $this->linenames;
         if ($mid == 0) {
             $machid = Feeder::where('model_id',$id)->groupBy('machine_type_id')->pluck('machine_type_id')->first();
         }
         else{
             $machid = $mid;
-        }     
+        }
+        if ($linid == 0) {
+            $lin = Feeder::where('model_id',$id)->groupBy('line_id')->pluck('line_id')->first();
+        }
+        else{
+            $lin = $linid;
+        } 
         $model = ModName::where('id',$id)->first();
         $mounters = $this->mounters;
         $positions = $this->positions;
@@ -168,7 +176,10 @@ class MasterController extends Controller
             'components',
             'machid',
             'machinetypes',
-            'chk'
+            'linenames',
+            'chk',
+            'chk2',
+            'lin'
         ));
     }
     public function getmachtables($mach,$id)

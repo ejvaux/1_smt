@@ -25,6 +25,10 @@ class Feeder extends Model
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\MachineType','machine_type_id');
     }
+    public function line()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\LineName','line_id');
+    }
     public function mounter()
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Mounter','mounter_id');

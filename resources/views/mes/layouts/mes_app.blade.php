@@ -16,7 +16,15 @@
     <title>@yield('pageTitle')</title>
     <!-- Custom CSS - START -->
     <style>
-      
+      .wait_cont
+      {
+        border:solid;
+        width: 300px;
+        margin: 0 auto;
+        background-color:white;
+        border-radius: 200px;
+        padding: 2%;
+      }
     </style>
     <!-- Custom CSS - END -->
 
@@ -62,7 +70,11 @@
     <!-- Page specific Navbar END -->
 
     <!-- Contents - START  =====================================               -->
-    
+    <div id="wait">
+        <div class="wait_cont">
+          <img src="{{ asset('images/loading3.gif')}}" class="loading_badge"><br>LOADING...<br>Please wait for a moment.
+        </div>
+    </div>
     <div class="container-fluid mt-5 ml-0 pl-0" id="table_display" style="width: 100%;">
       <div class="row text-left">
         <div class="col-11" >

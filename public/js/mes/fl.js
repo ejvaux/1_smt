@@ -1,3 +1,4 @@
+/* FUNCTIONS */
 function viewfeederlist($m_id,$mt_id){
     $.ajax({
         type		: "GET",
@@ -7,13 +8,34 @@ function viewfeederlist($m_id,$mt_id){
                     }
     });
 }
+function loadlinemach(){
+    $.get("api/"+uri+"/"+ id, 
+        function(data) {
+            var model = $('#'+dd);
+            model.empty();
+            model.attr('disabled',false);
+            if(data.length > 0){
+                $.each(data, function(index, element) {
+                    model.append("<option value='"+ element.id +"'>" + element.name + "</option>");
+                });
+            }
+            else{
+                model.attr('disabled',true);
+                model.append("<option value=''>No Data Found.</option>");
+            }            
+        });
+}
+/* EVENTS */
 $('#flviewmachine').on('change', function(){
-    /* viewfeederlist($('#mdl_id').val(),$(this).val()); */
-    window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $(this).val();
+    window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $(this).val() + "/" + $('#flviewline').val();
+});
+$('#flviewline').on('change', function(){
+    window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $('#flviewmachine').val() + "/" + $(this).val() ;
 });
 $("#fltable").on('click','.addCmp', function(){
     $('#amodel_id').val($(this).data('model'));
     $('#amachine_type_id').val($(this).data('mach'));
+    $('#aline_id').val($(this).data('line'));
     $('#atable_id').val($(this).data('table'));
     $('#add_comp_form').trigger("reset");
     $('#atable_number').text($(this).data('table'));
@@ -181,6 +203,31 @@ $('#insert_mach1').on('click', function(){
         });
     }
 });
+/* ADDING MACHINE AND LINE */
+/* HIDE/SHOW */
+    /* Add Machine and Line */
+        $('#insert_ml').on('click', function(){
+            $('#amlupdated_by').val($('meta[name="user_num"]').attr('content'));
+            $('#add_ml_form').trigger('submit');
+        });
+/* ADDING BLANK LINE */
+$('#insert_line').on('click',function(){
+    $('#alupdated_by').val($('meta[name="user_num"]').attr('content'));
+    /* alert($('#amupdated_by').val()); */
+    $('#add_line_form').trigger('submit');
+});
+/* HIDE/SHOW */
+    /* Add Machine */    
+        $('#add_line').on('click', function(){
+            /* $('#add_line_input1').hide(); */
+            $('#add_ml_input').hide();
+            $('#add_line_input2').show();
+        });
+        $('#cancel_line').on('click', function(){
+            $('#add_line_input2').hide();
+            /* $('#add_line_input1').show(); */
+            $('#add_ml_input').show();
+        });
 /* ADDING MACHINE */
 $('#insert_mach').on('click',function(){
     $('#amupdated_by').val($('meta[name="user_num"]').attr('content'));
@@ -227,7 +274,8 @@ $('#insert_mach').on('click',function(){
             $('#insert_mach').show();
             $('#cancel_mach').show();
             $('#addmachlist').show(); */
-            $('#add_machine_input1').hide();
+            /* $('#add_machine_input1').hide(); */
+            $('#add_ml_input').hide();
             $('#add_machine_input2').show();
         });
         $('#cancel_mach').on('click', function(){
@@ -237,8 +285,21 @@ $('#insert_mach').on('click',function(){
             $(this).hide();
             $('#addmachlist').hide(); */
             $('#add_machine_input2').hide();
-            $('#add_machine_input1').show();
+            /* $('#add_machine_input1').show(); */
+            $('#add_ml_input').show();
         });
+
+/* COPY LIST INTO NEW LINE */
+/* HIDE/SHOW */
+    /* Copy List into New Line */
+    $('#copy_new_line').on('click', function(e){
+        $('#copy_list').show();
+        $('#add_ml_input').hide();
+    })
+    $('#cancel_copy_list').on('click', function(){
+        $('#copy_list').hide();
+        $('#add_ml_input').show();
+    });
 
 /* DROPDOWN CHANGE EVENT */
     /* transfer mounter */
@@ -339,3 +400,4 @@ $('#insert_mach').on('click',function(){
                 });
             }
         });
+    
