@@ -27,7 +27,7 @@
                         <div id="list_mounter_inputs_{{$i}}" style='display:none;'>
                             <select id="list_mounter_{{$i}}" class="list_mounter" placeholder="" required>
                                     <option value="">- Please select -</option>
-                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('machine_type_id',$machid)->where('line_id',$lin)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
+                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
                                     <option value="{{$mntr->mounter_id}}" >{{$mntr->mounter->code}}</option>
                                 @endforeach
                             </select>
@@ -42,7 +42,7 @@
                         <div id="change_mounter_inputs_{{$i}}"  style='display:none;'>
                             <select id="change_list_mounterfrom_{{$i}}" class="change_list_mounterfrom" placeholder="" required>
                                     <option value="">From Mounter</option>
-                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('machine_type_id',$machid)->where('line_id',$lin)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
+                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
                                     <option value="{{$mntr->mounter_id}}" >{{$mntr->mounter->code}}</option>
                                 @endforeach
                             </select>
@@ -63,7 +63,7 @@
                         <div id="transfer_mounter_inputs_{{$i}}" style='display:none;'>
                             <select id="transfer_list_mounter_{{$i}}" class="transfer_list_mounter" placeholder="" required>
                                     <option value="">Select Mounter</option>
-                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('machine_type_id',$machid)->where('line_id',$lin)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
+                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
                                     <option value="{{$mntr->mounter_id}}" >{{$mntr->mounter->code}}</option>
                                 @endforeach
                             </select>
@@ -94,7 +94,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('machine_type_id',$machid)->where('line_id',$lin)->where('table_id',$i)->orderBy('mounter_id')->orderBy('pos_id')->orderBy('order_id')->get() as $feeder)
+                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->orderBy('mounter_id')->orderBy('pos_id')->orderBy('order_id')->get() as $feeder)
                     <tr>
                         @php
                             if($tb != $i){
@@ -106,11 +106,11 @@
                                 $ps = 0;
                             }
                             if ($mt != $feeder->mounter_id) {
-                                echo "<td rowspan='".\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('machine_type_id',$machid)->where('line_id',$lin)->where('table_id',$i)->where('mounter_id',$feeder->mounter_id)->count()."'>".$feeder->mounter->code."</td>";
+                                echo "<td rowspan='".\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->where('mounter_id',$feeder->mounter_id)->count()."'>".$feeder->mounter->code."</td>";
                                 $mt = $feeder->mounter_id;
                             }
                             if($ps != $feeder->pos_id){
-                                echo "<td rowspan='".\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('machine_type_id',$machid)->where('line_id',$lin)->where('table_id',$i)->where('mounter_id',$feeder->mounter_id)->where('pos_id',$feeder->pos_id)->count()."'>".$feeder->position->name."</td>";
+                                echo "<td rowspan='".\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->where('mounter_id',$feeder->mounter_id)->where('pos_id',$feeder->pos_id)->count()."'>".$feeder->position->name."</td>";
                                 $ps = $feeder->pos_id;
                             }
                         @endphp

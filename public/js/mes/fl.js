@@ -30,7 +30,7 @@ $('#flviewmachine').on('change', function(){
     window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $(this).val() + "/" + $('#flviewline').val();
 });
 $('#flviewline').on('change', function(){
-    window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $('#flviewmachine').val() + "/" + $(this).val() ;
+    window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/0/" + $(this).val() ;
 });
 $("#fltable").on('click','.addCmp', function(){
     $('#amodel_id').val($(this).data('model'));
