@@ -124,6 +124,24 @@ class ApiController extends Controller
         $a->employee_id = $request->employee_id;
         $a->defect = 0;
         $a->heat = 0;
+
+        if($request->division_id == 2){
+            $pname = '';
+            if($request->type == 0){
+                $pname = 'SMT.INPUT-';
+            }
+            else{
+                $pname = 'SMT.V/I-';
+            }
+            if($request->div_process_id == 1){
+                $pname .= 'B';
+            }
+            elseif($request->div_process_id == 2){
+                $pname .= 'T';
+            }
+        }
+        $a->PROCESS_NAME = $pname;
+
         if($a->save()){
             return [
                 'type' => 'success',
