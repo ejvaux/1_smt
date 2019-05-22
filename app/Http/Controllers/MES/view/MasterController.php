@@ -147,7 +147,22 @@ class MasterController extends Controller
         $chk2 = 0;
         $machinetypes = $this->machinetypes;
         $linenames = $this->linenames;
-        if ($mid == 0) {
+        if($linid == 0 && $mid == 0){
+            $lin = Feeder::where('model_id',$id)->groupBy('line_id')->pluck('line_id')->first();
+            $machid = Feeder::where('model_id',$id)->groupBy('machine_type_id')->pluck('machine_type_id')->first();
+        }
+        else{
+            $lin = $linid;
+            if ($mid == 0) {
+                $machid = Feeder::where('model_id',$id)->where('line_id',$linid)->groupBy('machine_type_id')->pluck('machine_type_id')->first();
+            }
+            else{
+                $machid = $mid;
+            }
+        }
+
+
+        /* if ($mid == 0) {
             $machid = Feeder::where('model_id',$id)->groupBy('machine_type_id')->pluck('machine_type_id')->first();
         }
         else{
@@ -158,7 +173,7 @@ class MasterController extends Controller
         }
         else{
             $lin = $linid;
-        } 
+        } */ 
         $model = ModName::where('id',$id)->first();
         $mounters = $this->mounters;
         $positions = $this->positions;
