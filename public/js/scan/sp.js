@@ -482,6 +482,17 @@ $('#configL').on('change', function(e){
         /* Unset WO when Config unlock */
         unsetWO();
 
+        /* Clear WO table */
+        $.get("api/loadWOtable",
+            { 
+                div: 0,
+                dte: ''
+            }, 
+            function(data) {
+                $('#spTablediv').html(data);
+                $('#setWO').addClass('d-none');    
+            });
+
         /* check scan status */
         checkscan();
     }
