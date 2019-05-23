@@ -39,7 +39,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">                                   
-                            <a class="nav-link" href="{{url('mscan')}}"><i class="fas fa-archive"></i> Scan Materials</a>
+                            <a class="nav-link" href="{{url('mscan2')}}"><i class="fas fa-archive"></i> Scan Materials</a>
                             <a class="nav-link" href="{{url('ds')}}"><i class="fas fa-times-circle"></i> Defect Materials</a>
                             <a class="nav-link" href="{{url('errorlog')}}"><i class="fas fa-exclamation-circle"></i> Error Logs</a>
                         </div>
@@ -47,7 +47,7 @@
                     
 
                     <li class="nav-item bold-text">
-                        <a class="nav-link" href="#"><i class="fas fa-download"></i>&nbspData Export</a>
+                        <a class="nav-link" href="{{url('ep')}}"><i class="fas fa-download"></i>&nbspData Export</a>
                 </li>
                     <li class="nav-item bold-text">
                         <a class="nav-link" href="#"><i class="fas fa-bell"></i>&nbspNotifications</a>

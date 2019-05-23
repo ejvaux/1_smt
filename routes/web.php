@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     /* PageController */
     Route::get('/scan', 'PageController@scan');
     Route::get('/mscan', 'PageController@mscan');
+    Route::get('/mscan2', 'PageController@mscan2');
     Route::get('/errorlog', 'PageController@errorlogs');
     /* End of Page Controller */
     
@@ -68,6 +69,12 @@ Route::get('scansetting', 'ScanPcbController@scansetting');
 Route::get('ds', 'DefectController@index');
 /* Check Employee PIN */
 Route::post('scanpinemp', 'DefectController@scanpinemp');
+/* Export Page */
+Route::get('ep', 'ExportsController@index');
+/* Export SN */
+Route::get('ep/sn', 'ExportsController@exportpcb');
+
+
 /* QR Generate */
 /* Route::get('qr-code', 'ScanPcbController@qrgen'); */
 Route::get('qr-code', function (Request $request) {

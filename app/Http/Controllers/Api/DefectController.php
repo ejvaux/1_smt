@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Defect;
 use App\Models\DefectMat;
 use App\Models\Pcb;
 use DateTime;
@@ -174,6 +175,8 @@ class DefectController extends Controller
             if($a->heat <= 6){
                 $a->heat = $a->heat + 1;
                 $a->defect = 1;
+                $a->RESULT = 'NG';
+                $a->ERROR_CODE = Defect::where('DEFECT_ID',$request->input('defect_id'))->pluck('DEFECT_CODE')->first();
             }
             else{
                 $a->heat = $a->heat + 1;

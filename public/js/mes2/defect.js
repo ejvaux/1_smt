@@ -9,7 +9,7 @@ $('.editDefect').on('click', function(){
 
 /* Delete Function */
 $('.del_defect_btn').on('click',function(){
-    Swal.fire({
+    swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         type: 'warning',
@@ -23,7 +23,7 @@ $('.del_defect_btn').on('click',function(){
         $('#DeleteDefectTypeForm_'+$(this).data('id')).trigger('submit');
         /* alert($('#DeleteProcessForm_'+$(th).data('id')).attr('action')); */
 
-        Swal.fire(
+        swal.fire(
         'Deleted!',
         'Your file has been deleted.',
         'success')
