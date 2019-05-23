@@ -75,10 +75,22 @@ $(document).ready(function() {
     });
 
     $('#scan_model').on('select2:select', function (e) {
-       
-        $( "#scan_machine" ).focus();
+        $('#scan_line').select2('open');
+        /* $( "#scan_machine" ).focus(); */
     });
 
+});
+
+$('#scan_line').on('select2:close', function(e){
+    /* iziToast.info({
+        position: 'topCenter',
+        message: 'TEST',
+    }); */
+    setTimeout(function() {
+        $('.select2-container-active').removeClass('select2-container-active');
+        $(':focus').blur();
+        $("#scan_machine").focus();
+    }, 1);
 });
 
 function enterEvent(e) {
@@ -675,7 +687,7 @@ function event_emp(e){
                 }
                 else{
                     /* iziToast.error({title: 'ERROR',position: 'topCenter',message: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',}); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'Employee does not exists',
                         text: 'Employee code do not exists. Please scan the barcode given by the MIS department or contact MIS Personnel to verify your ID.',
                         type: 'error',
@@ -701,7 +713,7 @@ function event_emp(e){
             },
             error: function (data) {
                 marker = JSON.stringify(data);
-                  Swal.fire({
+                  swal.fire({
                     title: 'Session Expires',
                     text: 'Reload the page',
                     type: 'error',
@@ -814,6 +826,7 @@ function event_loadPN(e){
         replenish = "NO";
     }
 
+    var line = $('#scan_line').val();
     var emp_name = document.getElementById('scan_employee').value;
     var machine_code = document.getElementById('scan_machine').value;
     var model_code = document.getElementById('scan_model').value;
@@ -867,7 +880,7 @@ function event_loadPN(e){
                                 messageSize:'20',
                                 message: 'OLD PN and NEW PN must be matched. <br>If you are sure to load different PN, please set <br> the replenish toggle to NO for initial loading.',
                             }); */
-                            Swal.fire({
+                            swal.fire({
                                 title: 'OLD PN and NEW PN does not matched',
                                 text: 'OLD PN and NEW PN must be matched. If you are sure to load different PN, please set the replenish toggle to NO for initial loading.',
                                 type: 'error',
@@ -897,7 +910,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please input employee name',
                     }); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'Employee Field is required',
                         text: 'Please input employee name',
                         type: 'error',
@@ -911,7 +924,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please scan the machine code',
                     }); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'Machine Code Field is required',
                         text: 'Please scan the machine code',
                         type: 'error',
@@ -924,7 +937,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please input model name',
                     }); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'Model Name Field is required',
                         text: 'Please input model name',
                         type: 'error',
@@ -937,7 +950,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please input position',
                     }); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'Position Field is required',
                         text: 'Please input position',
                         type: 'error',
@@ -950,7 +963,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please input feeder slot #',
                     }); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'Feeder Slot # is required',
                         text: 'Please input feeder slot #',
                         type: 'error',
@@ -963,7 +976,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please input new PN to load',
                     }); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'PN is required',
                         text: 'Please input new PN to load',
                         type: 'error',
@@ -977,7 +990,7 @@ function event_loadPN(e){
                         position: 'topCenter',
                         message: 'Please fill out all the required fields',
                     }); */
-                    Swal.fire({
+                    swal.fire({
                         title: 'ERROR',
                         text: 'Please fill out all the required fields',
                         type: 'error',
@@ -1006,6 +1019,7 @@ function CheckFeeder(){
         replenish = "NO";
     }
 
+    var line = $('#scan_line').val();
     var emp_name = document.getElementById('scan_employee').value;
     var machine_code = document.getElementById('scan_machine').value;
     var model_code = document.getElementById('scan_model').value;
@@ -1050,6 +1064,7 @@ function CheckFeeder(){
         type:'POST',
         data:{
             'replenish':replenish,
+            'line': $('#scan_line').val(),
             'emp_id':emp_name,
             'machine_id':machine_code,
             'model_id':model_code,
@@ -1081,7 +1096,7 @@ function CheckFeeder(){
                         position: 'topCenter',
                         message: 'Component not found in the feeder list. Please check your input data.',
                     }); */
-                Swal.fire({
+                swal.fire({
                     title: 'Check Feeder List or the QR Code to scan',
                     text: 'Component not found in the feeder list. Please check your input data.',
                     type: 'error',
@@ -1097,7 +1112,7 @@ function CheckFeeder(){
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-            Swal.fire({
+            swal.fire({
                 title: 'Session Expires',
                 text: 'Reload the page',
                 type: 'error',
@@ -1186,7 +1201,7 @@ function InsertRecord(order_id){
                 message: 'All inputs are correct.',
             }); */
 
-            Swal.fire({
+            swal.fire({
                 title: 'Data Recorded!',
                 text: 'All inputs are correct.',
                 type: 'success',
@@ -1283,7 +1298,7 @@ function CheckRunning(order_id){
                     message: 'Component partname does not match the previous prima partname. if you are sure to load this partname,<br>toggle the replenishment button to NO for initial loading.',
                 }); */
 
-                Swal.fire({
+                swal.fire({
                     title: 'OLD PN does NOT matched the current running data',
                     text: 'Component partname does not match the previous prima partname. if you are sure to load this partname,toggle the replenishment button to NO for initial loading.',
                     type: 'error',

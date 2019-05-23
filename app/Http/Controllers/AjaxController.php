@@ -154,6 +154,7 @@ class AjaxController extends Controller
         }
         
         $data=feeders::where('machine_type_id',$mach_type)
+                        ->where('line_id',$request->input('line'))
                        ->where('table_id',$table_id)
                        ->where('model_id',$request->input('model_id'))
                        ->where('mounter_id',$request->input('feeder_slot'))
@@ -174,9 +175,7 @@ class AjaxController extends Controller
         }
         else{
             return "NO RECORD";
-        }
-                
-
+        } 
     }
 
     public function LoadDetailsPanel(Request $request){

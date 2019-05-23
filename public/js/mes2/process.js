@@ -44,7 +44,7 @@ $('.editProcess1').on('click', function(){
 
 /* Delete Function */
 $('.del_process_btn').on('click',function(){
-    Swal.fire({
+    swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         type: 'warning',
@@ -58,7 +58,7 @@ $('.del_process_btn').on('click',function(){
         $('#DeleteProcessForm_'+$(this).data('id')).trigger('submit');
         /* alert($('#DeleteProcessForm_'+$(th).data('id')).attr('action')); */
 
-        Swal.fire(
+        swal.fire(
         'Deleted!',
         'Your file has been deleted.',
         'success')

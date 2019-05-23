@@ -9,6 +9,7 @@ use App\Http\Controllers\MES\model\LineName;
 use App\Models\DivProcess;
 use App\Models\WorkOrder;
 use App\Models\Pcb;
+use App\Models\Division;
 
 class ApiController extends Controller
 {
@@ -125,13 +126,15 @@ class ApiController extends Controller
         $a->defect = 0;
         $a->heat = 0;
 
-        if($request->division_id == 2){
-            $pname = '';
+        /* For Exporting */        
+        if($request->division_id == 2 || $request->division_id == 17){
+            $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
+            
             if($request->type == 0){
-                $pname = 'SMT.INPUT-';
+                $pname .= '.INPUT-';
             }
             else{
-                $pname = 'SMT.V/I-';
+                $pname .= '.V/I-';
             }
             if($request->div_process_id == 1){
                 $pname .= 'B';
@@ -140,6 +143,8 @@ class ApiController extends Controller
                 $pname .= 'T';
             }
         }
+        $a->RESULT = 'OK';
+        $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
         $a->PROCESS_NAME = $pname;
 
         if($a->save()){
