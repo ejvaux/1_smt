@@ -105,7 +105,7 @@ function serialscan()
         success: function (data) {
             if(data.type == 'success'){
                 /* Reload Pcb table */
-                loadpcbtable();
+                loadpcbtable('',$('#scanform-type').val());
                 getscantotal($('#scanform-jo_id').val());
                 iziToast.success({
                     message: data.message,
@@ -268,13 +268,14 @@ function loadwotable(){
         });
     }
 }
-function loadpcbtable(txt = ''){
+function loadpcbtable(txt = '',type){
     if($('#scanform-jo_id').val() != ''){
         $jo_id = $('#scanform-jo_id').val();      
         $.get("api/loadpcbtable",
         { 
             jo_id:  $jo_id,
-            sn: txt
+            sn: txt,
+            type: type
         }, 
         function(data) {
             $('#pcbtable_div').html(data);   
@@ -553,11 +554,11 @@ $('#configL').on('change', function(e){
     }
 });
 $('#loadpcbtable').on('click',function(e){
-    loadpcbtable();
+    loadpcbtable('',$('#scanform-type').val());
 });
 $('#searchpcbtable').on('keypress', function(e){
     if(e.keyCode == 13){
-        loadpcbtable($(this).val());
+        loadpcbtable($(this).val(),$('#scanform-type').val());
         $(this).val('');
     }
 })
