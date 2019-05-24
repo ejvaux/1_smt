@@ -571,3 +571,21 @@ $('#pcb_input').on('change', function(e){
     }    
     $('#scanform-type').val(inputt);
 })
+$('#close_lot_num').on('click', function(e){
+    swal.fire({
+        title: 'Are you sure?',
+        text: "You want to close the lot?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, close it!'
+    }).then((result) => {
+        if (result.value) {
+            iziToast.success({
+                message: 'TEST.',
+                position: 'topCenter'
+            });            
+        }
+    })
+})

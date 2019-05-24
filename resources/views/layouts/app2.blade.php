@@ -23,7 +23,7 @@
     <div id="app">
         <div id="wait">
             <div class="wait_cont">
-            <img src="{{ asset('images/loading3.gif')}}" class="loading_badge"><br>LOADING...<br>Please wait for a moment.
+            <img src="{{ asset('images/loading3.gif')}}" class="loading_badge"><br>LOADING...<br>Please wait.
             </div>
         </div>        
         @include('includes.navbar')

@@ -114,19 +114,19 @@
             <div class="col-md">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#wotab" role="tab" data-toggle="tab">Work Order</a>
+                        <a class="nav-link bold-text active" href="#wotab" role="tab" data-toggle="tab">Work Order</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item bold-text">
                         <a id='serntab' class="nav-link" href="#serials" role="tab" data-toggle="tab">S/N</a>
                     </li>
                 </ul>
                 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane container active" id="wotab" style='height: 400px'>
+                    <div class="tab-pane container active" id="wotab" style='height:100%' {{-- style='height: 400px' --}}>
                         @include('includes.scan.wotab')
                     </div>
-                    <div class="tab-pane container" id="serials" style='height: 400px'>
+                    <div class="tab-pane container" id="serials" style='height:100%' {{-- style='height: 400px' --}}>
                         @include('includes.scan.sntab')
                     </div>                    
                 </div>
