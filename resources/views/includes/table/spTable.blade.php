@@ -1,5 +1,5 @@
 <div class="row mb-1">
-    <div class="table-responsive-lg w-100 text-nowrap" style='max-height: 350px;overflow:auto'>
+    <div class="table-responsive-lg w-100 text-nowrap" style='max-height: 100%;overflow:auto' {{-- style='max-height: 350px;overflow:auto' --}}>
         <table class="table table-sm" id="">
             <thead class="thead-light">
                 <tr class="text-center">
