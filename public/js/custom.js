@@ -2029,6 +2029,44 @@ function ddpop(id,id1,id2,id3){
             
         });
 }
+function ddpop2(id,id1,id2,arr){
+    $.get("processes/"+ id, 
+        { id: id }, 
+        function(data) {
+            var model = $('#'+id1);
+            model.empty();
+            model.attr('disabled',false);
+            if(data.length > 0){
+                $.each(data, function(index, element) {
+                    model.append("<option value='"+ element.id +"'>" + element.name + "</option>");
+                });
+                model.val(arr.process_id);
+            }
+            else{
+                model.attr('disabled',true);
+                model.append("<option value=''>No Process Found.</option>");
+            }
+            
+        });
+    $.get("defects/"+ id, 
+        { id: id }, 
+        function(data) {
+            var model1 = $('#'+id2);
+            model1.empty();
+            model1.attr('disabled',false);
+            if(data.length > 0){
+                $.each(data, function(index, element) {
+                    model1.append("<option value='"+ element.DEFECT_ID +"'>" + element.DEFECT_NAME + "</option>");
+                });
+                model1.val(arr.defect_id);
+            }
+            else{
+                model1.attr('disabled',true);
+                model1.append("<option value=''>No Defect Found.</option>");
+            }
+            
+        });              
+}
 function displaymenu(sn,rep,id,div,repby,arr){
     /* var arr1 = JSON.parse(arr); */
     /* alert(JSON.stringify(arr)); */
@@ -2038,17 +2076,16 @@ function displaymenu(sn,rep,id,div,repby,arr){
     if(rep == 0){
         buttons = [
             ["<a id='edit_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm edit_defectmat_btn py-1 px-2' title='Edit' data-id='{{$defect_mat->id}}'><i class='fas fa-edit'></i> Edit</a>", function (instance, toast) {
-                ddpop(div,'aprocess_id','adefect_id');
+                ddpop2(div,'aprocess_id','adefect_id',arr);
                 $('#aserial_number').val(sn);
-                $('#adivision_id').val(div);
-                $('#aline_id').val(arr.line_id);
+                /* $('#adivision_id').val(div);
+                $('#aline_id').val(arr.line_id); */
                 /* $('#adefect_datetime').val(df2); */
-                $('#aprocess_id').val(arr.process_id);
-                $('#adefect_id').val(arr.defect_id);
                 $('#adefect_type_id').val(arr.defect_type_id);
                 $('#edit_defect_form').attr('action', '/1_smt/public/defectmats/'+arr.id);
                 $('#edit_defect_modal').modal('show');
-
+                $('#aprocess_id').val(arr.process_id);
+                $('#adefect_id').val(arr.defect_id);
             }],
             ["<a id='repair_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm repair_defectmat_btn py-1 px-2' title='Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-hammer'></i> Repair</a>", function (instance, toast) { 
                 $('#repair_defectmat_form').attr('action', '/1_smt/public/defectmats_rep/'+id);

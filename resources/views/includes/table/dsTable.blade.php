@@ -4,6 +4,7 @@
             <thead class="thead-light">
                 <tr class="text-center">
                     <th>#</th>
+                    <th>@sortablelink('repair','Lead Time')</th>
                     <th>@sortablelink('defect_id','DIVISION')</th>
                     <th>@sortablelink('line_id','LINE')</th>
                     <th>@sortablelink('shift','SHIFT')</th>
@@ -11,10 +12,11 @@
                     <th>@sortablelink('pcb_id','S/N')</th>
                     <th>@sortablelink('defect_id','DEFECT')</th>
                     <th>@sortablelink('defect_type_id','DEFECT TYPE')</th>
-                    <th>@sortablelink('employee_id','EMPLOYEE')</th>
+                    <th>@sortablelink('employee_id','INSERTED BY')</th>
                     <th>@sortablelink('defected_at','DEFECTED AT')</th>
-                    {{-- <th>@sortablelink('created_at','INSERTED AT')</th> --}}
-                    <th>@sortablelink('repair','Lead Time')</th>
+                    <th>@sortablelink('repair_by','REPAIRED BY')</th>
+                    <th>@sortablelink('repaired_at','REPAIRED AT')</th>
+                    {{-- <th>@sortablelink('created_at','INSERTED AT')</th> --}}                    
                 </tr>
             </thead>
             <tbody class='text-center'>
@@ -27,8 +29,8 @@
                             data-div='{{$defect_mat->defect->division->DIVISION_ID}}'
                             data-arr='{{$defect_mat}}' data-id='{{$defect_mat->id}}'
                             data-sn='{{$defect_mat->pcb->serial_number}}'
-                            data-rep='{{$defect_mat->repair}}'>
-                            {{-- Col1  --}}
+                            data-rep='{{$defect_mat->repair}}'>                            
+                            {{-- Col --}}
                                 @if ($defect_mat->repair != true)
                                     <th class='border-bottom-0 border-top-0 border-right border-danger p-0 m-0' style='border-width:6px !important'>
                                 @else
@@ -36,13 +38,21 @@
                                 @endif                                                       
                                     {{ $loop->iteration + (($defect_mats->currentPage() - 1) * 20) }}                                
                                     </th>
-                            {{-- Col 2 --}}
+                            {{-- Col --}}
+                                <th>
+                                    @if ($defect_mat->repair)
+                                        <span class='text-success'>{{CustomFunctions::datetimefinished($defect_mat->created_at,$defect_mat->repaired_at)}}</span>
+                                    @else
+                                        <span class='text-danger'>{{CustomFunctions::datetimelapse($defect_mat->created_at)}}</span>
+                                    @endif    
+                                </th>
+                            {{-- Col --}}
                                 <td>{{$defect_mat->defect->division->DIVISION_NAME}}</td>
-                            {{-- Col 3 --}}
+                            {{-- Col --}}
                                 <td>{{$defect_mat->line->name}}</td>
-                            {{-- Col 4 --}}                            
+                            {{-- Col --}}                            
                                 <td>{{$defect_mat->shift}}</td>
-                            {{-- Col 5 --}}
+                            {{-- Col --}}
                                 <td>
                                     @if ($defect_mat->process_id)
                                         {{$defect_mat->process->name}}
@@ -50,7 +60,7 @@
                                         
                                     @endif                                
                                 </td>
-                            {{-- Col 6 --}}
+                            {{-- Col --}}
                                 <td>
                                     {{$defect_mat->pcb->serial_number}}
                                     {{-- <div class="btn-group dropright">
@@ -75,23 +85,31 @@
                                         </div>
                                     </div> --}}                             
                                 </td>
-                            {{-- Col 7 --}}
+                            {{-- Col --}}
                                 <td>{{$defect_mat->defect->DEFECT_NAME}}</td>
-                            {{-- Col 8 --}}
+                            {{-- Col --}}
                                 <td>{{$defect_mat->defectType->name}}</td>
-                            {{-- Col 9 --}}
+                            {{-- Col --}}
                                 <td>{{$defect_mat->employee->fname}} {{$defect_mat->employee->lname}}</td>
-                            {{-- Col 10 --}}
+                            {{-- Col --}}
                                 {{-- <td>{{$defect_mat->defected_at}}</td> --}}
                                 <td>{{$defect_mat->created_at}}</td>
-                            {{-- Col 11 --}}
-                                <th>
-                                    @if ($defect_mat->repair)
-                                        <span class='text-success'>{{CustomFunctions::datetimefinished($defect_mat->created_at,$defect_mat->repaired_at)}}</span>
+                            {{-- Col --}}
+                                <td>
+                                    @if ($defect_mat->repair_by)
+                                        {{$defect_mat->repairby->fname}} {{$defect_mat->repairby->lname}}                                   
                                     @else
-                                        <span class='text-danger'>{{CustomFunctions::datetimelapse($defect_mat->created_at)}}</span>
-                                    @endif    
-                                </th>
+                                        -
+                                    @endif                                    
+                                </td>
+                            {{-- Col --}}
+                                <td>
+                                    @if ($defect_mat->repaired_at)
+                                        {{$defect_mat->repaired_at}}
+                                    @else
+                                        -
+                                    @endif                                    
+                                </td>                                
                         </tr>
                     @endforeach                
                 @else

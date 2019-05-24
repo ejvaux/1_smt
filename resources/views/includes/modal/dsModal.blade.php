@@ -10,6 +10,8 @@
             </div>
             <form id="add_defect_form" class='form_to_submit'  method="POST" action='{{url('defectmats_temp')}}'>
                 @csrf
+                <input id='division_id' type="hidden" name="division_id">
+                <input id='line_id' type="hidden" name="line_id">
             <div class="modal-body" style="">
 
                 <!-- ____________ FORM __________________ -->
@@ -50,6 +52,21 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
+                                <label for="process_id" class="col-form-label-sm">PROCESS:</label>                  
+                            </div>
+                            <div class="col-8">
+                                <select id="process_id" class="form-control" name="process_id" placeholder="" disabled>
+                                        <option value="">- Select division first -</option>
+                                        {{-- @foreach ($processes as $process)
+                                        <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
+                                        @endforeach --}}
+                                </select>                  
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="division_id" class="col-form-label-sm">DIVISION:</label>                  
                             </div>
                             <div class="col-8">
@@ -61,7 +78,7 @@
                                 </select>                               
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
@@ -79,7 +96,7 @@
                     </div>
                 </div>
                 <div class="form-group row">                    
-                    <div class="col-6">
+                    {{-- <div class="col-6">
                         <div class="row">
                             <div class="col-4">
                                 <label for="line_id" class="col-form-label-sm">LINE:</label>                  
@@ -87,13 +104,11 @@
                             <div class="col-8">
                                 <select id="line_id" class="form-control" name="line_id" placeholder="" required disabled>
                                         <option value="">- Select division first -</option>
-                                        {{-- @foreach ($linenames as $linename)
-                                        <option value="{{$linename->id}}">{{$linename->name}}</option>
-                                        @endforeach --}}
                                 </select>                  
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+                    <div class="col-md-6"></div>
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
@@ -111,21 +126,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="process_id" class="col-form-label-sm">PROCESS:</label>                  
-                            </div>
-                            <div class="col-8">
-                                <select id="process_id" class="form-control" name="process_id" placeholder="" disabled>
-                                        <option value="">- Select division first -</option>
-                                        {{-- @foreach ($processes as $process)
-                                        <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
-                                        @endforeach --}}
-                                </select>                  
-                            </div>
-                        </div>
-                    </div>
+                    
                     {{-- <div class="col-6">
                         <div class="row">
                             <div class="col-4">
@@ -230,6 +231,8 @@
             <form id="edit_defect_form" class='form_to_submit'  method="POST" action=''>
                 @csrf
                 @method('PUT')
+                <input id='adivision_id' type="hidden" name="division_id">
+                <input id='aline_id' type="hidden" name="line_id">
             <div class="modal-body" style="">
 
                 <!-- ____________ FORM __________________ -->
@@ -265,6 +268,21 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
+                                <label for="aprocess_id" class="col-form-label-sm">PROCESS:</label>                  
+                            </div>
+                            <div class="col-8">
+                                <select id="aprocess_id" class="form-control" name="process_id" placeholder="" disabled>
+                                    <option value="">- Select division first -</option>
+                                    {{-- @foreach ($processes as $process)
+                                    <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
+                                    @endforeach --}}
+                                </select>                  
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="division_id" class="col-form-label-sm">DIVISION:</label>                  
                             </div>
                             <div class="col-8">
@@ -276,7 +294,7 @@
                                 </select>                               
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-6">
                         <div class="row">
                             <div class="col-4">
@@ -284,10 +302,10 @@
                             </div>
                             <div class="col-8">
                                 <select id="adefect_id" class="form-control" name="defect_id" placeholder="" required disabled>
-                                        <option value="">- Select division first -</option>
-                                        {{-- @foreach ($defects as $defect)
-                                        <option value="{{$defect->DEFECT_ID}}" data-div_id='{{$defect->division_id}}'>{{$defect->DEFECT_GROUP}} - {{$defect->DEFECT_CODE}} - {{$defect->DEFECT_NAME}}</option>
-                                        @endforeach --}}
+                                    <option value="">- Select division first -</option>
+                                    {{-- @foreach ($defects as $defect)
+                                    <option value="{{$defect->DEFECT_ID}}" data-div_id='{{$defect->division_id}}'>{{$defect->DEFECT_GROUP}} - {{$defect->DEFECT_CODE}} - {{$defect->DEFECT_NAME}}</option>
+                                    @endforeach --}}
                                 </select>                  
                             </div>
                         </div>
@@ -295,7 +313,7 @@
                 </div>
                 <div class="form-group row">                    
                     <div class="col-6">
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-4">
                                 <label for="aline_id" class="col-form-label-sm">LINE:</label>                  
                             </div>
@@ -307,7 +325,7 @@
                                         @endforeach
                                 </select>                  
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-6">
                         <div class="row">
@@ -325,22 +343,7 @@
                         </div>
                     </div>                                                   
                 </div>
-                <div class="form-group row">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="aprocess_id" class="col-form-label-sm">PROCESS:</label>                  
-                            </div>
-                            <div class="col-8">
-                                <select id="aprocess_id" class="form-control" name="process_id" placeholder="" disabled>
-                                        <option value="">- Select division first -</option>
-                                        {{-- @foreach ($processes as $process)
-                                        <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
-                                        @endforeach --}}
-                                </select>                  
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group row">                    
                     {{-- <div class="col-6">
                         <div class="row">
                             <div class="col-4">
