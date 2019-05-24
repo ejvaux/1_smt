@@ -66,7 +66,15 @@ class ApiController extends Controller
                 ->where('type',0);
                 /* ->get(); */
             if($sn->first()){
-                return $this->checkdup($request);
+                if($sn->first()->defect == 1){
+                    return [
+                        'type' => 'error',
+                        'message' => 'Scan Failed. PCB has defect.'
+                    ];
+                }
+                else{
+                    return $this->checkdup($request);
+                }          
             }
             else{
                 return [
