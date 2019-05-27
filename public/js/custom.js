@@ -52,6 +52,10 @@ function get_errorcode()
 $(document).ready(function() {
     $('.select2').select2({width: '100%'});
     $('.sel2').select2({height: '100%'});
+    $('#scan_pos').select2({
+        dropdownCssClass: "below",
+        width: '100%'
+    });
     //$('.select22').select2({dropdownParent: $(".modal"),width: '100%'}); search_select2
     
 });
@@ -92,6 +96,22 @@ $('#scan_line').on('select2:close', function(e){
         $("#scan_machine").focus();
     }, 1);
 });
+$('#scan_feed_slot').on('select2:close', function(e){
+    setTimeout(function() {
+        $('.select2-container-active').removeClass('select2-container-active');
+        $(':focus').blur();
+        selinput();
+    }, 1);
+});
+
+function selinput(){
+    if($('#replenish').prop("checked") != true){
+        $("#scan_newPN").focus();
+    }
+    else{
+        $("#scan_oldPN").focus();
+    }    
+}
 
 function enterEvent(e) {
         var datainput = "";
@@ -590,11 +610,12 @@ function enterEvent(e) {
     {
         if ($('#replenish').is(":checked")){
             document.getElementById("scan_oldPN").disabled = false;
+            $('#scan_oldPN').focus();
             //alert('YES');
         }
-        else{
-            
+        else{            
             document.getElementById("scan_oldPN").disabled = true;
+            $("#scan_newPN").focus();
             //alert('NO');
         }
     }
@@ -649,11 +670,8 @@ function event_model(e){
 }
 
 function event_lastPN(e){
-
     if (e.keyCode == 13){
         document.getElementById("scan_newPN").focus();
-
-        
     }
 }
 
@@ -808,12 +826,35 @@ function WrongPIN(){
 
 
 function resetval(){
+    if ($('#replenish').is(":checked")){
+        resetemp();
+        $('#scan_model').val("").trigger('change');
+        $('#scan_line').val("").trigger('change');
+        $('#scan_pos').val("").trigger('change');
+        $('#scan_feed_slot').val("").trigger('change');
+        document.getElementById('scan_machine').value="";
+        document.getElementById('scan_oldPN').value="";
+        document.getElementById('scan_newPN').value="";
+        document.getElementById("scan_emp").focus();
+    }
+    else{
+        $('#scan_pos').val("").trigger('change');
+        $('#scan_feed_slot').val("").trigger('change');
+        document.getElementById('scan_oldPN').value="";
+        document.getElementById('scan_newPN').value="";
+        $('#scan_pos').select2('open');
+    }
+    
+}
+function resetval1(){
     $('#scan_pos').val("").trigger('change');
     $('#scan_feed_slot').val("").trigger('change');
-    document.getElementById('scan_machine').value="";
+    /* document.getElementById('scan_machine').value=""; */
     document.getElementById('scan_oldPN').value="";
     document.getElementById('scan_newPN').value="";
-    document.getElementById("scan_machine").focus();
+    /* document.getElementById("scan_machine").focus(); */
+    $('#scan_pos').select2('open');
+    /* $('#scan_pos').focus('open'); */
 }
 
 function event_loadPN(e){
@@ -1084,7 +1125,7 @@ function CheckFeeder(){
                 }
                 else{
                     InsertRecord(data);
-                    resetval();
+                    /* resetval1(); */
                 }
             }
             else{
@@ -1127,9 +1168,6 @@ function CheckFeeder(){
     });
 
 }
-
-
-
 
 function InsertRecord(order_id){
     var replenish = "";
@@ -1195,21 +1233,34 @@ function InsertRecord(order_id){
             'reelInfo':reelInfo
         },
         success: function (data) {
-           /*  iziToast.success({
+            /* iziToast.success({
                 title: 'SUCCESS',
                 position: 'topCenter',
                 message: 'All inputs are correct.',
             }); */
 
-            swal.fire({
+            iziToast.success({
+                title: 'Data Recorded!',
+                position: 'topCenter',
+                message: 'All inputs are correct.',
+            });
+
+            /* swal.fire({
                 title: 'Data Recorded!',
                 text: 'All inputs are correct.',
                 type: 'success',
-                timer: 1500
-              })
+                timer: 1500,
+                onAfterClose: resetval1()
+              }) */
             //alert(data);
             loaddata_panel_right();
             resetval();
+            /* if(replenish == 'Yes'){
+                resetval();
+            }
+            else{
+                resetval1();
+            }  */           
         },
         error: function (data) {
             marker = JSON.stringify(data);
@@ -1218,8 +1269,6 @@ function InsertRecord(order_id){
     });
 
 }
-
-
 
 function CheckRunning(order_id){
     var replenish = "";
@@ -1289,7 +1338,7 @@ function CheckRunning(order_id){
                 //has match the running
                
                 InsertRecord(order_id);
-                resetval()
+                /* resetval(); */
             }
             else{
                /*  iziToast.error({
@@ -1423,7 +1472,6 @@ function loaddata_panel_right(){
     });
     load_running_machine_tbl();
 }
-
 
 function clear_running(){
 
@@ -1717,7 +1765,6 @@ function loaddetails(){
 
 }
 
-
 function exportMatloading(){
 
     var s_date = document.getElementById('mat_hist_date').value;
@@ -1938,6 +1985,19 @@ function error_clear_date(){
     document.getElementById('date_error').value="";
     LoadErrorTbl();
 }
+
+function resetemp(){
+    document.getElementById("scan_emp").value="";
+    document.getElementById("scan_employee").value="";
+    document.getElementById("scan_emp").focus();
+    document.getElementById("scan_emp").readOnly = false;
+    $("#scan_employee").val("").trigger("change");
+    $("#scan_model").val("").trigger("change");
+}
+
+$('#res_emp').on('click', function(e){
+    resetemp();
+});
 
 /* Clickable table row */
 $(document).on('click', '.clickable-row', function(e) {        

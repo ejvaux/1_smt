@@ -17,7 +17,7 @@
                                 <div class="input-group">
                                     <input type="text" id="scan_emp" placeholder="SCAN EMPLOYEE BARCODE" class="form-control" onkeypress="return event_emp(event)">
                                     <input hidden  type="text" id="scan_employee" placeholder="SCAN EMPLOYEE BARCODE" class="form-control">
-                                    <button type="button" class="btn btn-danger bold-text" onclick='document.getElementById("scan_emp").value="";document.getElementById("scan_employee").value="";document.getElementById("scan_emp").focus();document.getElementById("scan_emp").readOnly = false;$("#scan_employee").val("").trigger("change");$("#scan_model").val("").trigger("change");'><i class="fas fa-times"></i> CLEAR</button>
+                                    <button id='res_emp' type="button" class="btn btn-danger bold-text"><i class="fas fa-times"></i> CLEAR</button>
                                 </div>                                
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                                 <label for='scan_pos' class="col-form-label bold-text">POSITION:</label>
                             </div>
                             <div class="col-md-8">
-                                <select class="select2" id="scan_pos">
+                                <select class="select22" id="scan_pos">
                                     <option value="" selected>SELECT POSITION</option>
                                     @foreach ($position as $position_item)
                                     <option value="{{$position_item->id}}">{{$position_item->name}}</option>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="row mb-1">
                             <div class="col-md-4">
-                                <label for='scan_pos' class="col-form-label bold-text">FEEDER SLOT#:</label>
+                                <label for='scan_feed_slot' class="col-form-label bold-text">FEEDER SLOT#:</label>
                             </div>
                             <div class="col-md-8">
                                 <select class="select2" id="scan_feed_slot">
