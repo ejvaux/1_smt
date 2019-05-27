@@ -23,8 +23,12 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="http://172.16.1.13:8000/">
+                {{-- <a class="navbar-brand" href="http://172.16.1.13:8000/">
                     {{ config('app.name', 'Laravel') }}
+                </a> --}}
+                <a class="navbar-brand" href="http://172.16.1.13:8000/">
+                    <img src="{{ asset('images/primatech-logo.png')}}" class="nav-badge">
+                    {{-- <b>{{ config('app.name', 'Laravel') }}</b> --}}
                 </a>
                 {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
