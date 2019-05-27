@@ -27,17 +27,18 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* PageController */
     Route::get('/scan', 'PageController@scan');
-    Route::get('/mscan', 'PageController@mscan');    
+    Route::get('/mscan', 'PageController@mscan');       
     Route::get('/errorlog', 'PageController@errorlogs');
     /* End of Page Controller */
     
     Route::resource('scanrecord','ScanrecordController');
-    Route::resource('materialload','MaterialLoadController');
+    
 
     Route::post('scanrecord/upOUT', 'ScanrecordController@updateOUT');
 
 });
 Route::get('/mscan2', 'PageController@mscan2');
+Route::resource('materialload','MaterialLoadController');
 /* AjaxController */
 Route::post('ajax/errorcode', 'AjaxController@errorcode');
 Route::post('ajax/Check_Record', 'AjaxController@checkRecord');
