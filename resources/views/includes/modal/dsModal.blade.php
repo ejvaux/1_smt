@@ -56,7 +56,7 @@
                             </div>
                             <div class="col-8">
                                 <select id="process_id" class="form-control" name="process_id" placeholder="" disabled>
-                                        <option value="">- Select division first -</option>
+                                        <option value="">- Scan Serial Number first -</option>
                                         {{-- @foreach ($processes as $process)
                                         <option value="{{$process->id}}">{{$process->division->DIVISION_NAME}} - {{$process->name}}</option>
                                         @endforeach --}}
@@ -86,7 +86,7 @@
                             </div>
                             <div class="col-8">
                                 <select id="defect_id" class="form-control" name="defect_id" placeholder="" required disabled>
-                                        <option value="">- Select division first -</option>
+                                        <option value="">- Scan Serial Number first -</option>
                                         {{-- @foreach ($defects as $defect)
                                         <option value="{{$defect->DEFECT_ID}}" data-div_id='{{$defect->division_id}}'>{{$defect->DEFECT_GROUP}} - {{$defect->DEFECT_CODE}} - {{$defect->DEFECT_NAME}}</option>
                                         @endforeach --}}

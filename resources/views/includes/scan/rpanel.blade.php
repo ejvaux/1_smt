@@ -19,7 +19,7 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-md">
-                                <input class="form-control" type="text" name="scan_serial" id="scan_serial" placeholder="Scan Serial Number here..." style='border-width:medium' disabled>
+                                <input class="form-control" type="text" name="scan_serial" id="scan_serial" placeholder="Scan Serial Number here..." style='border-width:medium' autocomplete='off' disabled>
                             </div>
                         </div>
                         
