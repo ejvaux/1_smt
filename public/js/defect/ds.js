@@ -140,7 +140,7 @@ function checksn(sn){
                 sn:  sn
             }, 
             function(data) {
-                if(data != 0){
+                if(data.type != 'error'){
                     $('#scan_sn').hide();
                     $('#scan_lbl').val(data.serial_number);
                     $('#scan_serial_number').val(data.serial_number);
@@ -154,7 +154,7 @@ function checksn(sn){
                 else{
                     resetsn();
                     iziToast.warning({
-                        message: 'Serial Number not found!',
+                        message: data.message,
                         position: 'topCenter'
                     });
                 }

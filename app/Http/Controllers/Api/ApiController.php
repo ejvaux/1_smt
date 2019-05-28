@@ -57,14 +57,36 @@ class ApiController extends Controller
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }
-    public function scanserial(Request $request)
+    public function checkjoquantity(Request $request)
+    {        
+        $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
+        $o = Pcb::where('jo_id',$request->jo_id)->where('type',1)->count();
+        $t = $q - $o;
+        if($t>0){
+            return $this->scanserial($request);
+            /* return [
+                'type' => 'error',
+                'message' => 'TEST'
+            ]; */
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Scan Failed. Plan Quantity is reached.'
+            ];
+        }
+        return [
+            'type' => 'error',
+            'message' => 'API ERROR: checkjoquantity'
+        ];
+    }
+    public function scanserial($request)
     {
         /* checking input */
         if($request->type == 1){
             $sn = Pcb::where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);
-                /* ->get(); */
             if($sn->first()){
                 if($sn->first()->defect == 1){
                     return [
@@ -74,7 +96,7 @@ class ApiController extends Controller
                 }
                 else{
                     return $this->checkdup($request);
-                }          
+                }       
             }
             else{
                 return [
@@ -82,11 +104,15 @@ class ApiController extends Controller
                     'message' => 'Serial Number has no INPUT record.'
                 ];
             }
+            /* return [
+                'type' => 'error',
+                'message' => 'TEST'
+            ]; */
         }
         else{
             /* Checking for bottom */
-            if($request->division_id == 2 && $request->div_process_id == 2){
-                $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1);
+            if($request->division_id == 2 && $request->div_process_id == 2 ){
+                $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);
                 if($sn->first()){
                     return $this->checkdup($request);
                 }
@@ -96,16 +122,20 @@ class ApiController extends Controller
                         'message' => 'Serial Number has no record on Bottom process.'
                     ];
                 }
-                /* return [
-                    'type' => 'error',
-                    'message' => 'TEST'
-                ]; */
             }
             else{
                 return $this->checkdup($request);
             }
             return $this->checkdup($request);
-        }              
+            /* return [
+                'type' => 'error',
+                'message' => 'TEST'
+            ]; */
+        }
+        return [
+            'type' => 'error',
+            'message' => 'API ERROR: scanserial'
+        ];          
     }
     public function checkdup($request)
     {
@@ -123,6 +153,10 @@ class ApiController extends Controller
                 'message' => 'Serial number already scanned.'
             ];
         }
+        return [
+            'type' => 'error',
+            'message' => 'API ERROR: checkdup'
+        ];
     }
     public function insertsn($request)
     {
@@ -172,15 +206,21 @@ class ApiController extends Controller
                 'message' => 'Scan Failed!'
             ];
         }
+        return [
+            'type' => 'error',
+            'message' => 'API ERROR: insertsn'
+        ];
     }
     public function totalscan(Request $request)
     {
+        $q = WorkOrder::where('ID',$request->jo)->pluck('PLAN_QTY')->first();
         $in = Pcb::where('jo_id',$request->jo)->where('type',0)->count();
         $out = Pcb::where('jo_id',$request->jo)->where('type',1)->count();
-
+        $total = $q - $out;
         return [
             'in' => $in,
-            'out' => $out
+            'out' => $out,
+            'total' => $total
         ];
     }
     /* DEFECTS */
@@ -188,10 +228,28 @@ class ApiController extends Controller
     {
         $a = Pcb::where('serial_number',$request->sn)->orderBy('id','DESC');
         if($a->first()){
-            return $a->first();
+            $p = $a->first();
+            if($p->type == 0){
+                if($p->defect){
+                    return [
+                        'type' => 'error',
+                        'message' => 'Serial Number already has defect entry.<br>Please search the serial number for details.'
+                    ];
+                }
+                return $a->first();
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'No input found. Please scan in first.'
+                ];
+            }            
         }
         else{
-            return 0;
+            return [
+                'type' => 'error',
+                'message' => 'Serial Number not found!'
+            ];
         }
     }
     /* FEEDER LIST */

@@ -18,7 +18,7 @@ function scanddload(uri,id,dd,val,dis){
                 model.attr('disabled',true);
                 model.append("<option value=''>No Data Found.</option>");
             }            
-        });
+        });    
 }
 function verifyemployee(pin)
 {
@@ -103,10 +103,7 @@ function serialscan()
         type:'post',
         data: formdata,
         success: function (data) {
-            if(data.type == 'success'){
-                /* Reload Pcb table */
-                loadpcbtable('',$('#scanform-type').val());
-                getscantotal($('#scanform-jo_id').val());
+            if(data.type == 'success'){                
                 iziToast.success({
                     message: data.message,
                     position: 'topCenter'
@@ -124,6 +121,9 @@ function serialscan()
                     position: 'topCenter'
                 });
             }
+            /* Reload Pcb table */
+            loadpcbtable('',$('#scanform-type').val());
+            /* getscantotal($('#scanform-jo_id').val()); */
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             if (XMLHttpRequest.readyState == 4) {
@@ -179,16 +179,19 @@ function setWO(wo){
     WOset = 1;
 
     /* check scan status */
-    checkscan();
+    /* checkscan(); */
 
     /* load total */
-    getscantotal(wo.ID);
+    /* getscantotal(wo.ID); */
 
     /* Change tab */
     $('#serntab').tab('show');
 
     /* Collapse Config */
     $('#collapseConfig').collapse('hide');
+
+    /* Load PCB */
+    loadpcbtable('',$('#scanform-type').val());
 
     /* iziToast.success({
         message: 'Work Order Set!',
@@ -280,6 +283,7 @@ function loadpcbtable(txt = '',type){
         function(data) {
             $('#pcbtable_div').html(data);   
         });
+        getscantotal($('#scanform-jo_id').val());        
     }
     else{
         iziToast.warning({
@@ -296,8 +300,18 @@ function getscantotal(wo){
         function(data) {
             $('#wo-input').val(data.in);
             $('#wo-output').val(data.out);
-            $('#wo-rem').val($('#wo-quantity').val() - data.out);
-    });    
+            if(data.total>0){
+                $('#wo-rem').val(data.total);
+                $('#wo-rem').val(data.total).css("background-color", "#FFEB3B");
+                checkscan();               
+            }
+            else{
+                $('#wo-rem').val(data.total).css("background-color", "tomato");
+                $('#scanstatuslabel').html('Plan Quantity Reached!').removeClass('text-success').addClass('text-danger');
+                $('#scan_serial').removeClass('border-success').attr('disabled',true);
+            }
+            
+    });     
 }
 
 /* --------------- E-V-E-N-T-S -------------- */
@@ -436,18 +450,23 @@ $('#scan_serial').on('keypress', function(e){
             err = 1;
             msg += 'No work order set.<br>'
         }
+        if(/* $(this).val() == '' ||  */$.trim( $(this).val() ) == ''){
+            err = 1;
+            msg += 'No scanned serial number. Try again.<br>'
+        }
 
         if(err){
             iziToast.warning({
                 message: msg,
                 position: 'topCenter'
             });
+
         }
         else{
             $('#scanform-serial_number').val($(this).val());
-            serialscan();
-            $(this).val(''); 
-        }
+            serialscan(); 
+        }        
+        $(this).val('');
         /* if($('#employee_id').val() != ''){
             $('#scanform-serial_number').val($(this).val());
             serialscan();
