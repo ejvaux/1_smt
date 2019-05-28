@@ -436,18 +436,23 @@ $('#scan_serial').on('keypress', function(e){
             err = 1;
             msg += 'No work order set.<br>'
         }
+        if(/* $(this).val() == '' ||  */$.trim( $(this).val() ) == ''){
+            err = 1;
+            msg += 'No scanned serial number. Try again.<br>'
+        }
 
         if(err){
             iziToast.warning({
                 message: msg,
                 position: 'topCenter'
             });
+
         }
         else{
             $('#scanform-serial_number').val($(this).val());
-            serialscan();
-            $(this).val(''); 
-        }
+            serialscan(); 
+        }        
+        $(this).val('');
         /* if($('#employee_id').val() != ''){
             $('#scanform-serial_number').val($(this).val());
             serialscan();
