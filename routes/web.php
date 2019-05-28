@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Http\Request;
+use App\Models\Pcb;
 
 Route::get('/', function () {
     return view('welcome');
@@ -154,8 +155,17 @@ Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 
 // Testing
 Route::get('testt', function () {
-    $a = \App\Http\Controllers\MES\model\Machine::where('machine_type_id',1)->orderBy('id','DESC')->pluck('code')->first();
-    return substr($a,6,2)+1;
+    
+    $sn = Pcb::where('serial_number','adawdawdawdawdawd')->where('div_process_id',1)->first();
+    if($sn->first()){
+        return $this->checkdup($request);
+    }
+    else{
+        return [
+            'type' => 'error',
+            'message' => 'Serial Number has no record on Bottom process.'
+        ];
+    }
 });
 
 /* ----- MES END ----- */

@@ -86,8 +86,8 @@ class ApiController extends Controller
         else{
             /* Checking for bottom */
             if($request->division_id == 2 && $request->div_process_id == 2){
-                $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1)->first();
-                if($sn->count() > 0){
+                $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1);
+                if($sn->first()){
                     return $this->checkdup($request);
                 }
                 else{
@@ -96,10 +96,15 @@ class ApiController extends Controller
                         'message' => 'Serial Number has no record on Bottom process.'
                     ];
                 }
+                /* return [
+                    'type' => 'error',
+                    'message' => 'TEST'
+                ]; */
             }
             else{
                 return $this->checkdup($request);
             }
+            return $this->checkdup($request);
         }              
     }
     public function checkdup($request)
