@@ -4,7 +4,7 @@
         {{-- <label for="" class='bold-text'><i class="fas fa-stream"></i> SCAN TOTAL:</label> --}}    
     </div>    
 </div>
-<div class="row mb-1">
+{{-- <div class="row mb-1">
     <div class="col-md">
         <div class="row">
             <div class="col-5">
@@ -27,4 +27,19 @@
             </div>
         </div>
     </div>                           
+</div> --}}
+<div class="row mb-2">
+    <div class="col-md-3">
+        <label for="" class="col-form-label bold-text">INPUT:</label>                  
+    </div>
+    <div class="col-md-3 p-0">
+        <input class='form-control' type="text" id='wo-input' value='' readonly>
+    </div>
+    <div class="col-md-3">
+        <label for="" class="col-form-label bold-text">OUTPUT:</label>                  
+    </div>
+    <div class="col-md-3 p-0">
+        <input class='form-control' type="text" id='wo-output' value='' readonly>
+    </div>
 </div>
+<div id='emptotaltablediv'>@include('includes.scan.tsttab')</div>

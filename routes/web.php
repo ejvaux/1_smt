@@ -104,6 +104,7 @@ Route::namespace('Api')->group(function () {
         /* Load Tables */
         Route::get('loadWOtable', 'ApiController@loadWOtable');
         Route::get('loadpcbtable', 'ApiController@loadpcbtable');
+        Route::get('loadempscantotaltable', 'ApiController@loadempscantotaltable');
 
         /* Total Scan */
         Route::get('totalscan', 'ApiController@totalscan');
@@ -156,16 +157,11 @@ Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 // Testing
 Route::get('testt', function () {
     
-    $sn = Pcb::where('serial_number','adawdawdawdawdawd')->where('div_process_id',1)->first();
-    if($sn->first()){
-        return $this->checkdup($request);
-    }
-    else{
-        return [
-            'type' => 'error',
-            'message' => 'Serial Number has no record on Bottom process.'
-        ];
-    }
+    return /* Pcb::where('jo_id',25557)->groupBy('employee_id')->get(); */
+    /* Pcb::select('employee_id', DB::raw('count(*) as total'))
+                 ->groupBy('employee_id')
+                 ->get(); */
+    Pcb::groupBy('employee_id')->pluck('employee_id');
 });
 
 /* ----- MES END ----- */

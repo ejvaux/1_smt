@@ -215,7 +215,7 @@ class ApiController extends Controller
     {
         $q = WorkOrder::where('ID',$request->jo)->pluck('PLAN_QTY')->first();
         $in = Pcb::where('jo_id',$request->jo)->where('type',0)->count();
-        $out = Pcb::where('jo_id',$request->jo)->where('type',1)->count();
+        $out = Pcb::where('jo_id',$request->jo)->where('type',1)->count();        
         $total = $q - $out;
         return [
             'in' => $in,
@@ -223,6 +223,17 @@ class ApiController extends Controller
             'total' => $total
         ];
     }
+    public function loadempscantotaltable(Request $request)
+    {
+        $joid = $request->jo;
+        $emptotals = Pcb::select('employee_id')
+                    ->where('jo_id',$joid)
+                    ->orderBy('id')
+                    ->groupBy('employee_id')
+                    ->get();
+        
+        return view('includes.scan.tsttab',compact('emptotals','joid'));
+    }    
     /* DEFECTS */
     public function checksn(Request $request)
     {

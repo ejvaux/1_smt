@@ -1,3 +1,10 @@
+/* Variable */
+var userID = $('meta[name="user_num"]').attr('content');
+/* Auto */
+$(document).ready(function(){
+    $('#tabA'+$('#active-table').val()).tab('show');
+    /* $('#tabA'+$('#active-table').val()).trigger('click');  */  
+});
 /* FUNCTIONS */
 function viewfeederlist($m_id,$mt_id){
     $.ajax({
@@ -44,17 +51,17 @@ $("#fltable").on('click','.addCmp', function(){
     $('.sel').select2({width: '100%'});
 });
 $("#fltable").on('click', '.cmp_edit', function(){
-    $('#model_id').val($(this).data('model'));
-    $('#machine_type_id').val($(this).data('mach'));
-    $('#table_id').val($(this).data('table'));
-    $('#mounter_id').val($(this).data('mount'));
-    $('#pos_id').val($(this).data('pos'));
-    $('#order_id').val($(this).data('pref'));
-    $('#component_id').val($(this).data('cmp'));
+    $('#ecmodel_id').val($(this).data('model'));
+    $('#ecmachine_type_id').val($(this).data('mach'));
+    $('#ectable_id').val($(this).data('table'));
+    $('#ecmounter_id').val($(this).data('mount'));
+    $('#ecpos_id').val($(this).data('pos'));
+    $('#ecorder_id').val($(this).data('pref'));
+    $('#eccomponent_id').val($(this).data('cmp'));
     /* $('#feeder_id').val($(this).data('id')); */
     $('#edit_comp_form').attr('action', '/1_smt/public/feeders/'+$(this).data('id'));
-    $('#user_id').val($('meta[name="user_num"]').attr('content'));
-
+    /* $('#user_id').val($('meta[name="user_num"]').attr('content')); */
+    $('#ecuser_id').val(userID);
 
     $('#table_number').text($(this).data('table'));
     $('#edit_comp').modal('show');

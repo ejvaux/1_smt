@@ -17,9 +17,9 @@
                         data-line='{{$lin}}'
                         data-table='{{$i}}'
                     ><i class="fas fa-plus"></i> Component</button>
-                    <button class='label_mounter' id='label_mounter_{{$i}}' data-id='{{$i}}' style='font-size:.8rem' title="Delete Mounter and its components."><i class="far fa-trash-alt"></i> Delete Mounter</button>
-                    <button class='change_mounter_button' id='change_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Change Mounter into another mounter"><i class="fas fa-exchange-alt"></i> Change Mounter</button>
-                    <button class='transfer_mounter_button' id='transfer_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Transfer Mounter into another table"><i class="fas fa-long-arrow-alt-right"></i><i class="fas fa-table"></i> Transfer Mounter</button>
+                    <button class='label_mounter' id='label_mounter_{{$i}}' data-id='{{$i}}' style='font-size:.8rem' title="Delete Feeder and its components."><i class="far fa-trash-alt"></i> Delete Feeder</button>
+                    <button class='change_mounter_button' id='change_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Change Feeder into another Feeder"><i class="fas fa-exchange-alt"></i> Change Feeder</button>
+                    <button class='transfer_mounter_button' id='transfer_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Transfer Feeder into another table"><i class="fas fa-long-arrow-alt-right"></i><i class="fas fa-table"></i> Transfer Feeder</button>
                 </div>
             {{-- FORMS --}}
                 <div id="fl_toolbar_inputs" class='mb-2'>
@@ -41,13 +41,13 @@
                     {{-- changing mounter --}}
                         <div id="change_mounter_inputs_{{$i}}"  style='display:none;'>
                             <select id="change_list_mounterfrom_{{$i}}" class="change_list_mounterfrom" placeholder="" required>
-                                    <option value="">From Mounter</option>
+                                    <option value="">From Feeder</option>
                                 @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
                                     <option value="{{$mntr->mounter_id}}" >{{$mntr->mounter->code}}</option>
                                 @endforeach
                             </select>
                             <select id="change_list_mounterto_{{$i}}" class="change_list_mounterto sel2" placeholder="" required>
-                                    <option value="">To Mounter</option>
+                                    <option value="">To Feeder</option>
                                 @foreach ($mounters as $mntr)
                                     <option value="{{$mntr->id}}" >{{$mntr->code}}</option>
                                 @endforeach
@@ -62,7 +62,7 @@
                     {{-- transferring mounter --}}
                         <div id="transfer_mounter_inputs_{{$i}}" style='display:none;'>
                             <select id="transfer_list_mounter_{{$i}}" class="transfer_list_mounter" placeholder="" required>
-                                    <option value="">Select Mounter</option>
+                                    <option value="">Select Feeder</option>
                                 @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->groupBy('mounter_id')->get() as $mntr)
                                     <option value="{{$mntr->mounter_id}}" >{{$mntr->mounter->code}}</option>
                                 @endforeach
@@ -86,7 +86,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th class='text-muted' scope="col">Mounter</th>
+                    <th class='text-muted' scope="col">Feeder</th>
                     <th class='text-muted' scope="col">Position</th>
                     <th class='text-muted' scope="col">Preference</th>
                     <th class='text-muted' scope="col">Product Number</th>
