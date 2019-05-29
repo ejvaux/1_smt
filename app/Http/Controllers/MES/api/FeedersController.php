@@ -63,7 +63,11 @@ class FeedersController extends Controller
         $m->touch();
 
         if($f->save()){
-            return redirect()->back()->with('success','Data Saved Successfully.');
+            return redirect()->back()->with([
+                'success' => 'Data Saved Successfully.',
+                'Atbl' => $request->input('table_id')
+            ]);
+            
             /* return 'Data Saved Successfully.'; */
         }
         else{
@@ -104,12 +108,15 @@ class FeedersController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'model_id' => 'integer|required',
             'mounter_id' => 'integer|required',
             'pos_id' => 'integer|required',
             'order_id' => 'integer|required',
             'component_id' => 'integer|required',
+            'user_id' => 'integer|required',
         ]);
-        
+        $uid = $request->input('user_id');
+        $mid = $request->input('model_id');
         $f = Feeder::find($id);
 
         if($request->input('mounter_id') != ""){ $f->mounter_id = $request->input('mounter_id');}
@@ -117,12 +124,16 @@ class FeedersController extends Controller
         if($request->input('order_id') != ""){ $f->order_id = $request->input('order_id');}
         if($request->input('component_id') != ""){ $f->component_id = $request->input('component_id');}
 
-        $m = ModName::find($request->input('model_id'));
-        $m->updated_by = $request->input('user_id');
+        $m = ModName::find(8);
+        /* $m = ModName::where('id',$request->input('model_id'))->first(); */
+        $m->updated_by = $uid;
         $m->touch();
 
         if($f->save()){
-            return redirect()->back()->with('success','Component Updated Successfully.');
+            return redirect()->back()->with([
+                'success' => 'Component Updated Successfully.',
+                'Atbl' => $request->input('table_id')
+            ]);
             /* return 'Component Updated Successfully.'; */
         }
         else{
@@ -139,12 +150,15 @@ class FeedersController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $mid = Feeder::where('id',$id)->pluck('model_id')->first(); 
+        $mid = Feeder::where('id',$id)->first(); 
         if(Feeder::where('id',$id)->delete()){
-            $m = ModName::where('id',$mid)->first();
+            $m = ModName::where('id',$mid->model_id)->first();
             $m->updated_by = $request->input('user_id');
             $m->touch();
-            return redirect()->back()->with('success','Component Deleted Successfully.');
+            return redirect()->back()->with([
+                'success' => 'Component Deleted Successfully.',
+                'Atbl' => $mid->table_id
+            ]);
             /* return 'Component Deleted Successfully.'; */
         }
         else{
@@ -159,7 +173,10 @@ class FeedersController extends Controller
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
-            return redirect()->back()->with('success','Mounter Deleted Successfully.');
+            return redirect()->back()->with([
+                'success' => 'Mounter Deleted Successfully.',
+                'Atbl' => $request->input('table_id')
+            ]);
             /* return 'Mounter Deleted Successfully.'; */
         }
         else{
@@ -175,7 +192,10 @@ class FeedersController extends Controller
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
-            return redirect()->back()->with('success','Mounter Changed Successfully.');
+            return redirect()->back()->with([
+                'success' => 'Mounter Changed Successfully.',
+                'Atbl' => $request->input('table_id')                
+            ]);
         }
         else{
             return redirect()->back()->with('error','Update Failed.');
@@ -187,7 +207,10 @@ class FeedersController extends Controller
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
-            return redirect()->back()->with('success','Mounter Transferred Successfully.');
+            return redirect()->back()->with([
+                'success' => 'Mounter Transferred Successfully.',
+                'Atbl' => $request->input('table_id_to')
+            ]);
         }
         else{
             return redirect()->back()->with('error','Update Failed.');

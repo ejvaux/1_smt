@@ -5,6 +5,7 @@
     </script>
 @endsection
 @section('content')
+<input id="active-table" type="hidden" value="{{$tbl}}">
     <div class="container mt-5" id="table_display" style="width: 100%;">
         <div class="row">
             <div class="col-md"></div>
@@ -345,15 +346,18 @@
                                             {{-- <h5>No selected machine.</h5> --}}
                                             <ul class="nav nav-pills mb-2">
                                                 @for ($i = 1; $i <= \App\Http\Controllers\MES\model\MachineType::where('id',$machid)->pluck('table_count')->first(); $i++)
-                                                    @if ($i == 1)
+                                                    {{-- @if ($i == $tbl)
                                                         <li class="nav-item">
-                                                            <a class="nav-link active" href="#tab{{$i}}" data-toggle="tab">Table {{$i}}</a>
+                                                            <a id='tabA{{$i}}' class="nav-link active" href="#tab{{$i}}" data-toggle="tab" data-tble="{{$i}}">Table {{$i}}</a>
                                                         </li> 
                                                     @else
                                                         <li class="nav-item">
-                                                            <a class="nav-link " href="#tab{{$i}}" data-toggle="tab">Table {{$i}}</a>
+                                                            <a id='tabA{{$i}}' class="nav-link " href="#tab{{$i}}" data-toggle="tab" data-tble="{{$i}}">Table {{$i}}</a>
                                                         </li>
-                                                    @endif                                                                                                   
+                                                    @endif --}}
+                                                    <li class="nav-item">
+                                                        <a id='tabA{{$i}}' class="nav-link " href="#tab{{$i}}" data-toggle="tab" data-tble="{{$i}}">Table {{$i}}</a>
+                                                    </li>                                                                                                
                                                 @endfor
                                             </ul>
                                             @include('mes.inc.table.mach')

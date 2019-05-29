@@ -140,6 +140,12 @@ class MasterController extends Controller
     }
     public function feederlistdetails($id,$mid,$linid)
     {
+        if(session('Atbl')){
+            $tbl = session('Atbl');
+        }
+        else{
+            $tbl = 1;
+        }        
         $tb = 0;
         $mt = 0;
         $ps = 0;
@@ -194,7 +200,8 @@ class MasterController extends Controller
             'linenames',
             'chk',
             'chk2',
-            'lin'
+            'lin',
+            'tbl'
         ));
     }
     public function getmachtables($mach,$id)

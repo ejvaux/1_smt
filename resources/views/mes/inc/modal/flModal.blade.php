@@ -10,11 +10,11 @@
             </div>
             <form id="edit_comp_form"  method="POST" action=''>
             @method('PUT')
-            <input type="hidden" id="model_id" name="model_id">
-            <input type="hidden" id="machine_type_id" name="machine_type_id">
-            <input type="hidden" id="table_id" name="table_id">
-            <input type="hidden" id="feeder_id" name="feeder_id">
-            <input type="hidden" id="user_id" name="user_id">            
+            <input type="hidden" id="ecmodel_id" name="model_id">
+            <input type="hidden" id="ecmachine_type_id" name="machine_type_id">
+            <input type="hidden" id="ectable_id" name="table_id">
+            <input type="hidden" id="ecfeeder_id" name="feeder_id">
+            <input type="hidden" id="ecuser_id" name="user_id">            
             <div class="modal-body" style="">
                 <h6>TABLE <span id='table_number'></span></h6>
                 <!-- ____________ FORM __________________ -->
@@ -23,10 +23,10 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="mounter_id" class="col-form-label-sm">MOUNTER:</label>                  
+                                <label for="ecmounter_id" class="col-form-label-sm">FEEDER:</label>                  
                             </div>
                             <div class="col-7">
-                                <select id="mounter_id" class="form-control form-control-sm sel" name="mounter_id" placeholder="">
+                                <select id="ecmounter_id" class="form-control form-control-sm sel" name="mounter_id" placeholder="">
                                     @foreach ($mounters as $mounter)
                                         <option value="{{$mounter->id}}">{{$mounter->code}}</option>
                                     @endforeach        
@@ -37,10 +37,10 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="pos_id" class="col-form-label-sm">POSITION:</label>                  
+                                <label for="ecpos_id" class="col-form-label-sm">POSITION:</label>                  
                             </div>
                             <div class="col-7">
-                                <select id="pos_id" class="form-control form-control-sm sel" name="pos_id" placeholder="">
+                                <select id="ecpos_id" class="form-control form-control-sm sel" name="pos_id" placeholder="">
                                     @foreach ($positions as $position)
                                         <option value="{{$position->id}}">{{$position->name}}</option>
                                     @endforeach
@@ -53,10 +53,10 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="order_id" class="col-form-label-sm">PREFERENCE:</label>                  
+                                <label for="ecorder_id" class="col-form-label-sm">PREFERENCE:</label>                  
                             </div>
                             <div class="col-7">
-                                <select id="order_id" class="form-control form-control-sm sel" name="order_id" placeholder="">
+                                <select id="ecorder_id" class="form-control form-control-sm sel" name="order_id" placeholder="">
                                     @foreach ($prefs as $pref)
                                         <option value="{{$pref->id}}">{{$pref->name}}</option>
                                     @endforeach        
@@ -67,10 +67,10 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="component_id" class="col-form-label-sm">COMPONENT:</label>                  
+                                <label for="eccomponent_id" class="col-form-label-sm">COMPONENT:</label>                  
                             </div>
                             <div class="col-7">
-                                <select id="component_id" class="form-control form-control-sm sel" name="component_id" placeholder="">
+                                <select id="eccomponent_id" class="form-control form-control-sm sel" name="component_id" placeholder="">
                                     @foreach ($components as $component)
                                         <option value="{{$component->id}}" title='{{$component->authorized_vendor}}'>{{$component->product_number}}</option>
                                     @endforeach
@@ -114,7 +114,7 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5">
-                                <label for="amounter_id" class="col-form-label-sm">MOUNTER:</label>                  
+                                <label for="amounter_id" class="col-form-label-sm">FEEDER:</label>                  
                             </div>
                             <div class="col-7">
                                 <select id="amounter_id" class="form-control form-control-sm sel" name="mounter_id" placeholder="" required>
