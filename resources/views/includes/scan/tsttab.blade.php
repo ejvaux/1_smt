@@ -13,7 +13,7 @@
                     @if (count($emptotals)>0)
                         @foreach ($emptotals as $emptotal)
                             <tr class=''>                                    
-                                <td>{{$emptotal->employee->fname}} {{$emptotal->employee->lname}}</td>
+                                <th class='text-left'>{{$emptotal->employee->fname}} {{$emptotal->employee->lname}}</th>
                                 <td>{{\App\Models\Pcb::where('jo_id',$joid)->where('employee_id',$emptotal->employee_id)->where('type',0)->groupBy('employee_id')->count()}}</td>
                                 <td>{{\App\Models\Pcb::where('jo_id',$joid)->where('employee_id',$emptotal->employee_id)->where('type',1)->groupBy('employee_id')->count()}}</td>
                             </tr>

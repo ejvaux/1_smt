@@ -207,7 +207,7 @@ function unsetWO(){
     $('#wo-quantity').val('').removeClass('pcbconfig');
     $('#wo-pcode').val('').removeClass('pcbconfig');
     $('#wo-pname').val('').removeClass('pcbconfig');
-    $('#wo-rem').val('').removeClass('pcbconfig');
+    $('#wo-rem').val('').removeClass('pcbconfig').removeClass('pcbconfigred');
     $('#wo-input').val('').removeClass('pcbconfig');
     $('#wo-output').val('').removeClass('pcbconfig');
 
@@ -219,6 +219,9 @@ function unsetWO(){
 
     /* check scan status */
     checkscan();
+
+    /* load scan total emp table */
+    loadscantotalemp(0);
 }
 function disablescan(msg){
     $('#scanstatuslabel').html('Set: ' + msg).removeClass('text-success').addClass('text-danger');
@@ -302,16 +305,19 @@ function getscantotal(wo){
             $('#wo-output').val(data.out);
             if(data.total>0){
                 /* $('#wo-rem').val(data.total); */
-                $('#wo-rem').val(data.total).addClass('pcbconfig');
+                $('#wo-rem').val(data.total).removeClass('text-pcbconfigred').addClass('pcbconfig');
                 /* $('#wo-rem').val('').addClass('pcbconfig'); */
                 checkscan();               
             }
             else{
-                $('#wo-rem').val(data.total).css("background-color", "tomato");
+                $('#wo-rem').val(data.total).addClass('pcbconfigred');
                 $('#scanstatuslabel').html('Plan Quantity Reached!').removeClass('text-success').addClass('text-danger');
                 $('#scan_serial').removeClass('border-success').attr('disabled',true);
             }            
     });
+    loadscantotalemp(wo);
+}
+function loadscantotalemp(wo){
     $.get("api/loadempscantotaltable",
         { 
             jo:  wo

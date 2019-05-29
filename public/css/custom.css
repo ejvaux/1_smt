@@ -18,6 +18,15 @@
     font-weight: bold;
 }
 
+.pcbconfigred:read-only
+{
+    /* background: #007bff; */
+    border-color: black;
+    background: tomato;
+    color: black;
+    font-weight: bold;
+}
+
 .configlock{
     display: none;
 }
