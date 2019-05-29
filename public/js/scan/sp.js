@@ -301,17 +301,24 @@ function getscantotal(wo){
             $('#wo-input').val(data.in);
             $('#wo-output').val(data.out);
             if(data.total>0){
-                $('#wo-rem').val(data.total);
-                $('#wo-rem').val(data.total).css("background-color", "#FFEB3B");
+                /* $('#wo-rem').val(data.total); */
+                $('#wo-rem').val(data.total).addClass('pcbconfig');
+                /* $('#wo-rem').val('').addClass('pcbconfig'); */
                 checkscan();               
             }
             else{
                 $('#wo-rem').val(data.total).css("background-color", "tomato");
                 $('#scanstatuslabel').html('Plan Quantity Reached!').removeClass('text-success').addClass('text-danger');
                 $('#scan_serial').removeClass('border-success').attr('disabled',true);
-            }
-            
-    });     
+            }            
+    });
+    $.get("api/loadempscantotaltable",
+        { 
+            jo:  wo
+        }, 
+        function(data) {
+            $('#emptotaltablediv').html(data)            
+    });
 }
 
 /* --------------- E-V-E-N-T-S -------------- */

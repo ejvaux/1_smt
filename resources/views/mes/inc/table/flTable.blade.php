@@ -30,7 +30,7 @@
                             <th>{{$model->updated_at}}</th>
                             <th>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="{{ url('fld/'.$model->id.'/0/0/1')}}" class='btn btn-outline-info' title="View"><i class="fa fa-eye"></i></a>
+                                    <a href="{{ url('fld/'.$model->id.'/0/0')}}" class='btn btn-outline-info' title="View"><i class="fa fa-eye"></i></a>
                                     {{-- <button class='btn btn-outline-danger deleteModel' type='button' title="Delete" disabled><i class="far fa-trash-alt"></i></button> --}}
                                 </div>                                
                             </th>

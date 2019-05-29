@@ -59,6 +59,7 @@ class ScanPcbController extends Controller
             'sel_line'
         ));
     }
+    /* To be removed */
     public function scansetting(Request $request)
     {
         $data="";
