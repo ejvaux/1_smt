@@ -88,6 +88,19 @@ class ApiController extends Controller
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);
             if($sn->first()){
+                $sn = $sn->first();
+                /* if($sn->jo_id == $request->jo_id){
+                    return [
+                        'type' => 'error',
+                        'message' => 'same jo'
+                    ];
+                }
+                else{
+                    return [
+                        'type' => 'success',
+                        'message' => 'diff jo'
+                    ];
+                } */
                 if($sn->first()->defect == 1){
                     return [
                         'type' => 'error',
@@ -95,7 +108,13 @@ class ApiController extends Controller
                     ];
                 }
                 else{
-                    return $this->checkdup($request);
+                    if($sn->jo_id == $request->jo_id){
+                        return $this->checkdup($request);
+                    }
+                    else{
+                        return $this->checkdup($request,$sn->jo_id);
+                    }
+                    
                 }       
             }
             else{
@@ -126,7 +145,7 @@ class ApiController extends Controller
             else{
                 return $this->checkdup($request);
             }
-            return $this->checkdup($request);
+            /* return $this->checkdup($request); */
             /* return [
                 'type' => 'error',
                 'message' => 'TEST'
@@ -137,15 +156,25 @@ class ApiController extends Controller
             'message' => 'API ERROR: scanserial'
         ];          
     }
-    public function checkdup($request)
+    public function checkdup($request,$jo_id = '')
     {
-        $sn = Pcb::where('serial_number',$request->serial_number)
-            ->where('jo_id',$request->jo_id)
-            ->where('div_process_id',$request->div_process_id)
-            ->where('type',$request->type)
-            ->first();
+        if($jo_id == ''){
+            $sn = Pcb::where('serial_number',$request->serial_number)
+                ->where('jo_id',$request->jo_id)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',$request->type)
+                ->first();
+        }
+        else{
+            $sn = Pcb::where('serial_number',$request->serial_number)
+                ->where('jo_id',$jo_id)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',$request->type)
+                ->first();
+        }
+        
         if(!$sn){
-            return $this->insertsn($request);
+            return $this->insertsn($request,$jo_id);
         }
         else{
             return [
@@ -158,11 +187,17 @@ class ApiController extends Controller
             'message' => 'API ERROR: checkdup'
         ];
     }
-    public function insertsn($request)
+    public function insertsn($request,$jo_id)
     {
         $a = new Pcb;
         $a->serial_number = $request->serial_number;
-        $a->jo_id = $request->jo_id;
+        if($jo_id == ''){
+            $a->jo_id = $request->jo_id;
+        }
+        else{
+            $a->jo_id = $jo_id;
+        }
+        
         $a->jo_number = $request->jo_number;
         $a->lot_id = 0;
         $a->division_id = $request->division_id;
@@ -195,10 +230,19 @@ class ApiController extends Controller
         $a->PROCESS_NAME = $pname;
 
         if($a->save()){
-            return [
-                'type' => 'success',
-                'message' => 'Scan Successful!'
-            ];
+            if($jo_id == ''){
+                return [
+                    'type' => 'success',
+                    'message' => 'Scan Successful!'
+                ];
+            }
+            else{
+                return [
+                    'type' => 'success',
+                    'message' => 'Scan Successful! Scanned PCB is in different Work Order.'
+                ];
+            }
+            
         }
         else{
             return [
