@@ -10,6 +10,7 @@ use App\Models\DivProcess;
 use App\Models\WorkOrder;
 use App\Models\Pcb;
 use App\Models\Division;
+use App\Custom\CustomFunctions;
 
 class ApiController extends Controller
 {
@@ -205,6 +206,7 @@ class ApiController extends Controller
         $a->div_process_id = $request->div_process_id;
         $a->type = $request->type;
         $a->employee_id = $request->employee_id;
+        $a->shift = CustomFunctions::genshift();
         $a->defect = 0;
         $a->heat = 0;
 

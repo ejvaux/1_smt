@@ -62,4 +62,18 @@ class CustomFunctions
         }
         return $time;
     }
+    public static function genshift(){
+        $date = Date('H:i');
+        $shift = '';
+        if($date > '05:59' && $date < '18:00'){
+            $shift = 1;
+        }
+        else if($date >= '18:00' || $date < '06:00'){
+            $shift = 2;
+        }
+        else{
+            $shift = 0;
+        }
+        return $shift;
+    }
 }
