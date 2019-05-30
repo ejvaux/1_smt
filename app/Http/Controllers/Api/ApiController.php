@@ -133,7 +133,7 @@ class ApiController extends Controller
         else{
             return [
                 'type' => 'error',
-                'message' => 'Serial number already processed.'
+                'message' => 'Serial number already processed in ' . $out->divprocess->name . '.'
             ];
         }
         return [

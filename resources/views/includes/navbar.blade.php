@@ -26,12 +26,18 @@
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @endif --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url('sp')}}"><span class='font-weight-bold'>Scan</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url('ds')}}"><span class='font-weight-bold'>Defect</span></a>
+                    </li>
                 @else
                     <li class="nav-item">
                         <a class="nav-link bold-text" href="/1_smt/public/home"><i class="fas fa-home"></i> Home</a>
                     </li>
                     <li class="nav-item bold-text">
-                        <a class="nav-link" href="{{url('sp')}}"><i class="fas fa-barcode"></i> Scan Item</a>
+                        <a class="nav-link" href="{{url('sp')}}"><i class="fas fa-barcode"></i> Scan PCB</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
