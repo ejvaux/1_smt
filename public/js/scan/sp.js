@@ -122,7 +122,7 @@ function serialscan()
                 });
             }
             /* Reload Pcb table */
-            loadpcbtable('',$('#scanform-type').val());
+            loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
             /* getscantotal($('#scanform-jo_id').val()); */
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -191,7 +191,7 @@ function setWO(wo){
     $('#collapseConfig').collapse('hide');
 
     /* Load PCB */
-    loadpcbtable('',$('#scanform-type').val());
+    loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
 
     /* iziToast.success({
         message: 'Work Order Set!',
@@ -274,14 +274,15 @@ function loadwotable(){
         });
     }
 }
-function loadpcbtable(txt = '',type){
+function loadpcbtable(txt = '',type,proc){
     if($('#scanform-jo_id').val() != ''){
         $jo_id = $('#scanform-jo_id').val();      
         $.get("api/loadpcbtable",
         { 
             jo_id:  $jo_id,
             sn: txt,
-            type: type
+            type: type,
+            proc: proc
         }, 
         function(data) {
             $('#pcbtable_div').html(data);   
@@ -586,11 +587,11 @@ $('#configL').on('change', function(e){
     }
 });
 $('#loadpcbtable').on('click',function(e){
-    loadpcbtable('',$('#scanform-type').val());
+    loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
 });
 $('#searchpcbtable').on('keypress', function(e){
     if(e.keyCode == 13){
-        loadpcbtable($(this).val(),$('#scanform-type').val());
+        loadpcbtable($(this).val(),$('#scanform-type').val(),$('#scanform-div_process_id').val());
         $(this).val('');
     }
 })

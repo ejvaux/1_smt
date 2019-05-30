@@ -97,7 +97,7 @@ Route::namespace('Api')->group(function () {
         /* Check Serial NO */
         Route::get('checksn', 'ApiController@checksn');
 
-        Route::post('scanserial', 'ApiController@checkjoquantity');
+        Route::post('scanserial', 'ApiController@scantype');
         Route::get('divprocesses/{id}', 'ApiController@divprocesses');
         Route::get('linenames/{id}', 'ApiController@linenames');
 
