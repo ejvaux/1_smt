@@ -12,6 +12,7 @@
                     <th>PROCESS</th>
                     <th>TYPE</th>
                     <th>EMPLOYEE</th>
+                    <th>SHIFT</th>
                     <th>CREATED AT</th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                                     @endif
                                 </td>
                                 <td>{{$pcb->employee->fname}} {{$pcb->employee->lname}}</td>
+                                <td>{{$pcb->shift}}</td>
                                 <td>{{$pcb->created_at}}</td>
                             </tr>
                         @endforeach
