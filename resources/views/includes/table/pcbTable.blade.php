@@ -21,7 +21,7 @@
                     @if (count($pcbs)>0)
                         @foreach ($pcbs as $pcb)
                             <tr {{-- class='wo-clickable-row' --}} data-wodata='{{$pcb}}'>
-                                <td>{{ $loop->iteration + (($pcbs->currentPage() - 1) * 200) }}</td>
+                                <td>{{ $loop->iteration + (($pcbs->currentPage() - 1) * 1000) }}</td>
                                 {{-- <td>{{ $loop->iteration }}</td> --}}
                                 <td>{{$pcb->serial_number}}</td>
                                 <td>{{$pcb->jo_number}}</td>
