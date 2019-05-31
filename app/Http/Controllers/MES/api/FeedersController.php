@@ -47,6 +47,22 @@ class FeedersController extends Controller
             'order_id' => 'integer|required',
             'component_id' => 'integer|required',
         ]);
+        $primary = Feeder::where('model_id',$request->input('model_id'))
+                        ->where('machine_type_id',$request->input('machine_type_id'))
+                        ->where('line_id',$request->input('line_id'))
+                        ->where('table_id',$request->input('table_id'))
+                        ->where('mounter_id',$request->input('mounter_id'))
+                        ->where('pos_id',$request->input('pos_id'));
+        
+        if($request->input('order_id') == 1){
+            if($primary->where('order_id',1)->first()){
+                return redirect()->back()->with('error','Primary component already exists in '.$primary->first()->mounter->code.' - '.$primary->first()->position->name);
+            }
+        }        
+
+        if($primary->where('component_id',$request->input('component_id'))->first()){
+            return redirect()->back()->with('error','Component already exists in '.$primary->first()->mounter->code.' - '.$primary->first()->position->name);
+        }
 
         $f = new Feeder;
         $f->model_id = $request->input('model_id');

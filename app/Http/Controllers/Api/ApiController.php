@@ -146,34 +146,67 @@ class ApiController extends Controller
 
     public function scanOut($request)
     {
+        /* CHECK FOR OUTPUT */
+        $out = Pcb::where('serial_number',$request->serial_number)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',1)
+                ->first();
         /* CHECK FOR INPUT */
         $sn = Pcb::where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);        
 
-        if($sn->first()){
-            $sn = $sn->first();
-            if($sn->defect == 1){
+        if(!$out){
+            if($sn->first()){
+                $sn = $sn->first();
+                if($sn->defect == 1){
+                    return [
+                        'type' => 'error',
+                        'message' => 'Scan Failed. PCB has defect.'
+                    ];
+                }
+                else{                
+                    return $this->checkdupOut($request);               
+                }       
+            }
+            else{
+                $in = Pcb::where('serial_number',$request->serial_number)
+                        ->where('div_process_id',$request->div_process_id)
+                        ->where('type',0)->get();
+                if($in->count() == 0){
+                    return [
+                        'type' => 'error',
+                        'message' => 'Serial Number has no INPUT record.'
+                    ];
+                }
+                else{
+                    $jos = '';
+                    foreach ($in as $i) {
+                        $jos .= ' [' . $i->jo_number . ']';
+                    } 
+                    return [
+                        'type' => 'error',
+                        'message' => 'Serial Number has an INPUT in different Work Order/s.'.$jos                                               
+                    ];
+                }
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed. PCB has defect.'
+                    'message' => 'API ERROR: checking inputs'
                 ];
             }
-            else{                
-                return $this->checkdupOut($request);               
-            }       
+            return [
+                'type' => 'error',
+                'message' => 'API ERROR: scanOut'
+            ];
         }
         else{
             return [
                 'type' => 'error',
-                'message' => 'Serial Number has no INPUT record.'
+                'message' => 'Serial number already processed in ' . $out->divprocess->name . '.'
             ];
         }
-        return [
-            'type' => 'error',
-            'message' => 'API ERROR: scanOut'
-        ];
+        
     }
     public function checkdupOut($request)
     {
