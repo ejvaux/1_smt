@@ -3,7 +3,7 @@
         <table class="table table-sm" id="">
             <thead class="thead-light">
                 <tr class="text-center">
-                    {{-- <th>#</th> --}}
+                    <th>#</th>
                     {{-- <th>Plan date</th> --}}
                     {{-- <th>@sortablelink('JOB_ORDER_NO','WORK ORDER')</th>
                     <th>@sortablelink('','PLAN QTY')</th>
@@ -26,6 +26,7 @@
                             <tr class='wo-clickable-row' data-wodata='{{$workorder}}'>
                                 {{-- <td>{{$workorder->DATE_}}</td> --}}
                                 {{-- <td>{{ $loop->iteration + (($workorders->currentPage() - 1) * 100) }}</td> --}}
+                                <td>{{ $loop->iteration}}</td>
                                 <td>{{$workorder->JOB_ORDER_NO}}</td>
                                 <td>{{$workorder->MACHINE_CODE}}</td>
                                 <td>{{$workorder->SALES_ORDER}}</td>
