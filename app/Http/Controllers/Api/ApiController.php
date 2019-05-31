@@ -45,7 +45,7 @@ class ApiController extends Controller
     }
     public function loadWOtable(Request $request)
     {
-        $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$request->input('div')}%")->where('DATE_',$request->input('dte'))->get();
+        $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$request->input('div')}%")->where('DATE_',$request->input('dte'))->orderBy('MACHINE_CODE')->get();
         return view('includes.table.spTable',compact('workorders'));
     }
     public function loadpcbtable(Request $request)
@@ -54,7 +54,7 @@ class ApiController extends Controller
             $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->get();
         }
         else{
-            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->get();
+            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->paginate(200);
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }

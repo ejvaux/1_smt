@@ -274,10 +274,10 @@ function loadwotable(){
         });
     }
 }
-function loadpcbtable(txt = '',type,proc){
+function loadpcbtable(txt = '',type,proc,url = "api/loadpcbtable"){
     if($('#scanform-jo_id').val() != ''){
         $jo_id = $('#scanform-jo_id').val();      
-        $.get("api/loadpcbtable",
+        $.get(url,
         { 
             jo_id:  $jo_id,
             sn: txt,
@@ -622,3 +622,9 @@ $('#close_lot_num').on('click', function(e){
         }
     })
 })
+$()
+$('#pcbtable_div').on('click','.pagination a.page-link', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val(),$(this).attr('href'));
+});

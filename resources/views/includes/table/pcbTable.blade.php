@@ -3,7 +3,7 @@
         <table class="table table-sm" id="">
             <thead class="thead-light">
                 <tr class="text-center">
-                    {{-- <th>#</th> --}}
+                    <th>#</th>
                     {{-- <th>@sortablelink('','')</th> --}}
                     <th>S/N</th>
                     <th>WORK ORDER</th>
@@ -20,8 +20,8 @@
                 @isset ($pcbs)
                     @if (count($pcbs)>0)
                         @foreach ($pcbs as $pcb)
-                            <tr class='wo-clickable-row' data-wodata='{{$pcb}}'>
-                                {{-- <td>{{ $loop->iteration + (($pcbs->currentPage() - 1) * 100) }}</td> --}}
+                            <tr {{-- class='wo-clickable-row' --}} data-wodata='{{$pcb}}'>
+                                <td>{{ $loop->iteration + (($pcbs->currentPage() - 1) * 200) }}</td>
                                 {{-- <td>{{ $loop->iteration }}</td> --}}
                                 <td>{{$pcb->serial_number}}</td>
                                 <td>{{$pcb->jo_number}}</td>
@@ -58,11 +58,11 @@
         </table>
     </div>
 </div>
-{{-- @isset($pcbs)
+@isset($pcbs)
     <div class='row'>
         <div class='col-md'>
             {!! $pcbs->appends(\Request::except('page'))->render() !!}
         </div>
     </div>
-@endisset --}}
+@endisset
     
