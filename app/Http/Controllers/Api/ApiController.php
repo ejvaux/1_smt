@@ -54,7 +54,7 @@ class ApiController extends Controller
             $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->get();
         }
         else{
-            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->paginate(1000);
+            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->paginate(100);
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }
