@@ -239,7 +239,7 @@ function setWO(wo){
     loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
 
     /* Clear WorkOrder */
-    $.get("api/loadWOtable",
+    /* $.get("api/loadWOtable",
             { 
                 div:  '0',
                 dte: ''
@@ -247,7 +247,7 @@ function setWO(wo){
             function(data) {
                 $('#spTablediv').html(data);
                 $('#setWO').addClass('d-none');    
-            });
+            }); */
     /* iziToast.success({
         message: 'Work Order Set!',
         position: 'topCenter'
