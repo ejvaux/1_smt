@@ -51,7 +51,7 @@ class ApiController extends Controller
     public function loadpcbtable(Request $request)
     {
         if($request->input('sn')){
-            $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->get();
+            $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->paginate(100);
         }
         else{
             $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->paginate(100);
