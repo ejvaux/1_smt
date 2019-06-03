@@ -1,3 +1,35 @@
+/* ---------- AJAX SETUP ---------- */
+$.ajaxSetup({
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        if (XMLHttpRequest.readyState == 4) {
+            // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: XMLHttpRequest.statusText + '<br>' + XMLHttpRequest.responseJSON.message + '<br>' + XMLHttpRequest.responseJSON.file,
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else if (XMLHttpRequest.readyState == 0) {                
+            // Network error (i.e. connection refused, access denied due to CORS, etc.)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: XMLHttpRequest.statusText + '<br>' + XMLHttpRequest.responseJSON.message + '<br>' + XMLHttpRequest.responseJSON.file,
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else {
+            iziToast.warning({
+                title: 'ERROR',
+                message: 'Unknown Error',
+                position: 'topCenter',
+                close: false,
+            });
+            // something weird is happening
+        }
+    }
+});
 /* ---------- VARIABLES ---------- */
 var configlock = 0;
 var WOset = 0;
@@ -75,19 +107,27 @@ function verifyemployee(pin)
                 // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
                 iziToast.warning({
                     title: 'ERROR '+ XMLHttpRequest.status,
-                    message: XMLHttpRequest.statusText,
-                    position: 'topCenter'
+                    message: XMLHttpRequest.statusText + '<br>' + XMLHttpRequest.responseJSON.message + '<br>' + XMLHttpRequest.responseJSON.file,
+                    position: 'topCenter',
+                    close: false,
                 });
             }
             else if (XMLHttpRequest.readyState == 0) {                
                 // Network error (i.e. connection refused, access denied due to CORS, etc.)
                 iziToast.warning({
                     title: 'ERROR '+ XMLHttpRequest.status,
-                    message: XMLHttpRequest.statusText,
-                    position: 'topCenter'
+                    message: XMLHttpRequest.statusText + '<br>' + XMLHttpRequest.responseJSON.message + '<br>' + XMLHttpRequest.responseJSON.file,
+                    position: 'topCenter',
+                    close: false,
                 });
             }
             else {
+                iziToast.warning({
+                    title: 'ERROR',
+                    message: 'Unknown Error',
+                    position: 'topCenter',
+                    close: false,
+                });
                 // something weird is happening
             }
             resetemp();
@@ -124,7 +164,7 @@ function serialscan()
             /* Reload Pcb table */
             loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
             /* getscantotal($('#scanform-jo_id').val()); */
-        },
+        }/* ,
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             if (XMLHttpRequest.readyState == 4) {
                 // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
@@ -143,9 +183,14 @@ function serialscan()
                 });
             }
             else {
+                iziToast.warning({
+                    title: 'ERROR',
+                    message: 'Unknown Error',
+                    position: 'topCenter'
+                });
                 // something weird is happening
             }
-        }
+        } */
     });
 }
 function resetemp()
@@ -193,6 +238,16 @@ function setWO(wo){
     /* Load PCB */
     loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
 
+    /* Clear WorkOrder */
+    $.get("api/loadWOtable",
+            { 
+                div:  '0',
+                dte: ''
+            }, 
+            function(data) {
+                $('#spTablediv').html(data);
+                $('#setWO').addClass('d-none');    
+            });
     /* iziToast.success({
         message: 'Work Order Set!',
         position: 'topCenter'
@@ -441,10 +496,10 @@ $('#refreshWO').on('click', function(e){
 });
 $('#collapseConfig').on('hide.bs.collapse', function () {
     $('#config-collapse-btn').html('<i class="fas fa-caret-down"></i>');
-})
+});
 $('#collapseConfig').on('show.bs.collapse', function () {
     $('#config-collapse-btn').html('<i class="fas fa-caret-up"></i>');
-})
+});
 $('#scan_serial').on('keypress', function(e){
     if(e.keyCode == 13)
     {
@@ -594,7 +649,7 @@ $('#searchpcbtable').on('keypress', function(e){
         loadpcbtable($(this).val(),$('#scanform-type').val(),$('#scanform-div_process_id').val());
         $(this).val('');
     }
-})
+});
 $('#pcb_input').on('change', function(e){
     if($(this).prop('checked') == 1){
         inputt = 0;
@@ -603,7 +658,7 @@ $('#pcb_input').on('change', function(e){
         inputt = 1;
     }    
     $('#scanform-type').val(inputt);
-})
+});
 $('#close_lot_num').on('click', function(e){
     swal.fire({
         title: 'Are you sure?',
@@ -621,8 +676,7 @@ $('#close_lot_num').on('click', function(e){
             });            
         }
     })
-})
-$()
+});
 $('#pcbtable_div').on('click','.pagination a.page-link', function(e){
     e.preventDefault();
     e.stopImmediatePropagation();
