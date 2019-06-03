@@ -37,15 +37,15 @@
                         @endforeach
                     @else
                         <tr>
-                            <th colspan="6">
-                                <h4>No data to display.</h4>
+                            <th colspan="7">
+                                <h4>No data to display. Reload table.</h4>
                             </th>
                         </tr>
                     @endif
                 @else
                     <tr>
-                        <th colspan="6">
-                            <h4>No data to display.</h4>
+                        <th colspan="7">
+                            <h4>No data to display. Reload table.</h4>
                         </th>
                     </tr>
                 @endisset
