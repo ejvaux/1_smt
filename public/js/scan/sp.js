@@ -110,11 +110,18 @@ function verifyemployee(pin)
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
+            var msg,file;
+            if(XMLHttpRequest.responseJSON.message != null){
+                msg = XMLHttpRequest.responseJSON.message;
+            }
+            if(XMLHttpRequest.responseJSON.file != null){
+                file = XMLHttpRequest.responseJSON.file;
+            }
             if (XMLHttpRequest.readyState == 4) {
                 // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
                 iziToast.warning({
                     title: 'ERROR '+ XMLHttpRequest.status,
-                    message: XMLHttpRequest.statusText + '<br>' + XMLHttpRequest.responseJSON.message + '<br>' + XMLHttpRequest.responseJSON.file,
+                    message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file,
                     position: 'topCenter',
                     close: false,
                 });
@@ -123,7 +130,7 @@ function verifyemployee(pin)
                 // Network error (i.e. connection refused, access denied due to CORS, etc.)
                 iziToast.warning({
                     title: 'ERROR '+ XMLHttpRequest.status,
-                    message: XMLHttpRequest.statusText + '<br>' + XMLHttpRequest.responseJSON.message + '<br>' + XMLHttpRequest.responseJSON.file,
+                    message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file,
                     position: 'topCenter',
                     close: false,
                 });
