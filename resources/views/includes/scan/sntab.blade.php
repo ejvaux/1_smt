@@ -6,7 +6,7 @@
         <input class='form-control' type="text" name="" id="searchpcbtable" placeholder="Scan Serial Number Here to Search">
     </div>
     <div class="col-md">
-        <span class='text-danger bold-text'>Serial numbers are based on the selected Work Order.</span>
+        <span class='text-danger bold-text'>Serial numbers are based on the Configuration and selected Work Order.</span>
     </div>
 </div>
 <div class="row">
