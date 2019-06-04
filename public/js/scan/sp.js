@@ -110,11 +110,10 @@ function verifyemployee(pin)
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            var msg,file;
-            if(!( typeof XMLHttpRequest.responseJSON.message === 'undefined' || XMLHttpRequest.responseJSON.message === null )){
+            var msg = '';
+            var file = '';
+            if(XMLHttpRequest.responseText != null){
                 msg = XMLHttpRequest.responseJSON.message;
-            }
-            if(!( typeof XMLHttpRequest.responseJSON.file === 'undefined' || XMLHttpRequest.responseJSON.file === null )){
                 file = XMLHttpRequest.responseJSON.file ;
             }
             if (XMLHttpRequest.readyState == 4) {
