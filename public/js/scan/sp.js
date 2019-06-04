@@ -111,10 +111,10 @@ function verifyemployee(pin)
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             var msg,file;
-            if(XMLHttpRequest.responseJSON.message != null){
+            if(!( typeof XMLHttpRequest.responseJSON.message === 'undefined' || XMLHttpRequest.responseJSON.message === null )){
                 msg = XMLHttpRequest.responseJSON.message;
             }
-            if(XMLHttpRequest.responseJSON.file != null){
+            if(!( typeof XMLHttpRequest.responseJSON.file === 'undefined' || XMLHttpRequest.responseJSON.file === null )){
                 file = XMLHttpRequest.responseJSON.file;
             }
             if (XMLHttpRequest.readyState == 4) {
