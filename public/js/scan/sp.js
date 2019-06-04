@@ -1,12 +1,11 @@
 /* ---------- AJAX SETUP ---------- */
 $.ajaxSetup({
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-        var msg,file;
-        if(XMLHttpRequest.responseJSON.message != null){
+        var msg = '';
+        var file = '';
+        if(XMLHttpRequest.responseText != null){
             msg = XMLHttpRequest.responseJSON.message;
-        }
-        if(XMLHttpRequest.responseJSON.file != null){
-            file = XMLHttpRequest.responseJSON.file;
+            file = XMLHttpRequest.responseJSON.file ;
         }
         if (XMLHttpRequest.readyState == 4) {
             // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
