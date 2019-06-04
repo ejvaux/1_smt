@@ -20,7 +20,7 @@ $.ajaxSetup({
             // Network error (i.e. connection refused, access denied due to CORS, etc.)
             iziToast.warning({
                 title: 'ERROR '+ XMLHttpRequest.status,
-                message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file,
+                message: 'Network Error',
                 position: 'topCenter',
                 close: false,
             });
@@ -128,7 +128,7 @@ function verifyemployee(pin)
                 // Network error (i.e. connection refused, access denied due to CORS, etc.)
                 iziToast.warning({
                     title: 'ERROR '+ XMLHttpRequest.status,
-                    message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file,
+                    message: 'Network Error',
                     position: 'topCenter',
                     close: false,
                 });
