@@ -115,7 +115,7 @@ function verifyemployee(pin)
                 msg = XMLHttpRequest.responseJSON.message;
             }
             if(!( typeof XMLHttpRequest.responseJSON.file === 'undefined' || XMLHttpRequest.responseJSON.file === null )){
-                file = XMLHttpRequest.responseJSON.file;
+                file = XMLHttpRequest.responseJSON.file ;
             }
             if (XMLHttpRequest.readyState == 4) {
                 // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
