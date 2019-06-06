@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Pcb;
+use App\Models\WorkOrder;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -46,17 +47,22 @@ class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullC
         ];
     }
 
-    public function __construct()
+    public function __construct($wo)
     {
-        /* $this->user_id = $user_id;  */       
+        $this->wo = $wo;        
     }
 
     public function query()
     {
         /* $query = Pcb::all();
         return $query; */
-        return Pcb::orderby('id');
+
+        return Pcb::where('created_at','LIKE','2019-06');
+
+        /* return Pcb::orderby('id'); */
     }
+
+
     /**
     * @return \Illuminate\Support\Collection
     */
