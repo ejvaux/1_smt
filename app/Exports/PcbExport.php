@@ -47,9 +47,9 @@ class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullC
         ];
     }
 
-    public function __construct($wo)
+    public function __construct(/* $wo */)
     {
-        $this->wo = $wo;        
+        /* $this->wo = $wo;  */       
     }
 
     public function query()
