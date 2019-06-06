@@ -10,9 +10,10 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use Carbon\Carbon;
 
-class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullComparison
+class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullComparison, WithTitle
 {
     use Exportable;
 
@@ -60,6 +61,11 @@ class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullC
         return Pcb::where('created_at','LIKE','2019-06%');
 
         /* return Pcb::orderby('id'); */
+    }
+
+    public function title(): string
+    {
+        return 'Sheet1';
     }
 
 
