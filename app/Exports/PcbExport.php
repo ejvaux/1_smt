@@ -57,7 +57,7 @@ class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullC
         /* $query = Pcb::all();
         return $query; */
 
-        return Pcb::where('created_at','LIKE','2019-06');
+        return Pcb::where('created_at','LIKE','2019-06%');
 
         /* return Pcb::orderby('id'); */
     }
