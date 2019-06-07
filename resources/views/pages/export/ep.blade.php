@@ -19,6 +19,10 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Scan Records</h5>
+                                        {{-- <form action="{{url('ep/sn')}}" method="post">
+                                            <input type="text" name='division_id' value='2'>
+                                            <input type="text" name='wo' value='2'>
+                                        </form> --}}
                                         <a class='btn btn-primary' href="{{url('ep/sn')}}"><i class="fas fa-file-download"></i> Export</a>
                                     </div>
                                 </div>

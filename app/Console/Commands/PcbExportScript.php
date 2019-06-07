@@ -1,21 +1,46 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
-use Illuminate\Http\Request;
+use Illuminate\Console\Command;
 use App\Exports\PcbExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Division;
 use App\Models\Pcb;
 use App\Models\WorkOrder;
 
-class ExportsController extends Controller
+class PcbExportScript extends Command
 {
-    public function index()
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'export:pcb';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Exporting PCB entries';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        return view('pages.export.ep'/* ,compact() */);
+        parent::__construct();
     }
-    public function exportpcb(Request $request)
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
     {
         $filename = 'PRIMA_';
         $qty = 0;
@@ -39,7 +64,7 @@ class ExportsController extends Controller
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
             Pcb::where('jo_id',$temp->jo_id)->update(['exported'=> 1]);            
-            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_test');
+            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_smt');
         }
         /* if(Pcb::where('exported',0)->first()){
             $filename = 'PRIMA_';
@@ -57,10 +82,7 @@ class ExportsController extends Controller
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
             Pcb::where('jo_id',$pcb->jo_id)->update(['exported'=> 1]);            
-            return  Excel::store(new PcbExport($pcb->jo_id), $filename.'.xlsx');            
-        }
-        else{
-            return redirect()->back();
-        } */        
+            Excel::store(new PcbExport($pcb->jo_id), $filename.'.xlsx','export_test');
+        } */
     }
 }

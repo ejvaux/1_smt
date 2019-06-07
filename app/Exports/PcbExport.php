@@ -48,17 +48,21 @@ class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullC
         ];
     }
 
-    public function __construct(/* $wo */)
+    public function __construct($joid)
     {
-        /* $this->wo = $wo;  */       
+        $this->joid = $joid;        
     }
 
     public function query()
     {
         /* $query = Pcb::all();
         return $query; */
-
-        return Pcb::where('created_at','LIKE','2019-06%');
+        /* $query = new Pcb();
+        foreach ($this->jos as $jo) {
+            $query->where('jo_id',$jo->ID);
+        } */
+        /* $query = new Pcb::where(); */
+        return Pcb::where('jo_id',$this->joid);
 
         /* return Pcb::orderby('id'); */
     }

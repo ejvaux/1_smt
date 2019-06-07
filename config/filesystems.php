@@ -55,6 +55,16 @@ return [
             'visibility' => 'public',
         ],
 
+        'export_test' => [
+            'driver' => 'local',
+            'root' => 'C:/Exports'
+        ],
+
+        'export_smt' => [
+            'driver' => 'local',
+            'root' => 'D:/MES-SharedFiles/MES export/SMT Exports'
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
