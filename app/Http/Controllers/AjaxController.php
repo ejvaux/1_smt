@@ -181,7 +181,9 @@ class AjaxController extends Controller
     public function LoadDetailsPanel(Request $request){
         $machine = $request->input('machine_id');
         $component = $request->input('new_PN');
-        $m_code =substr($machine,0,7);
+        /* $m_code =substr($machine,0,7);
+        $table=substr($machine,-1); */
+        $m_code =substr($machine,0,-1);
         $table=substr($machine,-1);
         
         $mach_type= machine::where('barcode',$m_code)->first();
@@ -208,7 +210,9 @@ class AjaxController extends Controller
     public function LoadHistoryTable(Request $request){
         $machine = $request->input('machine_id');
         $component = $request->input('new_PN');
-        $m_code =substr($machine,0,7);
+        /* $m_code =substr($machine,0,7);
+        $table=substr($machine,-1); */
+        $m_code =substr($machine,0,-1);
         $table=substr($machine,-1);
         
         $mach_type= machine::where('barcode',$m_code)->first();
@@ -228,7 +232,9 @@ class AjaxController extends Controller
         $machine = $request->input('machine_id');
         $component = $request->input('new_PN');
         //$machine = "CM60201A";
-        $m_code =substr($machine,0,7);
+        /* $m_code =substr($machine,0,7);
+        $table=substr($machine,-1); */
+        $m_code =substr($machine,0,-1);
         $table=substr($machine,-1);
         
         $mach_type= machine::where('barcode',$m_code)->first();
@@ -349,7 +355,9 @@ class AjaxController extends Controller
         $machine = $request->input('machine_id');
         $component = $request->input('new_PN');
         //$machine = "CM60201A";
-        $m_code =substr($machine,0,7);
+        /* $m_code =substr($machine,0,7);
+        $table=substr($machine,-1); */
+        $m_code =substr($machine,0,-1);
         $table=substr($machine,-1);
         
         $mach_type= machine::where('barcode',$m_code)->first();
