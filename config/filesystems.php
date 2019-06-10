@@ -57,12 +57,12 @@ return [
 
         'export_test' => [
             'driver' => 'local',
-            'root' => '/Exports'
+            'root' => 'D:\MES-SharedFiles\MES export\Test Exports'
         ],
 
         'export_smt' => [
             'driver' => 'local',
-            'root' => '/MES-SharedFiles/MES export/SMT Exports/'
+            'root' => 'D:\MES-SharedFiles\MES export\SMT Exports'
         ],
 
         's3' => [
