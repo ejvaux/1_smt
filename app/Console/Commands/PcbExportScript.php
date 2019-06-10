@@ -53,7 +53,7 @@ class PcbExportScript extends Command
             }
         }
         if($wo != ''){
-            $qty = Pcb::where('jo_id',$temp->jo_id)->count();
+            $qty = Pcb::where('jo_id',$temp->jo_id)->where('exported',0)->count();
             $filename .= Division::where('DIVISION_ID',$temp->division_id)->pluck('DIVISION_NAME')->first() . '_';
             if($wo == ''){
                 $filename .= 'NoWorkOrder_';
@@ -64,7 +64,7 @@ class PcbExportScript extends Command
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
             Pcb::where('jo_id',$temp->jo_id)->update(['exported'=> 1]);            
-            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','local');
+            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_smt');
         }
         /* if(Pcb::where('exported',0)->first()){
             $filename = 'PRIMA_';
