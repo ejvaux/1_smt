@@ -42,6 +42,8 @@ class PcbExportScript extends Command
      */
     public function handle()
     {
+        for ($i=0; $i <= 1; $i++) { 
+        
         $filename = 'PRIMA_';
         $qty = 0;
         $pcbs = Pcb::where('exported',0)->get();
@@ -65,6 +67,8 @@ class PcbExportScript extends Command
             $filename .= $qty;
             Pcb::where('jo_id',$temp->jo_id)->update(['exported'=> 1]);            
             Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_smt');
+        }
+
         }
     }
 }
