@@ -53,7 +53,7 @@ class PcbExportScript extends Command
             }
         }
         if($wo != ''){
-            $qty = Pcb::where('jo_id',$temp->jo_id)->count();
+            $qty = Pcb::where('jo_id',$temp->jo_id)->where('exported',0)->count();
             $filename .= Division::where('DIVISION_ID',$temp->division_id)->pluck('DIVISION_NAME')->first() . '_';
             if($wo == ''){
                 $filename .= 'NoWorkOrder_';
