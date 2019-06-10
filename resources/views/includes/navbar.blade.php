@@ -39,8 +39,17 @@
                     <li class="nav-item">
                         <a class="nav-link bold-text" href="/1_smt/public/home"><i class="fas fa-home"></i> Home</a>
                     </li>
-                    <li class="nav-item bold-text">
+                    {{-- <li class="nav-item bold-text">
                         <a class="nav-link" href="{{url('sp')}}"><i class="fas fa-barcode"></i> Scan PCB</a>
+                    </li> --}}
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
+                            <i class="fas fa-barcode"></i> Scan PCB <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">                                   
+                            <a class="nav-link" href="{{url('sp')}}"><i class="fas fa-exchange-alt"></i> In/Out</a>
+                            <a class="nav-link" href="{{url('tracking')}}"><i class="fas fa-search"></i> Tracking</a>                            
+                        </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
