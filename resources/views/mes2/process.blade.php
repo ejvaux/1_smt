@@ -1,7 +1,7 @@
 @extends('mes.layouts.app')
 @section('tabs')
     <script>
-        $('#tb7').addClass('active');
+        //$('#tb7').addClass('active');
     </script>
 @endsection
 @section('content')
