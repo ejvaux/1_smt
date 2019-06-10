@@ -20,7 +20,6 @@
                     <div class="container border-fluid p-0 mb-2 border-secondary"  style="overflow-x:auto;">
         
                     </div>
-                
                     <div class="container-fluid p-0" style="overflow-x:auto;">
                      <div class="col p-0 border-fluid">
                             <div class="row ">
