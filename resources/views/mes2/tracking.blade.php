@@ -4,7 +4,7 @@
 <script src="{{ asset('js/mes2/spsearch.js')}}" defer></script>
 @endsection
 @section('content')
-<div class="container border mt-3 border-dark" style="overflow-x:auto;">
+<div class="container-fluid border mt-3 border-dark" style="overflow-x:auto;">
     <div class="card mt-3 border mb-3 border-secondary"style="overflow-x:auto;">
         <div class="card-header">
         SMT Process Tracker
