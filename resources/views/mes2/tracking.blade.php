@@ -4,7 +4,7 @@
 <script src="{{ asset('js/mes2/spsearch.js')}}" defer></script>
 @endsection
 @section('content')
-<div class="container border mt-5 border-dark" style="overflow-x:auto;">
+<div class="container border mt-3 border-dark" style="overflow-x:auto;">
     <div class="card mt-3 border mb-3 border-secondary"style="overflow-x:auto;">
         <div class="card-header">
         SMT Process Tracker
@@ -23,7 +23,7 @@
                 
                     <div class="container-fluid p-0" style="overflow-x:auto;">
                      <div class="col p-0 border-fluid">
-                            <div class="row mt-2">
+                            <div class="row ">
                                     <div class="col-md-6 mr-auto mt">
                                         {{-- <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#addProcessModal"><i class="far fa-plus-square"></i> New Data</button> --}}
                                         {{-- <button type='button' class="btn btn-outline-success mb-1 editProcess1"><i class="fa fa-edit"></i>Update Data</button> --}}
@@ -32,7 +32,7 @@
                                             @csrf
                                             @method('GET')
                                             
-                                            <input type="Text" class="form-control mb-2" name="myInputPCB" placeholder="Search PCB Here.....">
+                                            <input type="Text" class="form-control mb-2" name="myInputPCB" placeholder="Search PCB Here" autocomplete="off">
                                             
                                             {{-- <button type="submit">Get User</button><br> --}}
                                         </form>
