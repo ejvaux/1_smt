@@ -25,9 +25,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                    @endif --}}
+                    @endif --}}                    
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('sp')}}"><span class='font-weight-bold'>Scan</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url('tracking')}}"><span class='font-weight-bold'>Tracking</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('ds')}}"><span class='font-weight-bold'>Defect</span></a>
