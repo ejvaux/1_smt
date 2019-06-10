@@ -64,7 +64,7 @@ class PcbExportScript extends Command
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
             Pcb::where('jo_id',$temp->jo_id)->update(['exported'=> 1]);            
-            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','local');
+            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_test');
         }
         /* if(Pcb::where('exported',0)->first()){
             $filename = 'PRIMA_';
