@@ -67,7 +67,7 @@ class PcbExportScript extends Command
             }
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
-            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_test');            
+            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_smt');            
             $pcbx->update(['exported'=> 1]);            
         }
 
