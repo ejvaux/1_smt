@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\MES2\model;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
+
 class Process extends Model
 {
     //
