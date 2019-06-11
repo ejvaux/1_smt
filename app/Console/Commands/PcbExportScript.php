@@ -42,7 +42,7 @@ class PcbExportScript extends Command
      */
     public function handle()
     {
-        for ($i=0; $i <= 1; $i++) { 
+        /* for ($i=0; $i <= 0; $i++) { */ 
         
         $filename = 'PRIMA_';
         $qty = 0;
@@ -55,7 +55,9 @@ class PcbExportScript extends Command
             }
         }
         if($wo != ''){
-            $qty = Pcb::where('jo_id',$temp->jo_id)->where('exported',0)->count();
+            Pcb::where('jo_id',$temp->jo_id)->where('exported',0)->update(['exported'=> 2]);
+            $pcbx = Pcb::where('jo_id',$temp->jo_id)->where('exported',2);
+            $qty = $pcbx->count();
             $filename .= Division::where('DIVISION_ID',$temp->division_id)->pluck('DIVISION_NAME')->first() . '_';
             if($wo == ''){
                 $filename .= 'NoWorkOrder_';
@@ -65,10 +67,10 @@ class PcbExportScript extends Command
             }
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
-            Pcb::where('jo_id',$temp->jo_id)->update(['exported'=> 1]);            
-            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_smt');
+            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_test');            
+            $pcbx->update(['exported'=> 1]);            
         }
 
-        }
+        /* } */
     }
 }

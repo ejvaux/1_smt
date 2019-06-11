@@ -57,7 +57,7 @@ return [
 
         'export_test' => [
             'driver' => 'local',
-            'root' => 'D:\MES-SharedFiles\MES export\Test Exports'
+            'root' => 'C:\Exports'
         ],
 
         'export_smt' => [
