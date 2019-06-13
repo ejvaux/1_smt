@@ -1447,7 +1447,7 @@ function loaddata_panel_right(){
                }
 
               var mc = '';
-               if(data[i].machine_rel.code){
+               if(data[i].machine_rel.code != null){
                    mc = data[i].machine_rel.code;
                 }
 
