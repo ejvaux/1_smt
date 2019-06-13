@@ -172,5 +172,6 @@ Route::get('processDelete', 'MES2\ProcessController@destroy');
 
 Route::resource('defecttype','MES2\DefectTypeController');
 Route::resource('tracking','MES2\trackingController');
+Route::resource('qc','MES2\qcController');
 /* ----- MES2 END ----- */
 

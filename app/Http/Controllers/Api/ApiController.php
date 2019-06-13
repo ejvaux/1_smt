@@ -132,7 +132,7 @@ class ApiController extends Controller
                 ];
             }
         }
-        function  insertsn($request,$jo_id = '')
+        function  insertsn( $request,$jo_id='')
         {
             $a = new Pcb;
             $a->serial_number = $request->serial_number;

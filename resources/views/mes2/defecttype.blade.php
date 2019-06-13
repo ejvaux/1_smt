@@ -145,7 +145,7 @@
 
                                 <button type='button' class="btn btn-outline-danger del_defect_btn" data-id='{{$defect->id}}'><i class="fa fa-trash"></i></button>
                                 {{-- </div> --}}
-                                </form>
+                            </form>
                         </td>
                         </tr>
                         @endforeach
