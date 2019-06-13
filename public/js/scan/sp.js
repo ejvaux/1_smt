@@ -154,6 +154,7 @@ function serialscan()
         url: 'api/scanserial',
         type:'post',
         data: formdata,
+        global: false,
         success: function (data) {
             if(data.type == 'success'){                
                 iziToast.success({
@@ -325,7 +326,20 @@ function loadwotable(){
     if(configlock == 1){
         $div = $('#pcb_division_id').val();
         $dte = $('#woDate').val();
-        $.get("api/loadWOtable",
+        $.ajax({
+            url: 'api/loadWOtable',
+            type:'get',
+            data: {
+                'div':  $div,
+                'dte':  $dte
+            },
+            global: false,
+            success: function (data) {           
+                $('#spTablediv').html(data);
+                $('#setWO').addClass('d-none');
+            }
+        });
+        /* $.get("api/loadWOtable",
             { 
                 div:  $div,
                 dte: $dte
@@ -333,7 +347,7 @@ function loadwotable(){
             function(data) {
                 $('#spTablediv').html(data);
                 $('#setWO').addClass('d-none');    
-            });
+            }); */
     }else{
         iziToast.warning({
             message: 'Lock the Configuration First.',
@@ -343,8 +357,22 @@ function loadwotable(){
 }
 function loadpcbtable(txt = '',type,proc,url = "api/loadpcbtable"){
     if($('#scanform-jo_id').val() != ''){
-        $jo_id = $('#scanform-jo_id').val();      
-        $.get(url,
+        $jo_id = $('#scanform-jo_id').val();
+        $.ajax({
+            url: url,
+            type:'get',
+            data: {
+                'jo_id':  $jo_id,
+                'sn': txt,
+                'type': type,
+                'proc': proc
+            },
+            global: false,
+            success: function (data) {           
+                $('#pcbtable_div').html(data);
+            }
+        });
+        /* $.get(url,
         { 
             jo_id:  $jo_id,
             sn: txt,
@@ -353,7 +381,7 @@ function loadpcbtable(txt = '',type,proc,url = "api/loadpcbtable"){
         }, 
         function(data) {
             $('#pcbtable_div').html(data);   
-        });
+        }); */
         getscantotal($('#scanform-jo_id').val());        
     }
     else{
@@ -364,11 +392,14 @@ function loadpcbtable(txt = '',type,proc,url = "api/loadpcbtable"){
     }
 }
 function getscantotal(wo){
-    $.get("api/totalscan",
-        { 
-            jo:  wo
-        }, 
-        function(data) {
+    $.ajax({
+        url: 'api/totalscan',
+        type:'get',
+        data: {
+            'jo':  wo,
+        },
+        global: false,
+        success: function (data) {           
             $('#wo-input').val(data.in);
             $('#wo-output').val(data.out);
             if(data.total>0){
@@ -381,18 +412,47 @@ function getscantotal(wo){
                 $('#wo-rem').val(data.total).addClass('pcbconfigred');
                 $('#scanstatuslabel').html('Plan Quantity Reached!').removeClass('text-success').addClass('text-danger');
                 $('#scan_serial').removeClass('border-success').attr('disabled',true);
-            }            
+            }
+        }
     });
+    /* $.get("api/totalscan",
+        { 
+            jo:  wo
+        }, 
+        function(data) {
+            $('#wo-input').val(data.in);
+            $('#wo-output').val(data.out);
+            if(data.total>0){
+                $('#wo-rem').val(data.total).removeClass('text-pcbconfigred').addClass('pcbconfig');
+                checkscan();               
+            }
+            else{
+                $('#wo-rem').val(data.total).addClass('pcbconfigred');
+                $('#scanstatuslabel').html('Plan Quantity Reached!').removeClass('text-success').addClass('text-danger');
+                $('#scan_serial').removeClass('border-success').attr('disabled',true);
+            }            
+    }); */
     loadscantotalemp(wo);
 }
 function loadscantotalemp(wo){
-    $.get("api/loadempscantotaltable",
+    $.ajax({
+        url: 'api/loadempscantotaltable',
+        type:'get',
+        data: {
+            'jo':  wo,
+        },
+        global: false,
+        success: function (data) {           
+            $('#emptotaltablediv').html(data)
+        }
+    });
+    /* $.get("api/loadempscantotaltable",
         { 
             jo:  wo
         }, 
         function(data) {
             $('#emptotaltablediv').html(data)            
-    });
+    }); */
 }
 
 /* --------------- E-V-E-N-T-S -------------- */
