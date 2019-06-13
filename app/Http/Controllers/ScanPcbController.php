@@ -47,11 +47,11 @@ class ScanPcbController extends Controller
         /* $pcbs = Pcb::paginate('100'); */
 
         return view('pages.scan.sp',compact(
-            'pcbs',
+            /* 'pcbs', */
             'date1',
-            'workorders',
+            /* 'workorders', */
             'divisions',
-            'processes',
+            /* 'processes', */
             'type',
             'divprocesses',
             'sel_division',

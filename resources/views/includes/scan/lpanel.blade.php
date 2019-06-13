@@ -45,7 +45,7 @@
                                         <label for="sel_division" class="col-form-label">DIVISION:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig configlock' type="text" id='display-division' value='{{ (count($sel_division)>0 ? $sel_division->DIVISION_NAME : '')}}' readonly>                    
+                                        <input class='form-control pcbconfig configlock' type="text" id='display-division' value='{{-- {{ (count($sel_division)>0 ? $sel_division->DIVISION_NAME : '')}} --}}' readonly>                    
                                         <select id="pcb_division_id" class="form-control configunlock" name="division_id" placeholder="" required>
                                                 <option value="0">- Please select -</option>
                                                 @foreach ($divisions as $division)
@@ -65,7 +65,7 @@
                                         <label for="sel_line" class="col-form-label">LINE:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig configlock' type="text" id='display-line' value='{{ (count($sel_line)>0 ? $sel_line->name : '')}}' readonly>
+                                        <input class='form-control pcbconfig configlock' type="text" id='display-line' value='{{-- {{ (count($sel_line)>0 ? $sel_line->name : '')}} --}}' readonly>
                                         <select id="pcb_line_id" class="form-control configunlock" name="line_id" placeholder="" disabled required>
                                             <option value="0">- Select Division First -</option>
                                         </select>
@@ -79,7 +79,7 @@
                                         <label for="sel_div_process" class="col-form-label">PROCESS:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig configlock' type="text" id='display-process' value='{{ (count($sel_div_process)>0 ? $sel_div_process->name : '')}}' readonly>                    
+                                        <input class='form-control pcbconfig configlock' type="text" id='display-process' value='{{-- {{ (count($sel_div_process)>0 ? $sel_div_process->name : '')}} --}}' readonly>                    
                                         <select class="form-control configunlock" id="pcb_process_id" disabled required>
                                             <option value="0">- Select Division First -</option>
                                         </select>
