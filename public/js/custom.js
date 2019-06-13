@@ -1,3 +1,29 @@
+function colorsets(){
+        
+    $col =[
+        '#99A3A4',
+        '#42a5f5',
+        '#5c6bc0',
+        '#7e57c2',
+        '#ab47bc',
+        '#ec407a',
+        '#ef5350',
+        '#d4e157',
+        '#9ccc65',
+        '#66bb6a',
+        '#26a69a',
+        '#26c6da',
+        '#29b6f6',
+        '#bdbdbd',
+        '#8d6e63',
+        '#ff7043',
+        '#ffa726',
+        '#ffee58',
+        '#ffca28',
+        '#78909C'
+    ];
+    return $col;
+}
 /*     //"Select2": "^3.5.7",
 function get_errorcode()
     {
@@ -739,7 +765,7 @@ function event_emp(e){
                     confirmButtonText: 'OK'
                   }).then((result) => {
                     if (result.value) {
-                        window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan";
+                        window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2";
                     }
                   })
                 
@@ -885,11 +911,17 @@ function event_loadPN(e){
             for (a in temp1 ) {
                 temp1[a] = (temp1[a]); 
             }
-            if(a!=0){
+            /* if(a!=0){                
                 old_PN = temp1[4].substr(3);
-            }
-            
-           
+            } */
+            if(a!=0){
+                for (a in temp1 ) {
+                    var res2 = temp1[a].split(":");
+                    if(res2[0] == "PN"){
+                        old_PN = res2[1];
+                    }
+                }
+            }  
         }
        
 
@@ -899,8 +931,16 @@ function event_loadPN(e){
         for (b in temp2 ) {
             temp2[b] = (temp2[b]);
         }
-        if(b!=0){
+        /* if(b!=0){
             new_PN = temp2[4].substr(3);
+        } */
+        if(b!=0){
+            for (b in temp2 ) {
+                var res2 = temp2[b].split(":");
+                if(res2[0] == "PN"){
+                    new_PN = res2[1];
+                }
+            }
         }
         
     if (e.keyCode == 13){
@@ -1076,8 +1116,16 @@ function CheckFeeder(){
         for (a in temp1 ) {
             temp1[a] = (temp1[a]); 
         }
-        if(a!=0){
+        /* if(a!=0){
             old_PN = temp1[4].substr(3);
+        } */
+        if(a!=0){
+            for (a in temp1 ) {
+                var res2 = temp1[a].split(":");
+                if(res2[0] == "PN"){
+                    old_PN = res2[1];
+                }
+            }
         }
         
        
@@ -1090,8 +1138,16 @@ function CheckFeeder(){
         for (b in temp2 ) {
             temp2[b] = (temp2[b]);
         }
-        if(b!=0){
+        /* if(b!=0){
             new_PN = temp2[4].substr(3);
+        } */
+        if(b!=0){
+            for (b in temp2 ) {
+                var res2 = temp2[b].split(":");
+                if(res2[0] == "PN"){
+                    new_PN = res2[1];
+                }
+            }
         }
 
     $.ajaxSetup({
@@ -1161,7 +1217,7 @@ function CheckFeeder(){
                 confirmButtonText: 'OK'
               }).then((result) => {
                 if (result.value) {
-                    window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan";
+                    window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2";
                 }
               })
         }
@@ -1193,8 +1249,16 @@ function InsertRecord(order_id){
         for (a in temp1 ) {
             temp1[a] = (temp1[a]); 
         }
-        if(a!=0){
+        /* if(a!=0){
             old_PN = temp1[4].substr(3);
+        } */
+        if(a!=0){
+            for (a in temp1 ) {
+                var res2 = temp1[a].split(":");
+                if(res2[0] == "PN"){
+                    old_PN = res2[1];
+                }
+            }
         }
         
        
@@ -1207,8 +1271,16 @@ function InsertRecord(order_id){
     for (b in temp2 ) {
         temp2[b] = (temp2[b]);
     }
-    if(b!=0){
+    /* if(b!=0){
         new_PN = temp2[4].substr(3);
+    } */
+    if(b!=0){
+        for (b in temp2 ) {
+            var res2 = temp2[b].split(":");
+            if(res2[0] == "PN"){
+                new_PN = res2[1];
+            }
+        }
     }
 
     $.ajaxSetup({
@@ -1294,8 +1366,16 @@ function CheckRunning(order_id){
             for (a in temp1 ) {
                 temp1[a] = (temp1[a]); 
             }
-            if(a!=0){
+            /* if(a!=0){
                 old_PN = temp1[4].substr(3);
+            } */
+            if(a!=0){
+                for (a in temp1 ) {
+                    var res2 = temp1[a].split(":");
+                    if(res2[0] == "PN"){
+                        old_PN = res2[1];
+                    }
+                }
             }
             
            
@@ -1308,8 +1388,16 @@ function CheckRunning(order_id){
         for (b in temp2 ) {
             temp2[b] = (temp2[b]);
         }
-        if(b!=0){
+        /* if(b!=0){
             new_PN = temp2[4].substr(3);
+        } */
+        if(b!=0){
+            for (b in temp2 ) {
+                var res2 = temp2[b].split(":");
+                if(res2[0] == "PN"){
+                    new_PN = res2[1];
+                }
+            }
         }
 
     $.ajaxSetup({
@@ -1840,10 +1928,17 @@ function ErrorIns(errorType){
         for (a in temp1 ) {
             temp1[a] = (temp1[a]); 
         }
-        if(a!=0){
+        /* if(a!=0){
             old_PN = temp1[4].substr(3);
+        } */
+        if(a!=0){
+            for (a in temp1 ) {
+                var res2 = temp1[a].split(":");
+                if(res2[0] == "PN"){
+                    old_PN = res2[1];
+                }
+            }
         }
-        
        
     }
    
@@ -1854,8 +1949,16 @@ function ErrorIns(errorType){
     for (b in temp2 ) {
         temp2[b] = (temp2[b]);
     }
-    if(b!=0){
+    /* if(b!=0){
         new_PN = temp2[4].substr(3);
+    } */
+    if(b!=0){
+        for (b in temp2 ) {
+            var res2 = temp2[b].split(":");
+            if(res2[0] == "PN"){
+                new_PN = res2[1];
+            }
+        }
     }
 
     $.ajaxSetup({
@@ -1961,11 +2064,15 @@ function LoadErrorTbl(){
                } */
                var mnt = '';
                var mc = '';
+               var ps = '';
                if(data[i].mounter_id){
                 mnt = data[i].mounter_rel.code;
                }               
                if(data[i].machine_id){
                    mc = data[i].machine_rel.code;
+                }
+                if(data[i].pos_id){
+                    ps = data[i].smt_pos_rel.name;
                 }          
 
                 html +='<tr class="text-center">'+
@@ -1976,7 +2083,7 @@ function LoadErrorTbl(){
                             '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
                             '<td nowrap>' + table + '</td>'+
                             '<td nowrap>' + mnt + '</td>' +
-                            '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
+                            '<td nowrap>' + ps + '</td>' +
                             '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
                             '<td nowrap>' + data[i].ErrorType + '</td>' +
                         '</tr>';
