@@ -66,31 +66,6 @@ $(document).ready(function() {
         } 
 }); */
 
-function empty(data)
-{
-  if(typeof(data) == 'number' || typeof(data) == 'boolean')
-  { 
-    return false; 
-  }
-  if(typeof(data) == 'undefined' || data === null)
-  {
-    return true; 
-  }
-  if(typeof(data.length) != 'undefined')
-  {
-    return data.length == 0;
-  }
-  var count = 0;
-  for(var i in data)
-  {
-    if(data.hasOwnProperty(i))
-    {
-      count ++;
-    }
-  }
-  return count == 0;
-}
-
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
   });
@@ -1454,7 +1429,8 @@ function loaddata_panel_right(){
  
             for(var i = 0; i < data.length; i++){
                var table = "";
-               if(data[i].smt_table_rel.name=='A')
+               table = "TABLE "+ data[i].table_id;
+               /* if(data[i].smt_table_rel.name=='A')
                {
                    table = "TABLE 1";
                }
@@ -1469,10 +1445,10 @@ function loaddata_panel_right(){
                else  if(data[i].smt_table_rel.name=='D')
                {
                    table = "TABLE 4";
-               }
+               } */
 
               var mc = '';
-               if(!empty(data[i].machine_rel.code)){
+               if(data[i].machine_id){
                    mc = data[i].machine_rel.code;
                 }
 
@@ -1584,7 +1560,8 @@ function load_running_machine_tbl(){
                                    
                                     
                                     var table = "";
-                                    if(b==1)
+                                    html+='<td rowspan="3" nowrap class="bold-text" style="color:' + colorsets()[b] + '">TABLE ' + b + '</td>';
+                                    /* if(b==1)
                                     {
                                         table = "TABLE 1";
                                         html+='<td rowspan="3" nowrap class="tbl1 bold-text">' + table + '</td>';
@@ -1603,7 +1580,7 @@ function load_running_machine_tbl(){
                                     {
                                         table = "TABLE 4";
                                         html+='<td rowspan="3" nowrap class="tbl4 bold-text">' + table + '</td>';
-                                    }
+                                    } */
                                 }
                                 else if(c==2){
                                     position = "RIGHT";
@@ -1741,7 +1718,8 @@ function loaddetails(){
             var hold_data="";
             for(var i = 0; i < data['feedlist'].length; i++){
                var table = "";
-               if(data['feedlist'][i].smt_table_rel.name=='A')
+               table = "TABLE "+ data['feedlist'][i].table_id;
+               /* if(data['feedlist'][i].smt_table_rel.name=='A')
                {
                    table = "TABLE 1";
                }
@@ -1756,7 +1734,7 @@ function loaddetails(){
                else  if(data['feedlist'][i].smt_table_rel.name=='D')
                {
                    table = "TABLE 4";
-               }
+               } */
 
                var run_data = data['feedlist'][i].smt_table_rel.id;
                if(hold_data!=run_data){
@@ -1964,7 +1942,8 @@ function LoadErrorTbl(){
  
             for(var i = 0; i < data.length; i++){
                var table = "";
-               if(data[i].smt_table_rel.name=='A')  
+               table = "TABLE "+ data[i].table_id;
+               /* if(data[i].smt_table_rel.name=='A')  
                {
                    table = "TABLE 1";
                }
@@ -1979,19 +1958,24 @@ function LoadErrorTbl(){
                else  if(data[i].smt_table_rel.name=='D')
                {
                    table = "TABLE 4";
-               }
-
-              
-                
+               } */
+               var mnt = '';
+               var mc = '';
+               if(data[i].mounter_id){
+                mnt = data[i].mounter_rel.code;
+               }               
+               if(data[i].machine_id){
+                   mc = data[i].machine_rel.code;
+                }          
 
                 html +='<tr class="text-center">'+
                             '<td nowrap>' + data[i].created_at + '</td>' +
                             '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
                             '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
-                            '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
+                            '<td nowrap>' + mc  + '</td>' +
                             '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
                             '<td nowrap>' + table + '</td>'+
-                            '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
+                            '<td nowrap>' + mnt + '</td>' +
                             '<td nowrap>' + data[i].smt_pos_rel.name + '</td>' +
                             '<td nowrap>' + data[i].employee_rel.lname + ', '+ data[i].employee_rel.fname + '</td>' +
                             '<td nowrap>' + data[i].ErrorType + '</td>' +
