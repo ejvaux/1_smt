@@ -1,3 +1,29 @@
+function colorsets(){
+        
+    $col =[
+        '#99A3A4',
+        '#42a5f5',
+        '#5c6bc0',
+        '#7e57c2',
+        '#ab47bc',
+        '#ec407a',
+        '#ef5350',
+        '#d4e157',
+        '#9ccc65',
+        '#66bb6a',
+        '#26a69a',
+        '#26c6da',
+        '#29b6f6',
+        '#bdbdbd',
+        '#8d6e63',
+        '#ff7043',
+        '#ffa726',
+        '#ffee58',
+        '#ffca28',
+        '#78909C'
+    ];
+    return $col;
+}
 /*     //"Select2": "^3.5.7",
 function get_errorcode()
     {
