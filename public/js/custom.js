@@ -965,7 +965,7 @@ function event_loadPN(e){
                                 title: 'OLD PN and NEW PN does not matched',
                                 text: 'OLD PN and NEW PN must be matched. If you are sure to load different PN, please set the replenish toggle to NO for initial loading.',
                                 type: 'error',
-                                timer: 3000
+                                /* timer: 3000 */
                               })
                               
                             ErrorIns("OLD PN and NEW PN not matched");
@@ -1197,7 +1197,7 @@ function CheckFeeder(){
                     title: 'Check Feeder List or the QR Code to scan',
                     text: 'Component not found in the feeder list. Please check your input data.',
                     type: 'error',
-                    timer: 2000
+                    /* timer: 2000 */
                   })
 
                 ErrorIns("Component not found in feeder list.");
@@ -1438,8 +1438,7 @@ function CheckRunning(order_id){
                 swal.fire({
                     title: 'OLD PN does NOT matched the current running data',
                     text: 'Component partname does not match the previous prima partname. if you are sure to load this partname,toggle the replenishment button to NO for initial loading.',
-                    type: 'error',
-                    timer: 3000
+                    type: 'error'
                   })
 
                 ErrorIns("Component PN does not match the currently running PN");
