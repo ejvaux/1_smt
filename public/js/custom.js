@@ -1446,14 +1446,16 @@ function loaddata_panel_right(){
                    table = "TABLE 4";
                }
 
-              
-                
+              var mc = '';
+               if(data[i].machine_rel.code){
+                   mc = data[i].machine_rel.code;
+                }
 
                 html +='<tr class="text-center">'+
                             '<td nowrap>' + data[i].created_at + '</td>' +
                             '<td nowrap>' + data[i].component_rel.product_number + '</td>' +
                             '<td nowrap>' + data[i].component_rel.authorized_vendor + '</td>' +
-                            '<td nowrap>' + data[i].machine_rel.code  + '</td>' +
+                            '<td nowrap>' + mc  + '</td>' +
                             '<td nowrap>' + data[i].smt_model_rel.code  + '</td>'+
                             '<td nowrap>' + table + '</td>'+
                             '<td nowrap>' + data[i].mounter_rel.code + '</td>' +
