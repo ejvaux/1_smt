@@ -31,4 +31,8 @@ class Pcb extends Model
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Employee','employee_id');
     }
+    public function workorder()
+    {
+        return $this->belongsTo('App\Models\WorkOrder','jo_id','ID');
+    }
 }

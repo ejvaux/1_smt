@@ -7,6 +7,7 @@
                     {{-- <th>@sortablelink('','')</th> --}}
                     <th>S/N</th>
                     <th>WORK ORDER</th>
+                    <th>SALES ORDER</th>
                     <th>DIVISION</th>
                     <th>LINE</th>
                     <th>PROCESS</th>
@@ -25,6 +26,7 @@
                                 {{-- <td>{{ $loop->iteration }}</td> --}}
                                 <td>{{$pcb->serial_number}}</td>
                                 <td>{{$pcb->jo_number}}</td>
+                                <td>{{$pcb->workorder->SALES_ORDER}}</td>
                                 <td>{{$pcb->division->DIVISION_NAME}}</td>
                                 <td>{{$pcb->line->name}}</td>
                                 <td>{{$pcb->divprocess->name}}</td>
