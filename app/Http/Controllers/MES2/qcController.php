@@ -5,6 +5,8 @@ namespace App\Http\Controllers\MES2;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\MES2\model\Qc;
+
 class qcController extends Controller
 {
     /**
@@ -15,7 +17,9 @@ class qcController extends Controller
     public function index()
     {
         //
-        return view('mes2.qc');
+        $Pcbs = Qc::all();
+        return view('mes2.qc',compact('Pcbs'));
+       
     }
 
     /**
