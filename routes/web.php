@@ -20,7 +20,7 @@ use App\Models\Pcb;
 
 Auth::routes();
 
-
+Route::get('/', 'HomeController@index');
 
 Route::group(['middleware' => 'auth'], function () {
     // All my routes that needs a logged in user
