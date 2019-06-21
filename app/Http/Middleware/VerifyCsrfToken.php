@@ -43,6 +43,7 @@ class VerifyCsrfToken extends Middleware
         'defects',
         'defects/*',
         'process/*',
-        'api/scanserial'
+        'api/*',
+        'ajax/*'
     ];
 }

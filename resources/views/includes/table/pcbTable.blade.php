@@ -60,11 +60,11 @@
         </table>
     </div>
 </div>
-@isset($pcbs)
+{{-- @isset($pcbs)
     <div class='row'>
         <div class='col-md'>
             {!! $pcbs->appends(\Request::except('page'))->render() !!}
         </div>
     </div>
-@endisset
+@endisset --}}
     
