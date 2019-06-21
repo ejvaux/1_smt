@@ -14,9 +14,9 @@
 use Illuminate\Http\Request;
 use App\Models\Pcb;
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
 
 Auth::routes();
 
@@ -78,9 +78,9 @@ Route::get('ep/sn', 'ExportsController@exportpcb');
 
 /* QR Generate */
 /* Route::get('qr-code', 'ScanPcbController@qrgen'); */
-Route::get('qr-code', function (Request $request) {
+/* Route::get('qr-code', function (Request $request) {
     return QrCode::size(250)->generate($request->url);
-});
+}); */
 
 /* ---------- API NAMESPACE --------------- */
 Route::namespace('Api')->group(function () {
@@ -91,15 +91,22 @@ Route::namespace('Api')->group(function () {
     Route::post('defectmats_rep/{id}', 'DefectController@repairdef');
 
     Route::prefix('api')->group(function () {
+
+        Route::post('scanserial', 'ApiController@scantype');
+        Route::get('divprocesses/{id}', 'ApiController@divprocesses');
+        Route::get('linenames/{id}', 'ApiController@linenames');
+
         /* Check Employee PIN */        
         Route::get('scanpinemp', 'ApiController@scanpinemp');
 
         /* Check Serial NO */
         Route::get('checksn', 'ApiController@checksn');
 
-        Route::post('scanserial', 'ApiController@scantype');
-        Route::get('divprocesses/{id}', 'ApiController@divprocesses');
-        Route::get('linenames/{id}', 'ApiController@linenames');
+        /* Lot Number */
+        Route::get('getln', 'ApiController@getlotnumber');
+        Route::get('getlntotal', 'ApiController@getlotnumbertotal');
+        Route::post('createln', 'ApiController@createlotnumber');
+        Route::post('closeln', 'ApiController@closelotnumber');
 
         /* Load Tables */
         Route::get('loadWOtable', 'ApiController@loadWOtable');
@@ -155,14 +162,9 @@ Route::post('change_mount', 'MES\api\FeedersController@change_mount');
 Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 
 // Testing
-Route::get('testt', function () {
-    
-    return /* Pcb::where('jo_id',25557)->groupBy('employee_id')->get(); */
-    /* Pcb::select('employee_id', DB::raw('count(*) as total'))
-                 ->groupBy('employee_id')
-                 ->get(); */
-    Pcb::groupBy('employee_id')->pluck('employee_id');
-});
+/* Route::get('testt', function () {    
+    return '<h1>'.\App\Custom\CustomFunctions::genlotnumber(2,18).'</h1>';
+}); */
 
 /* ----- MES END ----- */
 
