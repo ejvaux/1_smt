@@ -54,7 +54,7 @@ function get_errorcode()
         });
     } */
 
-      /* 
+      /*
              var data = get_errorcode();
             for (var i = 0; i < data.length; i++){
                 var obj = data[i];
@@ -1612,7 +1612,7 @@ function load_running_machine_tbl(){
             $('#theads').empty();
             $('#FvsA').empty();
             var html = '';
-            var trhead = '<th scope="col" rowspan="2">LINE</th>'+
+            var trhead ='<th scope="col" rowspan="2">LINE</th>'+
                         '<th scope="col" rowspan="2">MACHINE</th>'+
                         '<th scope="col" rowspan="2">TABLE</th>'+
                         '<th scope="col" rowspan="2">POSITION</th>';
