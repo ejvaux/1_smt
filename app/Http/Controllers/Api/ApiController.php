@@ -9,6 +9,7 @@ use App\Http\Controllers\MES\model\LineName;
 use App\Models\DivProcess;
 use App\Models\WorkOrder;
 use App\Models\Pcb;
+use App\Models\Lot;
 use App\Models\Division;
 use App\Custom\CustomFunctions;
 
@@ -346,7 +347,7 @@ class ApiController extends Controller
             }
             
             $a->jo_number = $request->jo_number;
-            $a->lot_id = 0;
+            $a->lot_id = $request->lot_id;
             $a->division_id = $request->division_id;
             $a->line_id = $request->line_id;
             $a->div_process_id = $request->div_process_id;
@@ -783,7 +784,33 @@ class ApiController extends Controller
                     ->get();
         
         return view('includes.scan.tsttab',compact('emptotals','joid'));
-    }    
+    }
+    public function getlotnumber(Request $request){
+        return Lot::where('jo_id',$request->input('jo'))->where('status',0)->first();        
+    }
+    public function createlotnumber(Request $request){
+        $a = new Lot;
+        $a->number = CustomFunctions::genlotnumber($request->input('div'),$request->input('line'));
+        $a->jo_id = $request->jo;
+        $a->created_by = $request->eid;
+        $a->save();
+        return $a;
+    }
+    public function closelotnumber(Request $request){
+        $e = Lot::where('id',$request->input('ln'))->first();
+        $e->status = 1;
+        $e->closed_by = $request->eid;
+        $e->closed_at = Date('Y-m-d H:i:s');
+        if($e->save()){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+    public function getlotnumbertotal(Request $request){
+        return Pcb::where('lot_id',$request->input('ln'))->count();        
+    }
     /* DEFECTS */
     public function checksn(Request $request)
     {

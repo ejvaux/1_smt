@@ -2,9 +2,9 @@
     <div class="col-md-3">
         <button id='loadpcbtable' class='btn btn-primary'><i class="fas fa-sync-alt"></i> LOAD</button>
     </div>
-    <div class="col-md-5">
+    {{-- <div class="col-md-5">
         <input class='form-control' type="text" name="" id="searchpcbtable" placeholder="Scan Serial Number Here to Search">
-    </div>
+    </div> --}}
     <div class="col-md">
         <span class='text-danger bold-text'>Serial numbers are based on the Configuration and selected Work Order.</span>
     </div>
