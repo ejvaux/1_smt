@@ -31,7 +31,7 @@
                                             @csrf
                                             @method('GET')
                                             
-                                            <input type="Text" class="form-control mb-2" name="myInputComponent" placeholder="Search Component Here" autocomplete="off">
+                                            <input type="Text" class="form-control mb-2" name="myInputComponent" placeholder="Search Component Here" autocomplete="off" value="">
                                             
                                             {{-- <button type="submit">Get User</button><br> --}}
                                         </form>

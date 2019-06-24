@@ -17,6 +17,7 @@ use App\machine;
 use App\lineSMT;
 use App\Http\Controllers\MES\model\LineName;
 use App\RunningOnMachine;
+use Nexmo\Message\Shortcode\Alert;
 
 class trackingComponentController extends Controller
 {
@@ -27,12 +28,26 @@ class trackingComponentController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        //Getting the search textbox value
         $get = $request->input('myInputComponent');
-        $getID = component::where('product_number',$get)->first();
-        $Feeders = RunningOnMachine::where('component_id',$getID->id)->get();
+        //Initialize getID variable
+        $getID='';
+        //Cheking for null object
+        if($get==null){
+            $Feeders = RunningOnMachine::where('component_id','')->get();
+        }
+        else
+        //Checking after null is detected
+            $getID = component::where('product_number',$get)->first();{
+            if($getID !=''){
+                $Feeders = RunningOnMachine::where('component_id',$getID->id)->get();
+            }
+            else{
+                $Feeders = [];
+            }
+        }
         return view('mes2.trackingcomponent',compact('Feeders'));
-
+        
     }
 
     /**
