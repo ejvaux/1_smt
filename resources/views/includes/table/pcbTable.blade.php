@@ -6,8 +6,8 @@
                     <th>#</th>
                     {{-- <th>@sortablelink('','')</th> --}}
                     <th>S/N</th>
+                    <th>JOB ORDER</th>
                     <th>WORK ORDER</th>
-                    <th>SALES ORDER</th>
                     <th>DIVISION</th>
                     <th>LINE</th>
                     <th>PROCESS</th>
