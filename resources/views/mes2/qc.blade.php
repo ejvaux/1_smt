@@ -25,7 +25,6 @@
                                                     {{--   <h1>Hello World! -- Laravel TEST</h1> --}}
                                                 {{--Start TABLE --}}
                                                 <div class="container border-fluid p-0 mb-2">
-
                                                 </div>
                                                 <div class="container-fluid border " style="overflow-x:auto;">
                                                 <div class="col p-0 border-fluid ">
@@ -35,7 +34,7 @@
                                                                 
                                                                 </div>
                                                                 <div class="col-md-12">
-                                                                    <input type="text" class="form-control" id="myInput" onkeyup="myFunctionTableDtr()" placeholder="Search Serial Number Here . . . " title="Type in a name">
+                                                                    <input type="text" class="form-control" id="myInput" onkeyup="" placeholder="Search Serial Number Here . . . " title="Type in a name">
                                                                 </div>
                                                         </div>
                                                     <table  id = "myTable" class="table table-hover table-reflow  table-bordered mt-2" style="overflow-x:auto;">
@@ -43,23 +42,24 @@
                                                             <tr>
                                                                 <th >ACTION</th>
                                                                 <th >LOT</th>
-                                                                <th >DIVISION ID</th>
-                                                                <th >LINE_ID</th>
-                                                                <th >SERIAL NUMBER</th>
                                                                 <th >JO NUMBER</th>
+                                                                <th >STATUS</th>
+                                                                <th >CREATED_BY</th>
+                                                                <th >CLOSED_BY</th>
+                                                                <th >CLOSED_AT</th>
+                                                                <th >CHECKED_BY</th>
+                                                                <th >CHECKED_AT</th>
                                                                 
-                                                                <th >CREATED_AT</th>
-                                                                <th >UPDATED_AT</th>
                                         
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            @if(count($Pcbs) > 0)
-                                                            @foreach($Pcbs as $Pcb)
+                                                            @if(count($Qcs) > 0)
+                                                            @foreach($Qcs as $Qc)
                                                             <tr>   
                                                                 <!-- Button FOR ACTIONS -->
                                                                 <td>
-                                                                        <form method="post" id="DeleteProcessForm_{{$Pcb->lot_id}}"  action='{{url('qc/'.$Pcb->lot_id)}}'>
+                                                                        <form method="post" id="DeleteProcessForm_{{$Qc->lot_id}}"  action='{{url('qc/'.$Qc->lot_id)}}'>
                                                                             @csrf
                                                                             @method('DELETE')
                                         
@@ -70,14 +70,14 @@
                                                                             </div>
                                                                             <div class="col-md-3 mr-auto">
                                                                                 {{-- <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#addProcessModal"><i class="far fa-plus-square"></i> New Data</button> --}}
-                                                                                <button type='button'  data-lot='{{$Pcb->lot_id}}'
-                                                                                    data-serial='{{$Pcb->serial_number}}'
-                                                                                    data-jonum='{{$Pcb->jo_number}}'
+                                                                                <button type='button'  data-lot='{{$Qc->lot_id}}'
+                                                                                    data-serial='{{$Qc->serial_number}}'
+                                                                                    data-jonum='{{$Qc->jo_number}}'
                                                                                 
                                                                                     class="btn btn-outline-success editProcess"><i class="far fa-check-circle"></i> Good</button>
                                                                             </div>
                                                                             <div class="col-md-3">
-                                                                                <button type='button' class="btn btn-outline-danger del_process_btn" data-id='{{$Pcb->lot_id}}'><i class="far fa-times-circle"></i> No Good</button>
+                                                                                <button type='button' class="btn btn-outline-danger del_process_btn" data-id='{{$Qc->lot_id}}'><i class="far fa-times-circle"></i> No Good</button>
                                                                             </div>
                                         
                                                                             <div class="col-md-3">
@@ -89,14 +89,14 @@
                                                                         {{--    </div> --}}
                                                                         </form>
                                                                     </td>
-                                                                <td><strong>{{$Pcb->lot_id}}</strong></td>
-                                                                <td><strong>{{$Pcb->division_id}}</strong></td>
-                                                                <td><strong>{{$Pcb->line_id}}</strong></td>
-                                                                <td><strong>{{$Pcb->serial_number}}</strong></td>
-                                                                <td><strong>{{$Pcb->jo_number}}</strong></td>
-                                                                
-                                                                <td><strong>{{$Pcb->created_at}}</strong></td>
-                                                                <td><strong>{{$Pcb->updated_at}}</strong></td>                           
+                                                                <td><strong>{{$Qc->number}}</strong></td>
+                                                                <td><strong>{{$Qc->jo_id}}</strong></td>
+                                                                <td><strong>{{$Qc->status}}</strong></td>
+                                                                <td><strong>{{$Qc->created_by}}</strong></td>
+                                                                <td><strong>{{$Qc->closed_by}}</strong></td>
+                                                                <td><strong>{{$Qc->closed_at}}</strong></td>
+                                                                <td><strong>{{$Qc->checked_by}}</strong></td>
+                                                                <td><strong>{{$Qc->date}}</strong></td>                           
                                                             </tr>
                                                             @endforeach
                                                             </tbody>

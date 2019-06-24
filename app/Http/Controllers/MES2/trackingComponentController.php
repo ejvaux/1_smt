@@ -5,21 +5,34 @@ namespace App\Http\Controllers\MES2;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\MES2\model\Qc;
+use App\ProdLine;
+use App\component;
+use App\ProcessList;
+use App\errorcodelist;
+use App\modelSMT;
+use App\LRPosition;
+use App\mounter;
+use App\employee;
+use App\machine;
+use App\lineSMT;
+use App\Http\Controllers\MES\model\LineName;
+use App\RunningOnMachine;
 
-class qcController extends Controller
+class trackingComponentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $Qcs = Qc::all();
-        return view('mes2.qc',compact('Qcs'));
-       
+        $get = $request->input('myInputComponent');
+        //$componentID = component::where('product_number',$get)->get();
+        $Feeders = RunningOnMachine::where('component_id',$get)->get();
+        return view('mes2.trackingcomponent',compact('Feeders'));
+
     }
 
     /**

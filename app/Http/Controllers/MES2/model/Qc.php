@@ -8,7 +8,7 @@ class Qc extends Model
 {
     //
     protected $connection= 'mysql';
-    protected $table = 'pcb';
+    protected $table = 'lot';
     public $primaryKey ='id';
     //use Sortable;
     //public $sortable = ['code','name'];

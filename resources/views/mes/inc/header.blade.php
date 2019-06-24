@@ -15,7 +15,11 @@
 <script src="{{ asset('js/mes/ln.js') }}" defer></script>
 <script src="{{ asset('js/mes/modl.js') }}" defer></script>
 
-{{-- Process Modals --}}
+
+
+{{-- Process --}}
 <script src="{{ asset('js/mes2/process.js') }}" defer></script>
-{{-- Defect Type Modals --}}
+{{-- Defect Type --}}
 <script src="{{ asset('js/mes2/defect.js') }}" defer></script>
+{{-- QC --}}
+<script src="{{ asset('js/mes2/qc.js') }}" defer></script>
