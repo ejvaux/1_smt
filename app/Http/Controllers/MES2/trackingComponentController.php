@@ -29,8 +29,8 @@ class trackingComponentController extends Controller
     {
         //
         $get = $request->input('myInputComponent');
-        //$componentID = component::where('product_number',$get)->get();
-        $Feeders = RunningOnMachine::where('component_id',$get)->get();
+        $getID = component::where('product_number',$get)->first();
+        $Feeders = RunningOnMachine::where('component_id',$getID->id)->get();
         return view('mes2.trackingcomponent',compact('Feeders'));
 
     }
