@@ -18,7 +18,7 @@ class ApiController extends Controller
     public function scanpinemp(Request $request)
     {
         if($request->input('check') == 1){
-            if($name = Employee::where('pin',$request->input('pin'))->first())
+            if($name = Employee::select('id','fname','lname')->where('pin',$request->input('pin'))->first())
             {
                 return $name;
             }
@@ -27,7 +27,7 @@ class ApiController extends Controller
             }
         }
         elseif($request->input('check') == 2){
-            if($name = Employee::where('pin',$request->input('pin'))->where('repair',1)->first())
+            if($name = Employee::select('id','fname','lname')->where('pin',$request->input('pin'))->where('repair',1)->first())
             {
                 return $name;
             }
@@ -52,10 +52,10 @@ class ApiController extends Controller
     public function loadpcbtable(Request $request)
     {
         if($request->input('sn')){
-            $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->take(100)->get();
+            $pcbs = Pcb::with('division','line','divprocess','employee','workorder')->where('serial_number',$request->input('sn'))->orderBy('id','DESC')->take(100)->get();
         }
         else{
-            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->take(100)->get();
+            $pcbs = Pcb::with('division','line','divprocess','employee','workorder')->where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->take(100)->get();
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }
