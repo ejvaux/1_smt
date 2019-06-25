@@ -22,7 +22,7 @@
                                 <input class="form-control" type="text" name="scan_serial" id="scan_serial" placeholder="Scan Serial Number here..." style='border-width:medium' autocomplete='off' disabled>
                             </div>
                         </div>
-                        <div id='lot_panel' style='display:none'>@include('includes.scan.lntab')</div>                        
+                        {{-- <div id='lot_panel' style='display:none'>@include('includes.scan.lntab')</div> --}}                        
                     </div>
                 </div>                
             </div>

@@ -310,12 +310,12 @@ function checkscan(){
         chk = 1;
         msg += '[Work Order] '
     }
-    if($('#scanform-type').val()==1){
+    /* if($('#scanform-type').val()==1){
         if(lotset == 0){
             chk = 1;
             msg += '[Lot Number] '
         }        
-    }
+    } */
     
     if(!chk){
         enablescan();

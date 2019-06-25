@@ -52,10 +52,10 @@ class ApiController extends Controller
     public function loadpcbtable(Request $request)
     {
         if($request->input('sn')){
-            $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->paginate(100);
+            $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->take(100)->get();
         }
         else{
-            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->paginate(100);
+            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->take(100)->get();
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }
@@ -88,12 +88,12 @@ class ApiController extends Controller
     { 
         function checkdupIn($request)
         {
-            $out = Pcb::where('serial_number',$request->serial_number)
+            $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
             ->where('div_process_id',$request->div_process_id)
             ->where('type',1)
             ->first();
 
-            $in = Pcb::where('serial_number',$request->serial_number)
+            $in = Pcb::select('id')->where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0)
@@ -120,7 +120,7 @@ class ApiController extends Controller
         function checkjoquantity2($request)
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
-            $o = Pcb::where('jo_id',$request->jo_id)->where('type',1)->count();
+            $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
             
             $t = $q - $o;
             if($t>0){
@@ -133,7 +133,7 @@ class ApiController extends Controller
                 ];
             }
         }
-        function  insertsn( $request,$jo_id='')
+        function insertsn( $request,$jo_id='')
         {
             $a = new Pcb;
             $a->serial_number = $request->serial_number;
@@ -203,7 +203,7 @@ class ApiController extends Controller
             ];
         }
         if($request->division_id == 2 && $request->div_process_id == 2 ){
-            $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);
+            $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);            
             if($sn->first()){
                 return checkdupIn($request);
             }
@@ -218,7 +218,6 @@ class ApiController extends Controller
             return checkdupIn($request);
         }
     }
-
     public function scanIn($request)
     {
         /* CHECKING FOR BOTTOM */
@@ -283,19 +282,19 @@ class ApiController extends Controller
     public function scanOut2($request)
     {
         /* CHECK FOR OUTPUT */
-        $out = Pcb::where('serial_number',$request->serial_number)
+        $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
                 ->first();
         /* CHECK FOR INPUT */
-        $sn = Pcb::where('serial_number',$request->serial_number)
+        $sn = Pcb::select('defect')->where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);        
         
         function checkdupOut($request)
         {
-            $out = Pcb::where('serial_number',$request->serial_number)
+            $out = Pcb::select('id')->where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
@@ -318,7 +317,7 @@ class ApiController extends Controller
         function checkjoquantity2($request)
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
-            $o = Pcb::where('jo_id',$request->jo_id)->where('type',1)->count();
+            $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
             
             $t = $q - $o;
             if($t>0){
@@ -347,7 +346,8 @@ class ApiController extends Controller
             }
             
             $a->jo_number = $request->jo_number;
-            $a->lot_id = $request->lot_id;
+            /* $a->lot_id = $request->lot_id; */
+            $a->lot_id = 0;
             $a->division_id = $request->division_id;
             $a->line_id = $request->line_id;
             $a->div_process_id = $request->div_process_id;
@@ -418,7 +418,7 @@ class ApiController extends Controller
                 }       
             }
             else{
-                $in = Pcb::where('serial_number',$request->serial_number)
+                $in = Pcb::select('jo_number')->where('serial_number',$request->serial_number)
                         ->where('div_process_id',$request->div_process_id)
                         ->where('type',0)->get();
                 if($in->count() == 0){
@@ -454,7 +454,6 @@ class ApiController extends Controller
             ];
         }
     }
-
     public function scanOut($request)
     {
         /* CHECK FOR OUTPUT */
