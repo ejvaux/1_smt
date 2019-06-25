@@ -40,6 +40,7 @@ $.ajaxSetup({
 var configlock = 0;
 var WOset = 0;
 var empset = 0;
+var lotset = 0;
 /* ---------- FUNCTIONS ---------- */
 function scanddload(uri,id,dd,val,dis){
     $.get("api/"+uri+"/"+ id, 
@@ -219,7 +220,7 @@ function resetemp()
     checkscan();
 }
 function setWO(wo){
-    enablescan();
+    /* checkscan(); */
     $('#info_btnWO').removeClass('d-none');
     $('#jo_id').val(wo.ID).addClass('pcbconfig');
     $('#wo-number').val(wo.JOB_ORDER_NO).addClass('pcbconfig');
@@ -236,12 +237,6 @@ function setWO(wo){
 
     WOset = 1;
 
-    /* check scan status */
-    /* checkscan(); */
-
-    /* load total */
-    /* getscantotal(wo.ID); */
-
     /* Change tab */
     $('#serntab').tab('show');
 
@@ -251,21 +246,13 @@ function setWO(wo){
     /* Load PCB */
     loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
 
-    /* Clear WorkOrder */
-    /* $.get("api/loadWOtable",
-            { 
-                div:  '0',
-                dte: ''
-            }, 
-            function(data) {
-                $('#spTablediv').html(data);
-                $('#setWO').addClass('d-none');    
-            }); */
-    /* iziToast.success({
-        message: 'Work Order Set!',
-        position: 'topCenter'
-    }); */
+    /* Get Load Number */
+    /* getlotnumber($('#scanform-jo_id').val()); */
 
+    /* Show Lot Number Panel */
+    if($('#scanform-type').val()==1){
+        $('#lot_panel').show();        
+    }    
 }
 function unsetWO(){
     disablescan();
@@ -282,14 +269,23 @@ function unsetWO(){
     /* form input reset */
     $('#scanform-jo_id').val('');
     $('#scanform-jo_number').val('');
+    $('#scanform-lot_id').val('');
+    $('#lot_num').val('Check First.');
+    $('#lot_total').val('');
+    $('#close_lot_num').attr('disabled',false);
+    $('#create_lot_num').attr('disabled',true);
 
     WOset = 0;
+    lotset = 0;
 
     /* check scan status */
     checkscan();
 
     /* load scan total emp table */
     loadscantotalemp(0);
+
+    /* Hide Lot Number Panel */    
+    $('#lot_panel').hide();  
 }
 function disablescan(msg){
     $('#scanstatuslabel').html('Set: ' + msg).removeClass('text-success').addClass('text-danger');
@@ -314,6 +310,12 @@ function checkscan(){
         chk = 1;
         msg += '[Work Order] '
     }
+    /* if($('#scanform-type').val()==1){
+        if(lotset == 0){
+            chk = 1;
+            msg += '[Lot Number] '
+        }        
+    } */
     
     if(!chk){
         enablescan();
@@ -372,6 +374,7 @@ function loadpcbtable(txt = '',type,proc,url = "api/loadpcbtable"){
                 $('#pcbtable_div').html(data);
             }
         });
+
         /* $.get(url,
         { 
             jo_id:  $jo_id,
@@ -453,6 +456,114 @@ function loadscantotalemp(wo){
         function(data) {
             $('#emptotaltablediv').html(data)            
     }); */
+}
+function getlotnumber(wo){
+    $.ajax({
+        url: 'api/getln',
+        type:'get',
+        data: {
+            'jo':  wo,
+        },
+        global: false,
+        success: function (data) {           
+            if(data){
+                $('#lot_num').val(data.number);
+                $('#scanform-lot_id').val(data.id);
+                $('#close_lot_num').attr('disabled',false);
+                $('#create_lot_num').attr('disabled',true);
+                getlotnumbertotal(data.id);
+                /* $('#check_lot_num').attr('disabled',true); */
+                lotset = 1;
+            }
+            else{
+                $('#lot_num').val('No Lot Number Found.');
+                $('#lot_total').val('');
+                $('#scanform-lot_id').val('');
+                $('#close_lot_num').attr('disabled',true);
+                $('#create_lot_num').attr('disabled',false);
+                /* $('#check_lot_num').attr('disabled',true); */
+                lotset = 0;
+            }
+            checkscan();
+        }
+    });    
+}
+function createlotnumber(div,line,jo,eid){
+    $.ajax({
+        url: 'api/createln',
+        type:'post',
+        data: {
+            'div':  div,
+            'line': line,
+            'jo':  jo,
+            'eid': eid
+        },
+        global: false,
+        success: function (data) {
+            if(data){
+                $('#scanform-lot_id').val(data.id);
+                $('#lot_num').val(data.number);
+                $('#create_lot_num').attr('disabled',true);
+                $('#close_lot_num').attr('disabled',false);
+                lotset = 1;
+                iziToast.success({
+                    message: 'Lot Number Created Successfully!',
+                    position: 'topCenter'
+                });
+            }
+            else{
+                $('#create_lot_num').attr('disabled',false);
+            }
+            checkscan();
+        }
+    });
+}
+function closelotnumber(ln,eid){
+    $.ajax({
+        url: 'api/closeln',
+        type:'post',
+        data: {
+            'ln':  ln,
+            'eid': eid
+        },
+        global: false,
+        success: function (data) {
+            if(data == 1){
+                lotset = 0;
+                $('#lot_num').val('No Lot Number Found.');
+                $('#scanform-lot_id').val('');
+                $('#lot_total').val('');
+                $('#close_lot_num').attr('disabled',true);
+                $('#create_lot_num').attr('disabled',false);
+                iziToast.success({
+                    message: 'Lot Number Closed Successfully!',
+                    position: 'topCenter'
+                });
+            }
+            else{
+                iziToast.error({
+                    message: 'Lot Number Closing Failed!',
+                    position: 'topCenter'
+                });
+            }
+            checkscan();        
+        }
+    });
+}
+function getlotnumbertotal(lid){
+    $.ajax({
+        url: 'api/getlntotal',
+        type:'get',
+        data: {
+            'ln':  lid
+        },
+        global: false,
+        success: function (data) {
+            if(data){
+                $('#lot_total').val(data);                
+            }
+        }
+    });
 }
 
 /* --------------- E-V-E-N-T-S -------------- */
@@ -725,11 +836,16 @@ $('#searchpcbtable').on('keypress', function(e){
 $('#pcb_input').on('change', function(e){
     if($(this).prop('checked') == 1){
         inputt = 0;
+        $('#lot_panel').hide();
     }
     else{
         inputt = 1;
+        if(WOset == 1){
+            $('#lot_panel').show();
+        }
     }    
     $('#scanform-type').val(inputt);
+    checkscan();
 });
 $('#close_lot_num').on('click', function(e){
     swal.fire({
@@ -753,4 +869,49 @@ $('#pcbtable_div').on('click','.pagination a.page-link', function(e){
     e.preventDefault();
     e.stopImmediatePropagation();
     loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val(),$(this).attr('href'));
+});
+$('#check_lot_num').on('click', function(){
+    getlotnumber($('#scanform-jo_id').val());
+});
+$('#create_lot_num').on('click', function(){
+    swal.fire({
+        title: 'Are you sure?',
+        text: "You want to create a Lot?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, create it!'
+    }).then((result) => {
+        if (result.value) {
+            $(this).attr('disabled',true);
+            createlotnumber(
+                $('#scanform-division_id').val(),
+                $('#scanform-line_id').val(),
+                $('#scanform-jo_id').val(),
+                $('#scanform-employee_id').val()
+            );
+        }
+    })
+});
+$('#close_lot_num').on('click', function(){
+    swal.fire({
+        title: 'Are you sure?',
+        text: "You want to close the Lot?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, close it!'
+    }).then((result) => {
+        if (result.value) {
+            closelotnumber(
+                $('#scanform-lot_id').val(),
+                $('#scanform-employee_id').val()
+                );
+        }
+    })    
+});
+$('#get_lot_total').on('click', function(){
+    getlotnumbertotal($('#scanform-lot_id').val());
 });

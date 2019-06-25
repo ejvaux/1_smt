@@ -29,7 +29,7 @@
                                 <select class="select2" id="scan_model">
                                     <option value="" selected>SELECT MODEL</option>
                                     @foreach ($models as $models_item)
-                                    <option value="{{$models_item->id}}">{{$models_item->program_name}} || {{$models_item->code}}</option>
+                                    <option value="{{$models_item->id}}">{{$models_item->program_name}} - {{$models_item->code}}</option>
                                     @endforeach     
                                 </select>
                             </div>

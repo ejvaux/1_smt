@@ -22,7 +22,7 @@
                                 <input class="form-control" type="text" name="scan_serial" id="scan_serial" placeholder="Scan Serial Number here..." style='border-width:medium' autocomplete='off' disabled>
                             </div>
                         </div>
-                        
+                        {{-- <div id='lot_panel' style='display:none'>@include('includes.scan.lntab')</div> --}}                        
                     </div>
                 </div>                
             </div>
@@ -32,13 +32,13 @@
                 <ul class="nav nav-tabs" role="tablist">                    
                     <li class="nav-item">
                         <a class="nav-link bold-text active" href="#woinfo" role="tab" data-toggle="tab">W.O.</a>
-                    </li>                    
-                    <li class="nav-item">
-                        <a class="nav-link bold-text" href="#stotal" role="tab" data-toggle="tab">TOTAL</a>
                     </li>
                     {{-- <li class="nav-item">
                         <a class="nav-link bold-text" href="#lotnum" role="tab" data-toggle="tab">LOT</a>
                     </li> --}}
+                    <li class="nav-item">
+                        <a class="nav-link bold-text" href="#stotal" role="tab" data-toggle="tab">TOTAL</a>
+                    </li>
                 </ul>                
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -50,7 +50,7 @@
                     </div> 
                     {{-- <div class="tab-pane container" id="lotnum">
                         @include('includes.scan.lntab')
-                    </div> --}}                                      
+                    </div>  --}}                                     
                 </div>
             </div>
         </div>

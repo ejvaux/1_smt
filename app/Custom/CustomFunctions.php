@@ -2,12 +2,16 @@
 
 namespace App\Custom;
 
+use App\Models\Division;
+use App\Models\Lot;
+use App\Http\Controllers\MES\model\LineName;
+
 class CustomFunctions
 {   
-    public static function datetimelapse($dt){
-        $datetime1 = strtotime($dt);
-        $datetime2 = strtotime(date('Y-m-d H:i:s'));
-        $secs = $datetime2 - $datetime1;
+    public static function datelapse($dt){
+        $date1 = strtotime($dt);
+        $date2 = strtotime(date('Y-m-d H:i:s'));
+        $secs = $date2 - $date1;
         if($secs < 60){
             return $secs . " secs ago";
         }
@@ -39,10 +43,10 @@ class CustomFunctions
             } 
         }
     }
-    public static function datetimefinished($dt1,$dt2){
-        $datetime1 = strtotime($dt1);
-        $datetime2 = strtotime($dt2);
-        $secs = $datetime2 - $datetime1;              
+    public static function datefinished($dt1,$dt2){
+        $date1 = strtotime($dt1);
+        $date2 = strtotime($dt2);
+        $secs = $date2 - $date1;              
         $days = floor($secs / (3600*24));
         $secs  -= $days*3600*24;
         $hrs   = floor($secs / 3600);
@@ -101,5 +105,84 @@ class CustomFunctions
             '#78909C'
         ];
         return $col;
+    }
+    public static function genlotnumber($div_id,$line_id){
+        $ln = '';
+        $d = 0;
+
+        // Division
+        $div = Division::where('DIVISION_ID',$div_id)->first();
+        $dv = sprintf("%02d", $div->SAP_DIVISION_CODE);
+        $ln .= $dv;
+
+        // Line
+        if($div_id == 2){
+            $line = LineName::where('id',$line_id)->first();
+            $l = substr($line->name,4);
+            $l = sprintf("%02d", $l);
+            $ln .= $l;
+        }
+        elseif($div_id == 17 || $div_id == 19){
+            $line = LineName::where('id',$line_id)->first();
+            $l = substr($line->name,1);
+            $l = sprintf("%02d", $l);
+            $ln .= $l;
+        }
+        else{
+            $ln .= 'XX';
+        }
+
+        // Year
+        $cur_year = Date('y');
+        $ln .= $cur_year;
+
+        // Month
+        $cur_month = CustomFunctions::convertmonth(Date('m'));
+        $ln .= $cur_month;
+
+        // Date
+        if(Date('H:i') >= '06:00'){
+            $d = 1;
+            $cur_date = Date('d');
+        }
+        else{
+            $cur_date = Date('d', strtotime('-1 day', strtotime(Date('Y-m-d'))));
+        }        
+        $ln .= $cur_date;
+
+        // Shift
+        $cur_shift = CustomFunctions::genshift();
+        $ln .= $cur_shift;
+
+        // Number          
+        $last_num = Lot::where('created_at','like',Date('Y-m-d').'%')->orderBy('id','DESC')->first();
+        if($last_num){
+            $last = substr($last_num->number,-2)+1;
+            $ln .= sprintf("%02d",$last);
+        }
+        else{
+            $ln .= '01';
+        }
+
+        return $ln;
+    }
+    public static function convertmonth($mnth){
+        $months  = [
+            '10' => 'A',
+            '11' => 'B',
+            '12' => 'C'
+        ];
+        $m = '';
+        foreach ($months as $key => $value) {
+            if($mnth == $key){
+                $m = $value;
+            }
+        }
+        if($m != ''){
+            return $m;
+        }
+        else{
+            return substr($mnth,-1);
+        }
     }
 }

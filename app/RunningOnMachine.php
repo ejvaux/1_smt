@@ -3,14 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 class RunningOnMachine extends Model
 {
-    //
+    
     protected $table = 'running_mach';
     public $primarykey = 'id';
     public $timestamps = true;
-
+    
     public function machine_rel()
     {
         return $this->belongsTo('App\machine','machine_id');
@@ -47,4 +46,5 @@ class RunningOnMachine extends Model
     {
         return $this->belongsTo('App\employee','employee_id');
     }
+   
 }

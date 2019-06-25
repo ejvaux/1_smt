@@ -5,21 +5,49 @@ namespace App\Http\Controllers\MES2;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\MES2\model\Qc;
+use App\ProdLine;
+use App\component;
+use App\ProcessList;
+use App\errorcodelist;
+use App\modelSMT;
+use App\LRPosition;
+use App\mounter;
+use App\employee;
+use App\machine;
+use App\lineSMT;
+use App\Http\Controllers\MES\model\LineName;
+use App\RunningOnMachine;
+use Nexmo\Message\Shortcode\Alert;
 
-class qcController extends Controller
+class trackingComponentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $Qcs = Qc::all();
-        return view('mes2.qc',compact('Qcs'));
-       
+        //Getting the search textbox value
+        $get = $request->input('myInputComponent');
+        //Initialize getID variable
+        $getID='';
+        //Cheking for null object
+        if($get==null){
+            $Feeders = RunningOnMachine::where('component_id','')->get();
+        }
+        else
+        //Checking after null is detected
+            $getID = component::where('product_number',$get)->first();{
+            if($getID !=''){
+                $Feeders = RunningOnMachine::where('component_id',$getID->id)->get();
+            }
+            else{
+                $Feeders = [];
+            }
+        }
+        return view('mes2.trackingcomponent',compact('Feeders'));
+        
     }
 
     /**
