@@ -57,7 +57,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">                                   
                             <a class="nav-link" href="{{url('sp')}}"><i class="fas fa-exchange-alt"></i> In/Out</a>
-                            <a class="nav-link" href="{{url('tracking')}}"><i class="fas fa-search"></i> Tracking</a>                            
+                            <a class="nav-link" href="{{url('tracking')}}"><i class="fas fa-search"></i> Tracking</a>                                                      
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -69,6 +69,7 @@
                             <a class="nav-link" href="{{url('mscan2')}}"><i class="fas fa-archive"></i> Scan Materials</a>
                             <a class="nav-link" href="{{url('ds')}}"><i class="fas fa-times-circle"></i> Defect Materials</a>
                             <a class="nav-link" href="{{url('errorlog')}}"><i class="fas fa-exclamation-circle"></i> Error Logs</a>
+                            <a class="nav-link" href="{{url('tc')}}"><i class="fas fa-search"></i> Component Tracking</a>
                         </div>
                     </li>
                     

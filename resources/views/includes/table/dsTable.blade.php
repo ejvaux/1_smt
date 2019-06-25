@@ -41,9 +41,9 @@
                             {{-- Col --}}
                                 <th>
                                     @if ($defect_mat->repair)
-                                        <span class='text-success'>{{CustomFunctions::datetimefinished($defect_mat->created_at,$defect_mat->repaired_at)}}</span>
+                                        <span class='text-success'>{{CustomFunctions::datefinished($defect_mat->created_at,$defect_mat->repaired_at)}}</span>
                                     @else
-                                        <span class='text-danger'>{{CustomFunctions::datetimelapse($defect_mat->created_at)}}</span>
+                                        <span class='text-danger'>{{CustomFunctions::datelapse($defect_mat->created_at)}}</span>
                                     @endif    
                                 </th>
                             {{-- Col --}}
