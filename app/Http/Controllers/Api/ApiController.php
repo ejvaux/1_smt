@@ -64,22 +64,30 @@ class ApiController extends Controller
 
     public function scantype(Request $request)
     {
-        if($request->type == 0){
-            return $this->scanIn2($request);
-        }
-        else if($request->type == 1){
-            return $this->scanOut2($request);
+        if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
+            if($request->type == 0){
+                return $this->scanIn2($request);
+            }
+            else if($request->type == 1){
+                return $this->scanOut2($request);
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Scan Failed. Scan type not allowed.'
+                ];
+            }
+            return [
+                'type' => 'error',
+                'message' => 'API ERROR: scantype'
+            ];   
         }
         else{
             return [
                 'type' => 'error',
-                'message' => 'Scan Failed. Scan type not allowed.'
+                'message' => 'Invalid Serial Number. Try Again.'
             ];
-        }
-        return [
-            'type' => 'error',
-            'message' => 'API ERROR: scantype'
-        ];
+        }                       
     }
 
     /* --------------- INPUT SCANNING ------------------- */
@@ -135,72 +143,80 @@ class ApiController extends Controller
         }
         function insertsn( $request,$jo_id='')
         {
-            $a = new Pcb;
-            $a->serial_number = $request->serial_number;
-            if($jo_id == ''){
-                $a->jo_id = $request->jo_id;
-            }
-            else{
-                $a->jo_id = $jo_id;
-            }
-            
-            $a->jo_number = $request->jo_number;
-            $a->lot_id = 0;
-            $a->division_id = $request->division_id;
-            $a->line_id = $request->line_id;
-            $a->div_process_id = $request->div_process_id;
-            $a->type = $request->type;
-            $a->employee_id = $request->employee_id;
-            $a->shift = CustomFunctions::genshift();
-            $a->defect = 0;
-            $a->heat = 0;
-    
-            /* For Exporting */        
-            if($request->division_id == 2 || $request->division_id == 17){
-                $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
-                
-                if($request->type == 0){
-                    $pname .= '.INPUT-';
-                }
-                else{
-                    $pname .= '.V/I-';
-                }
-                if($request->div_process_id == 1){
-                    $pname .= 'B';
-                }
-                elseif($request->div_process_id == 2){
-                    $pname .= 'T';
-                }
-            }
-            $a->RESULT = 'OK';
-            $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
-            $a->PROCESS_NAME = $pname;
-    
-            if($a->save()){
+            if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
+                $a = new Pcb;
+                $a->serial_number = $request->serial_number;
                 if($jo_id == ''){
-                    return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful!'
-                    ];
+                    $a->jo_id = $request->jo_id;
+                }
+                else{
+                    $a->jo_id = $jo_id;
+                }
+                
+                $a->jo_number = $request->jo_number;
+                $a->lot_id = 0;
+                $a->division_id = $request->division_id;
+                $a->line_id = $request->line_id;
+                $a->div_process_id = $request->div_process_id;
+                $a->type = $request->type;
+                $a->employee_id = $request->employee_id;
+                $a->shift = CustomFunctions::genshift();
+                $a->defect = 0;
+                $a->heat = 0;
+        
+                /* For Exporting */        
+                if($request->division_id == 2 || $request->division_id == 17){
+                    $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
+                    
+                    if($request->type == 0){
+                        $pname .= '.INPUT-';
+                    }
+                    else{
+                        $pname .= '.V/I-';
+                    }
+                    if($request->div_process_id == 1){
+                        $pname .= 'B';
+                    }
+                    elseif($request->div_process_id == 2){
+                        $pname .= 'T';
+                    }
+                }
+                $a->RESULT = 'OK';
+                $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
+                $a->PROCESS_NAME = $pname;
+        
+                if($a->save()){
+                    if($jo_id == ''){
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful!'
+                        ];
+                    }
+                    else{
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful! Scanned PCB is in different Job Order.'
+                        ];
+                    }
+                    
                 }
                 else{
                     return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful! Scanned PCB is in different Work Order.'
+                        'type' => 'error',
+                        'message' => 'Scan Failed!'
                     ];
                 }
-                
+                return [
+                    'type' => 'error',
+                    'message' => 'API ERROR: insertsn'
+                ];
             }
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed!'
+                    'message' => 'Invalid Serial Number. Try Again.'
                 ];
-            }
-            return [
-                'type' => 'error',
-                'message' => 'API ERROR: insertsn'
-            ];
+            }            
         }
         if($request->division_id == 2 && $request->div_process_id == 2 ){
             $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);            
@@ -336,73 +352,81 @@ class ApiController extends Controller
         }
         function insertsn($request,$jo_id = '')
         {
-            $a = new Pcb;
-            $a->serial_number = $request->serial_number;
-            if($jo_id == ''){
-                $a->jo_id = $request->jo_id;
-            }
-            else{
-                $a->jo_id = $jo_id;
-            }
-            
-            $a->jo_number = $request->jo_number;
-            /* $a->lot_id = $request->lot_id; */
-            $a->lot_id = 0;
-            $a->division_id = $request->division_id;
-            $a->line_id = $request->line_id;
-            $a->div_process_id = $request->div_process_id;
-            $a->type = $request->type;
-            $a->employee_id = $request->employee_id;
-            $a->shift = CustomFunctions::genshift();
-            $a->defect = 0;
-            $a->heat = 0;
-
-            /* For Exporting */        
-            if($request->division_id == 2 || $request->division_id == 17){
-                $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
-                
-                if($request->type == 0){
-                    $pname .= '.INPUT-';
-                }
-                else{
-                    $pname .= '.V/I-';
-                }
-                if($request->div_process_id == 1){
-                    $pname .= 'B';
-                }
-                elseif($request->div_process_id == 2){
-                    $pname .= 'T';
-                }
-            }
-            $a->RESULT = 'OK';
-            $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
-            $a->PROCESS_NAME = $pname;
-
-            if($a->save()){
+            if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
+                $a = new Pcb;
+                $a->serial_number = $request->serial_number;
                 if($jo_id == ''){
-                    return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful!'
-                    ];
+                    $a->jo_id = $request->jo_id;
+                }
+                else{
+                    $a->jo_id = $jo_id;
+                }
+                
+                $a->jo_number = $request->jo_number;
+                /* $a->lot_id = $request->lot_id; */
+                $a->lot_id = 0;
+                $a->division_id = $request->division_id;
+                $a->line_id = $request->line_id;
+                $a->div_process_id = $request->div_process_id;
+                $a->type = $request->type;
+                $a->employee_id = $request->employee_id;
+                $a->shift = CustomFunctions::genshift();
+                $a->defect = 0;
+                $a->heat = 0;
+
+                /* For Exporting */        
+                if($request->division_id == 2 || $request->division_id == 17){
+                    $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
+                    
+                    if($request->type == 0){
+                        $pname .= '.INPUT-';
+                    }
+                    else{
+                        $pname .= '.V/I-';
+                    }
+                    if($request->div_process_id == 1){
+                        $pname .= 'B';
+                    }
+                    elseif($request->div_process_id == 2){
+                        $pname .= 'T';
+                    }
+                }
+                $a->RESULT = 'OK';
+                $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
+                $a->PROCESS_NAME = $pname;
+
+                if($a->save()){
+                    if($jo_id == ''){
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful!'
+                        ];
+                    }
+                    else{
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful! Scanned PCB is in different Job Order.'
+                        ];
+                    }
+                    
                 }
                 else{
                     return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful! Scanned PCB is in different Work Order.'
+                        'type' => 'error',
+                        'message' => 'Scan Failed!'
                     ];
                 }
-                
+                return [
+                    'type' => 'error',
+                    'message' => 'API ERROR: insertsn'
+                ];
             }
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed!'
+                    'message' => 'Invalid Serial Number. Try Again.'
                 ];
-            }
-            return [
-                'type' => 'error',
-                'message' => 'API ERROR: insertsn'
-            ];
+            }            
         }
         if(!$out){
             if($sn->first()){
@@ -434,7 +458,7 @@ class ApiController extends Controller
                     } 
                     return [
                         'type' => 'error',
-                        'message' => 'Serial Number has an INPUT in different Work Order/s.'.$jos                                               
+                        'message' => 'Serial Number has an INPUT in different Job Order/s.'.$jos                                               
                     ];
                 }
                 return [
