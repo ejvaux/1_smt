@@ -15,10 +15,10 @@ class CreateComponentQtyTable extends Migration
     {
         Schema::create('component_qty', function (Blueprint $table) {
             $table->increments('id');
-            $table->int('material_id');
-            $table->int('line_id');
-            $table->int('base_quantity');
-            $table->int('diff_quantity');
+            $table->integer('material_id');
+            $table->integer('line_id');
+            $table->integer('base_quantity');
+            $table->integer('diff_quantity');
             $table->timestamps();
         });
     }

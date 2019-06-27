@@ -15,7 +15,7 @@ class CreateComponentMonitoringTable extends Migration
     {
         Schema::create('component_monitoring', function (Blueprint $table) {
             $table->increments('id');
-            $table->int('component_id');
+            $table->integer('component_id');
             $table->string('serial');
             $table->timestamps();
         });
