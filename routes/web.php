@@ -176,6 +176,9 @@ Route::resource('defecttype','MES2\DefectTypeController');
 Route::resource('tracking','MES2\trackingController');
 Route::resource('tc','MES2\trackingComponentController');
 Route::resource('qc','MES2\qcController');
+Route::get('qcs','MES2\qcController@searchdate');
+Route::get('qcl','MES2\qcController@searchlot');
+
 
 
 /* ----- MES2 END ----- */

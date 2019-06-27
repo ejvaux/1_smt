@@ -57,6 +57,7 @@ $('.del_process_btn').on('click',function(){
         //initialize delete function calling the delete method
         $('#DeleteProcessForm_'+$(this).data('id')).trigger('submit');
         /* alert($('#DeleteProcessForm_'+$(th).data('id')).attr('action')); */
+        
 
         swal.fire(
         'Deleted!',

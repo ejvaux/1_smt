@@ -11,6 +11,7 @@
         </div>
         <div class="card-body">
             
+         {{-- Start Table    --}}
         <div class="container-fluid border-secondary" id="table_display" style="width: 100%;"style="overflow-x:auto;">
             <div class="row mb-2">
                 <div class="col-md">
@@ -49,15 +50,16 @@
                                             <thead class="thead-light">
                                                 <tr class="text-center">
                                                    
-                                                    <th scope="col">DATE</th>
-                                                    <th scope="col">COMPONENT</th>
-                                                    <th scope="col">VENDOR</th>
-                                                    <th scope="col">MACHINE</th>
-                                                    <th scope="col">MODEL</th>
-                                                    <th scope="col">TABLE</th>
-                                                    <th scope="col">MOUNTER</th>
-                                                    <th scope="col">POSITION</th>
-                                                    <th scope="col">EMPLOYEE</th>
+                                                    
+                                                            <th scope="col">DATE</th>
+                                                            <th scope="col">COMPONENT</th>
+                                                            <th scope="col">VENDOR</th>
+                                                            <th scope="col">MACHINE</th>
+                                                            <th scope="col">MODEL</th>
+                                                            <th scope="col">TABLE</th>
+                                                            <th scope="col">MOUNTER</th>
+                                                            <th scope="col">POSITION</th>
+                                                            <th scope="col">EMPLOYEE</th>
                                                 </tr>
                                             </thead>
                                             <tbody class='text-center'>
@@ -65,15 +67,16 @@
                                                     @if (count($Feeders)>0)
                                                         @foreach ($Feeders as $Feeder)
                                                             
-                                                                <td>{{$Feeder->created_at}}</td>
-                                                                <td>{{$Feeder->component_rel->product_number}}</td>
-                                                                <td>{{$Feeder->component_rel->authorized_vendor}}</td>
-                                                                <td>{{$Feeder->machine_rel->code}}</td>
-                                                                <td>{{$Feeder->smt_model_rel->code}}</td>
-                                                                <td>{{$Feeder->table_id}}</td>
-                                                                <td>{{$Feeder->mounter_rel->code}}</td>
-                                                                <td>{{$Feeder->smt_pos_rel->name}}</td>
-                                                                <td>{{$Feeder->employee_rel->lname}} {{$Feeder->employee_rel->fname}}</td>
+                                                                
+                                                            <td>{{$Feeder->created_at}}</td>
+                                                            <td>{{$Feeder->component_rel->product_number}}</td>
+                                                            <td>{{$Feeder->component_rel->authorized_vendor}}</td>
+                                                            <td>{{$Feeder->machine_rel->code}}</td>
+                                                            <td>{{$Feeder->smt_model_rel->code}}</td>
+                                                            <td>{{$Feeder->table_id}}</td>
+                                                            <td>{{$Feeder->mounter_rel->code}}</td>
+                                                            <td>{{$Feeder->smt_pos_rel->name}}</td>
+                                                            <td>{{$Feeder->employee_rel->lname}} {{$Feeder->employee_rel->fname}}</td>
 
                                                             </tr>
                                                         @endforeach
@@ -99,6 +102,8 @@
             
         </div>
     </div>
+{{-- End Table    --}}
+
 </div>
    
 
