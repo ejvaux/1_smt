@@ -18,7 +18,7 @@ class ApiController extends Controller
     public function scanpinemp(Request $request)
     {
         if($request->input('check') == 1){
-            if($name = Employee::where('pin',$request->input('pin'))->first())
+            if($name = Employee::select('id','fname','lname')->where('pin',$request->input('pin'))->first())
             {
                 return $name;
             }
@@ -27,7 +27,7 @@ class ApiController extends Controller
             }
         }
         elseif($request->input('check') == 2){
-            if($name = Employee::where('pin',$request->input('pin'))->where('repair',1)->first())
+            if($name = Employee::select('id','fname','lname')->where('pin',$request->input('pin'))->where('repair',1)->first())
             {
                 return $name;
             }
@@ -52,10 +52,10 @@ class ApiController extends Controller
     public function loadpcbtable(Request $request)
     {
         if($request->input('sn')){
-            $pcbs = Pcb::where('serial_number',$request->input('sn'))->orderBy('id','DESC')->paginate(100);
+            $pcbs = Pcb::with('division','line','divprocess','employee','workorder')->where('serial_number',$request->input('sn'))->orderBy('id','DESC')->take(100)->get();
         }
         else{
-            $pcbs = Pcb::where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->paginate(100);
+            $pcbs = Pcb::with('division','line','divprocess','employee','workorder')->where('jo_id',$request->input('jo_id'))->where('div_process_id',$request->input('proc'))->where('type',$request->input('type'))->orderBy('id','DESC')->take(100)->get();
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }
@@ -64,22 +64,30 @@ class ApiController extends Controller
 
     public function scantype(Request $request)
     {
-        if($request->type == 0){
-            return $this->scanIn2($request);
-        }
-        else if($request->type == 1){
-            return $this->scanOut2($request);
+        if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
+            if($request->type == 0){
+                return $this->scanIn2($request);
+            }
+            else if($request->type == 1){
+                return $this->scanOut2($request);
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Scan Failed. Scan type not allowed.'
+                ];
+            }
+            return [
+                'type' => 'error',
+                'message' => 'API ERROR: scantype'
+            ];   
         }
         else{
             return [
                 'type' => 'error',
-                'message' => 'Scan Failed. Scan type not allowed.'
+                'message' => 'Invalid Serial Number. Try Again.'
             ];
-        }
-        return [
-            'type' => 'error',
-            'message' => 'API ERROR: scantype'
-        ];
+        }                       
     }
 
     /* --------------- INPUT SCANNING ------------------- */
@@ -88,12 +96,12 @@ class ApiController extends Controller
     { 
         function checkdupIn($request)
         {
-            $out = Pcb::where('serial_number',$request->serial_number)
+            $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
             ->where('div_process_id',$request->div_process_id)
             ->where('type',1)
             ->first();
 
-            $in = Pcb::where('serial_number',$request->serial_number)
+            $in = Pcb::select('id')->where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0)
@@ -120,7 +128,7 @@ class ApiController extends Controller
         function checkjoquantity2($request)
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
-            $o = Pcb::where('jo_id',$request->jo_id)->where('type',1)->count();
+            $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
             
             $t = $q - $o;
             if($t>0){
@@ -133,77 +141,85 @@ class ApiController extends Controller
                 ];
             }
         }
-        function  insertsn( $request,$jo_id='')
+        function insertsn( $request,$jo_id='')
         {
-            $a = new Pcb;
-            $a->serial_number = $request->serial_number;
-            if($jo_id == ''){
-                $a->jo_id = $request->jo_id;
-            }
-            else{
-                $a->jo_id = $jo_id;
-            }
-            
-            $a->jo_number = $request->jo_number;
-            $a->lot_id = 0;
-            $a->division_id = $request->division_id;
-            $a->line_id = $request->line_id;
-            $a->div_process_id = $request->div_process_id;
-            $a->type = $request->type;
-            $a->employee_id = $request->employee_id;
-            $a->shift = CustomFunctions::genshift();
-            $a->defect = 0;
-            $a->heat = 0;
-    
-            /* For Exporting */        
-            if($request->division_id == 2 || $request->division_id == 17){
-                $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
-                
-                if($request->type == 0){
-                    $pname .= '.INPUT-';
-                }
-                else{
-                    $pname .= '.V/I-';
-                }
-                if($request->div_process_id == 1){
-                    $pname .= 'B';
-                }
-                elseif($request->div_process_id == 2){
-                    $pname .= 'T';
-                }
-            }
-            $a->RESULT = 'OK';
-            $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
-            $a->PROCESS_NAME = $pname;
-    
-            if($a->save()){
+            if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
+                $a = new Pcb;
+                $a->serial_number = $request->serial_number;
                 if($jo_id == ''){
-                    return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful!'
-                    ];
+                    $a->jo_id = $request->jo_id;
+                }
+                else{
+                    $a->jo_id = $jo_id;
+                }
+                
+                $a->jo_number = $request->jo_number;
+                $a->lot_id = 0;
+                $a->division_id = $request->division_id;
+                $a->line_id = $request->line_id;
+                $a->div_process_id = $request->div_process_id;
+                $a->type = $request->type;
+                $a->employee_id = $request->employee_id;
+                $a->shift = CustomFunctions::genshift();
+                $a->defect = 0;
+                $a->heat = 0;
+        
+                /* For Exporting */        
+                if($request->division_id == 2 || $request->division_id == 17){
+                    $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
+                    
+                    if($request->type == 0){
+                        $pname .= '.INPUT-';
+                    }
+                    else{
+                        $pname .= '.V/I-';
+                    }
+                    if($request->div_process_id == 1){
+                        $pname .= 'B';
+                    }
+                    elseif($request->div_process_id == 2){
+                        $pname .= 'T';
+                    }
+                }
+                $a->RESULT = 'OK';
+                $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
+                $a->PROCESS_NAME = $pname;
+        
+                if($a->save()){
+                    if($jo_id == ''){
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful!'
+                        ];
+                    }
+                    else{
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful! Scanned PCB is in different Job Order.'
+                        ];
+                    }
+                    
                 }
                 else{
                     return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful! Scanned PCB is in different Work Order.'
+                        'type' => 'error',
+                        'message' => 'Scan Failed!'
                     ];
                 }
-                
+                return [
+                    'type' => 'error',
+                    'message' => 'API ERROR: insertsn'
+                ];
             }
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed!'
+                    'message' => 'Invalid Serial Number. Try Again.'
                 ];
-            }
-            return [
-                'type' => 'error',
-                'message' => 'API ERROR: insertsn'
-            ];
+            }            
         }
         if($request->division_id == 2 && $request->div_process_id == 2 ){
-            $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);
+            $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);            
             if($sn->first()){
                 return checkdupIn($request);
             }
@@ -218,7 +234,6 @@ class ApiController extends Controller
             return checkdupIn($request);
         }
     }
-
     public function scanIn($request)
     {
         /* CHECKING FOR BOTTOM */
@@ -283,19 +298,19 @@ class ApiController extends Controller
     public function scanOut2($request)
     {
         /* CHECK FOR OUTPUT */
-        $out = Pcb::where('serial_number',$request->serial_number)
+        $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
                 ->first();
         /* CHECK FOR INPUT */
-        $sn = Pcb::where('serial_number',$request->serial_number)
+        $sn = Pcb::select('defect')->where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);        
         
         function checkdupOut($request)
         {
-            $out = Pcb::where('serial_number',$request->serial_number)
+            $out = Pcb::select('id')->where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
@@ -318,7 +333,7 @@ class ApiController extends Controller
         function checkjoquantity2($request)
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
-            $o = Pcb::where('jo_id',$request->jo_id)->where('type',1)->count();
+            $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
             
             $t = $q - $o;
             if($t>0){
@@ -337,72 +352,81 @@ class ApiController extends Controller
         }
         function insertsn($request,$jo_id = '')
         {
-            $a = new Pcb;
-            $a->serial_number = $request->serial_number;
-            if($jo_id == ''){
-                $a->jo_id = $request->jo_id;
-            }
-            else{
-                $a->jo_id = $jo_id;
-            }
-            
-            $a->jo_number = $request->jo_number;
-            $a->lot_id = $request->lot_id;
-            $a->division_id = $request->division_id;
-            $a->line_id = $request->line_id;
-            $a->div_process_id = $request->div_process_id;
-            $a->type = $request->type;
-            $a->employee_id = $request->employee_id;
-            $a->shift = CustomFunctions::genshift();
-            $a->defect = 0;
-            $a->heat = 0;
-
-            /* For Exporting */        
-            if($request->division_id == 2 || $request->division_id == 17){
-                $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
-                
-                if($request->type == 0){
-                    $pname .= '.INPUT-';
-                }
-                else{
-                    $pname .= '.V/I-';
-                }
-                if($request->div_process_id == 1){
-                    $pname .= 'B';
-                }
-                elseif($request->div_process_id == 2){
-                    $pname .= 'T';
-                }
-            }
-            $a->RESULT = 'OK';
-            $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
-            $a->PROCESS_NAME = $pname;
-
-            if($a->save()){
+            if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
+                $a = new Pcb;
+                $a->serial_number = $request->serial_number;
                 if($jo_id == ''){
-                    return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful!'
-                    ];
+                    $a->jo_id = $request->jo_id;
+                }
+                else{
+                    $a->jo_id = $jo_id;
+                }
+                
+                $a->jo_number = $request->jo_number;
+                /* $a->lot_id = $request->lot_id; */
+                $a->lot_id = 0;
+                $a->division_id = $request->division_id;
+                $a->line_id = $request->line_id;
+                $a->div_process_id = $request->div_process_id;
+                $a->type = $request->type;
+                $a->employee_id = $request->employee_id;
+                $a->shift = CustomFunctions::genshift();
+                $a->defect = 0;
+                $a->heat = 0;
+
+                /* For Exporting */        
+                if($request->division_id == 2 || $request->division_id == 17){
+                    $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
+                    
+                    if($request->type == 0){
+                        $pname .= '.INPUT-';
+                    }
+                    else{
+                        $pname .= '.V/I-';
+                    }
+                    if($request->div_process_id == 1){
+                        $pname .= 'B';
+                    }
+                    elseif($request->div_process_id == 2){
+                        $pname .= 'T';
+                    }
+                }
+                $a->RESULT = 'OK';
+                $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
+                $a->PROCESS_NAME = $pname;
+
+                if($a->save()){
+                    if($jo_id == ''){
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful!'
+                        ];
+                    }
+                    else{
+                        return [
+                            'type' => 'success',
+                            'message' => 'Scan Successful! Scanned PCB is in different Job Order.'
+                        ];
+                    }
+                    
                 }
                 else{
                     return [
-                        'type' => 'success',
-                        'message' => 'Scan Successful! Scanned PCB is in different Work Order.'
+                        'type' => 'error',
+                        'message' => 'Scan Failed!'
                     ];
                 }
-                
+                return [
+                    'type' => 'error',
+                    'message' => 'API ERROR: insertsn'
+                ];
             }
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed!'
+                    'message' => 'Invalid Serial Number. Try Again.'
                 ];
-            }
-            return [
-                'type' => 'error',
-                'message' => 'API ERROR: insertsn'
-            ];
+            }            
         }
         if(!$out){
             if($sn->first()){
@@ -418,7 +442,7 @@ class ApiController extends Controller
                 }       
             }
             else{
-                $in = Pcb::where('serial_number',$request->serial_number)
+                $in = Pcb::select('jo_number')->where('serial_number',$request->serial_number)
                         ->where('div_process_id',$request->div_process_id)
                         ->where('type',0)->get();
                 if($in->count() == 0){
@@ -434,7 +458,7 @@ class ApiController extends Controller
                     } 
                     return [
                         'type' => 'error',
-                        'message' => 'Serial Number has an INPUT in different Work Order/s.'.$jos                                               
+                        'message' => 'Serial Number has an INPUT in different Job Order/s.'.$jos                                               
                     ];
                 }
                 return [
@@ -454,7 +478,6 @@ class ApiController extends Controller
             ];
         }
     }
-
     public function scanOut($request)
     {
         /* CHECK FOR OUTPUT */

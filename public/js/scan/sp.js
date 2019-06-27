@@ -310,12 +310,12 @@ function checkscan(){
         chk = 1;
         msg += '[Work Order] '
     }
-    if($('#scanform-type').val()==1){
+    /* if($('#scanform-type').val()==1){
         if(lotset == 0){
             chk = 1;
             msg += '[Lot Number] '
         }        
-    }
+    } */
     
     if(!chk){
         enablescan();
@@ -702,7 +702,12 @@ $('#scan_serial').on('keypress', function(e){
             err = 1;
             msg += 'No work order set.<br>'
         }
-        if(/* $(this).val() == '' ||  */$.trim( $(this).val() ) == ''){
+        /* if($.trim( $(this).val() ) == ''){
+            err = 1;
+            msg += 'No scanned serial number. Try again.<br>'
+        } */
+
+        if(/^([a-zA-Z0-9.]){12}$/.test($(this).val()) == false){
             err = 1;
             msg += 'No scanned serial number. Try again.<br>'
         }
@@ -718,18 +723,7 @@ $('#scan_serial').on('keypress', function(e){
             $('#scanform-serial_number').val($(this).val());
             serialscan(); 
         }        
-        $(this).val('');
-        /* if($('#employee_id').val() != ''){
-            $('#scanform-serial_number').val($(this).val());
-            serialscan();
-            $(this).val('');            
-        }
-        else{
-            iziToast.warning({
-                message: 'Employee not set!',
-                position: 'topCenter'
-            });
-        } */        
+        $(this).val('');       
     }
 });
 $('#configL').on('change', function(e){

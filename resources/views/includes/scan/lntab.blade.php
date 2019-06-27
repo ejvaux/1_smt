@@ -31,7 +31,7 @@
             <div class="col-9">
                 <div class="input-group">
                     <input class='form-control' type="text" name="" id="lot_total" value='' readonly>
-                    <button type="button" class='' id="get_lot_total"><i class="fas fa-sync-alt"></i></button>
+                    <button type="button" class='' id="get_lot_total">{{-- <i class="fas fa-sync-alt"></i> --}}CHECK</button>
                 </div>                
             </div>
         </div>
