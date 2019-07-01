@@ -40,7 +40,7 @@ class trackingComponentController extends Controller
         //Checking after null is detected
             $getID = component::where('product_number',$get)->first();{
             if($getID !=''){
-                $Feeders = RunningOnMachine::where('component_id',$getID->id)->get();
+                $Feeders = RunningOnMachine::where('component_id',$getID->id)->orderBy('id','desc')->get();
             }
             else{
                 $Feeders = [];

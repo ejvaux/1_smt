@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Controllers\MES2\model\Qc;
 
+
+
+use Illuminate\Support\Carbon;
+
 class qcController extends Controller
 {
     /**
@@ -17,6 +21,7 @@ class qcController extends Controller
     public function index()
     {
         //
+        //$date=Carbon::now()->toDateTimeString('yyyy/mm/dd');
         $Qcs = Qc::all();
         return view('mes2.qc',compact('Qcs'));
        
@@ -49,9 +54,12 @@ class qcController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
         //
+         //Getting the search textbox value
+
+       
     }
 
     /**
@@ -87,4 +95,52 @@ class qcController extends Controller
     {
         //
     }
+
+    public function searchdate(Request $request)
+    {
+        //$get='';
+        $get = $request->input('Dateqc');
+        $date=Carbon::now()->toDateTimeString();
+
+        if($get ==null){
+                    $Qcs = Qc::all();
+                    
+        }
+        else{
+                if($get!=''){
+                    
+                    $Qcs = Qc::where('created_at',$get)->get();
+                    //$Qcs = Qc::all();
+                }
+                else{
+                    $Qcs=[];
+                    //$Qcs = Qc::where('created_at','like','%'.$date.'%')->get();
+                }
+        }
+        return view('mes2.qc',compact('Qcs'));
+    }
+
+    public function searchlot(Request $request)
+    {
+        //$get='';
+        $get = $request->input('myInputLot');
+       
+        if($get ==null){
+                $Qcs = Qc::where('created_at','')->get();
+        }
+        else{
+                if($get!=''){
+                    
+                    $Qcs = Qc::where('number',$get)->get();
+                    //$Qcs = Qc::all();
+                }
+                else{
+                    $Qcs=[];
+                    //$Qcs = Qc::where('created_at','like','%'.$date.'%')->get();
+                }
+        }
+        return view('mes2.qc',compact('Qcs'));
+    }
+
+    
 }
