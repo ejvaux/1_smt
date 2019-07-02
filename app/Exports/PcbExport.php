@@ -55,7 +55,7 @@ class PcbExport implements FromQuery, WithHeadings, WithMapping, WithStrictNullC
 
     public function query()
     {
-        $query = Pcb::where('exported',2)->where('jo_id',$this->joid);
+        $query = Pcb::where('exported',2)->where('type',1)->where('jo_id',$this->joid);
         return $query->orderBy('serial_number');
     }
 

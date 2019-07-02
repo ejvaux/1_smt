@@ -46,7 +46,7 @@ class PcbExportScript extends Command
         
         $filename = 'PRIMA_';
         $qty = 0;
-        $pcbs = Pcb::where('exported',0)->get();
+        $pcbs = Pcb::where('exported',0)->where('type',1)->get();
         foreach ($pcbs as $pcb) {
             $wo = WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();
             if($wo != ''){
@@ -55,8 +55,8 @@ class PcbExportScript extends Command
             }
         }
         if($wo != ''){
-            Pcb::where('jo_id',$temp->jo_id)->where('exported',0)->update(['exported'=> 2]);
-            $pcbx = Pcb::where('jo_id',$temp->jo_id)->where('exported',2);
+            Pcb::where('jo_id',$temp->jo_id)->where('exported',0)->where('type',1)->update(['exported'=> 2]);
+            $pcbx = Pcb::where('jo_id',$temp->jo_id)->where('exported',2)->where('type',1);            
             $qty = $pcbx->count();
             $filename .= Division::where('DIVISION_ID',$temp->division_id)->pluck('DIVISION_NAME')->first() . '_';
             if($wo == ''){
@@ -68,7 +68,7 @@ class PcbExportScript extends Command
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
             Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_smt');            
-            $pcbx->update(['exported'=> 1]);            
+            $pcbx->update(['exported'=> 1]);         
         }
 
         /* } */
