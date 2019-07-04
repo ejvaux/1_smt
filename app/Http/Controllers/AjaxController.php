@@ -122,13 +122,14 @@ class AjaxController extends Controller
         $component = $request->input('new_PN');
         //$machine = "CM60201A";
         $m_code =substr($machine,0,-1);
-        $table=substr($machine,-1);
+        $table=substr($machine,-1);        
         
         $mach_type= machine::where('barcode',$m_code)->first();
         $table_id= tableSMT::where('name',$table)->first();
         $comp_id= component::where('product_number',$component)->first();
         $model_id = modelSMT::where('code',$request->input('model_id'))->first();
         if($mach_type){
+            $line_id = $mach_type->line->linename->id;
             $mach_type=$mach_type->machine_type_id;
         }
         else{
@@ -154,7 +155,8 @@ class AjaxController extends Controller
         }
         
         $data=feeders::where('machine_type_id',$mach_type)
-                        ->where('line_id',$request->input('line'))
+                        /* ->where('line_id',$request->input('line')) */
+                        ->where('line_id',$line_id)
                        ->where('table_id',$table_id)
                        ->where('model_id',$request->input('model_id'))
                        ->where('mounter_id',$request->input('feeder_slot'))
