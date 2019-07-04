@@ -178,7 +178,7 @@ class ApiController extends Controller
                 $a->heat = 0;
         
                 /* For Exporting */        
-                if($request->division_id == 2 || $request->division_id == 17){
+                if($request->division_id == 2){
                     $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
                     
                     if($request->type == 0){
@@ -193,6 +193,18 @@ class ApiController extends Controller
                     elseif($request->div_process_id == 2){
                         $pname .= 'T';
                     }
+                }
+                else if( $request->division_id == 17 || $request->division_id == 18){
+                    $pname = 'DIP';
+                    if($request->type == 0){
+                        $pname .= '.INPUT';
+                    }
+                    else{
+                        $pname .= '.V/I';
+                    }
+                }
+                else{
+                    $pname = '';
                 }
                 $a->RESULT = 'OK';
                 $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
