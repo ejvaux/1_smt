@@ -91,7 +91,7 @@ class DefectTypeController extends Controller
 
         $defect = DefectType::where('id',$id)->first();
 
-
+        
         $defect->code = $request->input('code');
         $defect->name = $request->input('name');
         $defect->save();

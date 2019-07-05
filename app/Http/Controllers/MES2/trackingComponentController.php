@@ -4,7 +4,6 @@ namespace App\Http\Controllers\MES2;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\ProdLine;
 use App\component;
 use App\ProcessList;
@@ -35,6 +34,7 @@ class trackingComponentController extends Controller
         //Cheking for null object
         if($get==null){
             $Feeders = RunningOnMachine::where('component_id','')->get();
+            
         }
         else
         //Checking after null is detected
@@ -58,6 +58,7 @@ class trackingComponentController extends Controller
     public function create()
     {
         //
+        
     }
 
     /**

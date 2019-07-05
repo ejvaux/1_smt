@@ -4,14 +4,119 @@
         $('#tab1').addClass('active');
     </script>
 @endsection
-
-@if (session('alert'))
-    <div class="alert alert-success">
-        {{ session('alert') }}
-    </div>
-@endif
 @section('content')
-@include('inc.messages')
+
+<!-- Start add Modal -->
+<div class="modal fade  bd-example-modal-lg" id="modalqc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Quality Management - SMT</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+<div class="modal-body">
+
+
+    <!-- Body of Modal Modal -->
+    <h6>Lot Number:</h6> <strong><h6 ><input type="text" id="idlot" class="text" disabled style=" text-align: center;" ></h6></strong>
+
+      {{--Start TABLE --}}
+      <div class="container border-fluid p-0 mb-2 border-secondary"  style="overflow-x:auto;">
+        
+    </div>
+    <div class="container-fluid p-0" style="overflow-x:auto;">
+     <div class="col p-0 border-fluid">
+            <div class="row ">
+                    <div class="col-md-6 mr-auto mt">
+                       
+                        <form class="formGetPcb" method="POST" action='{{url('tracking/')}}'>
+                            @csrf
+                            @method('GET')
+                            
+                            {{-- <input type="Text" class="form-control mb-2" name="myInputPCB" placeholder="Search PCB Here" autocomplete="off"> --}}
+                            
+                            {{-- <button type="submit">Get User</button><br> --}}
+                        </form>
+                      
+                    </div>
+                    <div class="col-md-4">
+                        {{-- <input type="text" class="form-control" id="myInput" onkeyup="myFunctionTableDtr()" placeholder="Search Data Here..." title="Type in a name"> --}}
+                        
+                    </div>
+            </div>
+
+            <div class="row mb-1">
+                    <div class="table-responsive-lg w-100 text-nowrap" style='max-height: 350px;overflow:auto'>
+                        <table class="table table-sm" id="">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                   
+                                    <th>S/N</th>
+                                    <th>WORK ORDER</th>
+                                    <th>DIVISION</th>
+                                    <th>LOT_ID</th>
+                                    <th>LINE</th>
+                                    <th>PROCESS</th>
+                                    <th>TYPE</th>
+                                    <th>EMPLOYEE</th>
+                                    <th>SHIFT</th>
+                                    <th>CREATED AT</th>
+                                </tr>
+                            </thead>
+                            <tbody class='text-center'>
+                              {{--   @isset ($Pcbs) --}}
+                                    @if (count($Pcbs)>0)
+                                        @foreach ($Pcbs as $pcb)
+                                            <tr {{-- class='wo-clickable-row' --}} data-wodata='{{$pcb}}'>
+                                                {{-- <td>{{ $loop->iteration + (($pcbs->currentPage() - 1) * 100) }}</td> --}}
+                                                {{-- <td>{{ $loop->iteration }}</td> --}}
+                                                <td>{{$pcb->serial_number}}</td>
+                                                <td>{{$pcb->jo_number}}</td>
+                                                <td>{{$pcb->division->DIVISION_NAME}}</td>
+                                                <td>{{$pcb->lot_id}}</td>
+                                                <td>{{$pcb->line->name}}</td>
+                                                <td>{{$pcb->divprocess->name}}</td>
+                                                <td>
+                                                    @if ($pcb->type == 0)
+                                                        IN
+                                                    @else
+                                                        OUT
+                                                    @endif
+                                                </td>
+                                                <td>{{$pcb->employee->fname}} {{$pcb->employee->lname}}</td>
+                                                <td>{{$pcb->shift}}</td>
+                                                <td>{{$pcb->created_at}}</td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <th colspan="10">
+                                                <h4>No data to display. </h4>
+                                            </th>
+                                        </tr>
+                                    @endif
+                                
+                                {{-- @endisset--}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    </div>
+</div>
+{{-- End Table --}}
+
+
+    <!-- End Body of Modal Modal -->
+
+</div>
+</div>
+</div>
+</div>
+<!-- End add Modal -->
+
 <div class="container-fluid border mt-5 border-dark">
     <div class='row '>
         <div class="col-md">
@@ -38,7 +143,7 @@
                                                         <div class="row mt-2">
                                                                 {{--  Search From Date --}}
                                                                 <div class="col-md-6 mr-auto">
-                                                                    <form class="formGetqc" method="POST" action='{{url('qcs/')}}'>
+                                                                    <form class="formGetqc"  id="formGetqc" method="POST" action='{{url('qcs/')}}'>
                                                                         @csrf
                                                                         @method('GET')
                                                                                 <input type="date" name ="Dateqc" class="date" data-date-format="yyyy/mm/dd" > <button type="submit"  class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#addProcessModal">Search</button>
@@ -49,7 +154,7 @@
 
                                                                 {{--  Search From Lot--}}
                                                                 <div class="col-md-6">
-                                                                    <form class="" method="POST" action='{{url('qcl/')}}'>
+                                                                    <form class="formGetqcl" method="POST" id="formGetqcl" action='{{url('qcl/')}}'>
                                                                         @csrf
                                                                         @method('GET')
                                                                             <input type="text" class="form-control" name="myInputLot" onkeyup="" placeholder="Search Lot Number Here" title="Type in a name" autocomplete="off">
@@ -71,7 +176,7 @@
                                                                 <th >CLOSED_BY</th>
                                                                 <th >CLOSED_AT</th>
                                                                 <th >CHECKED_BY</th>
-                                                              {{--   <th >JUDGEMENT</th> --}}
+                                                              {{--  <th >JUDGEMENT</th> --}}
                                                                 <th >CHECKED_AT</th>
                                                             </tr>
                                                             </thead>
@@ -97,7 +202,7 @@
                                                                                 <div class="row">
                                                                                     
                                                                                     <div class="col-md-12">
-                                                                                            <h5><label for="" class="ml-5" style="color: green;  text-align: center;"><i class="far fa-check-circle"></i> GOOD.</label></h5>
+                                                                                        <h6><label for="" class="ml-5" style="color: green;  text-align: center;"><i class="far fa-check-circle"></i> GOOD.</label></h6>
                                                                                     </div>
                                                                                 </div>
                                                                         </div>
@@ -106,7 +211,7 @@
                                                                                 <div class="row">
                                                                                     
                                                                                     <div class="col-md-12">
-                                                                                            <h5><label for="" class="ml-5" style="color: red;  text-align: center;"><i class="far fa-times-circle"></i> NO GOOD.</label></h5>
+                                                                                        <h6><label for="" class="ml-5" style="color: red;  text-align: center;"><i class="far fa-times-circle"></i> NO GOOD.</label></h6>
                                                                                     </div>
                                                                                 </div>
                                                                         </div>
@@ -118,18 +223,26 @@
                                                                         {{--      <div class="container-fluid" style="overflow-x:auto;" > --}}
                                                                             <div class="row mt-2">
                                                                                     
-                                                                                <div class="col-md-4 mr-auto">
-                                                                                        <form method="post" id="DeleteProcessForm_{{$Qc->id}}"  action='{{url('qc/'.$Qc->id)}}'>
-                                                                                                @csrf
-                                                                                                @method('DELETE')      
+                                                                                <div class="col-md-6 mr-auto">
+                                                                                    <form method="POST" id="qcGood" action='{{url('qcgood')}}'>
+                                                                                    @csrf
+                                                                                    @method('GET')
+                                                                                    
                                                                                     {{-- <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#addProcessModal"><i class="far fa-plus-square"></i> New Data</button> --}}
-                                                                                    <button type='button'  data-id='{{$Qc->id}}' class="btn btn-outline-success editProcess ml-2"><i class="far fa-check-circle"></i> Good</button>
-                                                                                </form>
+                                                                                    <button type='button'  data-idqc='{{$Qc->id}}' class="btn btn-outline-success gbtn ml-5 btn-sm"><i class="far fa-check-circle"></i> Good</button>
+                                                                                    <input type="hidden" class="text" value='{{$Qc->id}}'{{-- value="1" --}} name='id1'>
+                                                                                    </form>
                                                                                 </div>
                                                                                  
                                                                                 
-                                                                                <div class="col-md-7">
-                                                                                    <button type='button' class="btn btn-outline-danger del_process_btn ml-1 " data-id='{{$Qc->lot_id}}'><i class="far fa-times-circle"></i> No Good</button>
+                                                                                <div class="col-md-6">
+                                                                                    <form method="POST" id="qcnoGood"  action='{{url('qcnogood')}}'>
+                                                                                    @csrf
+                                                                                    @method('GET')
+                                                                                  
+                                                                                    <button type='button' data-idqc='{{$Qc->id}}' class="btn btn-outline-danger ngbtn ml-0 mr-10 btn-sm" ><i class="far fa-times-circle"></i> No Good</button>
+                                                                                    <input type="hidden" class="text" value='{{$Qc->id}}' {{-- value="1" --}} name='id2'>
+                                                                                    </form>
                                                                                 </div>
                                                                             </div>
                                                                             
@@ -139,7 +252,7 @@
                                                                         @endif
                                                                        
                                                                     </td>
-                                                                <td><strong>{{$Qc->number}}</strong></td>
+                                                                <td><strong>{{$Qc->number}}<button  type='button' data-idqc='{{$Qc->number}}' class="btn btn-outline-secondary ml-2 btn-sm showlot"  data-toggle="modal" data-target="#modalqc">View Data</button></strong></td>
                                                                 <td><strong>{{$Qc->jo_id}}</strong></td>
                                                                 <td><strong>
                                                                     @if ($Qc->status == 0)
@@ -152,16 +265,7 @@
                                                                 <td><strong>{{$Qc->created_at}}</strong></td>
                                                                 <td><strong>{{$Qc->employee_rel_close->fname}} {{$Qc->employee_rel_close->lname}}</strong></td>
                                                                 <td><strong>{{$Qc->closed_at}}</strong></td>
-                                                                <td><strong>{{$Qc->employee_rel_create->fname}} {{$Qc->employee_rel_close->lname}}</strong></td>
-                                                               {{--  <td><strong>
-                                                                        @if ($Qc->qc_status == 0)
-                                                                        PENDING
-                                                                        @elseif($Qc->qc_status == 1)
-                                                                        GOOD
-                                                                        @else
-                                                                        NO GOOD 
-                                                                        @endif
-                                                                </strong></td> --}}
+                                                                <td><strong>{{$Qc->employee_rel_create->fname}} {{$Qc->employee_rel_close->lname}}</strong></td>                                          
                                                                 <td><strong>{{$Qc->date}}</strong></td>                           
                                                             </tr>
                                                             @endforeach
@@ -178,6 +282,7 @@
                                         </div>
                                     </div>
                                     {{--End TABLE Sample  --}}
+
                     </ul>
                 </div>
         </div>

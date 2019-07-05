@@ -6,6 +6,26 @@ use App\Models\Division;
 use App\Models\Lot;
 use App\Http\Controllers\MES\model\LineName;
 
+/* Models for component monitoring */
+//use App\Http\Controllers\MES\model\LineName;
+use App\ProdLine;
+use App\component;
+use App\ProcessList;
+use App\errorcodelist;
+use App\modelSMT;
+use App\LRPosition;
+use App\mounter;
+use App\employee;
+use App\machine;
+use App\lineSMT;
+
+use Nexmo\Message\Shortcode\Alert;
+/* Using component monitoring models */
+use App\RunningOnMachine;
+use App\Http\Controllers\MES2\model\componentmonitoring;
+use App\Http\Controllers\MES2\model\componentqty;
+
+
 class CustomFunctions
 {   
     public static function datelapse($dt){
@@ -31,7 +51,7 @@ class CustomFunctions
             }
             else{
                 return $a . " hour ago";
-            } 
+            }
         }
         elseif($secs >= 86400){
             $a = floor($secs / 86400);
@@ -185,4 +205,5 @@ class CustomFunctions
             return substr($mnth,-1);
         }
     }
+
 }

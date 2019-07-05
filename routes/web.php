@@ -170,17 +170,17 @@ Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 /* ----- MES END ----- */
 
 /* ----- MES2 start ----- */
+
 Route::resource('process','MES2\ProcessController');
 Route::get('processDelete', 'MES2\ProcessController@destroy');
-
 Route::resource('defecttype','MES2\DefectTypeController');
 Route::resource('tracking','MES2\trackingController');
 Route::resource('tc','MES2\trackingComponentController');
 Route::resource('qc','MES2\qcController');
 Route::get('qcs','MES2\qcController@searchdate');
 Route::get('qcl','MES2\qcController@searchlot');
-
-
+Route::get('qcgood','MES2\qcController@updategood');
+Route::get('qcnogood','MES2\qcController@updatenogood');
 
 /* ----- MES2 END ----- */
 
