@@ -765,7 +765,7 @@ function event_emp(e){
                     confirmButtonText: 'OK'
                   }).then((result) => {
                     if (result.value) {
-                        window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2";
+                        /* window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2"; */
                     }
                   })
                 
@@ -906,7 +906,12 @@ function event_loadPN(e){
 
         if ($('#replenish').is(":checked")){
             var temp1 = new Array();
-            temp1 = old_PN.split(";");
+            if(old_PN.includes(",")){
+                temp1 = old_PN.split(",");
+            }
+            else if(old_PN.includes(";")){
+                temp1 = old_PN.split(";");
+            }              
     
             for (a in temp1 ) {
                 temp1[a] = (temp1[a]); 
@@ -926,7 +931,12 @@ function event_loadPN(e){
        
 
         var temp2 = new Array();
-        temp2 = new_PN.split(";");
+        if(new_PN.includes(",")){
+            temp2 = new_PN.split(",");
+        }
+        else if(new_PN.includes(";")){
+            temp2 = new_PN.split(";");
+        }  
 
         for (b in temp2 ) {
             temp2[b] = (temp2[b]);
@@ -1111,7 +1121,12 @@ function CheckFeeder(){
 
     if ($('#replenish').is(":checked")){
         var temp1 = new Array();
-        temp1 = old_PN.split(";");
+        if(old_PN.includes(",")){
+            temp1 = old_PN.split(",");
+        }
+        else if(old_PN.includes(";")){
+            temp1 = old_PN.split(";");
+        } 
 
         for (a in temp1 ) {
             temp1[a] = (temp1[a]); 
@@ -1133,7 +1148,12 @@ function CheckFeeder(){
    
 
         var temp2 = new Array();
-        temp2 = new_PN.split(";");
+        if(new_PN.includes(",")){
+            temp2 = new_PN.split(",");
+        }
+        else if(new_PN.includes(";")){
+            temp2 = new_PN.split(";");
+        }  
 
         for (b in temp2 ) {
             temp2[b] = (temp2[b]);
@@ -1161,7 +1181,7 @@ function CheckFeeder(){
         type:'POST',
         data:{
             'replenish':replenish,
-            'line': $('#scan_line').val(),
+            /* 'line': $('#scan_line').val(), */
             'emp_id':emp_name,
             'machine_id':machine_code,
             'model_id':model_code,
@@ -1217,7 +1237,7 @@ function CheckFeeder(){
                 confirmButtonText: 'OK'
               }).then((result) => {
                 if (result.value) {
-                    window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2";
+                    /* window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2"; */
                 }
               })
         }
@@ -1244,7 +1264,12 @@ function InsertRecord(order_id){
     var reelInfo = document.getElementById('scan_newPN').value;
     if ($('#replenish').is(":checked")){
         var temp1 = new Array();
-        temp1 = old_PN.split(";");
+        if(old_PN.includes(",")){
+            temp1 = old_PN.split(",");
+        }
+        else if(old_PN.includes(";")){
+            temp1 = old_PN.split(";");
+        } 
 
         for (a in temp1 ) {
             temp1[a] = (temp1[a]); 
@@ -1266,7 +1291,12 @@ function InsertRecord(order_id){
    
 
     var temp2 = new Array();
-    temp2 = new_PN.split(";");
+    if(new_PN.includes(",")){
+        temp2 = new_PN.split(",");
+    }
+    else if(new_PN.includes(";")){
+        temp2 = new_PN.split(";");
+    }    
 
     for (b in temp2 ) {
         temp2[b] = (temp2[b]);
@@ -1279,6 +1309,12 @@ function InsertRecord(order_id){
             var res2 = temp2[b].split(":");
             if(res2[0] == "PN"){
                 new_PN = res2[1];
+            }
+            if(res2[0] == "QTY"){
+                comp_qty = res2[1];
+            }
+            if(res2[0] == "RID"){
+                comp_rid = res2[1];
             }
         }
     }
@@ -1302,7 +1338,9 @@ function InsertRecord(order_id){
             'old_PN':old_PN,
             'new_PN':new_PN,
             'order_id':order_id,
-            'reelInfo':reelInfo
+            'reelInfo':reelInfo,
+            'comp_qty':comp_qty,
+            'comp_rid':comp_rid
         },
         success: function (data) {
             /* iziToast.success({
@@ -1361,7 +1399,12 @@ function CheckRunning(order_id){
 
     if ($('#replenish').is(":checked")){
             var temp1 = new Array();
-            temp1 = old_PN.split(";");
+            if(old_PN.includes(",")){
+                temp1 = old_PN.split(",");
+            }
+            else if(old_PN.includes(";")){
+                temp1 = old_PN.split(";");
+            } 
     
             for (a in temp1 ) {
                 temp1[a] = (temp1[a]); 
@@ -1383,7 +1426,12 @@ function CheckRunning(order_id){
        
 
         var temp2 = new Array();
-        temp2 = new_PN.split(";");
+        if(new_PN.includes(",")){
+            temp2 = new_PN.split(",");
+        }
+        else if(new_PN.includes(";")){
+            temp2 = new_PN.split(";");
+        }  
 
         for (b in temp2 ) {
             temp2[b] = (temp2[b]);
@@ -1922,7 +1970,12 @@ function ErrorIns(errorType){
     var reelInfo = document.getElementById('scan_newPN').value;
     if ($('#replenish').is(":checked")){
         var temp1 = new Array();
-        temp1 = old_PN.split(";");
+        if(old_PN.includes(",")){
+            temp1 = old_PN.split(",");
+        }
+        else if(old_PN.includes(";")){
+            temp1 = old_PN.split(";");
+        } 
 
         for (a in temp1 ) {
             temp1[a] = (temp1[a]); 
@@ -1943,7 +1996,12 @@ function ErrorIns(errorType){
    
 
     var temp2 = new Array();
-    temp2 = new_PN.split(";");
+    if(new_PN.includes(",")){
+        temp2 = new_PN.split(",");
+    }
+    else if(new_PN.includes(";")){
+        temp2 = new_PN.split(";");
+    }  
 
     for (b in temp2 ) {
         temp2[b] = (temp2[b]);
