@@ -905,7 +905,7 @@ class ApiController extends Controller
 
     /* mat_comp - mat_sn_comp */
 
-    public static function insertmatcomp(Request $request)
+    public static function insertmatcomp(Request $request,$mat_load_id)
     {
         $machine = $request->machine_id;
         $m_code =substr($machine,0,-1);
@@ -927,6 +927,7 @@ class ApiController extends Controller
             $im = new MatComp;
             $im->model_id = $request->model_id;
             $im->line_id = $line_id;
+            $im->mat_load_id = $mat_load_id;
             $im->materials = $mt;
             $mt2 = $im->materials;
             $mt2[$component->id] = [
