@@ -38,18 +38,26 @@ class CompSnInsert implements ShouldQueue
     {
         $mat_comp = MatComp::where('id',$this->mat_comp_id)->first();
         foreach ($mat_comp->materials as $key => $value) {
-            $comp = MatSnComp::where('model_id',$mat_comp->model_id)->where('line_id',$mat_comp->line_id)->where('component_id',$key)->where('RID',$value['RID'])->first();
+            $comp1 = MatSnComp::where('model_id',$mat_comp->model_id)->where('line_id',$mat_comp->line_id)->where('component_id',$key)->where('RID',$value['RID']);
+            if($comp1->first()){
+                $comp = $comp1;
+            }
+            else{
+                $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->first();
+            }
             if($comp){                                
                 /* $comp->sn = array($this->sn); */
                 $cc = $comp->sn;
                 $cc[] = $this->sn;
                 $comp->sn = $cc;
+                $comp->mat_comp_id = $mat_comp->id;
                 $comp->save();
             }
             else{
                 $c = new MatSnComp;
                 $c->model_id = $mat_comp->model_id;
                 $c->line_id = $mat_comp->line_id;
+                $c->mat_comp_id = $mat_comp->id;
                 $c->component_id = $key;
                 $c->RID = $value['RID'];
                 $c->sn = array($this->sn);
