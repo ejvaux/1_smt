@@ -162,9 +162,7 @@ Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 
 // Testing
 /* Route::get('testt', function () {    
-    return App\Models\Pcb::where('serial_number',2)->where('div_process_id',1)->where('type',1)
     
-    ->first();
 }); */
 
 /* ----- MES END ----- */
