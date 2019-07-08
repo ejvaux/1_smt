@@ -10,9 +10,9 @@
                     <th>@sortablelink('ITEM_CODE','PART CODE')</th>
                     <th>@sortablelink('ITEM_NAME','PART NAME')</th>
                     <th>@sortablelink('MACHINE_CODE','LINE')</th> --}}
-                    <th>WORK ORDER</th>
+                    <th>JOB ORDER</th>
                     <th>LINE</th>
-                    <th>SALES ORDER</th>
+                    <th>WORK ORDER</th>
                     <th>PLAN QTY</th>
                     <th>PART CODE</th>
                     <th>PART NAME</th>

@@ -20,6 +20,18 @@ use App\Jobs\CompSnInsert;
 
 class ApiController extends Controller
 {
+    /*
+
+    Message to the next developer.
+    Please start at the event trigger by the element.
+    Then check the function being call.
+    Examine the function carefully.
+    For ajax function, follow the url being requested.
+    Follow the URL in the web.php
+    Check the controller and the function used.
+    GOODLUCK!
+    
+    */
     public function scanpinemp(Request $request)
     {
         if($request->input('check') == 1){
@@ -51,7 +63,8 @@ class ApiController extends Controller
     }
     public function loadWOtable(Request $request)
     {
-        $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$request->input('div')}%")->where('DATE_',$request->input('dte'))->orderBy('MACHINE_CODE')->get();
+        $sap_code = Division::where('DIVISION_ID',$request->input('div'))->pluck('SAP_DIVISION_CODE')->first();
+        $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$sap_code}%")->where('DATE_',$request->input('dte'))->orderBy('MACHINE_CODE')->get();
         return view('includes.table.spTable',compact('workorders'));
     }
     public function loadpcbtable(Request $request)

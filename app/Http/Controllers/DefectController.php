@@ -33,7 +33,7 @@ class DefectController extends Controller
             $defect_mats = DefectMat::sortable()->where('created_at','LIKE',"{$dte}%")->orderBy('id','DESC')->paginate('20');
         }
         else{
-            $pcb = Pcb::where('serial_number',$t)->first();
+            $pcb = Pcb::where('serial_number',$t)->where('defect',1)->first();
             if($pcb){
                 $defect_mats = DefectMat::sortable()->where('pcb_id',$pcb->id)->orderBy('id','DESC')->paginate('20');
             }
