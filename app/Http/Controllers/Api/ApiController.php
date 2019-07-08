@@ -181,12 +181,15 @@ class ApiController extends Controller
                 $a->shift = CustomFunctions::genshift();
                 $a->defect = 0;
                 $a->heat = 0;
-                /* $mc_id = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->pluck('id')->first();
-                $a->mat_comp_id = $mc_id; */
-                $a->mat_comp_id = 0;
+                $mc_id = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->pluck('id')->first();
+                $a->mat_comp_id = $mc_id;
                 
-                /* Insert mat_sn_comps table */                
-                /* CompSnInsert::dispatch($request->serial_number,$mc_id); */
+                /* Insert mat_sn_comps table */
+                try {
+                    CompSnInsert::dispatch($request->serial_number,$mc_id)->delay(now()->addSeconds(3));
+                } catch (\Throwable $th) {
+                    Log::error($th);
+                }                
 
                 /* For Exporting */        
                 if($request->division_id == 2){
