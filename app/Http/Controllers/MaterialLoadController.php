@@ -102,7 +102,7 @@ class MaterialLoadController extends Controller
         $insrecord->save();
 
         try {
-            ApiController::insertmatcomp($request);
+            ApiController::insertmatcomp($request,$insrecord->id);
         } catch (\Throwable $th) {
             Log::error($th);
         }
