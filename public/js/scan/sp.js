@@ -709,7 +709,7 @@ $('#scan_serial').on('keypress', function(e){
 
         if(/^([a-zA-Z0-9.]){12}$/.test($(this).val()) == false){
             err = 1;
-            msg += 'No scanned serial number. Try again.<br>'
+            msg += 'Invalid Serial Number. Try again.<br>'
         }
 
         if(err){

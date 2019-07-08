@@ -17,6 +17,8 @@ use App\MatLoadModel;
 use App\modelSMT;
 use App\RunningOnMachine;
 use Response;
+use App\Http\Controllers\Api\ApiController;
+use Log;
 
 class MaterialLoadController extends Controller
 {
@@ -98,6 +100,12 @@ class MaterialLoadController extends Controller
         $insrecord->ReelInfo=$request->input('reelInfo');
         $insrecord->results="MATCH";
         $insrecord->save();
+
+        try {
+            ApiController::insertmatcomp($request);
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
 
        /*  $insrecord=new MatLoadModel();
         $insrecord->machine_id=$mach_type;
