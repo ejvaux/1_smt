@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MES\model\Employee;
 use App\Http\Controllers\MES\model\LineName;
+use App\Http\Controllers\MES\model\Machine;
+use App\Http\Controllers\MES\model\Component;
 use App\Models\DivProcess;
 use App\Models\WorkOrder;
 use App\Models\Pcb;
 use App\Models\Lot;
 use App\Models\Division;
+use App\Models\MatComp;
+use App\Models\MatSnComp;
 use App\Custom\CustomFunctions;
+use App\Jobs\CompSnInsert;
 
 class ApiController extends Controller
 {
@@ -176,7 +181,12 @@ class ApiController extends Controller
                 $a->shift = CustomFunctions::genshift();
                 $a->defect = 0;
                 $a->heat = 0;
+                $mc_id = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->pluck('id')->first();
+                $a->mat_comp_id = $mc_id;
         
+                /* Insert mat_sn_comps table */                
+                CompSnInsert::dispatch($request->serial_number,$mc_id);
+
                 /* For Exporting */        
                 if($request->division_id == 2){
                     $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
@@ -398,6 +408,7 @@ class ApiController extends Controller
                 $a->shift = CustomFunctions::genshift();
                 $a->defect = 0;
                 $a->heat = 0;
+                $a->mat_comp_id = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->pluck('id')->first();
 
                 /* For Exporting */        
                 if($request->division_id == 2 || $request->division_id == 17){
@@ -432,8 +443,7 @@ class ApiController extends Controller
                             'type' => 'success',
                             'message' => 'Scan Successful! Scanned PCB is in different Job Order.'
                         ];
-                    }
-                    
+                    }                    
                 }
                 else{
                     return [
@@ -889,5 +899,67 @@ class ApiController extends Controller
         }
     }
     /* FEEDER LIST */
-    
+
+
+    /* mat_comp - mat_sn_comp */
+
+    public static function insertmatcomp(Request $request)
+    {
+        $machine = $request->machine_id;
+        $m_code =substr($machine,0,-1);
+        $mach = Machine::where('barcode',$m_code)->first();
+        $line_id = $mach->line->linename->id;
+        $component= Component::where('product_number',$request->new_PN)->first();
+        $m = MatComp::where('model_id',$request->model_id)->where('line_id',$line_id)->orderBy('id','DESC')->first();
+        
+        if($m){
+            $mt = $m->materials;
+            $tu = '';
+            foreach ($mt as $key => $value) {
+                if($value['machine'] == $request->machine_id && $value['position'] == $request->position && $value['feeder'] == $request->feeder_slot){
+                    $tu = $key;
+                    break;
+                }
+            }                
+            unset($mt[$tu]);
+            $im = new MatComp;
+            $im->model_id = $request->model_id;
+            $im->line_id = $line_id;
+            $im->materials = $mt;
+            $mt2 = $im->materials;
+            $mt2[$component->id] = [
+                                'machine' => $request->machine_id,
+                                'position' => $request->position,
+                                'feeder' => $request->feeder_slot,
+                                'RID' => $request->comp_rid,
+                                'QTY' => $request->comp_qty
+                                ];
+            $im->materials = $mt2;
+            try {
+                $im->save();
+            } catch (\Throwable $th) {
+                Log::error($th);
+            }
+        }
+        else{
+            $im = new MatComp;
+            $im->model_id = $request->model_id;
+            $im->line_id = $line_id;
+            $mt = $im->materials;
+            $mt[$component->id] = [
+                                'machine' => $request->machine_id,
+                                'position' => $request->position,
+                                'feeder' => $request->feeder_slot,
+                                'RID' => $request->comp_rid,
+                                'QTY' => $request->comp_qty
+                                ];
+            $im->materials = $mt;
+            try {
+                $im->save();
+            } catch (\Throwable $th) {
+                Log::error($th);
+            }            
+        }
+
+    }
 }

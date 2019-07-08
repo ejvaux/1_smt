@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Http\Controllers\MES2\model\Qc;
+use App\Models\Pcb;
 
 
 
@@ -23,7 +24,8 @@ class qcController extends Controller
         //
         //$date=Carbon::now()->toDateTimeString('yyyy/mm/dd');
         $Qcs = Qc::all();
-        return view('mes2.qc',compact('Qcs'));
+        $Pcbs = Pcb::all();
+        return view('mes2.qc',compact('Qcs','Pcbs'));
        
     }
 
@@ -35,6 +37,7 @@ class qcController extends Controller
     public function create()
     {
         //
+        
     }
 
     /**
@@ -59,7 +62,6 @@ class qcController extends Controller
         //
          //Getting the search textbox value
 
-       
     }
 
     /**
@@ -104,6 +106,7 @@ class qcController extends Controller
 
         if($get ==null){
                     $Qcs = Qc::all();
+                    $Pcbs = Pcb::all();
                     
         }
         else{
@@ -113,20 +116,23 @@ class qcController extends Controller
                     //$Qcs = Qc::all();
                 }
                 else{
-                    $Qcs=[];
-                    //$Qcs = Qc::where('created_at','like','%'.$date.'%')->get();
+                    //$Qcs=[];
+                    $Qcs = Qc::where('created_at','like','%'.$date.'%')->get();
                 }
         }
-        return view('mes2.qc',compact('Qcs'));
+        return view('mes2.qc',compact('Qcs','Pcbs'));
     }
 
     public function searchlot(Request $request)
     {
         //$get='';
         $get = $request->input('myInputLot');
-       
+        $date=Carbon::now()->toDateTimeString();
+        
+
         if($get ==null){
                 $Qcs = Qc::where('created_at','')->get();
+                $Pcbs = Pcb::all();
         }
         else{
                 if($get!=''){
@@ -135,12 +141,37 @@ class qcController extends Controller
                     //$Qcs = Qc::all();
                 }
                 else{
-                    $Qcs=[];
+                    //$Qcs=[];
                     //$Qcs = Qc::where('created_at','like','%'.$date.'%')->get();
                 }
         }
-        return view('mes2.qc',compact('Qcs'));
+        return view('mes2.qc',compact('Qcs','Pcbs'));
     }
 
-    
+    public function updategood(Request $request)
+    {
+        //
+        $id1=$request->input('id1');
+        $qc = Qc::where('id',$id1)->first();
+
+        
+        $qc->qc_status = '1';
+        
+        $qc->save();
+        return redirect('qc')->with('success','Marked as Good Lot');
+
+    }
+    public function updatenogood(Request $request)
+    {
+        //
+        $id1=$request->input('id2');
+        $qc = Qc::where('id',$id1)->first();
+        
+        $qc->qc_status = '2';
+        
+        $qc->save();
+        
+        return redirect('qc')->with('success','Marked as No Good Lot');
+
+    }
 }
