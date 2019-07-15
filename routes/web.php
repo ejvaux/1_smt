@@ -76,7 +76,7 @@ Route::get('ep/sn', 'ExportsController@exportpcb');
 
 
 /* QR Generate */
-/* Route::get('qr-code', 'ScanPcbController@qrgen'); */
+Route::get('qr-code', 'ScanPcbController@qrgen');
 /* Route::get('qr-code', function (Request $request) {
     return QrCode::size(250)->generate($request->url);
 }); */
