@@ -36,23 +36,36 @@ class CompSnInsert implements ShouldQueue
      */
     public function handle()
     {
-        $mat_comp = MatComp::where('id',$this->mat_comp_id)->first();
-        if($mat_comp){
+        $mat_comp1 = MatComp::where('id',$this->mat_comp_id);
+        if($mat_comp1->first()){
+            $mat_comp = $mat_comp1->first();
             foreach ($mat_comp->materials as $key => $value) {
-                $comp1 = MatSnComp::where('model_id',$mat_comp->model_id)->where('line_id',$mat_comp->line_id)->where('component_id',$key)->where('RID',$value['RID']);
+                $comp1 = MatSnComp::where('model_id',$mat_comp->model_id)->where('line_id',$mat_comp->line_id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC');
                 if($comp1->first()){
                     $comp = $comp1->first();
                 }
                 else{
-                    $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->first();
+                    $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC')->first();
                 }
                 if($comp){                                
                     /* $comp->sn = array($this->sn); */
                     $cc = $comp->sn;
-                    $cc[] = $this->sn;
-                    $comp->sn = $cc;
-                    $comp->mat_comp_id = $mat_comp->id;
-                    $comp->save();
+                    if(count($comp->sn) > 499){
+                        $c = new MatSnComp;
+                        $c->model_id = $mat_comp->model_id;
+                        $c->line_id = $mat_comp->line_id;
+                        $c->mat_comp_id = $mat_comp->id;
+                        $c->component_id = $key;
+                        $c->RID = $value['RID'];
+                        $c->sn = array($this->sn);
+                        $c->save();
+                    }
+                    else{
+                        $cc[] = $this->sn;
+                        $comp->sn = $cc;
+                        $comp->mat_comp_id = $mat_comp->id;
+                        $comp->save();
+                    }                    
                 }
                 else{
                     $c = new MatSnComp;
