@@ -181,7 +181,7 @@ class ApiController extends Controller
                 $a->shift = CustomFunctions::genshift();
                 $a->defect = 0;
                 $a->heat = 0;
-                $mc_id = MatComp::select('id')->where('line_id',$request->line_id)->orderBy('id','DESC')->first();
+                $mc_id = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
                 if($mc_id){
                     $a->mat_comp_id = $mc_id->id;
                 }
@@ -191,7 +191,7 @@ class ApiController extends Controller
                 
                 /* Insert mat_sn_comps table */
                 try {
-                    CompSnInsert::dispatch($request->serial_number,$mc_id)->delay(now()->addSeconds(3));
+                    CompSnInsert::dispatch($request->serial_number,$mc_id->id);
                 } catch (\Throwable $th) {
                     Log::error($th);
                 }                
