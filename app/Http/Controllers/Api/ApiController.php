@@ -78,10 +78,6 @@ class ApiController extends Controller
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }
-    public function msiRedirect($sn,$mcid)
-    {
-        return redirect('http://localhost/1_smt/public/msi/'. $sn .'/'. $mcid);
-    }
 
     /* ---------------------- PCB SCANNING -------------------------- */
 
@@ -186,23 +182,21 @@ class ApiController extends Controller
                 $a->shift = CustomFunctions::genshift();
                 $a->defect = 0;
                 $a->heat = 0;
-                $mc_id = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
+                $mcid = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
                 
-                if($mc_id){
-                    $a->mat_comp_id = $mc_id->id;
-                    $mcid = $mc_id->id;
+                if($mcid){
+                    $a->mat_comp_id = $mcid->id;
+
+                    /* Insert mat_sn_comps table */
+                    try {
+                        CompSnInsert::dispatch($request->serial_number,$mcid->id);
+                    } catch (\Throwable $th) {
+                        Log::error($th);
+                    } 
                 }
                 else{
                     $a->mat_comp_id = null;
-                    $mcid = 0;
-                }                
-                
-                /* Insert mat_sn_comps table */
-                try {
-                    CompSnInsert::dispatch($request->serial_number,$mcid);
-                } catch (\Throwable $th) {
-                    Log::error($th);
-                }                
+                }
 
                 /* For Exporting */        
                 if($request->division_id == 2){

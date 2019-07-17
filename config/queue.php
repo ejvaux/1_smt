@@ -35,6 +35,7 @@ return [
         ],
 
         'database' => [
+            'connection' => 'smt_db2',
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',

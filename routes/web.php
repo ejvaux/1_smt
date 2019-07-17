@@ -73,8 +73,6 @@ Route::post('scanpinemp', 'DefectController@scanpinemp');
 Route::get('ep', 'ExportsController@index');
 /* Export SN */
 Route::get('ep/sn', 'ExportsController@exportpcb');
-/* Remote Mat SN insert */
-Route::get('msi/{sn}/{mcid}', 'HomeController@MAtSnInsert');
 
 /* QR Generate */
 Route::get('qr-code', 'ScanPcbController@qrgen');
