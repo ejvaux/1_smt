@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\MatComp;
+use App\Models\MatComp1;
 use App\Models\MatSnComp;
 
 class CompSnInsert implements ShouldQueue
@@ -36,7 +37,7 @@ class CompSnInsert implements ShouldQueue
      */
     public function handle()
     {
-        $mat_comp1 = MatComp::where('id',$this->mat_comp_id);
+        $mat_comp1 = MatComp1::where('id',$this->mat_comp_id);
         if($mat_comp1->first()){
             $mat_comp = $mat_comp1->first();
             foreach ($mat_comp->materials as $key => $value) {
