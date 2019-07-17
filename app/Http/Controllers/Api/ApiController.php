@@ -14,6 +14,7 @@ use App\Models\Pcb;
 use App\Models\Lot;
 use App\Models\Division;
 use App\Models\MatComp;
+use App\Models\MatComp1;
 use App\Models\MatSnComp;
 use App\Custom\CustomFunctions;
 use App\Jobs\CompSnInsert;
@@ -946,6 +947,7 @@ class ApiController extends Controller
                 }
             }                
             unset($mt[$tu]);
+
             $im = new MatComp;
             $im->model_id = $request->model_id;
             $im->line_id = $line_id;
@@ -960,8 +962,25 @@ class ApiController extends Controller
                                 'QTY' => $request->comp_qty
                                 ];
             $im->materials = $mt2;
+
+            $im1 = new MatComp1;
+            $im1->model_id = $request->model_id;
+            $im1->line_id = $line_id;
+            $im1->mat_load_id = $mat_load_id;
+            $im1->materials = $mt;
+            $mt3 = $im1->materials;
+            $mt3[$component->id] = [
+                                'machine' => $request->machine_id,
+                                'position' => $request->position,
+                                'feeder' => $request->feeder_slot,
+                                'RID' => $request->comp_rid,
+                                'QTY' => $request->comp_qty
+                                ];
+            $im1->materials = $mt3;
+
             try {
                 $im->save();
+                $im1->save();
             } catch (\Throwable $th) {
                 Log::error($th);
             }
@@ -979,8 +998,23 @@ class ApiController extends Controller
                                 'QTY' => $request->comp_qty
                                 ];
             $im->materials = $mt;
+
+            $im1 = new MatComp;
+            $im1->model_id = $request->model_id;
+            $im1->line_id = $line_id;
+            $mt1 = $im1->materials;
+            $mt1[$component->id] = [
+                                'machine' => $request->machine_id,
+                                'position' => $request->position,
+                                'feeder' => $request->feeder_slot,
+                                'RID' => $request->comp_rid,
+                                'QTY' => $request->comp_qty
+                                ];
+            $im1->materials = $mt1;
+
             try {
                 $im->save();
+                $im1->save();
             } catch (\Throwable $th) {
                 Log::error($th);
             }            
