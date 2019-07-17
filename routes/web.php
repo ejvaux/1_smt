@@ -162,9 +162,7 @@ Route::post('change_mount', 'MES\api\FeedersController@change_mount');
 Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 
 // Testing
-/* Route::get('testt', function () {    
-    
-}); */
+Route::get('testt', 'PageController@testing');
 
 /* ----- MES END ----- */
 

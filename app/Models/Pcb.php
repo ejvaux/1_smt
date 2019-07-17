@@ -35,4 +35,8 @@ class Pcb extends Model
     {
         return $this->belongsTo('App\Models\WorkOrder','jo_id','ID');
     }
+    public function mat_comp()
+    {
+        return $this->belongsTo('App\Models\MatComp','mat_comp_id','id');
+    }
 }

@@ -16,4 +16,9 @@ class MatComp extends Model
     protected $casts = [
         'materials' => 'array',
     ];
+
+    public function component()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\Component','materials','id');
+    }
 }

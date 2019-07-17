@@ -14,6 +14,11 @@ use App\employee;
 use App\machine;
 use App\lineSMT;
 use App\Http\Controllers\MES\model\LineName;
+use App\Http\Controllers\MES\model\Component;
+
+use App\Models\MatComp;
+use App\Models\MatSnComp;
+use App\Models\Pcb;
 
 class PageController extends Controller
 {
@@ -78,6 +83,20 @@ class PageController extends Controller
         $data="";
         
         return view('pages.materials.errorlogs',compact('models','position','mounter','emp','mounters','machine','line'));
+    }
+
+    public function testing(){        
+        $a = MatComp::select('materials')->whereIn('id',['1338','986'])->get();
+        $b = [];
+        foreach ($a as $key => $value) {
+            foreach ($value['materials'] as $key1 => $value1) {
+                $pn = Component::where('id',$key1)->pluck('product_number')->first();
+                /* $b[] = $value1['RID']; */
+                $b[] = $pn;
+            }
+            
+        }
+        return $b;
     }
 
 }
