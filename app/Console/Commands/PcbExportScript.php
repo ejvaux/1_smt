@@ -46,7 +46,7 @@ class PcbExportScript extends Command
         
         $filename = 'PRIMA_';
         $qty = 0;
-        $pcbs = Pcb::where('exported',0)->where('type',1)->get();
+        $pcbs = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->get();
         foreach ($pcbs as $pcb) {
             $wo = WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();
             if($wo != ''){
