@@ -77,6 +77,10 @@ class ApiController extends Controller
         }        
         return view('includes.table.pcbTable',compact('pcbs'));
     }
+    public function msiRedirect($sn,$mcid)
+    {
+        return redirect('http://localhost/1_smt/public/msi/'. $sn .'/'. $mcid);
+    }
 
     /* ---------------------- PCB SCANNING -------------------------- */
 
