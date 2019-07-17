@@ -17,6 +17,7 @@ use App\Models\MatComp;
 use App\Models\MatSnComp;
 use App\Custom\CustomFunctions;
 use App\Jobs\CompSnInsert;
+use App\Jobs\RemoteInsert;
 use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
@@ -189,7 +190,8 @@ class ApiController extends Controller
 
                     /* Insert mat_sn_comps table */
                     try {
-                        CompSnInsert::dispatch($request->serial_number,$mcid->id);
+                        /* CompSnInsert::dispatch($request->serial_number,$mcid->id); */
+                        RemoteInsert::dispatch($request->serial_number,$mcid->id);
                     } catch (\Throwable $th) {
                         Log::error($th);
                     } 

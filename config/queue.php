@@ -35,6 +35,13 @@ return [
         ],
 
         'database' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'default',
+            'retry_after' => 90,
+        ],
+
+        'database2' => [
             'connection' => 'smt_db2',
             'driver' => 'database',
             'table' => 'jobs',
