@@ -7,6 +7,8 @@ use Kyslik\ColumnSortable\Sortable;
 
 class MatComp extends Model
 {
+    protected $connection= 'smt_db';
+
     protected $table = 'mat_comps';
 
     use Sortable;
