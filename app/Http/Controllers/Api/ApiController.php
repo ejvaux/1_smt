@@ -17,6 +17,7 @@ use App\Models\MatComp;
 use App\Models\MatSnComp;
 use App\Custom\CustomFunctions;
 use App\Jobs\CompSnInsert;
+use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
@@ -182,16 +183,19 @@ class ApiController extends Controller
                 $a->defect = 0;
                 $a->heat = 0;
                 $mc_id = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
+                
                 if($mc_id){
                     $a->mat_comp_id = $mc_id->id;
+                    $mcid = $mc_id->id;
                 }
                 else{
                     $a->mat_comp_id = null;
+                    $mcid = 0;
                 }                
                 
                 /* Insert mat_sn_comps table */
                 try {
-                    CompSnInsert::dispatch($request->serial_number,$mc_id->id);
+                    CompSnInsert::dispatch($request->serial_number,$mcid);
                 } catch (\Throwable $th) {
                     Log::error($th);
                 }                
