@@ -85,10 +85,46 @@ class ApiController extends Controller
     /* ---------------------- PCB SCANNING -------------------------- */
 
     public function scantype(Request $request)
-    {        
-        $sn = WoSn::where('SERIAL_NUMBER',$request->serial_number)->first();
-        if($sn){
-            if($sn->WORK_ORDER == $request->work_order){
+    {   
+        if($request->division_id == 2)
+        {
+            $sn = WoSn::where('SERIAL_NUMBER',$request->serial_number)->first();
+            if($sn){
+                if($sn->WORK_ORDER == $request->work_order){
+                    if($request->type == 0){
+                        return $this->scanIn2($request);
+                    }
+                    else if($request->type == 1){
+                        return $this->scanOut2($request);
+                    }
+                    else{
+                        return [
+                            'type' => 'error',
+                            'message' => 'Scan Failed. Scan type not allowed.'
+                        ];
+                    }
+                    return [
+                        'type' => 'error',
+                        'message' => 'API ERROR: scantype'
+                    ];
+                }
+                else{
+                    return [
+                        'type' => 'error',
+                        'message' => 'Serial Number is in different Work Order.'
+                    ];
+                }
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Serial Number does not exist in the database.'
+                ];
+            }
+        }
+        else
+        {
+            if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
                 if($request->type == 0){
                     return $this->scanIn2($request);
                 }
@@ -104,21 +140,16 @@ class ApiController extends Controller
                 return [
                     'type' => 'error',
                     'message' => 'API ERROR: scantype'
-                ];
+                ];   
             }
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Serial Number is in different Work Order.'
+                    'message' => 'Invalid Serial Number. Try Again.'
                 ];
             }
         }
-        else{
-            return [
-                'type' => 'error',
-                'message' => 'Serial Number does not exist in the database.'
-            ];
-        }         
+                 
     }
 
     /* --------------- INPUT SCANNING ------------------- */
