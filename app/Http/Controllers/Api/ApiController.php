@@ -16,6 +16,7 @@ use App\Models\Division;
 use App\Models\MatComp;
 use App\Models\MatComp1;
 use App\Models\MatSnComp;
+use App\Models\WoSn;
 use App\Custom\CustomFunctions;
 use App\Jobs\CompSnInsert;
 use App\Jobs\RemoteInsert;
@@ -84,43 +85,52 @@ class ApiController extends Controller
     /* ---------------------- PCB SCANNING -------------------------- */
 
     public function scantype(Request $request)
-    {
-        if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
-            if($request->type == 0){
-                return $this->scanIn2($request);
-            }
-            else if($request->type == 1){
-                return $this->scanOut2($request);
+    {        
+        $sn = WoSn::where('SERIAL_NUMBER',$request->serial_number)->first();
+        if($sn){
+            if($sn->WORK_ORDER == $request->work_order){
+                if($request->type == 0){
+                    return $this->scanIn2($request);
+                }
+                else if($request->type == 1){
+                    return $this->scanOut2($request);
+                }
+                else{
+                    return [
+                        'type' => 'error',
+                        'message' => 'Scan Failed. Scan type not allowed.'
+                    ];
+                }
+                return [
+                    'type' => 'error',
+                    'message' => 'API ERROR: scantype'
+                ];
             }
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed. Scan type not allowed.'
+                    'message' => 'Serial Number is in different Work Order.'
                 ];
             }
-            return [
-                'type' => 'error',
-                'message' => 'API ERROR: scantype'
-            ];   
         }
         else{
             return [
                 'type' => 'error',
-                'message' => 'Invalid Serial Number. Try Again.'
+                'message' => 'Serial Number does not exist in the database.'
             ];
-        }                       
+        }         
     }
 
     /* --------------- INPUT SCANNING ------------------- */
 
     public function scanIn2($request)
-    { 
+    {        
         function checkdupIn($request)
         {
             $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
-            ->where('div_process_id',$request->div_process_id)
-            ->where('type',1)
-            ->first();
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',1)
+                ->first();
 
             $in = Pcb::select('id')->where('serial_number',$request->serial_number)
                 ->where('jo_id',$request->jo_id)
@@ -281,6 +291,7 @@ class ApiController extends Controller
         }
         else{
             return checkdupIn($request);
+            /* return checkwosn($request); */
         }
     }
     public function scanIn($request)
@@ -851,10 +862,12 @@ class ApiController extends Controller
         $in = Pcb::where('jo_id',$request->jo)->where('type',0)->count();
         $out = Pcb::where('jo_id',$request->jo)->where('type',1)->count();        
         $total = $q - $out;
+        $total_in = $q - $in;
         return [
             'in' => $in,
             'out' => $out,
-            'total' => $total
+            'total' => $total,
+            'total_in' => $total_in
         ];
     }
     public function loadempscantotaltable(Request $request)
@@ -868,10 +881,12 @@ class ApiController extends Controller
         
         return view('includes.scan.tsttab',compact('emptotals','joid'));
     }
-    public function getlotnumber(Request $request){
+    public function getlotnumber(Request $request)
+    {
         return Lot::where('jo_id',$request->input('jo'))->where('status',0)->first();        
     }
-    public function createlotnumber(Request $request){
+    public function createlotnumber(Request $request)
+    {
         $a = new Lot;
         $a->number = CustomFunctions::genlotnumber($request->input('div'),$request->input('line'));
         $a->jo_id = $request->jo;
@@ -879,7 +894,8 @@ class ApiController extends Controller
         $a->save();
         return $a;
     }
-    public function closelotnumber(Request $request){
+    public function closelotnumber(Request $request)
+    {
         $e = Lot::where('id',$request->input('ln'))->first();
         $e->status = 1;
         $e->closed_by = $request->eid;
@@ -891,7 +907,8 @@ class ApiController extends Controller
             return 0;
         }
     }
-    public function getlotnumbertotal(Request $request){
+    public function getlotnumbertotal(Request $request)
+    {
         return Pcb::where('lot_id',$request->input('ln'))->count();        
     }
     /* DEFECTS */

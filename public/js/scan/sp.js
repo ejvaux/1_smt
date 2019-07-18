@@ -234,6 +234,7 @@ function setWO(wo){
     /* form input insert */
     $('#scanform-jo_id').val(wo.ID);
     $('#scanform-jo_number').val(wo.JOB_ORDER_NO);
+    $('#scanform-work_order').val(wo.SALES_ORDER);
 
     WOset = 1;
 
@@ -408,14 +409,20 @@ function getscantotal(wo){
             if(data.total>0){
                 /* $('#wo-rem').val(data.total); */
                 $('#wo-rem').val(data.total).removeClass('text-pcbconfigred').addClass('pcbconfig');
-                /* $('#wo-rem').val('').addClass('pcbconfig'); */
-                checkscan();               
+                /* $('#wo-rem').val('').addClass('pcbconfig'); */                               
             }
             else{
                 $('#wo-rem').val(data.total).addClass('pcbconfigred');
                 $('#scanstatuslabel').html('Plan Quantity Reached!').removeClass('text-success').addClass('text-danger');
                 $('#scan_serial').removeClass('border-success').attr('disabled',true);
             }
+            if(data.total_in>=0){
+                $('#wo-input').removeClass('pcbconfigred').addClass('pcbconfig');
+            }
+            else{
+                $('#wo-input').addClass('pcbconfigred');
+            }
+            checkscan();
         }
     });
     /* $.get("api/totalscan",
@@ -707,10 +714,10 @@ $('#scan_serial').on('keypress', function(e){
             msg += 'No scanned serial number. Try again.<br>'
         } */
 
-        if(/^([a-zA-Z0-9.]){12}$/.test($(this).val()) == false){
+        /* if(/^([a-zA-Z0-9.]){12}$/.test($(this).val()) == false){
             err = 1;
             msg += 'Invalid Serial Number. Try again.<br>'
-        }
+        } */
 
         if(err){
             iziToast.warning({
