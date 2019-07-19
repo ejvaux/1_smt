@@ -332,6 +332,7 @@ function loadwotable(){
     if(configlock == 1){
         $div = $('#pcb_division_id').val();
         $dte = $('#woDate').val();
+        $line = $('#pcb_line_id option:selected').text();
         $.ajax({
             url: 'api/loadWOtable',
             type:'get',
