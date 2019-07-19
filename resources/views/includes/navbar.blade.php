@@ -36,7 +36,8 @@
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
                             Tracking <span class="caret"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right">                                   
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="nav-link" href="{{url('jo')}}">JO</a>                             
                             <a class="nav-link" href="{{url('tracking')}}">PCB</a>
                             <a class="nav-link" href="{{url('tc')}}">Component</a>                            
                         </div>

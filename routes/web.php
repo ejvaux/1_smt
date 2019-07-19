@@ -73,6 +73,8 @@ Route::post('scanpinemp', 'DefectController@scanpinemp');
 Route::get('ep', 'ExportsController@index');
 /* Export SN */
 Route::get('ep/sn', 'ExportsController@exportpcb');
+/* JO Tracking */
+Route::get('jo', 'JoController@index');
 
 /* QR Generate */
 Route::get('qr-code', 'ScanPcbController@qrgen');
