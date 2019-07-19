@@ -15,6 +15,9 @@ $.ajaxSetup({
                 position: 'topCenter',
                 close: false,
             });
+            x[0].pause();
+            x[0].currentTime = 0;
+            x[0].play();
         }
         else if (XMLHttpRequest.readyState == 0) {                
             // Network error (i.e. connection refused, access denied due to CORS, etc.)
@@ -24,6 +27,9 @@ $.ajaxSetup({
                 position: 'topCenter',
                 close: false,
             });
+            x[0].pause();
+            x[0].currentTime = 0;
+            x[0].play();
         }
         else {
             iziToast.warning({
@@ -32,6 +38,9 @@ $.ajaxSetup({
                 position: 'topCenter',
                 close: false,
             });
+            x[0].pause();
+            x[0].currentTime = 0;
+            x[0].play();
             // something weird is happening
         }
     }
@@ -41,6 +50,7 @@ var configlock = 0;
 var WOset = 0;
 var empset = 0;
 var lotset = 0;
+var x = $('#e_sound');
 /* ---------- FUNCTIONS ---------- */
 function scanddload(uri,id,dd,val,dis){
     $.get("api/"+uri+"/"+ id, 
@@ -156,7 +166,7 @@ function serialscan()
         type:'post',
         data: formdata,
         global: false,
-        success: function (data) {
+        success: function (data) {            
             if(data.type == 'success'){                
                 iziToast.success({
                     message: data.message,
@@ -166,15 +176,20 @@ function serialscan()
             else if(data.type == 'error'){
                 iziToast.warning({
                     message: data.message,
-                    position: 'topCenter',
-                    timeout: 15000
+                    position: 'topCenter'
                 });
+                x[0].pause();
+                x[0].currentTime = 0;
+                x[0].play();
             }
             else{
                 iziToast.warning({
                     message: 'Unknown Error!',
                     position: 'topCenter'
                 });
+                x[0].pause();
+                x[0].currentTime = 0;
+                x[0].play();
             }
             /* Reload Pcb table */
             loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());

@@ -86,7 +86,7 @@ class ApiController extends Controller
 
     public function scantype(Request $request)
     {   
-        if($request->division_id == 2)
+        /* if($request->division_id == 2)
         {
             if($request->work_order){
                 $wo = $request->work_order;
@@ -154,6 +154,32 @@ class ApiController extends Controller
                     'message' => 'Invalid Serial Number. Try Again.'
                 ];
             }
+        } */
+
+        /* ----------- */
+        if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
+            if($request->type == 0){
+                return $this->scanIn2($request);
+            }
+            else if($request->type == 1){
+                return $this->scanOut2($request);
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Scan Failed. Scan type not allowed.'
+                ];
+            }
+            return [
+                'type' => 'error',
+                'message' => 'API ERROR: scantype'
+            ];   
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Invalid Serial Number. Try Again.'
+            ];
         }
                  
     }

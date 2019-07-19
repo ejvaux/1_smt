@@ -5,6 +5,10 @@
 @endsection
 
 @section('content')
+<audio id="e_sound">
+    <source src="{{asset('sounds/ce.mp3')}}" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
 <div class="container-fluid">
     <div class="white_bkg">
         <div class="row mb-3">
