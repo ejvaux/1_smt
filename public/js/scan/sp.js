@@ -714,10 +714,10 @@ $('#scan_serial').on('keypress', function(e){
             msg += 'No scanned serial number. Try again.<br>'
         } */
 
-        if(/^([a-zA-Z0-9.]){12}$/.test($(this).val()) == false){
+        /* if(/^([a-zA-Z0-9.]){12}$/.test($(this).val()) == false){
             err = 1;
             msg += 'Invalid Serial Number. Try again.<br>'
-        }
+        } */
 
         if(err){
             iziToast.warning({

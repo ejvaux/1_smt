@@ -395,7 +395,7 @@ class ApiController extends Controller
                 ->first();
         /* CHECK FOR INPUT */
         $sn = Pcb::select('defect')->where('serial_number',$request->serial_number)
-                ->where('jo_id',$request->jo_id)
+                /* ->where('jo_id',$request->jo_id) */
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);        
         
