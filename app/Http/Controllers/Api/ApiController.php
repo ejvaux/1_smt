@@ -68,7 +68,7 @@ class ApiController extends Controller
     public function loadWOtable(Request $request)
     {
         $sap_code = Division::where('DIVISION_ID',$request->input('div'))->pluck('SAP_DIVISION_CODE')->first();
-        $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$sap_code}%")->where('DATE_',$request->input('dte'))->orderBy('MACHINE_CODE')->get();
+        $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$sap_code}%")->where('DATE_',$request->input('dte'))->where('MACHINE_CODE',$request->input('line'))->orderBy('MACHINE_CODE')->get();
         return view('includes.table.spTable',compact('workorders'));
     }
     public function loadpcbtable(Request $request)

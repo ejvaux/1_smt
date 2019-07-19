@@ -338,7 +338,8 @@ function loadwotable(){
             type:'get',
             data: {
                 'div':  $div,
-                'dte':  $dte
+                'dte':  $dte,
+                'line': $line
             },
             global: false,
             success: function (data) {           

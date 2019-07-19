@@ -31,7 +31,7 @@
             <div class="col-md">
                 <ul class="nav nav-tabs" role="tablist">                    
                     <li class="nav-item">
-                        <a class="nav-link bold-text active" href="#woinfo" role="tab" data-toggle="tab">W.O.</a>
+                        <a class="nav-link bold-text active" href="#woinfo" role="tab" data-toggle="tab">J.O.</a>
                     </li>
                     {{-- <li class="nav-item">
                         <a class="nav-link bold-text" href="#lotnum" role="tab" data-toggle="tab">LOT</a>
