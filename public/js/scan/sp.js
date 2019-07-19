@@ -166,7 +166,8 @@ function serialscan()
             else if(data.type == 'error'){
                 iziToast.warning({
                     message: data.message,
-                    position: 'topCenter'
+                    position: 'topCenter',
+                    timeout: 15000
                 });
             }
             else{
@@ -222,6 +223,7 @@ function resetemp()
 function setWO(wo){
     /* checkscan(); */
     $('#info_btnWO').removeClass('d-none');
+    $('#wo-wonumber').val(wo.SALES_ORDER).addClass('pcbconfig');
     $('#jo_id').val(wo.ID).addClass('pcbconfig');
     $('#wo-number').val(wo.JOB_ORDER_NO).addClass('pcbconfig');
     $('#wo-quantity').val(wo.PLAN_QTY).addClass('pcbconfig');
@@ -258,6 +260,7 @@ function setWO(wo){
 function unsetWO(){
     disablescan();
     $('#info_btnWO').addClass('d-none');
+    $('#wo-wonumber').val('').removeClass('pcbconfig');
     $('#jo_id').val('').removeClass('pcbconfig');
     $('#wo-number').val('').removeClass('pcbconfig');
     $('#wo-quantity').val('').removeClass('pcbconfig');

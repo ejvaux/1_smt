@@ -15,7 +15,19 @@
     <div class="col-md">
         <div class="row">
             <div class="col-5">
-                <label for="" class="col-form-label bold-text">WORK ORDER #:</label>                  
+                <label for="" class="col-form-label bold-text">WORK ORDER:</label>                  
+            </div>
+            <div class="col-7">
+                <input class='form-control' type="text" id='wo-wonumber' value='' readonly>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-1"> 
+    <div class="col-md">
+        <div class="row">
+            <div class="col-5">
+                <label for="" class="col-form-label bold-text">JOB ORDER:</label>                  
             </div>
             <div class="col-7">
                 <input class='form-control' type="text" id='wo-number' value='' readonly>

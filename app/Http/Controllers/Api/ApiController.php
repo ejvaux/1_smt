@@ -88,9 +88,15 @@ class ApiController extends Controller
     {   
         if($request->division_id == 2)
         {
+            if($request->work_order){
+                $wo = $request->work_order;
+            }
+            else{
+                $wo = WorkOrder::where('id',$request->jo_id)->pluck('SALES_ORDER')->first();
+            }
             $sn = WoSn::where('SERIAL_NUMBER',$request->serial_number)->first();
             if($sn){
-                if($sn->WORK_ORDER == $request->work_order){
+                if($sn->WORK_ORDER == $wo){
                     if($request->type == 0){
                         return $this->scanIn2($request);
                     }
@@ -111,7 +117,7 @@ class ApiController extends Controller
                 else{
                     return [
                         'type' => 'error',
-                        'message' => 'Serial Number is in different Work Order.'
+                        'message' => 'Serial Number is in different Work Order.<br>Please use JOB ORDER with WORK ORDER below:<br><b><h4 class="text-center">'.$sn->WORK_ORDER.'</h4></b>'
                     ];
                 }
             }
