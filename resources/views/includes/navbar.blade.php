@@ -30,20 +30,20 @@
                         <a class="nav-link" href="{{url('sp')}}"><span class='font-weight-bold'>Scan</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('lr')}}"><span class='font-weight-bold'>Results</span></a>
+                        <a class="nav-link" href="{{url('lr')}}" target="_blank"><span class='font-weight-bold'>Results</span></a>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
                             Tracking <span class="caret"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="nav-link" href="{{url('jo')}}">JO</a>                             
-                            <a class="nav-link" href="{{url('tracking')}}">PCB</a>
-                            <a class="nav-link" href="{{url('tc')}}">Component</a>                            
+                            <a class="nav-link" href="{{url('jo')}}" target="_blank">JO</a>                             
+                            <a class="nav-link" href="{{url('tracking')}}" target="_blank">PCB</a>
+                            <a class="nav-link" href="{{url('tc')}}" target="_blank">Component</a>                            
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('ds')}}"><span class='font-weight-bold'>Defect</span></a>
+                        <a class="nav-link" href="{{url('ds')}}" target="_blank"><span class='font-weight-bold'>Defect</span></a>
                     </li>
                 @else
                     <li class="nav-item">

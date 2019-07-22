@@ -37,8 +37,7 @@ class LineResultController extends Controller
                 ->whereTime('created_at', '<', '06:00:00')
                 ->where('line_id',$line->line_id)
                 ->where('shift',2)
-                ->where('type',0)->count()
-                ;
+                ->where('type',0)->count();
 
             $out2 = Pcb::select('id')
                 ->whereDate('created_at', $date)
@@ -51,8 +50,7 @@ class LineResultController extends Controller
                 ->whereTime('created_at', '<', '06:00:00')
                 ->where('line_id',$line->line_id)
                 ->where('shift',2)
-                ->where('type',1)->count()
-                ;
+                ->where('type',1)->count();
             
             /* $in2 = Pcb::select('id')
                 ->where(function ($query) use ($date,$line) {
