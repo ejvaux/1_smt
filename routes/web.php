@@ -75,6 +75,8 @@ Route::get('ep', 'ExportsController@index');
 Route::get('ep/sn', 'ExportsController@exportpcb');
 /* JO Tracking */
 Route::get('jo', 'JoController@index');
+/* Line Results */
+Route::get('lr', 'LineResultController@index');
 
 /* QR Generate */
 Route::get('qr-code', 'ScanPcbController@qrgen');

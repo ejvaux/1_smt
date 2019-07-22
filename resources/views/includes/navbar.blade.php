@@ -29,9 +29,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('sp')}}"><span class='font-weight-bold'>Scan</span></a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="{{url('tracking')}}"><span class='font-weight-bold'>Tracking</span></a>
-                    </li> --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url('lr')}}"><span class='font-weight-bold'>Results</span></a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
                             Tracking <span class="caret"></span>
