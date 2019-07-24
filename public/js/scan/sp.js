@@ -255,6 +255,10 @@ function setWO(wo){
 
     WOset = 1;
 
+    /* enable button on wo */
+    $('#reload-wo-total').attr('disabled',false);
+    $('#unsetWO').attr('disabled',false);
+
     /* Change tab */
     $('#serntab').tab('show');
 
@@ -296,6 +300,10 @@ function unsetWO(){
 
     WOset = 0;
     lotset = 0;
+
+    /* disable button on wo */
+    $('#reload-wo-total').attr('disabled',true);
+    $('#unsetWO').attr('disabled',true);
 
     /* check scan status */
     checkscan();

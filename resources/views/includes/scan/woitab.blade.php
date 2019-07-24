@@ -1,15 +1,15 @@
 {{-- Work Order --}}
 <input id='jo_id' type="hidden" name="jo_id">
 <div class="row mt-3 mb-1">
-    <div class="col-md">
-        {{-- <label for="" class='bold-text'><i class="fas fa-info-circle"></i> WORK ORDER INFO:</label> --}}                
+    {{-- <div class="col-md">
+        <label for="" class='bold-text'><i class="fas fa-info-circle"></i> WORK ORDER INFO:</label>                
     </div>
     <div class="col-md">
         <div id="info_btnWO" class="btn-group d-none p-0" role="group">
             <button id='unsetWO' class='btn btn-primary bold-text p-0 px-1'><i class="fas fa-unlink"></i> UNSET</button>
             <button id='refreshWO' class='btn btn-primary bold-text p-0 px-1'><i class="fas fa-sync-alt"></i></button>
         </div>
-    </div>
+    </div> --}}
 </div>
 <div class="row mb-1"> 
     <div class="col-md">

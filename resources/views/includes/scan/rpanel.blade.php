@@ -32,8 +32,11 @@
                 <div class="card" style='border-color:black'>
                     <div class="card-body">
                         <div class="row form-group">
-                            <div class="col-md">
-                                <button id="reload-wo-total" type="button" class="btn btn-primary w-100">Refresh</button>
+                            <div class="col-md-6">
+                                <button id='unsetWO' class='btn btn-primary w-100' disabled>UNSET</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="reload-wo-total" type="button" class="btn btn-primary w-100" disabled>Refresh</button>
                             </div>
                         </div>
                         <div class="row">
