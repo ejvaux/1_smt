@@ -1,9 +1,9 @@
-@if($line)
+@if(isset($linename))
     <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-md">
-                    <h5 class='text-center'>{{$line->line->name}}</h5>
+                    <h5 class='text-center'>{{$linename->name}}</h5>
                 </div>
             </div>
             <div class="row mb-1">
@@ -21,11 +21,47 @@
                                 <th>DAY</th>
                                 <td>{{$in1}}</td>
                                 <td>{{$out1}}</td>
+                                {{-- <td>
+                                    {{ App\Models\Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$line->line_id)->where('shift',1)->where('type',0)->count() }}
+                                </td>
+                                <td>
+                                    {{ App\Models\Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$line->line_id)->where('shift',1)->where('type',1)->count() }}
+                                </td> --}}
                             </tr>
                             <tr>
                                 <th>NIGHT</th>
                                 <td>{{$in2}}</td>
                                 <td>{{$out2}}</td>
+                                {{-- <td>
+                                    {{
+                                    App\Models\Pcb::select('id')
+                                    ->whereDate('created_at', $date)
+                                    ->whereTime('created_at', '>=', '18:00:00')
+                                    ->where('line_id',$line->line_id)
+                                    ->where('shift',2)
+                                    ->where('type',0)->count() +
+                                    App\Models\Pcb::select('id')
+                                    ->whereDate('created_at', $date2)
+                                    ->whereTime('created_at', '<', '06:00:00')
+                                    ->where('line_id',$line->line_id)
+                                    ->where('shift',2)
+                                    ->where('type',0)->count()
+                                    }}
+                                </td>
+                                <td>
+                                    {{ App\Models\Pcb::select('id')
+                                    ->whereDate('created_at', $date)
+                                    ->whereTime('created_at', '>=', '18:00:00')
+                                    ->where('line_id',$line->line_id)
+                                    ->where('shift',2)
+                                    ->where('type',1)->count() +
+                                    App\Models\Pcb::select('id')
+                                    ->whereDate('created_at', $date2)
+                                    ->whereTime('created_at', '<', '06:00:00')
+                                    ->where('line_id',$line->line_id)
+                                    ->where('shift',2)
+                                    ->where('type',1)->count()}}
+                                </td> --}}
                             </tr>
                         </tbody>
                     </table>
@@ -34,5 +70,5 @@
         </div>
     </div>
 @else
-    <h3>NO DATA</h3>
+    <h3>NO DATA OR SELECT LINE.</h3>
 @endif
