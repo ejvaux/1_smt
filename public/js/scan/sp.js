@@ -192,7 +192,7 @@ function serialscan()
                 x[0].play();
             }
             /* Reload Pcb table */
-            loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
+            /* loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val()); */
             /* getscantotal($('#scanform-jo_id').val()); */
         }/* ,
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -935,4 +935,7 @@ $('#close_lot_num').on('click', function(){
 });
 $('#get_lot_total').on('click', function(){
     getlotnumbertotal($('#scanform-lot_id').val());
+});
+$('#reload-wo-total').on('click', function(){
+    getscantotal($('#scanform-jo_id').val());
 });

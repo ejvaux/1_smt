@@ -29,29 +29,42 @@
         </div>
         <div class="row">
             <div class="col-md">
-                <ul class="nav nav-tabs" role="tablist">                    
-                    <li class="nav-item">
-                        <a class="nav-link bold-text active" href="#woinfo" role="tab" data-toggle="tab">J.O.</a>
-                    </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link bold-text" href="#lotnum" role="tab" data-toggle="tab">LOT</a>
-                    </li> --}}
-                    <li class="nav-item">
-                        <a class="nav-link bold-text" href="#stotal" role="tab" data-toggle="tab">TOTAL</a>
-                    </li>
-                </ul>                
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane container active" id="woinfo">
-                        @include('includes.scan.woitab')
+                <div class="card" style='border-color:black'>
+                    <div class="card-body">
+                        <div class="row form-group">
+                            <div class="col-md">
+                                <button id="reload-wo-total" type="button" class="btn btn-primary w-100">Refresh</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <ul class="nav nav-tabs" role="tablist">                    
+                                    <li class="nav-item">
+                                        <a class="nav-link bold-text active" href="#woinfo" role="tab" data-toggle="tab">J.O.</a>
+                                    </li>
+                                    {{-- <li class="nav-item">
+                                        <a class="nav-link bold-text" href="#lotnum" role="tab" data-toggle="tab">LOT</a>
+                                    </li> --}}
+                                    <li class="nav-item">
+                                        <a class="nav-link bold-text" href="#stotal" role="tab" data-toggle="tab">TOTAL</a>
+                                    </li>
+                                </ul>                
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane container active" id="woinfo">
+                                        @include('includes.scan.woitab')
+                                    </div>
+                                    <div class="tab-pane container" id="stotal">
+                                        @include('includes.scan.sttab')
+                                    </div> 
+                                    {{-- <div class="tab-pane container" id="lotnum">
+                                        @include('includes.scan.lntab')
+                                    </div>  --}}                                     
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane container" id="stotal">
-                        @include('includes.scan.sttab')
-                    </div> 
-                    {{-- <div class="tab-pane container" id="lotnum">
-                        @include('includes.scan.lntab')
-                    </div>  --}}                                     
-                </div>
+                </div>                
             </div>
         </div>
     </div>
