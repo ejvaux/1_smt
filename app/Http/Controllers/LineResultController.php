@@ -11,17 +11,17 @@ class LineResultController extends Controller
 {
     public function index(Request $request)
     {
-        /* if($request->input('date')){
+        if($request->input('date')){
             $date = $request->input('date');
         }
         else{
             $date = Date('Y-m-d');
-        } */
-        $date = Date('Y-m-d');
+        }
+        /* $date = Date('Y-m-d'); */
         $date2 = Carbon::parse($date)->addDays(1);
 
         $lines = Pcb::select('line_id')->whereDate('created_at',$date)->groupBy('line_id')->get();
-        /* if($request->input('line')){
+        if($request->input('line')){
             $lid = $request->input('line');
         }
         else{
@@ -55,7 +55,7 @@ class LineResultController extends Controller
             ->whereTime('created_at', '<', '06:00:00')
             ->where('line_id',$lid)
             ->where('shift',2)
-            ->where('type',1)->count(); */
+            ->where('type',1)->count();
 
         /* foreach ($lines as $line) {
             $in1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$line->line_id)->where('shift',1)->where('type',0)->count();
@@ -87,7 +87,7 @@ class LineResultController extends Controller
                 ->where('shift',2)
                 ->where('type',1)->count();
         } */
-        return view('pages.lr.lr',compact('date','date2','linename','lines','in1','out1','in2','out2'));
+        return view('pages.lr.lr',compact('date','date2','lid','linename','lines','in1','out1','in2','out2'));
     }
 
     public function resultTable(Request $request)

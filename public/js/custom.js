@@ -2203,7 +2203,7 @@ $(document).on('click', '.clickable-row', function(e) {
 });
 $('.form_to_submit').on('submit',function(){
     $('.form_submit_button').prop('disabled', true);
-    $('.form_submit_button').html('Processing... Please Wait...');
+    $('.form_submit_button').html('<img src="http://172.16.1.13:8000/1_smt/public/images/loading2.gif" alt="Loading gif" style="height:1.5rem;width:auto;overflow:hidden"> Processing... Please Wait...');
 });
 $(function () {
     $('[data-toggle="popover"]').popover({ html : true});

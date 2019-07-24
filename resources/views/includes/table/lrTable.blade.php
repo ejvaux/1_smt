@@ -70,5 +70,5 @@
         </div>
     </div>
 @else
-    <h3>NO DATA OR SELECT LINE.</h3>
+    <h3>NO DATA</h3>
 @endif

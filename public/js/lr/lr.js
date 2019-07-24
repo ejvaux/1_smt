@@ -55,11 +55,11 @@ function loadlrt(date,line)
 
 /* EVENTS */
 
-$('#line').on('change', function(){
+$('#line1').on('change', function(){
     loadlrt( $('#date').val(),$('#line').val());
 });
 
-$('#date-btn').on('click', function(){
+$('#date-btn1').on('click', function(){
     /* if($('#line').val() != ''){
         loadlrt( $('#date').val(),$('#line').val());
     }
