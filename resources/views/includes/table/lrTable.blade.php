@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md">
-                    <h5 class='text-center'>{{$linename->name}}</h5>
+                    <h5 class='text-center font-weight-bold'>{{$linename->name}}</h5>
                 </div>
             </div>
             <div class="row mb-1">
@@ -62,6 +62,11 @@
                                     ->where('shift',2)
                                     ->where('type',1)->count()}}
                                 </td> --}}
+                            </tr>
+                            <tr>
+                                <th>TOTALS</th>
+                                <td>{{$in1+$in2}}</td>
+                                <td>{{$out1+$out2}}</td>
                             </tr>
                         </tbody>
                     </table>
