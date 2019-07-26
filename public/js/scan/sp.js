@@ -51,6 +51,7 @@ var WOset = 0;
 var empset = 0;
 var lotset = 0;
 var x = $('#e_sound');
+var y = $('#s_sound');
 /* ---------- FUNCTIONS ---------- */
 function scanddload(uri,id,dd,val,dis){
     $.get("api/"+uri+"/"+ id, 
@@ -172,6 +173,9 @@ function serialscan()
                     message: data.message,
                     position: 'topCenter'
                 });
+                y[0].pause();
+                y[0].currentTime = 0;
+                y[0].play();
             }
             else if(data.type == 'error'){
                 iziToast.warning({
