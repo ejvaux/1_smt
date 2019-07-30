@@ -17,11 +17,11 @@
                             @endif --}}
                             <thead class="thead-light">
                                     <tr class="text-center">
-                                        <th>COMPONENT</th>
+                                        <th>P/N</th>
                                         <th class='border-right'>REEL ID</th>
-                                        <th>COMPONENT</th>
+                                        <th>P/N</th>
                                         <th class='border-right'>REEL ID</th>
-                                        <th>COMPONENT</th>
+                                        <th>P/N</th>
                                         <th>REEL ID</th>
                                     </tr>
                             </thead>
