@@ -45,6 +45,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('ds')}}" target="_blank"><span class='font-weight-bold'>Defect</span></a>
                     </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link" href="{{url('sr')}}" target="_blank"><span class='font-weight-bold'>SN/Reel</span></a>
+                    </li> --}}
                 @else
                     <li class="nav-item">
                         <a class="nav-link bold-text" href="/1_smt/public/home"><i class="fas fa-home"></i> Home</a>

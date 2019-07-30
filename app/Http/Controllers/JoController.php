@@ -16,6 +16,9 @@ class JoController extends Controller
             if($w){
                 $jos = WorkOrder::where('SALES_ORDER',$w->WORK_ORDER)->orderby('MACHINE_CODE')->get();
             }
+            else{
+                $jos = [];
+            }
         }
         else{
             $jos = WorkOrder::where('DATE_',Date('Y-m-d'))
