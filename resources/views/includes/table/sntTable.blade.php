@@ -15,14 +15,6 @@
                                     <td>{{App\Http\Controllers\MES\model\Component::where('id',$reel)->pluck('product_number')->first()}}</td>
                                     <td class='border-right'>{{$prop['RID']}}</td>
                             @endif --}}
-                            <span class="text-center">
-                                @if ($loop->iteration == 1)
-                                    <h3>BOTTOM</h3>
-                                @else
-                                    <h3>TOP</h3>
-                                @endif
-                            </span>                                       
-                                    
                             <thead class="thead-light">
                                     <tr class="text-center">
                                         <th>COMPONENT</th>
