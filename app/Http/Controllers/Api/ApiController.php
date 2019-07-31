@@ -264,14 +264,14 @@ class ApiController extends Controller
 
                     /* Insert mat_sn_comps table */
                     try {
-                        /* CompSnInsert::dispatch($request->serial_number,$mcid->id); */
-                        RemoteInsert::dispatch($request->serial_number,$mcid->id);
+                        CompSnInsert::dispatch($request->serial_number,$mcid->id);
+                        /* RemoteInsert::dispatch($request->serial_number,$mcid->id); */
                     } catch (\Throwable $th) {
                         Log::error($th);
                     } 
                 }
                 else{
-                    $a->mat_comp_id = null;
+                    $a->mat_comp_id = 0;
                 }
 
                 /* For Exporting */        
@@ -1043,7 +1043,7 @@ class ApiController extends Controller
                                 ];
             $im->materials = $mt2;
 
-            $im1 = new MatComp1;
+            /* $im1 = new MatComp1;
             $im1->model_id = $request->model_id;
             $im1->line_id = $line_id;
             $im1->mat_load_id = $mat_load_id;
@@ -1056,11 +1056,11 @@ class ApiController extends Controller
                                 'RID' => $request->comp_rid,
                                 'QTY' => $request->comp_qty
                                 ];
-            $im1->materials = $mt3;
+            $im1->materials = $mt3; */
 
             try {
                 $im->save();
-                $im1->save();
+                /* $im1->save(); */
             } catch (\Throwable $th) {
                 Log::error($th);
             }
