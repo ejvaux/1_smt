@@ -42,7 +42,6 @@ class CreatePcbArchivesTable extends Migration
             $table->index('type');
             $table->index('exported');
             $table->index('SAP_TRANSFER_STATUS');
-            $table->unique(['serial_number','div_process_id','type']);
         });
     }
 
