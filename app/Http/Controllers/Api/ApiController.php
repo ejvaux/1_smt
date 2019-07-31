@@ -453,7 +453,7 @@ class ApiController extends Controller
                 /* ->where('jo_id',$request->jo_id) */
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);        
-        if(!$sn){
+        if(!$sn->first()){
             $sn = PcbArchive::select('defect')->where('serial_number',$request->serial_number)
                 /* ->where('jo_id',$request->jo_id) */
                 ->where('div_process_id',$request->div_process_id)
@@ -615,7 +615,7 @@ class ApiController extends Controller
                         ->where('div_process_id',$request->div_process_id)
                         ->where('type',0)->get();
                 if(!$in){
-                    $in1 = PcbArchive::select('jo_number')->where('serial_number',$request->serial_number)
+                    $in = PcbArchive::select('jo_number')->where('serial_number',$request->serial_number)
                         ->where('div_process_id',$request->div_process_id)
                         ->where('type',0)->get();
                 }
