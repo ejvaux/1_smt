@@ -11,6 +11,7 @@ use App\Http\Controllers\MES\model\Component;
 use App\Models\DivProcess;
 use App\Models\WorkOrder;
 use App\Models\Pcb;
+use App\Models\PcbArchive;
 use App\Models\Lot;
 use App\Models\Division;
 use App\Models\MatComp;
@@ -201,6 +202,20 @@ class ApiController extends Controller
                 ->where('type',0)
                 ->first();
 
+            if(!$out){
+                $out = PcbArchive::select('div_process_id')->where('serial_number',$request->serial_number)
+                    ->where('div_process_id',$request->div_process_id)
+                    ->where('type',1)
+                    ->first();
+            }
+            if(!$in){
+                $in = PcbArchive::select('id')->where('serial_number',$request->serial_number)
+                    ->where('jo_id',$request->jo_id)
+                    ->where('div_process_id',$request->div_process_id)
+                    ->where('type',0)
+                    ->first();
+            }
+
             if(!$out){  
                 if(!$in){
                     return checkjoquantity2($request);
@@ -223,7 +238,9 @@ class ApiController extends Controller
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
             $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
-            
+            if(!$o){
+                $o = PcbArchive::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
+            }
             $t = $q - $o;
             if($t>0){
                 return insertsn($request);
@@ -425,12 +442,23 @@ class ApiController extends Controller
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
                 ->first();
+        if(!$out){
+            $out = PcbArchive::select('div_process_id')->where('serial_number',$request->serial_number)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',1)
+                ->first();
+        }
         /* CHECK FOR INPUT */
         $sn = Pcb::select('defect')->where('serial_number',$request->serial_number)
                 /* ->where('jo_id',$request->jo_id) */
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0);        
-        
+        if(!$sn){
+            $sn = PcbArchive::select('defect')->where('serial_number',$request->serial_number)
+                /* ->where('jo_id',$request->jo_id) */
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',0);
+        }
         function checkdupOut($request)
         {
             $out = Pcb::select('id')->where('serial_number',$request->serial_number)
@@ -438,7 +466,13 @@ class ApiController extends Controller
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
                 ->first();
-    
+            if(!$out){
+                $out = PcbArchive::select('id')->where('serial_number',$request->serial_number)
+                    ->where('jo_id',$request->jo_id)
+                    ->where('div_process_id',$request->div_process_id)
+                    ->where('type',1)
+                    ->first();
+            }
             if(!$out){  
                 return checkjoquantity2($request);
             }
@@ -457,7 +491,8 @@ class ApiController extends Controller
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
             $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
-            
+            $o1 = PcbArchive::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
+            $o = $o + $o1;
             $t = $q - $o;
             if($t>0){
                 return insertsn($request);
@@ -579,6 +614,11 @@ class ApiController extends Controller
                 $in = Pcb::select('jo_number')->where('serial_number',$request->serial_number)
                         ->where('div_process_id',$request->div_process_id)
                         ->where('type',0)->get();
+                if(!$in){
+                    $in1 = PcbArchive::select('jo_number')->where('serial_number',$request->serial_number)
+                        ->where('div_process_id',$request->div_process_id)
+                        ->where('type',0)->get();
+                }
                 if($in->count() == 0){
                     return [
                         'type' => 'error',
