@@ -359,6 +359,9 @@ class ApiController extends Controller
         }
         if($request->division_id == 2 && $request->div_process_id == 2 ){
             $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);            
+            if(!$sn->first()){
+                $sn = PcbArchive::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);
+            }
             if($sn->first()){
                 return checkdupIn($request);
             }
