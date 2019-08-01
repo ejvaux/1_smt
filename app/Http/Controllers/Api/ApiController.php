@@ -256,7 +256,7 @@ class ApiController extends Controller
         {
             if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
                 $a = new Pcb;
-                $a->serial_number = $request->serial_number;
+                $a->serial_number = strtoupper($request->serial_number);
                 if($jo_id == ''){
                     $a->jo_id = $request->jo_id;
                 }
@@ -515,7 +515,7 @@ class ApiController extends Controller
         {
             if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
                 $a = new Pcb;
-                $a->serial_number = $request->serial_number;
+                $a->serial_number = strtoupper($request->serial_number);
                 if($jo_id == ''){
                     $a->jo_id = $request->jo_id;
                 }
