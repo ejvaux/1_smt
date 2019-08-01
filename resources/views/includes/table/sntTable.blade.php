@@ -20,10 +20,10 @@
                 <th>REEL ID</th>
             </tr>
         </thead>
+        <tbody class='text-center'>
         @isset ($reels)
             @if (count($reels)>0)
                 @foreach ($reels as $reel)                    
-                    <tbody class='text-center'>
                     @foreach ($reel as $item => $prop)
                         @if ($loop->iteration % 3 == 1)
                             <tr>
