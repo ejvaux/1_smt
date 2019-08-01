@@ -13,11 +13,11 @@
             </tr>
             <tr class="text-center">
                 <th>PN</th>
-                <th class='border-right'>REEL ID</th>
+                <th class='border-right'>RID</th>
                 <th>PN</th>
-                <th class='border-right'>REEL ID</th>
+                <th class='border-right'>RID</th>
                 <th>PN</th>
-                <th>REEL ID</th>
+                <th>RID</th>
             </tr>
         </thead>
         <tbody class='text-center'>
@@ -39,7 +39,7 @@
                         @endif
                     @endforeach
                     <tr>
-                        @for ($i = 0; $i <= 6; $i++)
+                        @for ($i = 0; $i < 6; $i++)
                             <td></td>
                         @endfor
                     </tr>
