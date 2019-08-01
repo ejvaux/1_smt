@@ -18,12 +18,18 @@
             <input type="text" class="form-control" id="snTB" name="" placeholder="Scan Serial Number Here . . .">
         </div>
     </div>
+    <div class="col-md-3">
+        <form method="get" action="{{url('exportreel')}}">
+            <input id="serialExport" type="hidden" name="sn">
+            <button id="exportBtn" type="submit" class="btn btn-primary form-control" disabled>Export</button>
+        </form>        
+    </div>
 </div>
-<div class="row">
+{{-- <div class="row">
     <div class="col-md text-center">
         <h2 id='snhead'></h2>
     </div>
-</div>
+</div> --}}
 <div id="sntTableDiv">
     @include('includes.table.sntTable')
 </div>

@@ -8,10 +8,17 @@ function loadreel($sn){
         },
         success: function (data) {           
             $('#sntTableDiv').html(data);
-            $('#snhead').html('** ' + $sn + ' **');
+            if ($('#snhead').html() != '') {
+                $('#serialExport').val($('#snhead').html());
+                $('#exportBtn').attr('disabled',false);                
+            }
+            else{
+                $('#exportBtn').attr('disabled',true);
+            }
         }
     });    
 }
+
 /* EVENTS */
 $('#snTB').on('keypress', function(e){
     if (e.keyCode == 13){
@@ -19,3 +26,6 @@ $('#snTB').on('keypress', function(e){
         this.value = '';
     }
 });
+/* $('#exportBtn').on('click', function(){
+    alert('TEST');
+}); */
