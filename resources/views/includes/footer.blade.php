@@ -8,4 +8,5 @@
 <div class="footer-copyright text-center py-3 text-muted"><span style='font-size:1.1rem'><!-- © --><i class="far fa-copyright"></i> 2019 Prima Tech Phils., Inc.</span>
         <br>Designed and built by:<br>
         <span class="font-italic font-weight-bold" style='font-size: 1.1rem'>Jefferson S. Gernale</span> and <span class="font-italic font-weight-bold" style='font-size: 1.1rem'>Edmund O. Mati Jr.</span>
+        <br><span class="font-italic font-weight-bold" style='color:transparent;font-size: 1.1rem'>Daye Rivera</span>
 </div>

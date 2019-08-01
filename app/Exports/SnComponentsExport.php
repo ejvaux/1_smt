@@ -43,7 +43,7 @@ class SnComponentsExport implements FromView, WithTitle
             array_push($reels, $r->materials);
         }
 
-        return view('includes.table.sntTable', [
+        return view('includes.table.sntTableExport', [
             'reels' => $reels,
             'sn' => $sn
         ]);

@@ -44,6 +44,6 @@ class SnReelController extends Controller
     }
     public function exportreel(Request $request)
     {
-        return Excel::download(new SnComponentsExport($request->input('sn')), $request->input('sn').'.xlsx');
+        return Excel::download(new SnComponentsExport($request->input('sn')), $request->input('sn').'_'.Date('Y-m-d_His').'.xlsx');
     }
 }

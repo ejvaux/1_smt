@@ -13,8 +13,8 @@
             </tr>
             <tr class="text-center">
                 <th>PN</th>
-                <th class='border-right'>RID</th>
-                <th>PN</th>
+                <th>RID</th>
+                <th class='border-left'>PN</th>
                 <th class='border-right'>RID</th>
                 <th>PN</th>
                 <th>RID</th>

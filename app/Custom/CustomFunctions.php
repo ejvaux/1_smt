@@ -19,6 +19,8 @@ use App\employee;
 use App\machine;
 use App\lineSMT;
 
+use App\tableSMT;
+
 use Nexmo\Message\Shortcode\Alert;
 /* Using component monitoring models */
 use App\RunningOnMachine;
@@ -204,6 +206,14 @@ class CustomFunctions
         else{
             return substr($mnth,-1);
         }
+    }
+    public static function getmachcode($machine){
+        $m_code =substr($machine,0,-1);
+        return $m_code;
+    }
+    public static function getmachtable($machine){
+        $table=substr($machine,-1);
+        return $table_id= tableSMT::where('name',$table)->pluck('id')->first();
     }
 
 }
