@@ -16,6 +16,7 @@ use App\Models\Division;
 use App\Models\Process;
 use App\Models\DivProcess;
 use App\Models\Pcb;
+use App\Models\PcbArchive;
 use App\Models\DefectType;
 use App\Models\WorkOrder;
 use App\Http\Controllers\MES\model\LineName;
@@ -35,6 +36,9 @@ class trackingController extends Controller
 
         $get = $request->input('myInputPCB');
         $Pcbs = Pcb::where('serial_number',$get)->get();
+        if($Pcbs->count() == 0){
+            $Pcbs = PcbArchive::where('serial_number',$get)->get();
+        }
         return view('mes2.tracking',compact('Pcbs'));
 
     }
