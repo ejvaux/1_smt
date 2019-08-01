@@ -285,10 +285,10 @@ class ApiController extends Controller
                         /* RemoteInsert::dispatch($request->serial_number,$mcid->id); */
                     } catch (\Throwable $th) {
                         Log::error($th);
-                    } 
+                    }
                 }
                 else{
-                    $a->mat_comp_id = 0;
+                    $a->mat_comp_id = null;
                 }
 
                 /* For Exporting */        
