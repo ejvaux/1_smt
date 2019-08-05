@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pcb;
 use App\Models\PcbArchive;
 use App\Models\MatComp;
+use App\Models\MatSnComp;
 use App\Exports\SnComponentsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -41,6 +42,17 @@ class SnReelController extends Controller
             array_push($reels, $r->materials);
         }
         return view('includes.table.sntTable',compact('reels','sn'));
+    }
+    public function loadsnumber(Request $request)
+    {
+        $sns = [];
+        $serials = MatSnComp::where('RID',$request->input('rid'))->get();
+
+        foreach ($serials as $serial){
+            $sns[] = $serial->sn;
+        }
+        
+        return view('includes.table.reelTable',compact('sns'));
     }
     public function exportreel(Request $request)
     {

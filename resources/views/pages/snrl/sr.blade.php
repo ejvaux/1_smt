@@ -17,10 +17,13 @@
                         <div class="card-body">                        
                             <ul class="nav nav-tabs mb-3" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link bold-text active" href="#sn" role="tab" data-toggle="tab">Serial Number</a>
+                                    <a class="nav-link bold-text active" href="#sn" role="tab" data-toggle="tab">Search S/N</a>
                                 </li>
                                 <li class="nav-item bold-text">
-                                    <a id='serntab' class="nav-link" href="#reel" role="tab" data-toggle="tab">Reel</a>
+                                    <a class="nav-link" href="#reel" role="tab" data-toggle="tab">Search Reel</a>
+                                </li>
+                                <li class="nav-item bold-text">
+                                    <a class="nav-link" href="#export" role="tab" data-toggle="tab">Export</a>
                                 </li>
                             </ul>
                             
@@ -31,7 +34,10 @@
                                 </div>
                                 <div class="tab-pane container" id="reel" style='height:100%' {{-- style='height: 400px' --}}>
                                     @include('includes.snrl.reelTab')
-                                </div>                    
+                                </div>
+                                <div class="tab-pane container" id="export" style='height:100%' {{-- style='height: 400px' --}}>
+                                    @include('includes.snrl.exportTab')
+                                </div>                  
                             </div>
                         </div>
                     </div>

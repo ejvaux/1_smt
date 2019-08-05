@@ -6,11 +6,11 @@
 <div class="table-responsive-lg w-100 text-nowrap" style='min-height: 400px;overflow:auto'{{-- style="width: 100%;height: 410px;overflow:auto" --}}>
     <table class="table table-sm" id="datatable2">
         <thead >
-            <tr>
+            {{-- <tr>
                 <th colspan="6">
                     <h2 id='snhead' class='text-center'>@isset($sn){{$sn}}@endisset</h2>
                 </th>
-            </tr>
+            </tr> --}}
             <tr class="text-center">
                 <th>PN</th>
                 <th>RID</th>
