@@ -1,13 +1,9 @@
-<div class="table-responsive-lg w-100 text-nowrap" style='min-height: 400px;overflow:auto'{{-- style="width: 100%;height: 410px;overflow:auto" --}}>
+<div class="table-responsive-lg w-100 text-nowrap" style='min-height: 400px;overflow:auto'>
+    <input id="reelhead" type="hidden" value="@isset($reel){{$reel}}@endisset">
     <table class="table table-sm" id="datatable2">
         <thead >
-            <tr class="text-center">
-                <th>S/N</th>
-                <th>S/N</th>
-                <th>S/N</th>
-                <th>S/N</th>
-                <th>S/N</th>
-                <th>S/N</th>
+            <tr rowspan="6" class="text-center">
+                <th>SERIAL NUMBERS</th>
             </tr>
         </thead>
         <tbody class='text-center'>

@@ -22,22 +22,22 @@
                                 <li class="nav-item bold-text">
                                     <a class="nav-link" href="#reel" role="tab" data-toggle="tab">Search Reel</a>
                                 </li>
-                                <li class="nav-item bold-text">
+                                {{-- <li class="nav-item bold-text">
                                     <a class="nav-link" href="#export" role="tab" data-toggle="tab">Export</a>
-                                </li>
+                                </li> --}}
                             </ul>
                             
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane container active" id="sn" style='height:100%' {{-- style='height: 400px' --}}>
+                                <div class="tab-pane container active" id="sn" style='height:100%'>
                                     @include('includes.snrl.snumberTab')
                                 </div>
-                                <div class="tab-pane container" id="reel" style='height:100%' {{-- style='height: 400px' --}}>
+                                <div class="tab-pane container" id="reel" style='height:100%'>
                                     @include('includes.snrl.reelTab')
                                 </div>
-                                <div class="tab-pane container" id="export" style='height:100%' {{-- style='height: 400px' --}}>
+                                {{-- <div class="tab-pane container" id="export" style='height:100%'>
                                     @include('includes.snrl.exportTab')
-                                </div>                  
+                                </div> --}}                  
                             </div>
                         </div>
                     </div>

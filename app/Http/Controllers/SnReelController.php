@@ -43,18 +43,24 @@ class SnReelController extends Controller
         }
         return view('includes.table.sntTable',compact('reels','sn'));
     }
-    public function loadsnumber(Request $request)
+    public function loadsn(Request $request)
     {
         $sns = [];
         $serials = MatSnComp::where('RID',$request->input('rid'))->get();
-
-        foreach ($serials as $serial){
-            $sns[] = $serial->sn;
-        }
-        
-        return view('includes.table.reelTable',compact('sns'));
+        if($serials->count() != 0){
+            foreach ($serials as $serial){
+                $sns[] = $serial->sn;
+            }
+            $reel = $request->input('rid');
+        }        
+        /* return dd($serials); */
+        /* return view('includes.table.reelTable',compact('sns','reel')); */
     }
     public function exportreel(Request $request)
+    {
+        return Excel::download(new SnComponentsExport($request->input('sn')), $request->input('sn').'_'.Date('Y-m-d_His').'.xlsx');
+    }
+    public function exportsn(Request $request)
     {
         return Excel::download(new SnComponentsExport($request->input('sn')), $request->input('sn').'_'.Date('Y-m-d_His').'.xlsx');
     }

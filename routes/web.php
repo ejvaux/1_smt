@@ -81,7 +81,9 @@ Route::get('rt', 'LineResultController@resultTable');
 /* Serial Number - Work Order */
 Route::get('sr', 'SnReelController@index');
 Route::get('loadreel', 'SnReelController@loadreel');
+Route::get('loadsn', 'SnReelController@loadsn');
 Route::get('exportreel', 'SnReelController@exportreel');
+Route::get('exportsn', 'SnReelController@exportsn');
 
 /* QR Generate */
 Route::get('qr-code', 'ScanPcbController@qrgen');
