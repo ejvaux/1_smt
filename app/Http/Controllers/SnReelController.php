@@ -8,6 +8,7 @@ use App\Models\PcbArchive;
 use App\Models\MatComp;
 use App\Models\MatSnComp;
 use App\Exports\SnComponentsExport;
+use App\Exports\PnRidExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\MES\model\Component;
 use App\Http\Controllers\MES\model\LineName;
@@ -108,8 +109,12 @@ class SnReelController extends Controller
     {
         return Excel::download(new SnComponentsExport($request->input('sn')), $request->input('sn').'_'.Date('Y-m-d_His').'.xlsx');
     }
-    public function exportsn(Request $request)
+    public function exportpnrid(Request $request)
     {
-        return Excel::download(new SnComponentsExport($request->input('sn')), $request->input('sn').'_'.Date('Y-m-d_His').'.xlsx');
+        return Excel::download(new PnRidExport($request->input('pn')), $request->input('pn').'_'.Date('Y-m-d_His').'.xlsx');
+    }
+    public function exportrlsn(Request $request)
+    {
+        return Excel::download(new PnRidExport($request->input('pn')), $request->input('pn').'_'.Date('Y-m-d_His').'.xlsx');
     }
 }

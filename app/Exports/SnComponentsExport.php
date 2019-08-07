@@ -30,11 +30,11 @@ class SnComponentsExport implements FromView, WithTitle
         if(!$top){
             $top = PcbArchive::where('serial_number',$this->sn)->where('type',0)->where('div_process_id',2)->orderBy('id','DESC')->first();
         }
-        if($bot){
+        if($bot && $bot->count() != 0){
             array_push($mid, $bot->mat_comp_id);
             $sn = $this->sn;
         }
-        if($top){
+        if($top && $top->count() != 0){
             array_push($mid, $top->mat_comp_id);
             $sn = $this->sn;
         }        

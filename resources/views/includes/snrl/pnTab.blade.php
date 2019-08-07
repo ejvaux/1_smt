@@ -2,12 +2,12 @@
     <div class="col-md-3">
         <input type="text" class="form-control form-control-sm" id="pnTB" name="" placeholder="Enter P/N Here . . .">
     </div>
-    {{-- <div class="col-md-3">
-        <form method="get" action="{{url('exportpn')}}">
+    <div class="col-md-3">
+        <form method="get" action="{{url('exportpnrid')}}">
             <input id="pnExport" type="hidden" name="pn">
-            <button id="pnexportBtn" type="submit" class="btn btn-primary form-control" style='display:none'>Export</button>
+            <button id="pnexportBtn" type="submit" class="btn btn-primary btn-sm form-control" style='display:none'>Export</button>
         </form>
-    </div> --}}
+    </div>
     <div class="col-md-3">
         <label id='pnhead1' class="font-weight-bold" style="font-size:1.5rem"></label>
     </div>   

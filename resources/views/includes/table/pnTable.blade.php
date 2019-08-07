@@ -6,7 +6,7 @@
             <thead >
                 <tr class="text-center">
                     <th>#</th>
-                    <th>MODEL</th>
+                    <th>P/N</th>
                     <th>LINE</th>
                     <th>RID</th>
                 </tr>
@@ -15,7 +15,7 @@
                 @foreach ($rids as $rid)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$rid->model->program_name}}</td>
+                        <td>{{$rid->component->product_number}}</td>
                         <td>{{$rid->line->description}}</td>
                         <td>{{$rid->RID}}</td>
                     </tr>

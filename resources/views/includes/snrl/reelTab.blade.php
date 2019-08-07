@@ -3,9 +3,9 @@
         <input type="text" class="form-control form-control-sm" id="reelTB" name="" placeholder="Scan Reel Here . . .">
     </div>
     <div class="col-md-3">
-        <form method="get" action="{{url('exportreel')}}">
+        <form method="get" action="{{url('exportrlsn')}}">
             <input id="reelExport" type="hidden" name="reel">
-            <button id="reelexportBtn" type="button" class="btn btn-primary form-control" style='display:none'>Export</button>
+            <button id="reelexportBtn" type="button" class="btn btn-primary btn-sm form-control" style='display:none'>Export</button>
         </form>
     </div>
     <div class="col-md-3">

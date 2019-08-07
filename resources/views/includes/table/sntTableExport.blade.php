@@ -1,16 +1,16 @@
-<table class="table table-sm" id="datatable2">
-    <thead >
-        <tr class="text-center">
-            <th>PN</th>
-            <th>RID</th>
-            <th>MACHINE</th>
-            <th>TABLE</th>
-            <th>POSITION</th>
-            <th>FEEDER</th>
-        </tr>
-    </thead>                        
-    <tbody class='text-center'>
-    @foreach ($reels as $reel)
+@foreach ($reels as $reel)
+    <table class="table table-sm">
+            <thead >
+                <tr class="text-center">
+                    <th>PN</th>
+                    <th>RID</th>
+                    <th>MACHINE</th>
+                    <th>TABLE</th>
+                    <th>POSITION</th>
+                    <th>FEEDER</th>
+                </tr>
+            </thead>                        
+            <tbody class='text-center'>
         @foreach ($reel as $item => $prop)
         <tr>
             <td>{{App\Http\Controllers\MES\model\Component::where('id',$item)->pluck('product_number')->first()}}</td>
@@ -21,6 +21,6 @@
             <td>{{$prop['feeder']}}</td>
         </tr>
         @endforeach
-    @endforeach
-    </tbody>
-</table>
+        </tbody>
+    </table>
+@endforeach
