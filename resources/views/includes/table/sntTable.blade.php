@@ -14,6 +14,7 @@
                             <th>#</th>
                             <th>PN</th>
                             <th>RID</th>
+                            <th>QTY / REEL</th>
                             <th>MACHINE</th>
                             <th>TABLE</th>
                             <th>POSITION</th>
@@ -38,6 +39,7 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{App\Http\Controllers\MES\model\Component::where('id',$item)->pluck('product_number')->first()}}</td>
                         <td>{{$prop['RID']}}</td>
+                        <td>{{$prop['QTY']}}</td>
                         <td>{{CustomFunctions::getmachcode($prop['machine'])}}</td>
                         <td>{{CustomFunctions::getmachtable($prop['machine'])}}</td>
                         <td>{{App\Http\Controllers\MES\model\Position::where('id',$prop['position'])->pluck('name')->first()}}</td>

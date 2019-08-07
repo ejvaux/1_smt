@@ -18,4 +18,16 @@ class MatSnComp extends Model
     protected $casts = [
         'sn' => 'array',
     ];
+    public function model()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\ModName','model_id');
+    }
+    public function line()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\LineName','line_id');
+    }
+    public function component()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\Component','component_id');
+    }
 }

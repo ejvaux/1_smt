@@ -1,45 +1,44 @@
+@isset ($sns)
+    <div class="row text-center">
+        <div class="col-md">
+            <h4>SERIAL NUMBERS</h4>
+        </div>
+        <div class="col-md">
+            <h4>TOTAL : @isset($sntotal){{$sntotal}}@endisset</h4>
+        </div>
+        {{-- <div class="col-md">
+            <h4>@isset($sntotal){{$sntotal}}@endisset</h4>
+        </div> --}}
+    </div>
+@endisset
 <div class="table-responsive-lg w-100 text-nowrap" style='min-height: 400px;overflow:auto'>
     <input id="reelhead" type="hidden" value="@isset($reel){{$reel}}@endisset">
-    <table class="table table-sm" id="datatable2">
-        <thead >
-            <tr rowspan="6" class="text-center">
-                <th>SERIAL NUMBERS</th>
+    <table class="table table-sm">
+        {{-- <thead >
+            <tr class="text-center">
+                <th>TOTAL :</th>
+                <th>@isset($sntotal){{$sntotal}}@endisset</th>
             </tr>
-        </thead>
+        </thead> --}}
         <tbody class='text-center'>
         @isset ($sns)
             @if (count($sns)>0)
-                @foreach ($sns as $sn)                    
-                    @foreach ($sn as $item => $prop)
-                        @if ($loop->iteration % 6 == 1)
+                @foreach ($sns as $sn)
+                    @if ($loop->iteration % 6 == 1)
                             <tr>
-                                <td>{{$item}}</td>
+                                <td>{{$sn}}</td>
                         @elseif($loop->iteration % 6 == 0)
-                                <td>{{$item}}</td>
+                                <td>{{$sn}}</td>
                             </tr>
                         @else
-                                <td>{{$item}}</td>
-                        @endif
-                    @endforeach
-                    <tr>
-                        @for ($i = 0; $i < 6; $i++)
-                            <td></td>
-                        @endfor
-                    </tr>
+                                <td>{{$sn}}</td>
+                    @endif
                 @endforeach
             @else
-                <tr>
-                    <th colspan="6">
-                        <h4>No data to display</h4>
-                    </th>
-                </tr>
+                <h4 class="text-center">No data to display</h4>
             @endif
         @else
-            <tr>
-                <th colspan="6">
-                    <h4>No data to display.</h4>
-                </th>
-            </tr>
+            <h4 class="text-center">No data to display.</h4>
         @endisset
         </tbody>
     </table>

@@ -82,6 +82,8 @@ Route::get('rt', 'LineResultController@resultTable');
 Route::get('sr', 'SnReelController@index');
 Route::get('loadreel', 'SnReelController@loadreel');
 Route::get('loadsn', 'SnReelController@loadsn');
+Route::get('loadpn', 'SnReelController@loadpn');
+Route::get('loadsnpn', 'SnReelController@loadsnpn');
 Route::get('exportreel', 'SnReelController@exportreel');
 Route::get('exportsn', 'SnReelController@exportsn');
 

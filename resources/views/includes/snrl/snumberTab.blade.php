@@ -10,14 +10,14 @@
         <label for="serial_number" class="col-form-label">Serial Number:</label>
         <input id="serial_number" class="form-control" type="text" value="" readonly>
     </div> --}}
-    <div class="col-md-5">
+    <div class="col-md-3">
         {{-- <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="">Serial Number: </span>
             </div>
             <input type="text" class="form-control" id="snTB" name="" placeholder="Scan Serial Number Here . . .">
         </div> --}}
-        <input type="text" class="form-control" id="snTB" name="" placeholder="Scan Serial Number Here . . .">
+        <input type="text" class="form-control form-control-sm" id="snTB" name="" placeholder="Scan Serial Number Here . . .">
     </div>
     <div class="col-md-3">
         <form method="get" action="{{url('exportreel')}}">

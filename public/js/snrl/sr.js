@@ -49,14 +49,87 @@ function loadsn($reel){
     });    
 }
 
+function loadpn($pn){
+    $.ajax({
+        url: 'loadpn',
+        type:'get',
+        data: {
+            'pn':  $pn
+        },
+        success: function (data) {           
+            $('#pnTableDiv').html(data);
+            if ($('#pnhead').val() != '') {
+                $('#pnExport').val($('#pnhead').html());
+                $('#pnhead1').html($('#pnTB').val());
+                $('#pnexportBtn').show();
+            }
+            else{
+                $('#pnexportBtn').hide();
+                $('#pnhead1').html('');
+            }
+            $('#pnTB').val('');
+        }
+    });    
+}
+
+function loadsnpn($sn,$cid){
+    $.ajax({
+        url: 'loadsnpn',
+        type:'get',
+        data: {
+            'sn':  $sn,
+            'cid': $cid
+        },
+        success: function (data) {           
+            $('#snpnTableDiv').html(data);
+            if ($('#snpnhead').val() != '') {
+                $('#snpnExport').val($('#snpnhead').html());
+                $('#snpnhead1').html($('#snpnhead').val());
+                $('#snpnexportBtn').show();
+            }
+            else{
+                $('#snpnexportBtn').hide();
+                $('#snpnhead1').html('');
+            }
+            $('#snpnTB').val('');
+        }
+    });    
+}
+
 /* EVENTS */
 $('#snTB').on('keypress', function(e){
     if (e.keyCode == 13){
-        loadreel(this.value);
+        if(this.value != ''){
+            loadreel(this.value);
+        }        
     }
 });
 $('#reelTB').on('keypress', function(e){
     if (e.keyCode == 13){
-        loadsn(this.value);
+        if(this.value != ''){
+            loadsn(this.value);
+        }        
+    }
+});
+$('#pnTB').on('keypress', function(e){
+    if (e.keyCode == 13){
+        if(this.value != ''){
+            loadpn(this.value);
+        }        
+    }
+});
+$('#snpnTB').on('keypress', function(e){
+    if (e.keyCode == 13){
+        if($('#snpnDD').val() == ''){
+            iziToast.warning({
+                message: 'Please select P/N',
+                position: 'topCenter'
+            });
+        }
+        else{
+            if(this.value != ''){
+                loadsnpn(this.value,$('#snpnDD').val());
+            }            
+        }        
     }
 });
