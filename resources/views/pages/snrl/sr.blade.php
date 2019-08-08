@@ -4,6 +4,10 @@
     <script src="{{ asset('js/snrl/sr.js')}}" defer></script>
 @endsection
 
+@section('title')    
+    SN/REEL - SMT SYSTEM
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="white_bkg">
@@ -23,7 +27,7 @@
                                     <a class="nav-link" href="#pn" role="tab" data-toggle="tab">Search by P/N</a>
                                 </li>
                                 <li class="nav-item bold-text">
-                                    <a class="nav-link" href="#reel" role="tab" data-toggle="tab">Search by Reel</a>
+                                    <a class="nav-link" href="#reel" role="tab" data-toggle="tab">Search by RID</a>
                                 </li>
                                 <li class="nav-item bold-text">
                                     <a class="nav-link" href="#snpn" role="tab" data-toggle="tab">Search by SN/PN</a>

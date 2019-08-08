@@ -83,10 +83,11 @@ Route::get('sr', 'SnReelController@index');
 Route::get('loadreel', 'SnReelController@loadreel');
 Route::get('loadsn', 'SnReelController@loadsn');
 Route::get('loadpn', 'SnReelController@loadpn');
-Route::get('loadsnpn', 'SnReelController@loadsnpn');
+Route::post('loadsnpn', 'SnReelController@loadsnpn');
 Route::get('exportreel', 'SnReelController@exportreel');
 Route::get('exportpnrid', 'SnReelController@exportpnrid');
 Route::get('exportrlsn', 'SnReelController@exportrlsn');
+Route::post('exportsnpn', 'SnReelController@exportsnpn');
 
 /* QR Generate */
 Route::get('qr-code', 'ScanPcbController@qrgen');

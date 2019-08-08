@@ -4,6 +4,10 @@
     <script src="{{ asset('js/scan/sp.js')}}" defer></script>
 @endsection
 
+@section('title')    
+    SCAN - SMT SYSTEM
+@endsection
+
 @section('content')
 <audio id="e_sound">
     <source src="{{asset('sounds/ce.mp3')}}" type="audio/mpeg">

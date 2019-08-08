@@ -4,6 +4,10 @@
     <script src="{{ asset('js/lr/lr.js')}}" defer></script>
 @endsection
 
+@section('title')    
+    RESULTS - SMT SYSTEM
+@endsection
+
 @section('content')
 <div class="container-fluid">
     <div class="white_bkg">

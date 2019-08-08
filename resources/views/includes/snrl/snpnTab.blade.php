@@ -13,9 +13,11 @@
         </select>
     </div>
     <div class="col-md-3">
-        <form method="get" action="{{url('exportpn')}}">
-            <input id="snpnExport" type="hidden" name="pn">
-            <button id="pnexportBtn" type="button" class="btn btn-primary form-control" style='display:none'>Export</button>
+        <form method="post" action="{{url('exportsnpn')}}">
+            <input id="snpnExport" type="hidden" name="cid">
+            <input id="snpnExport2" type="hidden" name="sn">
+            <input id="snpnExport3" type="hidden" name="cname">
+            <button id="snpnexportBtn" type="submit" class="btn btn-primary form-control" style='display:none'>Export</button>
         </form>
     </div>
     <div class="col-md-3">

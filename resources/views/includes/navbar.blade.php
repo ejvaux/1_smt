@@ -27,7 +27,7 @@
                         </li>
                     @endif --}}                    
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('sp')}}"><span class='font-weight-bold'>Scan</span></a>
+                        <a class="nav-link" href="{{url('sp')}}" target="_blank"><span class='font-weight-bold'>Scan</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('lr')}}" target="_blank"><span class='font-weight-bold'>Results</span></a>
@@ -40,14 +40,15 @@
                             <a class="nav-link" href="{{url('jo')}}" target="_blank">JO</a>                             
                             <a class="nav-link" href="{{url('tracking')}}" target="_blank">PCB</a>
                             <a class="nav-link" href="{{url('tc')}}" target="_blank">Component</a>                            
+                            {{-- <a class="nav-link" href="{{url('sr')}}" target="_blank">SN/Reel</a> --}}
                         </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('ds')}}" target="_blank"><span class='font-weight-bold'>Defect</span></a>
                     </li>
-                    {{-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{url('sr')}}" target="_blank"><span class='font-weight-bold'>SN/Reel</span></a>
-                    </li> --}}
+                    </li>
                 @else
                     <li class="nav-item">
                         <a class="nav-link bold-text" href="/1_smt/public/home"><i class="fas fa-home"></i> Home</a>

@@ -3,6 +3,11 @@
 @section('js')
 <script src="{{ asset('js/mes2/spsearch.js')}}" defer></script>
 @endsection
+
+@section('title')    
+    PCB TRACKING - SMT SYSTEM
+@endsection
+
 @section('content')
 <div class="container-fluid border mt-3 border-dark" style="overflow-x:auto;">
     <div class="card mt-3 border mb-3 border-secondary"style="overflow-x:auto;">
@@ -47,14 +52,14 @@
                                     <div class="table-responsive-lg w-100 text-nowrap" style='max-height: 350px;overflow:auto'>
                                         <table class="table table-sm" id="">
                                             <thead class="thead-light">
-                                                <tr class="text-center">
-                                                   
+                                                <tr class="text-center">    
                                                     <th>S/N</th>
                                                     <th>WORK ORDER</th>
                                                     <th>DIVISION</th>
                                                     <th>LINE</th>
                                                     <th>PROCESS</th>
                                                     <th>TYPE</th>
+                                                    <th>DEFECT</th>
                                                     <th>EMPLOYEE</th>
                                                     <th>SHIFT</th>
                                                     <th>CREATED AT</th>
@@ -79,8 +84,22 @@
                                                                         OUT
                                                                     @endif
                                                                 </td>
+                                                                <td>
+                                                                    @if ($pcb->defect == 1)
+                                                                        <span class='text-danger font-weight-bold'>NG</span>
+                                                                    @else
+                                                                    <span class='text-success font-weight-bold'>GOOD</span>
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{$pcb->employee->fname}} {{$pcb->employee->lname}}</td>
-                                                                <td>{{$pcb->shift}}</td>
+                                                                <td>
+                                                                    {{-- {{$pcb->shift}} --}}
+                                                                    @if ($pcb->shift == 1)
+                                                                        DAY
+                                                                    @else
+                                                                        NIGHT
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{$pcb->created_at}}</td>
                                                             </tr>
                                                         @endforeach

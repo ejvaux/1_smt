@@ -4,6 +4,10 @@
     <script src="{{ asset('js/defect/ds.js')}}" defer></script>
 @endsection
 
+@section('title')    
+    DEFECT - SMT SYSTEM
+@endsection
+
 @section('content')
 <div class="container-fluid">
     <div class="white_bkg">

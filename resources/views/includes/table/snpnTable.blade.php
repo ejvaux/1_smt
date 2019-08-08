@@ -1,5 +1,6 @@
 <div class="table-responsive-lg w-100 text-nowrap" style='min-height: 400px;overflow:auto'{{-- style="width: 100%;height: 410px;overflow:auto" --}}>
-    <input id='snpnhead' type="hidden" value="@isset($comp){{$comp}}@endisset" >    
+    <input id='snpnhead' type="hidden" value="@isset($comp){{$comp}}@endisset" >
+    <input id='snpnhead2' type="hidden" value="@isset($snout){{$snout}}@endisset" >    
     @isset ($snrids)    
         @if (count($snrids)>0)
         <table class="table table-sm" id="datatable2">

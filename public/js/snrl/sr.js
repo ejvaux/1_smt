@@ -32,7 +32,7 @@ function loadsn($reel){
         success: function (data) {           
             $('#reelTableDiv').html(data);
             if ($('#reelhead').val() != '') {
-                $('#reelExport').val($('#reelhead').html());
+                $('#reelExport').val($('#reelhead').val());
                 $('#reelhead1').html($('#reelTB').val());
                 $('#reelexportBtn').show();
             }
@@ -71,7 +71,7 @@ function loadpn($pn){
 function loadsnpn($sn,$cid){
     $.ajax({
         url: 'loadsnpn',
-        type:'get',
+        type:'post',
         data: {
             'sn':  $sn,
             'cid': $cid
@@ -79,7 +79,9 @@ function loadsnpn($sn,$cid){
         success: function (data) {           
             $('#snpnTableDiv').html(data);
             if ($('#snpnhead').val() != '') {
-                $('#snpnExport').val($('#snpnhead').html());
+                $('#snpnExport').val($cid);
+                $('#snpnExport2').val($('#snpnhead2').val());
+                $('#snpnExport3').val($('#snpnhead').val());
                 $('#snpnhead1').html($('#snpnhead').val());
                 $('#snpnexportBtn').show();
             }

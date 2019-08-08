@@ -9,6 +9,8 @@ use App\Models\MatComp;
 use App\Models\MatSnComp;
 use App\Exports\SnComponentsExport;
 use App\Exports\PnRidExport;
+use App\Exports\ReelSnExport;
+use App\Exports\SnPnExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\MES\model\Component;
 use App\Http\Controllers\MES\model\LineName;
@@ -82,6 +84,7 @@ class SnReelController extends Controller
     {
         $snrids = [];
         $comp = '';
+        $snout = $request->input('sn');
         $sns = explode(",",$request->input('sn'));
         $cid = $request->input('cid');
         $mats = MatSnComp::where('component_id',$cid)->get();
@@ -101,20 +104,24 @@ class SnReelController extends Controller
         if(count($snrids) > 0){
             $comp = Component::where('id',$cid)->pluck('product_number')->first();
         }
-        return view('includes.table.snpnTable',compact('snrids','comp'));
+        return view('includes.table.snpnTable',compact('snrids','comp','snout'));
 
         /* return json_encode($snrids); */
     }
     public function exportreel(Request $request)
     {
-        return Excel::download(new SnComponentsExport($request->input('sn')), $request->input('sn').'_'.Date('Y-m-d_His').'.xlsx');
+        return Excel::download(new SnComponentsExport($request->input('sn')), 'SN_'.$request->input('sn').'_'.Date('Y-m-d_His').'.xlsx');
     }
     public function exportpnrid(Request $request)
     {
-        return Excel::download(new PnRidExport($request->input('pn')), $request->input('pn').'_'.Date('Y-m-d_His').'.xlsx');
+        return Excel::download(new PnRidExport($request->input('pn')), 'PN_'.$request->input('pn').'_'.Date('Y-m-d_His').'.xlsx');
     }
     public function exportrlsn(Request $request)
     {
-        return Excel::download(new PnRidExport($request->input('pn')), $request->input('pn').'_'.Date('Y-m-d_His').'.xlsx');
+        return Excel::download(new ReelSnExport($request->input('reel')), 'RID_'.$request->input('reel').'_'.Date('Y-m-d_His').'.xlsx');
+    }
+    public function exportsnpn(Request $request)
+    {
+        return Excel::download(new SnPnExport($request->input('sn'),$request->input('cid')), 'SNPN_'.$request->input('cname').'_'.Date('Y-m-d_His').'.xlsx');
     }
 }
