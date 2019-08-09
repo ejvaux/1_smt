@@ -197,7 +197,7 @@ class ApiController extends Controller
                 ->first();
 
             $in = Pcb::select('id')->where('serial_number',$request->serial_number)
-                ->where('jo_id',$request->jo_id)
+                /* ->where('jo_id',$request->jo_id) */
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0)
                 ->first();
@@ -210,7 +210,7 @@ class ApiController extends Controller
             }
             if(!$in){
                 $in = PcbArchive::select('id')->where('serial_number',$request->serial_number)
-                    ->where('jo_id',$request->jo_id)
+                    /* ->where('jo_id',$request->jo_id) */
                     ->where('div_process_id',$request->div_process_id)
                     ->where('type',0)
                     ->first();

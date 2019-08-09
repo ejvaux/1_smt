@@ -19,10 +19,18 @@
                     </div>
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <form method="get" action="{{url('jo')}}">
                                     <div class="input-group">                        
                                         <input type="text" class="form-control" id="" name="text" placeholder="Scan Serial Number Here . . .">
+                                        {{-- <button type="submit" class='' id=""><i class="fa fa-search"></i></button> --}}                                            
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-3">
+                                <form action="{{url('jo')}}" method="get">
+                                    <div class="input-group">                        
+                                        <input type="date" class="form-control" id="" name="date" value='{{$date}}'>
                                         <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
                                     </div>
                                 </form>

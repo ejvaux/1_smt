@@ -11,6 +11,12 @@ class JoController extends Controller
     public function index(Request $request)
     {
         $t = $request->input('text');
+        if($request->input('date') != ''){
+            $date = $request->input('date');
+        }
+        else{
+            $date = Date('Y-m-d');
+        }
         if($t){
             $w = WoSn::where('SERIAL_NUMBER',$t)->first();
             if($w){
@@ -21,13 +27,13 @@ class JoController extends Controller
             }
         }
         else{
-            $jos = WorkOrder::where('DATE_',Date('Y-m-d'))
+            $jos = WorkOrder::where('DATE_',$date)
                 ->where(function ($query) {
                     $query->where('JOB_ORDER_NO','LIKE','2%')
                     ->orwhere('JOB_ORDER_NO','LIKE','8%');
                 })
                 ->orderby('MACHINE_CODE')->get();
         }
-        return view('pages.jo.jo',compact('jos'));
+        return view('pages.jo.jo',compact('jos','date'));
     }
 }
