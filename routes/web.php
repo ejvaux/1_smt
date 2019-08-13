@@ -67,6 +67,8 @@ Route::get('sp', 'ScanPcbController@index');
 Route::get('scansetting', 'ScanPcbController@scansetting');
 /* Defect Scanning */
 Route::get('ds', 'DefectController@index');
+/* Exporting Defect Mats */
+Route::get('exportdefectmats', 'DefectController@exportdefectmats');
 /* Check Employee PIN */
 Route::post('scanpinemp', 'DefectController@scanpinemp');
 /* Export Page */
@@ -101,7 +103,7 @@ Route::namespace('Api')->group(function () {
     /* temp store defect mats */
     Route::post('defectmats_temp', 'DefectController@tempstore');
     /* Repairing Defect mats */
-    Route::post('defectmats_rep/{id}', 'DefectController@repairdef');
+    Route::post('defectmats_rep/{id}', 'DefectController@repairdef');    
 
     Route::prefix('api')->group(function () {
 

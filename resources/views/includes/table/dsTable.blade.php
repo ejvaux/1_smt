@@ -51,7 +51,13 @@
                             {{-- Col --}}
                                 <td>{{$defect_mat->line->name}}</td>
                             {{-- Col --}}                            
-                                <td>{{$defect_mat->shift}}</td>
+                                <td>
+                                    @if ($defect_mat->shift == 1)
+                                        DAY
+                                    @else
+                                        NIGHT
+                                    @endif                                    
+                                </td>
                             {{-- Col --}}
                                 <td>
                                     @if ($defect_mat->process_id)

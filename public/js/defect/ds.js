@@ -303,3 +303,6 @@ $('#scan_sn').on('keypress', function(e){
 $('#reset_sn').on('click', function(e){
     resetsn();
 });
+$('#ds-export-btn').on('click', function(e){
+    $('#ds_export_modal').modal('show');
+});

@@ -8,7 +8,9 @@
                 <tr class="text-center">
                     <th>#</th>
                     <th>S/N</th>
-                    <th>LINE</th>
+                    <th>BOTTOM OUT</th>
+                    <th>TOP OUT</th>
+                    <th>PN</th>
                     <th>RID</th>
                 </tr>
             </thead>
@@ -17,7 +19,9 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$rid}}</td>
-                        <td>{{$r['line']}}</td>
+                        <td>{{$r['BOT']}}</td>
+                        <td>{{$r['TOP']}}</td>
+                        <td>{{$r['PN']}}</td>
                         <td>{{$r['RID']}}</td>
                     </tr>
                 @endforeach            

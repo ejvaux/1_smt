@@ -473,3 +473,44 @@
         </div>
     </div>
 </div>
+
+{{-- EXPORT --}}
+<div class="modal hide fade in" role="dialog" id="ds_export_modal" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export Defect Materials</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <form id="ds_export_form" class='form_to_submit' method="GET" action='{{url('exportdefectmats')}}'>                
+            <div class="modal-body" style="">
+                <!-- ____________ FORM __________________ -->
+        
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="ds_date_from" class="col-form-label">FROM:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <input type="date" class="form-control" name="date_from" id="ds_date_from" value="{{Date('Y-m-d')}}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="ds_date_to" class="col-form-label">TO:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <input type="date" class="form-control" name="date_to" id="ds_date_to" value="{{Date('Y-m-d')}}">
+                    </div>
+                </div>                
+                <!-- ____________ FORM END __________________ -->
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" name="submit" id="ds_export_submit"><i class="fas fa-download"></i> Download</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -32,6 +32,11 @@
                                 <i class="fas fa-search"></i> Advanced Search
                             </button>
                         </div> --}}
+                        <div class="col-md-2">
+                            <button id='ds-export-btn' type="button" class="btn btn-outline-secondary form-control">
+                                <i class="fas fa-file-export"></i> Export
+                            </button>
+                        </div>
                         <div class="col-md-3">                        
                             <form action="{{url('ds')}}" method="get">                   
                                 <div class="input-group">

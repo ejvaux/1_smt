@@ -85,25 +85,80 @@ class SnReelController extends Controller
         $snrids = [];
         $comp = '';
         $snout = $request->input('sn');
-        $sns = explode(",",$request->input('sn'));
+        if(stripos($request->input('sn'), ',')){
+            $sns = explode(",",$request->input('sn'));
+        }
+        else{
+            $sns = explode(" ",$request->input('sn'));
+        }
+        
         $cid = $request->input('cid');
+        $c = Component::where('id',$cid)->pluck('product_number')->first();
         $mats = MatSnComp::where('component_id',$cid)->get();
+
+        foreach ($sns as $sn) {
+            $bot = Pcb::select('created_at')->where('serial_number',$sn)                            
+                ->where('div_process_id',1)
+                ->where('type',1)
+                ->pluck('created_at')
+                ->first();
+            $top = Pcb::select('created_at')->where('serial_number',$sn)                            
+                ->where('div_process_id',2)
+                ->where('type',1)
+                ->pluck('created_at')
+                ->first();
+            if(!$bot){
+                $bot = PcbArchive::select('created_at')->where('serial_number',$sn)                            
+                ->where('div_process_id',1)
+                ->where('type',1)
+                ->pluck('created_at')
+                ->first();
+            }
+            if(!$top){
+                $top = PcbArchive::select('created_at')->where('serial_number',$sn)                            
+                ->where('div_process_id',2)
+                ->where('type',1)
+                ->pluck('created_at')
+                ->first();
+            }
+            $snrids[$sn]["BOT"] = $bot;               
+            $snrids[$sn]["TOP"] = $top;
+            $snrids[$sn]['PN'] = '';
+            $snrids[$sn]['RID'] = '';
+        }
 
         foreach ($mats as $mat) {
             foreach($mat->sn as $m){
                 foreach ($sns as $sn) {
                     if($m == $sn){
-                        $snrids[$sn] = [
-                                    "RID" => $mat->RID,
-                                    "line" => LineName::where('id',$mat->line_id)->pluck('description')->first()
-                                    ];
+                        $snrids[$sn]["PN"] = $c;               
+                        $snrids[$sn]["RID"] = $mat->RID;
                     }
                 }                
             }
         }
+
+        /* foreach ($sns as $sn) {
+            $snrids[$sn] = [
+                "RID" => 'No Data',
+                "line" => 'No Data'
+                ];
+            foreach ($mats as $mat) {
+                foreach($mat->sn as $m){
+                    if($m == $sn){
+                        $snrids[$sn] = [
+                                    "RID" => $mat->RID,
+                                    "line" => LineName::where('id',$mat->line_id)->pluck('description')->first()
+                                    ];
+                    }                              
+                }
+            }
+        } */
+
         if(count($snrids) > 0){
             $comp = Component::where('id',$cid)->pluck('product_number')->first();
         }
+        /* return $snrids; */
         return view('includes.table.snpnTable',compact('snrids','comp','snout'));
 
         /* return json_encode($snrids); */

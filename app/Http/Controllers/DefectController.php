@@ -9,6 +9,8 @@ use App\Models\Division;
 use App\Models\Process;
 use App\Models\Pcb;
 use App\Models\DefectType;
+use App\Exports\DefectMatsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\MES\model\LineName;
 use App\Http\Controllers\MES\model\Employee;
 
@@ -75,5 +77,16 @@ class DefectController extends Controller
             }
         }
         
+    }
+    public function exportdefectmats(Request $request)
+    {
+        if($request->input('date_from') == $request->input('date_to')){
+            $filename = $request->input('date_from');
+        }
+        else{
+            $filename = $request->input('date_from').'_to_'.$request->input('date_to');
+        }
+
+        return Excel::download(new DefectMatsExport($request->input('date_from'),$request->input('date_to')), 'Defects_'.$filename.'.xlsx');
     }
 }
