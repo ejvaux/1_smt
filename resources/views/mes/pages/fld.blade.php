@@ -8,8 +8,8 @@
 <input id="active-table" type="hidden" value="{{$tbl}}">
     <div class="container mt-5" id="table_display" style="width: 100%;">
         <div class="row">
-            <div class="col-md"></div>
-            <div class="col-md-10">
+            {{-- <div class="col-md"></div> --}}
+            <div class="col-md">
                 <div class="row mb-2">
                     <div class="col-md">
                         <div class="btn-group" role="group" aria-label="Basic example">                    
@@ -77,7 +77,6 @@
                                             </div>
                                             <div class="col-md-6">
                                                 @if ($machid != 0 && $lin != 0)
-                                                    {{-- <div id="add_line_input1">  --}}
                                                         @if (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('line_id')->count()>0)
                                                             <select name="" id="flviewline" value='{{$lin}}'>
                                                                 {{-- <option value="">- Select Machine -</option> --}}
@@ -117,8 +116,7 @@
                                                 Machine Name:
                                             </div>
                                             <div class="col-md-6">
-                                                @if ($machid != 0 && $lin != 0)
-                                                    {{-- <div id="add_machine_input1"> --}}
+                                                @if ($machid != 0 && $lin != 0)                                                    
                                                         @if (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->count()>0)
                                                             <select name="" id="flviewmachine" value='{{$machid}}'>
                                                                 {{-- <option value="">- Select Machine -</option> --}}
@@ -369,10 +367,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md">
+            {{-- <div class="col-md">
                 <div id="fdrmodl">
                     @include('mes.inc.modal.flModal')
                 </div>                
+            </div> --}}
+            <div id="fdrmodl">
+                @include('mes.inc.modal.flModal')
             </div>
         </div>
     </div>
