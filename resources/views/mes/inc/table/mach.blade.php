@@ -88,6 +88,7 @@
                 <tr>
                     <th class='text-muted' scope="col">Feeder</th>
                     <th class='text-muted' scope="col">Position</th>
+                    <th class='text-muted' scope="col">Usage</th>
                     <th class='text-muted' scope="col">Preference</th>
                     <th class='text-muted' scope="col">Product Number</th>
                     <th class='text-muted' scope="col">Action</th>
@@ -100,6 +101,7 @@
                             if($tb != $i){
                                 $mt = 0;
                                 $ps = 0;
+                                $us = 0;
                                 $tb = $i;
                             }
                             if($mt != $feeder->mounter_id && $ps == $feeder->pos_id){
@@ -110,10 +112,25 @@
                                 $mt = $feeder->mounter_id;
                             }
                             if($ps != $feeder->pos_id){
-                                echo "<td rowspan='".\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->where('mounter_id',$feeder->mounter_id)->where('pos_id',$feeder->pos_id)->count()."'>".$feeder->position->name."</td>";
+                                $rs = \App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->where('mounter_id',$feeder->mounter_id)->where('pos_id',$feeder->pos_id)->count();
+                                echo "<td rowspan='".$rs."'>".$feeder->position->name."</td>";
+                                echo "<td rowspan='".$rs."'><div class='row'><div class='col-md'>".$feeder->usage."</div><div class='col-md'><button class='cmp_usage '
+                                data-model='{$model->id}'
+                                data-line_id='{$lin}'
+                                data-mach='{$machid}'
+                                data-table='{$i}'
+                                data-mounter_id='{$feeder->mounter_id}'
+                                data-pos_id='{$feeder->pos_id}'
+                                data-usage='{$feeder->usage}'
+                                >Edit Usage</button></div></div></td>";
                                 $ps = $feeder->pos_id;
                             }
+                            /* if($us != $feeder->pos_id){
+                                echo "<td rowspan='".\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->where('machine_type_id',$machid)->where('table_id',$i)->where('mounter_id',$feeder->mounter_id)->where('pos_id',$feeder->pos_id)->count()."'>".$feeder->position->name."</td>";
+                                $ps = $feeder->pos_id;
+                            } */
                         @endphp
+                        {{-- <td>0</td> --}}
                         <td>{{$feeder->preference->name}}</td>
                         <td>{{$feeder->component->product_number}}</td>
                         <td>                            
@@ -128,10 +145,21 @@
                                 data-cmp='{{$feeder->component_id}}'
                             >Edit</button>                            
                             <button class='cmp_delete form_submit_button' type='button' data-id='{{$feeder->id}}'>Delete</button>                            
+                            {{-- @if ($feeder->order_id == 1)
+                                <button class='cmp_usage'
+                                data-model='{{$model->id}}'
+                                data-line_id='{{$lin}}'
+                                data-mach='{{$machid}}'
+                                data-table='{{$i}}'
+                                data-mounter_id='{{$feeder->mounter_id}}'
+                                data-pos_id='{{$feeder->pos_id}}'
+                                data-usage='{{$feeder->usage}}'
+                                >Update Usage</button>
+                            @endif  --}}                           
                         </td>
                     </tr>                    
                 @endforeach                                                                                                     
-            </tbody>
+            </td>
         </table>
         </div>
     {{-- @endif --}}

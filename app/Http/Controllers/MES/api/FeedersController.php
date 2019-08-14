@@ -58,10 +58,21 @@ class FeedersController extends Controller
             if($primary->where('order_id',1)->first()){
                 return redirect()->back()->with('error','Primary component already exists in '.$primary->first()->mounter->code.' - '.$primary->first()->position->name);
             }
-        }        
+        }
 
         if($primary->where('component_id',$request->input('component_id'))->first()){
             return redirect()->back()->with('error','Component already exists in '.$primary->first()->mounter->code.' - '.$primary->first()->position->name);
+        }
+        if($request->input('order_id') != 1){
+            if($primary->where('order_id',1)->first()){
+                $usage = $primary->pluck('usage')->first();
+            }
+            else{
+                $usage = 0;
+            }
+        }
+        else{
+            $usage = $request->input('usage');
         }
 
         $f = new Feeder;
@@ -71,14 +82,20 @@ class FeedersController extends Controller
         $f->table_id = $request->input('table_id');
         $f->mounter_id = $request->input('mounter_id');
         $f->pos_id = $request->input('pos_id');
+        $f->usage = $usage;
         $f->order_id = $request->input('order_id');
-        $f->component_id = $request->input('component_id');
-
-        $m = ModName::find($request->input('model_id'));
-        $m->updated_by = $request->input('user_id');
-        $m->touch();
+        $f->component_id = $request->input('component_id');        
 
         if($f->save()){
+
+            $m = ModName::find($request->input('model_id'));
+            $m->updated_by = $request->input('user_id');
+            $m->touch();
+
+            if($f->order_id == 1){
+                Feeder::where('model_id',$m->id)->where('line_id',$f->line_id)->where('machine_type_id',$f->machine_type_id)->where('table_id',$f->table_id)->where('mounter_id',$f->mounter_id)->where('pos_id',$f->pos_id)->where('order_id',2)->update(['usage' => $f->usage]);                 
+            }
+
             return redirect()->back()->with([
                 'success' => 'Data Saved Successfully.',
                 'Atbl' => $request->input('table_id')
@@ -140,8 +157,8 @@ class FeedersController extends Controller
         if($request->input('order_id') != ""){ $f->order_id = $request->input('order_id');}
         if($request->input('component_id') != ""){ $f->component_id = $request->input('component_id');}
 
-        $m = ModName::find(8);
-        /* $m = ModName::where('id',$request->input('model_id'))->first(); */
+        /* $m = ModName::find(8); */
+        $m = ModName::find($request->input('model_id'));
         $m->updated_by = $uid;
         $m->touch();
 
@@ -226,6 +243,21 @@ class FeedersController extends Controller
             return redirect()->back()->with([
                 'success' => 'Mounter Transferred Successfully.',
                 'Atbl' => $request->input('table_id_to')
+            ]);
+        }
+        else{
+            return redirect()->back()->with('error','Update Failed.');
+        }
+    }
+    public function update_usage(Request $request)
+    {        
+        if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->where('pos_id',$request->input('pos_id'))->update(['usage' => $request->input('usage')])){
+            $m = ModName::find($request->input('model_id'));
+            $m->updated_by = $request->input('user_id');
+            $m->touch();
+            return redirect()->back()->with([
+                'success' => 'Component Usage Updated Successfully.',
+                'Atbl' => $request->input('table_id')
             ]);
         }
         else{

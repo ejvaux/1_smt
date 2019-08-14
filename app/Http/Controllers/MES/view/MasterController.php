@@ -149,6 +149,7 @@ class MasterController extends Controller
         $tb = 0;
         $mt = 0;
         $ps = 0;
+        $us = 0;
         $chk = 0;
         $chk2 = 0;
         $machinetypes = $this->machinetypes;
@@ -190,6 +191,7 @@ class MasterController extends Controller
             'model',
             'mt',
             'ps',
+            'us',
             'tb',
             'mounters',
             'positions',
@@ -209,6 +211,7 @@ class MasterController extends Controller
         $tb = 0;
         $mt = 0;
         $ps = 0;
+        $us = 0;
         $machid = $id;
         $mounters = $this->mounters;
         $model = ModName::where('id',$mach)->first();
@@ -217,6 +220,7 @@ class MasterController extends Controller
             'model',
             'mt',
             'ps',
+            'us',
             'tb',
             'mounters',
             'machid'

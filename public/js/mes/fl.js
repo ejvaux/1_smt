@@ -407,4 +407,26 @@ $('#insert_mach').on('click',function(){
                 });
             }
         });
-    
+
+/* Hide show event */
+$('#aorder_id').on('change', function(){
+    if($(this).val() == 1){
+        $('#usage_div').show();
+    }
+    else{
+        $('#usage_div').hide();
+    }
+});
+
+/* EDIT USAGE */
+$('.cmp_usage').on('click', function(e){
+    $('#u_model_id').val($(this).data('model'));
+    $('#u_line_id').val($(this).data('line_id'));
+    $('#u_machine_type_id').val($(this).data('mach'));
+    $('#u_table_id').val($(this).data('table'));
+    $('#u_mounter_id').val($(this).data('mounter_id'));
+    $('#u_pos_id').val($(this).data('pos_id'));
+    $('#u_user_id').val($('meta[name="user_num"]').attr('content'));
+    $('#u_usage').val($(this).data('usage'));
+    $('#update_usage_modal').modal('show');
+});

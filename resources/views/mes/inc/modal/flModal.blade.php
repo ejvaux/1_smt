@@ -174,10 +174,66 @@
                         </div>
                     </div>                                
                 </div>
+                <div class="form-group row">
+                    <div class="col-6" style='display:none' id='usage_div'>
+                        <div class="row">
+                            <div class="col-5">
+                                <label for="ausage" class="col-form-label-sm">USAGE:</label>                  
+                            </div>
+                            <div class="col-7">
+                                <input class="form-control form-control-sm" type="number" name="usage" id="usage" value="0">                 
+                            </div>
+                        </div>
+                    </div>                                
+                </div>
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" name="submit" id="add_comp_submit"><i class="far fa-save"></i> Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Update Usage --}}
+<div class="modal hide fade in" role="dialog" id="update_usage_modal" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Usage</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update_usage_form"  method="post" action='{{url('update_usage')}}'>
+                <input type="hidden" id="u_model_id" name="model_id">
+                <input type="hidden" id="u_line_id" name="line_id">
+                <input type="hidden" id="u_machine_type_id" name="machine_type_id">
+                <input type="hidden" id="u_table_id" name="table_id">
+                <input type="hidden" id="u_mounter_id" name="mounter_id">
+                <input type="hidden" id="u_pos_id" name="pos_id">
+                <input type="hidden" id="u_user_id" name="user_id">
+            <div class="modal-body" style="">
+                <!-- ____________ FORM __________________ -->
+        
+                <div class="form-group row">
+                    <div class="col-md">
+                        <div class="row">
+                            <div class="col-5">
+                                <label for="u_usage" class="col-form-label-sm">Usage:</label>                  
+                            </div>
+                            <div class="col-7">
+                                <input type="number" class='form-control' name="usage" id="u_usage" min="0">                 
+                            </div>
+                        </div>
+                    </div>                                
+                </div>
+                <!-- ____________ FORM END __________________ -->
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" name="submit" id="update_usage_submit"><i class="far fa-save"></i> Update</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>

@@ -175,6 +175,8 @@ Route::post('del_mount', 'MES\api\FeedersController@del_mount');
 Route::post('change_mount', 'MES\api\FeedersController@change_mount');
 // transferring mount
 Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
+// update usage
+Route::post('update_usage', 'MES\api\FeedersController@update_usage');
 
 // Testing
 Route::get('testt', 'PageController@testing');
