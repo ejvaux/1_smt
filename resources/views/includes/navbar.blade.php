@@ -60,31 +60,47 @@
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
                             <i class="fas fa-barcode"></i> Scan PCB <span class="caret"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right">                                   
-                            <a class="nav-link" href="{{url('sp')}}"><i class="fas fa-exchange-alt"></i> In/Out</a>
-                            <a class="nav-link" href="{{url('tracking')}}"><i class="fas fa-search"></i> Tracking</a>                                                      
+                        <div class="dropdown-menu dropdown-menu-right font-weight-bold">                                   
+                            <a class="nav-link" href="{{url('sp')}}">{{-- <i class="fas fa-exchange-alt"></i> --}} In/Out</a>
+                            <a class="nav-link" href="{{url('tracking')}}">{{-- <i class="fas fa-search"></i> --}} Tracking</a>                                                      
+                            <a class="nav-link" href="{{url('ds')}}">Defect</a>
                         </div>
                     </li>
+                    {{-- <li class="nav-item bold-text">
+                        <a class="nav-link" href="{{url('sp')}}"><i class="fas fa-barcode"></i> Scan PCB</a>
+                    </li> --}}
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             <i class="fas fa-archive"></i> Materials <span class="caret"></span>
                         </a>
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">                                   
-                            <a class="nav-link" href="{{url('mscan2')}}"><i class="fas fa-archive"></i> Scan Materials</a>
-                            <a class="nav-link" href="{{url('ds')}}"><i class="fas fa-times-circle"></i> Defect Materials</a>
-                            <a class="nav-link" href="{{url('errorlog')}}"><i class="fas fa-exclamation-circle"></i> Error Logs</a>
-                            <a class="nav-link" href="{{url('tc')}}"><i class="fas fa-search"></i> Component Tracking</a>
+                        <div class="dropdown-menu dropdown-menu-right font-weight-bold" aria-labelledby="navbarDropdown">                                   
+                            <a class="nav-link" href="{{url('mscan2')}}">{{-- <i class="fas fa-archive"></i> --}} Scan Materials</a>
+                            <a class="nav-link" href="{{url('ds')}}">{{-- <i class="fas fa-times-circle"></i> --}} Defect Materials</a>
+                            <a class="nav-link" href="{{url('errorlog')}}">{{-- <i class="fas fa-exclamation-circle"></i> --}} Error Logs</a>
+                            {{-- <a class="nav-link" href="{{url('tc')}}"><i class="fas fa-search"></i> Component Tracking</a> --}}
                         </div>
                     </li>
-                    
-
-                    <li class="nav-item bold-text">
-                        <a class="nav-link" href="{{url('ep')}}"><i class="fas fa-download"></i>&nbspData Export</a>
-                </li>
-                    <li class="nav-item bold-text">
-                        <a class="nav-link" href="#"><i class="fas fa-bell"></i>&nbspNotifications</a>
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
+                            <i class="fas fa-search"></i> Tracking <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right font-weight-bold">
+                            <a class="nav-link" href="{{url('jo')}}">JO</a>                             
+                            {{-- <a class="nav-link" href="{{url('tracking')}}">PCB</a>
+                            <a class="nav-link" href="{{url('ds')}}">Defect PCB</a> --}}
+                            <a class="nav-link" href="{{url('tc')}}">Component</a>                            
+                            <a class="nav-link" href="{{url('sr')}}">SN/Reel</a>
+                            <a class="nav-link" href="{{url('lr')}}">Line Results</a>
+                        </div>
                     </li>
+
+                    {{-- <li class="nav-item bold-text">
+                        <a class="nav-link" href="{{url('ep')}}"><i class="fas fa-download"></i>&nbspData Export</a>
+                    </li> --}}
+                    {{-- <li class="nav-item bold-text">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i>&nbspNotifications</a>
+                    </li> --}}
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             <i class="fas fa-user-circle"></i>&nbsp Account Settings <span class="caret"></span>
