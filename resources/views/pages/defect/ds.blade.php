@@ -20,13 +20,12 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="input-group">
-                                <a id="addDefect_btn" class='btn btn-outline-secondary'><i class="fas fa-plus"></i> Add Defect</a>
+                                <a id="addDefect_btn" class='btn btn-outline-secondary form-control'><i class="fas fa-plus"></i> Add Defect</a>
                                 {{-- <a id='repair_btn' class='btn btn-outline-secondary'><i class="fas fa-hammer"></i> Repair</a> --}}
                             </div>
-                        </div>
-                        <div class="col-md"></div>
+                        </div>                        
                         {{-- <div class="col-md-2">
                             <button id='ds_advancesearch_btn' type="button" class="btn btn-outline-secondary">
                                 <i class="fas fa-search"></i> Advanced Search
@@ -37,6 +36,7 @@
                                 <i class="fas fa-file-export"></i> Export
                             </button>
                         </div>
+                        <div class="col-md"></div>
                         <div class="col-md-3">                        
                             <form action="{{url('ds')}}" method="get">                   
                                 <div class="input-group">

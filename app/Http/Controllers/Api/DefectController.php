@@ -237,10 +237,12 @@ class DefectController extends Controller
         $e->repair = 1;
         $e->repaired_at = Date('Y-m-d H:i:s');
         
-        if($e->save()){
+        if($e->save()){            
             $ee = Pcb::where('id',$e->pcb_id)->first();
-            $ee->defect = 0;
-            $ee->save();
+            if($ee){
+                $ee->defect = 0;
+                $ee->save();
+            }            
             return redirect()->back()->with('success','Data Updated Successfully.');
         }
         else{

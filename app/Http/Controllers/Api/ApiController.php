@@ -499,6 +499,7 @@ class ApiController extends Controller
             $t = $q - $o;
             if($t>0){
                 return insertsn($request);
+                /* return checklot($request); */
             }
             else{
                 return [
@@ -511,6 +512,24 @@ class ApiController extends Controller
                 'message' => 'API ERROR: checkjoquantity'
             ];
         }
+        function checklot($request)
+        {
+            if($request->div_process_id == 2 || $request->div_process_id == 18){
+                if($request->lot_id){
+                    return insertsn($request);
+                }
+                else{
+                    return [
+                        'type' => 'error',
+                        'message' => 'Set Lot Number by checking Lot.'
+                    ];
+                }
+            }
+            else{
+                return insertsn($request);
+            }
+            
+        }
         function insertsn($request,$jo_id = '')
         {
             if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
@@ -521,11 +540,21 @@ class ApiController extends Controller
                 }
                 else{
                     $a->jo_id = $jo_id;
+                }      
+                if($request->lot_id){
+                    $a->lot_id = $request->lot_id;
                 }
-                
+                else{
+                    $a->lot_id = 0;
+                }
+                /* if($request->div_process_id == 2 || $request->div_process_id == 18){
+                    $a->lot_id = $request->lot_id;
+                }
+                else{
+                    $a->lot_id = 0;
+                } */
+
                 $a->jo_number = $request->jo_number;
-                /* $a->lot_id = $request->lot_id; */
-                $a->lot_id = 0;
                 $a->division_id = $request->division_id;
                 $a->line_id = $request->line_id;
                 $a->div_process_id = $request->div_process_id;
@@ -1017,6 +1046,7 @@ class ApiController extends Controller
     {
         return Pcb::where('lot_id',$request->input('ln'))->count();        
     }
+
     /* DEFECTS */
     public function checksn(Request $request)
     {
@@ -1032,10 +1062,22 @@ class ApiController extends Controller
                 }
                 return $a->first();
             }
+            elseif($p->type == 1){
+                $msg = [
+                    'type' => 'error',
+                    'message' => 'Serial Number has no input. No input will be updated.'
+                ];
+                /* $Pcbs1->merge($Pcbs2) */
+                /* return $a->first(); */
+                $data = $a->first();
+                /* $data['type'] = 'error'; */
+                $data['message'] = 'Serial Number has no input. No input will be marked as defect.';
+                return $data;
+            }
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'No input found. Please scan in first.'
+                    'message' => 'No input and output found. Please scan in first.'
                 ];
             }            
         }
@@ -1046,6 +1088,7 @@ class ApiController extends Controller
             ];
         }
     }
+
     /* FEEDER LIST */
 
 
