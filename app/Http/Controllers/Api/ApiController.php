@@ -197,7 +197,6 @@ class ApiController extends Controller
                 ->first();
 
             $in = Pcb::select('id')->where('serial_number',$request->serial_number)
-                /* ->where('jo_id',$request->jo_id) */
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0)
                 ->first();
@@ -210,7 +209,6 @@ class ApiController extends Controller
             }
             if(!$in){
                 $in = PcbArchive::select('id')->where('serial_number',$request->serial_number)
-                    /* ->where('jo_id',$request->jo_id) */
                     ->where('div_process_id',$request->div_process_id)
                     ->where('type',0)
                     ->first();
@@ -237,6 +235,7 @@ class ApiController extends Controller
         function checkjoquantity2($request)
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
+            $q1 = WorkOrder::where('ID',$request->jo_id)->pluck('JOB_ORDER_NO')->first();
             $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
             if(!$o){
                 $o = PcbArchive::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
@@ -248,7 +247,7 @@ class ApiController extends Controller
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed. JO ' . $q->JOB_ORDER_NO . ' Plan Quantity is reached.'
+                    'message' => 'Scan Failed. JO ' . $q1 . ' Plan Quantity is reached.'
                 ];
             }
         }
@@ -465,18 +464,18 @@ class ApiController extends Controller
         function checkdupOut($request)
         {
             $out = Pcb::select('id')->where('serial_number',$request->serial_number)
-                ->where('jo_id',$request->jo_id)
+                /* ->where('jo_id',$request->jo_id) */
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
                 ->first();
             if(!$out){
                 $out = PcbArchive::select('id')->where('serial_number',$request->serial_number)
-                    ->where('jo_id',$request->jo_id)
+                    /* ->where('jo_id',$request->jo_id) */
                     ->where('div_process_id',$request->div_process_id)
                     ->where('type',1)
                     ->first();
             }
-            if(!$out){  
+            if(!$out){
                 return checkjoquantity2($request);
             }
             else{
@@ -493,6 +492,7 @@ class ApiController extends Controller
         function checkjoquantity2($request)
         {      
             $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
+            $q1 = WorkOrder::where('ID',$request->jo_id)->pluck('JOB_ORDER_NO')->first();
             $o = Pcb::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
             $o1 = PcbArchive::select('id')->where('jo_id',$request->jo_id)->where('type',1)->count();
             $o = $o + $o1;
@@ -504,7 +504,7 @@ class ApiController extends Controller
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Scan Failed. JO ' . $q->JOB_ORDER_NO . ' Plan Quantity is reached.'
+                    'message' => 'Scan Failed. JO ' . $q1 . ' Plan Quantity is reached.'
                 ];
             }
             return [
@@ -541,19 +541,19 @@ class ApiController extends Controller
                 else{
                     $a->jo_id = $jo_id;
                 }      
-                if($request->lot_id){
+                /* if($request->lot_id){
                     $a->lot_id = $request->lot_id;
                 }
                 else{
                     $a->lot_id = 0;
-                }
+                } */
                 /* if($request->div_process_id == 2 || $request->div_process_id == 18){
                     $a->lot_id = $request->lot_id;
                 }
                 else{
                     $a->lot_id = 0;
                 } */
-
+                $a->lot_id = 0;
                 $a->jo_number = $request->jo_number;
                 $a->division_id = $request->division_id;
                 $a->line_id = $request->line_id;
