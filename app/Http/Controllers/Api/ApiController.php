@@ -1082,7 +1082,7 @@ class ApiController extends Controller
                 /* return $a->first(); */
                 $data = $a->first();
                 /* $data['type'] = 'error'; */
-                $data['message'] = 'Serial Number has no input. No input will be marked as defect.';
+                /* $data['message'] = 'Serial Number has no input. No input will be marked as defect.'; */
                 return $data;
             }
             else{

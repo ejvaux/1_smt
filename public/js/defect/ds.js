@@ -150,10 +150,10 @@ function checksn(sn){
                     $('#division_id option:not(:selected)').attr('disabled', true);
                     $('#line_id').val(data.line_id);
                     $('#scan_employee').focus();
-                    iziToast.warning({
+                    /* iziToast.warning({
                         message: data.message,
                         position: 'topCenter'
-                    });
+                    }); */
                 }
                 else{
                     resetsn();

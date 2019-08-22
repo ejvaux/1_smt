@@ -124,6 +124,7 @@ class AjaxController extends Controller
         $m_code =substr($machine,0,-1);
         $table=substr($machine,-1);        
         
+        $line_id = 0;
         $mach_type= machine::where('barcode',$m_code)->first();
         $table_id= tableSMT::where('name',$table)->first();
         $comp_id= component::where('product_number',$component)->first();
