@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="col-md">
-        <span class='text-danger bold-text'>Work Orders are based on the selected division.</span>
+        <span class='text-danger bold-text'>Work Orders are based on the selected DIVISION and LINE.</span>
     </div>
 </div>
 <div id='spTablediv'>
