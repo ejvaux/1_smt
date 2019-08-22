@@ -122,6 +122,7 @@ Route::namespace('Api')->group(function () {
         Route::get('getlntotal', 'ApiController@getlotnumbertotal');
         Route::post('createln', 'ApiController@createlotnumber');
         Route::post('closeln', 'ApiController@closelotnumber');
+        Route::get('getlc', 'ApiController@getlotconfig');
 
         /* Load Tables */
         Route::get('loadWOtable', 'ApiController@loadWOtable');
@@ -195,6 +196,7 @@ Route::get('qcs','MES2\qcController@searchdate');
 Route::get('qcl','MES2\qcController@searchlot');
 Route::get('qcgood','MES2\qcController@updategood');
 Route::get('qcnogood','MES2\qcController@updatenogood');
+Route::get('cld','MES2\qcController@checklotdetails');
 
 /* ----- MES2 END ----- */
 

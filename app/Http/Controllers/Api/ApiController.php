@@ -18,6 +18,7 @@ use App\Models\MatComp;
 use App\Models\MatComp1;
 use App\Models\MatSnComp;
 use App\Models\WoSn;
+use App\Models\LotConfig;
 use App\Custom\CustomFunctions;
 use App\Jobs\CompSnInsert;
 use App\Jobs\RemoteInsert;
@@ -541,19 +542,19 @@ class ApiController extends Controller
                 else{
                     $a->jo_id = $jo_id;
                 }      
-                /* if($request->lot_id){
+                if($request->lot_id){
                     $a->lot_id = $request->lot_id;
                 }
                 else{
                     $a->lot_id = 0;
-                } */
+                }
                 /* if($request->div_process_id == 2 || $request->div_process_id == 18){
                     $a->lot_id = $request->lot_id;
                 }
                 else{
                     $a->lot_id = 0;
                 } */
-                $a->lot_id = 0;
+                /* $a->lot_id = 0; */
                 $a->jo_number = $request->jo_number;
                 $a->division_id = $request->division_id;
                 $a->line_id = $request->line_id;
@@ -1045,6 +1046,16 @@ class ApiController extends Controller
     public function getlotnumbertotal(Request $request)
     {
         return Pcb::where('lot_id',$request->input('ln'))->count();        
+    }
+    public function getlotconfig(Request $request)
+    {
+        $lc = LotConfig::where('part_code',$request->pc)->first();
+        if($lc){
+            return $lc->div_process_id;
+        }
+        else{
+            return 0;
+        }
     }
 
     /* DEFECTS */

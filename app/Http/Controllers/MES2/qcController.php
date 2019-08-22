@@ -4,13 +4,9 @@ namespace App\Http\Controllers\MES2;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\Http\Controllers\MES2\model\Qc;
 use App\Models\Pcb;
-
-
-
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class qcController extends Controller
 {
@@ -19,14 +15,46 @@ class qcController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        //$date=Carbon::now()->toDateTimeString('yyyy/mm/dd');
-        $Qcs = Qc::all();
-        $Pcbs = Pcb::all();
-        return view('mes2.qc',compact('Qcs','Pcbs'));
-       
+        $sort = 0;
+        if($request->input('date')){
+            $date = $request->input('date');
+        }
+        else{
+            $date = Date('Y-m-d');
+        }
+        if($request->input('sn')){
+            $pcb = Pcb::where('serial_number',$request->input('sn'))->where('type',1)->orderBy('id','DESC')->first();
+            $lots = Qc::where('id', $pcb->lot_id)->get();
+        }
+        elseif($request->input('sort')){
+            $sort = $request->input('sort');
+            $temp = Qc::whereDate('created_at', $date);
+
+            switch ($sort) {
+                case 1:
+                    $lots = $temp->where('status',0)->where('qc_status',0)->get();                    
+                    break;
+                case 2:
+                    $lots = $temp->where('status',1)->where('qc_status',0)->get();
+                    break;
+                case 3:
+                    $lots = $temp->where('status',1)->where('qc_status',1)->get();
+                    break;
+                case 4:
+                    $lots = $temp->where('status',1)->where('qc_status',2)->get();
+                    break;
+                default:
+                    $lots = $temp->get();
+            }
+        }
+        else{            
+            $lots = Qc::whereDate('created_at', $date)->get();
+        }
+
+        /* return dd($lots); */
+        return view('mes2.qc',compact('lots','date','sort'));       
     }
 
     /**
@@ -36,8 +64,7 @@ class qcController extends Controller
      */
     public function create()
     {
-        //
-        
+        //        
     }
 
     /**
@@ -60,7 +87,7 @@ class qcController extends Controller
     public function show(Request $request)
     {
         //
-         //Getting the search textbox value
+        //Getting the search textbox value
 
     }
 
@@ -110,15 +137,15 @@ class qcController extends Controller
                     
         }
         else{
-                if($get!=''){
-                    
-                    $Qcs = Qc::where('created_at',$get)->get();
-                    //$Qcs = Qc::all();
-                }
-                else{
-                    //$Qcs=[];
-                    $Qcs = Qc::where('created_at','like','%'.$date.'%')->get();
-                }
+            if($get!=''){
+                
+                $Qcs = Qc::where('created_at',$get)->get();
+                //$Qcs = Qc::all();
+            }
+            else{
+                //$Qcs=[];
+                $Qcs = Qc::where('created_at','like','%'.$date.'%')->get();
+            }
         }
         return view('mes2.qc',compact('Qcs','Pcbs'));
     }
@@ -153,12 +180,13 @@ class qcController extends Controller
         //
         $id1=$request->input('id1');
         $qc = Qc::where('id',$id1)->first();
-
         
         $qc->qc_status = '1';
+        $qc->checked_by = $request->input('userid');
+        $qc->date = Carbon::now();
         
         $qc->save();
-        return redirect('qc')->with('success','Marked as Good Lot');
+        return redirect('qc')->with('success','Updated Successful');
 
     }
     public function updatenogood(Request $request)
@@ -168,10 +196,18 @@ class qcController extends Controller
         $qc = Qc::where('id',$id1)->first();
         
         $qc->qc_status = '2';
-        
+        $qc->checked_by = $request->input('userid');
+        $qc->date = Carbon::now();
         $qc->save();
         
-        return redirect('qc')->with('success','Marked as No Good Lot');
+        return redirect('qc')->with('success','Updated Successful');
 
+    }
+
+    public function checklotdetails(Request $request)
+    {
+        $sns = Pcb::where('lot_id',$request->input('lot_id'))->get();
+        $lot = Qc::where('id',$request->input('lot_id'))->pluck('number')->first();
+        return view('mes2.inc.snmodal',compact('sns','lot'));
     }
 }

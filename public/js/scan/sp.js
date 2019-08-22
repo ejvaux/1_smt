@@ -3,15 +3,19 @@ $.ajaxSetup({
     error: function(XMLHttpRequest, textStatus, errorThrown) {
         var msg = '';
         var file = '';
+        var line = '';
         if(XMLHttpRequest.responseText != null){
             msg = XMLHttpRequest.responseJSON.message;
             file = XMLHttpRequest.responseJSON.file ;
+            line = XMLHttpRequest.responseJSON.line ;
+            console.log(XMLHttpRequest.responseText);
+            console.log(XMLHttpRequest);
         }
         if (XMLHttpRequest.readyState == 4) {
             // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
             iziToast.warning({
                 title: 'ERROR '+ XMLHttpRequest.status,
-                message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file,
+                message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file + '<br>Line: ' + line,
                 position: 'topCenter',
                 close: false,
             });
@@ -275,9 +279,14 @@ function setWO(wo){
     /* Get Load Number */
     /* getlotnumber($('#scanform-jo_id').val()); */
 
+    /* Get Lot Config */
+    lotconfig(wo.ITEM_CODE);
+
     /* Show Lot Number Panel */
     if($('#scanform-type').val()==1){
-        $('#lot_panel').show();        
+        if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
+            $('#lot_panel').show();       
+        }
     }    
 }
 function unsetWO(){
@@ -331,22 +340,37 @@ function checkscan(){
     var msg = '';
     if(configlock == 0){
         chk = 1;
-        msg = '[Configuration] '
+        msg = '[Configuration] ';
     }
     if(empset == 0){
         chk = 1;
-        msg += '[Employee] '
+        msg += '[Employee] ';
     }
     if(WOset == 0){
         chk = 1;
-        msg += '[Work Order] '
+        msg += '[Work Order] ';
     }
     /* if($('#scanform-type').val()==1){
         if(lotset == 0){
             chk = 1;
             msg += '[Lot Number] '
         }        
+    } */    
+    /* if($('#scanform-type').val()==1 && $('#scanform-div_process_id').val()==2 || $('#scanform-type').val()==1 && $('#scanform-div_process_id').val()==18){
+        if(lotset == 0){
+            chk = 1;
+            msg += '[Lot Number] '
+        }        
     } */
+
+    if($('#scanform-type').val()==1){
+        if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
+            if(lotset == 0){
+                chk = 1;
+                msg += '[Lot Number] ';
+            }        
+        }
+    }
     
     if(!chk){
         enablescan();
@@ -601,6 +625,19 @@ function getlotnumbertotal(lid){
             if(data){
                 $('#lot_total').val(data);                
             }
+        }
+    });
+}
+function lotconfig(pc){
+    $.ajax({
+        url: 'api/getlc',
+        type:'get',
+        data: {
+            'pc':  pc
+        },
+        global: false,
+        success: function (data) {
+            $('#lc-input').val(data);
         }
     });
 }
@@ -874,7 +911,10 @@ $('#pcb_input').on('change', function(e){
     else{
         inputt = 1;
         if(WOset == 1){
-            $('#lot_panel').show();
+            if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val()){
+                $('#lot_panel').show();
+            }
+            /* $('#lot_panel').show(); */
         }
     }    
     $('#scanform-type').val(inputt);

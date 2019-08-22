@@ -10,3 +10,5 @@
     <input type="hidden" name="type" id="scanform-type">
     <input type="hidden" name="employee_id" id="scanform-employee_id">
 </form>
+
+<input id="lc-input" type="hidden" name="" value="0">

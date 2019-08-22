@@ -1,3 +1,41 @@
+$.ajaxSetup({
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        var msg = '';
+        var file = '';
+        if(XMLHttpRequest.responseText != null){
+            msg = XMLHttpRequest.responseJSON.message;
+            file = XMLHttpRequest.responseJSON.file ;
+        }
+        if (XMLHttpRequest.readyState == 4) {
+            // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file,
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else if (XMLHttpRequest.readyState == 0) {                
+            // Network error (i.e. connection refused, access denied due to CORS, etc.)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: 'Network Error',
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else {
+            iziToast.warning({
+                title: 'ERROR',
+                message: 'Unknown Error',
+                position: 'topCenter',
+                close: false,
+            });
+            // something weird is happening
+        }
+    }
+});
+
 /* Good Function */
 $('.gbtn').on('click',function(){
     swal.fire({
@@ -7,17 +45,12 @@ $('.gbtn').on('click',function(){
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Make this lot good!'
-        }).then((result) => {
-        if (result.value) {
-       
-
-        swal.fire(
-        'Mark as No Good!',
-        'Your file has been Marked as Good.',
-        'success')
-        $('#qcGood').trigger('submit');
-        }
+        confirmButtonText: 'Yes, Mark as Good!'
+        }).then((result) => {            
+            if (result.value) {
+                $('#userg'+$(this).data('idqc')).val($('meta[name="user_num"]').attr('content'));
+                $('#qcGood'+$(this).data('idqc')).trigger('submit');
+            }
         })
 });
 
@@ -31,27 +64,34 @@ $('.ngbtn').on('click',function(){
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Make this lot No good!'
+        confirmButtonText: 'Yes, Mark as No Good!'
         }).then((result) => {
-        if (result.value) {
-       
-
-        swal.fire(
-        'Mark as No Good!',
-        'Your file has been Marked as No Good.',
-        'success')
-
-        $('#qcnoGood').trigger('submit');
-        }
+            if (result.value) {
+                $('#userng'+$(this).data('idqc')).val($('meta[name="user_num"]').attr('content'));
+                $('#qcnoGood'+$(this).data('idqc')).trigger('submit');
+            }
         })
 });
 
 /* Getting Lot Number */
 
-$('.showlot').on('click', function(){
-
-    $('#idlot').val($(this).data('idqc'));
-    /* $('#name').val($(this).data('name')); */
-    //$('#editFormDefectTypeModal').attr('action', '/1_smt/public/defecttype/'+$(this).data('id'));
-    $('#modalqc').modal('show');
+$('.showlot').on('click', function(){        
+    $.ajax({
+        url: 'cld',
+        type:'get',
+        data: {
+            'lot_id':  $(this).data('lot_id')
+        },
+        global: false,
+        success: function (data) {            
+            $('#lotmodaldiv').html(data);
+            $('#modalqc').modal('show');
+        }
+    });
+    /* $('#idlot').val($(this).data('idqc'));
+    $('#lot_number-modal').val($(this).text());    
+    $('#modalqc').modal('show'); */
+});
+$('#lot-sort').on('change', function(e){
+    $('#lot-sort-form').trigger('submit');
 });
