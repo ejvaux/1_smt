@@ -144,9 +144,9 @@ class CustomFunctions
             $l = sprintf("%02d", $l);
             $ln .= $l;
         }
-        elseif($div_id == 17 || $div_id == 19){
+        elseif($div_id == 17 || $div_id == 18){
             $line = LineName::where('id',$line_id)->first();
-            $l = substr($line->name,1);
+            $l = substr($line->name,4);
             $l = sprintf("%02d", $l);
             $ln .= $l;
         }

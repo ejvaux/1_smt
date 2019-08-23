@@ -324,7 +324,8 @@ function unsetWO(){
     /* load scan total emp table */
     loadscantotalemp(0);
 
-    /* Hide Lot Number Panel */    
+    /* Hide Lot Number Panel */
+    $('#close_lot_num').attr('disabled',true);
     $('#lot_panel').hide();  
 }
 function disablescan(msg){
