@@ -563,13 +563,6 @@ class ApiController extends Controller
                 else{
                     $a->lot_id = 0;
                 }
-                /* if($request->div_process_id == 2 || $request->div_process_id == 18){
-                    $a->lot_id = $request->lot_id;
-                }
-                else{
-                    $a->lot_id = 0;
-                } */
-                /* $a->lot_id = 0; */
                 $a->jo_number = $request->jo_number;
                 $a->division_id = $request->division_id;
                 $a->line_id = $request->line_id;
