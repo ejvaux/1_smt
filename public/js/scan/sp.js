@@ -283,11 +283,11 @@ function setWO(wo){
     lotconfig(wo.ITEM_CODE);
 
     /* Show Lot Number Panel */
-    /* if($('#scanform-type').val()==1){
+    if($('#scanform-type').val()==1){
         if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
             $('#lot_panel').show();       
         }
-    }  */   
+    }    
 }
 function unsetWO(){
     disablescan();
@@ -351,14 +351,14 @@ function checkscan(){
         msg += '[Work Order] ';
     }
 
-    /* if($('#scanform-type').val()==1){
+    if($('#scanform-type').val()==1){
         if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
             if(lotset == 0){
                 chk = 1;
                 msg += '[Lot Number] ';
             }        
         }
-    } */
+    }
     
     if(!chk){
         enablescan();
@@ -898,11 +898,11 @@ $('#pcb_input').on('change', function(e){
     }
     else{
         inputt = 1;
-        /* if(WOset == 1){
+        if(WOset == 1){
             if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val()){
                 $('#lot_panel').show();
             }
-        } */
+        }
     }    
     $('#scanform-type').val(inputt);
     checkscan();

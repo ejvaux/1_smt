@@ -32,7 +32,7 @@
                                 <select name="sort" id="lot-sort" class="form-control" >
                                     <option value="0" @if($sort == 0)selected="selected"@endif >ALL</option>
                                     <option value="1" @if($sort == 1)selected="selected"@endif >OPEN</option>
-                                    <option value="2" @if($sort == 2)selected="selected"@endif >FOR QC</option>
+                                    <option value="2" @if($sort == 2)selected="selected"@endif >FOR INSPECT</option>
                                     <option value="3" @if($sort == 3)selected="selected"@endif >GOOD</option>
                                     <option value="4" @if($sort == 4)selected="selected"@endif >NO GOOD</option>
                                 </select>                                            

@@ -7,12 +7,15 @@
                     <th>JUDGEMENT</th>
                     <th>LOT #</th>
                     <th>JO #</th>
-                    <th>CREATED_BY</th>
-                    <th>CREATED_AT</th>
-                    <th>CLOSED_BY</th>
-                    <th>CLOSED_AT</th>
-                    <th>CHECKED_BY</th>
-                    <th>CHECKED_AT</th>
+                    <th>PART CODE</th>
+                    <th>QTY</th>
+                    {{-- <th>PART NAME</th> --}}
+                    <th>CREATED BY</th>
+                    <th>CREATED AT</th>
+                    <th>CLOSED BY</th>
+                    <th>CLOSED AT</th>
+                    <th>JUDGED BY</th>
+                    <th>JUDGED AT</th>
                 </tr>
             </thead>
             <tbody class='text-center' style="font-size:1rem">
@@ -53,6 +56,9 @@
                                 </td>
                                 <td><a href="#" title="Click to View Details" data-lot_id='{{$lot->id}}' class="showlot"><span class="font-weight-bold">{{$lot->number}}</span></a></td>
                                 <td>{{$lot->jo->JOB_ORDER_NO}}</td>
+                                <td>{{$lot->jo->ITEM_CODE}}</td>
+                                <td>{{$lot->qty}}</td>
+                                {{-- <td>{{$lot->jo->ITEM_NAME}}</td> --}}
                                 <td>
                                     {{$lot->employee_rel_create->fname}} {{$lot->employee_rel_create->lname}}
                                 </td>
