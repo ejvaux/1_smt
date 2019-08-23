@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')    
-    RESULTS - SMT SYSTEM
+    LINE RESULTS - SMT SYSTEM
 @endsection
 
 @section('content')

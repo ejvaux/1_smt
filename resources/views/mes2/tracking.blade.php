@@ -66,8 +66,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody class='text-center'>
-                                              {{--   @isset ($Pcbs) --}}
-                                                    @if (count($Pcbs)>0)
+                                                {{-- @isset ($Pcbs) --}}
+                                                    @if (isset($Pcbs))
                                                         @foreach ($Pcbs as $pcb)
                                                             <tr {{-- class='wo-clickable-row' --}} data-wodata='{{$pcb}}'>
                                                                 {{-- <td>{{ $loop->iteration + (($pcbs->currentPage() - 1) * 100) }}</td> --}}
@@ -111,7 +111,7 @@
                                                         </tr>
                                                     @endif
                                                 
-                                                {{-- @endisset--}}
+                                                {{-- @endisset --}}
                                             </tbody>
                                         </table>
                                     </div>
