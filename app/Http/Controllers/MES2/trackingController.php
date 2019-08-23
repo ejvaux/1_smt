@@ -35,13 +35,14 @@ class trackingController extends Controller
     {
 
         $get = $request->input('myInputPCB');
-        $Pcbs1 = Pcb::where('serial_number',$get)->orderBy('div_process_id','DESC')->get();
-        $Pcbs2 = PcbArchive::where('serial_number',$get)->orderBy('div_process_id','DESC')->get();
+        $Pcbs1 = Pcb::where('serial_number',$get)->orderBy('serial_number')->orderBy('div_process_id','DESC')->orderBy('type','DESC')->get();
+        $Pcbs2 = PcbArchive::where('serial_number',$get)->orderBy('serial_number')->orderBy('div_process_id','DESC')->orderBy('type','DESC')->get();
         $Pcbs = $Pcbs1->merge($Pcbs2);
         /* if($Pcbs->count() == 0){
             $Pcbs = PcbArchive::where('serial_number',$get)->orderBy('id')->get();
         } */
         return view('mes2.tracking',compact('Pcbs'));
+        /* return dd($get); */
 
     }
 

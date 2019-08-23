@@ -367,7 +367,22 @@ class ApiController extends Controller
             else{
                 return [
                     'type' => 'error',
-                    'message' => 'Serial Number has no record on Bottom process.'
+                    'message' => 'Serial Number has no scan in BOTTOM-OUT.'
+                ];
+            }
+        }
+        if($request->division_id == 18 && $request->div_process_id == 5 ){
+            $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',2)->where('type',1);            
+            if(!$sn->first()){
+                $sn = PcbArchive::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',2)->where('type',1);
+            }
+            if($sn->first()){
+                return checkdupIn($request);
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Serial Number has no scan in TOP-OUT.'
                 ];
             }
         }

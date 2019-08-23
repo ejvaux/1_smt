@@ -80,6 +80,8 @@ Route::get('jo', 'JoController@index');
 /* Line Results */
 Route::get('lr', 'LineResultController@index');
 Route::get('rt', 'LineResultController@resultTable');
+/* Work Order Results */
+Route::get('wor', 'ResultsController@index');
 /* Serial Number - Work Order */
 Route::get('sr', 'SnReelController@index');
 Route::get('loadreel', 'SnReelController@loadreel');
