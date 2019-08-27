@@ -6,6 +6,7 @@
                     <th>#</th>
                     <th>JUDGEMENT</th>
                     <th>LOT #</th>
+                    <th>LINE</th>
                     <th>JO #</th>
                     <th>PART CODE</th>
                     <th>QTY</th>
@@ -55,7 +56,8 @@
                                     @endif
                                 </td>
                                 <td><a href="#" title="Click to View Details" data-lot_id='{{$lot->id}}' class="showlot"><span class="font-weight-bold">{{$lot->number}}</span></a></td>
-                                <td>{{$lot->jo->JOB_ORDER_NO}}</td>
+                                <td>{{$lot->jo->MACHINE_CODE}}</td>
+                                <td>{{$lot->jo->JOB_ORDER_NO}}</td>                                
                                 <td>{{$lot->jo->ITEM_CODE}}</td>
                                 <td>{{$lot->qty}}</td>
                                 {{-- <td>{{$lot->jo->ITEM_NAME}}</td> --}}

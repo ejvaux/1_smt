@@ -82,7 +82,6 @@ $('.showlot').on('click', function(){
         data: {
             'lot_id':  $(this).data('lot_id')
         },
-        global: false,
         success: function (data) {            
             $('#lotmodaldiv').html(data);
             $('#modalqc').modal('show');
