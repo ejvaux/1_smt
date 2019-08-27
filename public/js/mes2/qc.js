@@ -75,16 +75,22 @@ $('.ngbtn').on('click',function(){
 
 /* Getting Lot Number */
 
-$('.showlot').on('click', function(){        
+$('.showlot').on('click', function(){
+    $('#lotmodalcontent').html('<img src="http://172.16.1.13:8000/1_smt/public/images/loading3.gif"><h3 class="text-center">Fetching data . . . Please wait . . .</h3>');
+    $('#modalqc').modal('show');      
     $.ajax({
         url: 'cld',
         type:'get',
         data: {
             'lot_id':  $(this).data('lot_id')
         },
+        global: false,
         success: function (data) {            
-            $('#lotmodaldiv').html(data);
-            $('#modalqc').modal('show');
+            $('#lotmodalcontent').html(data);
+            /* $('#modalqc').modal('show'); */
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            $('#lotmodalcontent').html('<h3 class="text-center">An error occured while fetching data. ERROR: '+ XMLHttpRequest.status +'</h3>');
         }
     });
     /* $('#idlot').val($(this).data('idqc'));

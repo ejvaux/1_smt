@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 use App\Models\DefectMat;
+use App\Models\WorkOrder;
+use App\Models\Pcb;
 use App\Custom\CustomFunctions;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -27,6 +29,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         return [
             'STATUS',
             'LEAD TIME',
+            'MODEL',
             'DIVISION',
             'LINE',
             'SHIFT',
@@ -65,11 +68,21 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         }            
         else{
             $shift = 'NIGHT';
-        }      
+        }
+        $joid = Pcb::where('id',$query->pcb_id)->pluck('jo_id')->first();
+        $model = WorkOrder::where('ID', $joid)->pluck('ITEM_NAME')->first();
+        if (strpos($model, ',') !== false) {
+            $m = explode(",", $model);
+            $mod = $m[1];
+        }
+        else{
+            $mod = $model;
+        }
 
         return [
             $stat,
             $ltime,
+            $mod,
             $query->defect->division->DIVISION_NAME,
             $query->line->name,
             $shift,

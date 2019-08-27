@@ -208,6 +208,6 @@ class qcController extends Controller
     {
         $sns = Pcb::where('lot_id',$request->input('lot_id'))->get();
         $lot = Qc::where('id',$request->input('lot_id'))->pluck('number')->first();
-        return view('mes2.inc.snmodal',compact('sns','lot'));
+        return view('mes2.inc.lotmodalcontent',compact('sns','lot'));
     }
 }

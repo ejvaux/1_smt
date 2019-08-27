@@ -7,33 +7,9 @@
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="container modal-body">
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <span>Lot Number:</span>
-                        </div>
-                        <div class="col-md-7">
-                            <input id="lot_number-modal" class='form-control' type="text" value="@isset($lot){{$lot}}@endisset" readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <span>S/N Total:</span>
-                        </div>
-                        <div class="col-md-7">
-                            <input class='form-control' type="text" value="@isset($sns){{$sns->count()}}@endisset" readonly>
-                        </div>
-                    </div>                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md">
-                    @include('mes2.table.lotsnTable')
-                </div>
+        <div class="container modal-body text-center">
+            <div id="lotmodalcontent">            
+                @include('mes2.inc.lotmodalcontent')
             </div>
         </div>
         <div class="modal-footer">

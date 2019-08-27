@@ -59,7 +59,14 @@
                                 <td>{{$lot->jo->MACHINE_CODE}}</td>
                                 <td>{{$lot->jo->JOB_ORDER_NO}}</td>                                
                                 <td>{{$lot->jo->ITEM_CODE}}</td>
-                                <td>{{$lot->qty}}</td>
+                                <td>
+                                    @if ($lot->qty == 0)
+                                        {{\App\Models\Pcb::where('lot_id',$lot->id)->count()}}
+                                    @else
+                                        {{$lot->qty}}
+                                    @endif
+                                    {{-- {{\App\Models\Pcb::where('lot_id',$lot->id)->count()}} --}}                               
+                                </td>
                                 {{-- <td>{{$lot->jo->ITEM_NAME}}</td> --}}
                                 <td>
                                     {{$lot->employee_rel_create->fname}} {{$lot->employee_rel_create->lname}}
