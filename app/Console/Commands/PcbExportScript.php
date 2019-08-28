@@ -41,36 +41,30 @@ class PcbExportScript extends Command
      * @return mixed
      */
     public function handle()
-    {
-        /* for ($i=0; $i <= 0; $i++) { */ 
-        
+    {        
         $filename = 'PRIMA_';
         $qty = 0;
-        $pcbs = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->get();
+        /* $pcbs = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->get();
         foreach ($pcbs as $pcb) {
             $wo = WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();
             if($wo != ''){
                 $temp = $pcb;
                 break;
             }
-        }
+        } */
+        $pcb = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->first();
+        $wo = $pcb->work_order;
+        $temp = $pcb;
         if($wo != ''){
-            Pcb::where('jo_id',$temp->jo_id)->where('exported',0)->where('type',1)->update(['exported'=> 2]);
-            $pcbx = Pcb::where('jo_id',$temp->jo_id)->where('exported',2)->where('type',1);            
+            Pcb::where('work_order',$temp->work_order)->where('exported',0)->where('type',1)->update(['exported'=> 2]);
+            $pcbx = Pcb::where('exported',2);            
             $qty = $pcbx->count();
             $filename .= Division::where('DIVISION_ID',$temp->division_id)->pluck('DIVISION_NAME')->first() . '_';
-            if($wo == ''){
-                $filename .= 'NoWorkOrder_';
-            }
-            else{
-                $filename .= $wo.'_';
-            }
+            $filename .= $wo.'_';
             $filename .= Date('YmdHi').'_';
             $filename .= $qty;
-            Excel::store(new PcbExport($temp->jo_id), $filename.'.xlsx','export_smt');            
+            Excel::store(new PcbExport($temp->work_order), $filename.'.xlsx','export_smt');            
             $pcbx->update(['exported'=> 1]);         
         }
-
-        /* } */
     }
 }
