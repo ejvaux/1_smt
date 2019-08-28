@@ -274,6 +274,10 @@ class ApiController extends Controller
                 $a->shift = CustomFunctions::genshift();
                 $a->defect = 0;
                 $a->heat = 0;
+
+                /* work order */
+                $a->work_order = $request->work_order;
+
                 $mcid = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
                 
                 if($mcid){
@@ -572,6 +576,9 @@ class ApiController extends Controller
                 $a->shift = CustomFunctions::genshift();
                 $a->defect = 0;
                 $a->heat = 0;
+
+                /* work order */
+                $a->work_order = $request->work_order;
 
                 /* For Exporting */        
                 if($request->division_id == 2){
