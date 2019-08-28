@@ -282,12 +282,14 @@ function setWO(wo){
     /* Get Lot Config */
     lotconfig(wo.ITEM_CODE);
 
+    getlotnumber($('#scanform-jo_id').val());
+
     /* Show Lot Number Panel */
-    if($('#scanform-type').val()==1){
+    /* if($('#scanform-type').val()==1){
         if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
             $('#lot_panel').show();       
         }
-    }    
+    }  */   
 }
 function unsetWO(){
     disablescan();
@@ -357,7 +359,8 @@ function checkscan(){
             if(lotset == 0){
                 chk = 1;
                 msg += '[Lot Number] ';
-            }        
+            }
+            $('#lot_panel').show();   
         }
     }
     
@@ -552,7 +555,7 @@ function createlotnumber(div,line,jo,eid){
         },
         global: false,
         success: function (data) {
-            if(data){
+            if(data != 0){
                 $('#scanform-lot_id').val(data.id);
                 $('#lot_num').val(data.number);
                 $('#create_lot_num').attr('disabled',true);
@@ -564,6 +567,10 @@ function createlotnumber(div,line,jo,eid){
                 });
             }
             else{
+                iziToast.error({
+                    message: 'Open Lot Number found. Please click the CHECK button',
+                    position: 'topCenter'
+                });
                 $('#create_lot_num').attr('disabled',false);
             }
             checkscan();

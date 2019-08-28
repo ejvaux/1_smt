@@ -1031,12 +1031,18 @@ class ApiController extends Controller
     }
     public function createlotnumber(Request $request)
     {
-        $a = new Lot;
-        $a->number = CustomFunctions::genlotnumber($request->input('div'),$request->input('line'));
-        $a->jo_id = $request->jo;
-        $a->created_by = $request->eid;
-        $a->save();
-        return $a;
+        $t = Lot::where('jo_id',$request->input('jo'))->where('status',0)->first();
+        if($t){
+            return 0;
+        }
+        else{
+            $a = new Lot;
+            $a->number = CustomFunctions::genlotnumber($request->input('div'),$request->input('line'));
+            $a->jo_id = $request->jo;
+            $a->created_by = $request->eid;
+            $a->save();
+            return $a;
+        }        
     }
     public function closelotnumber(Request $request)
     {
