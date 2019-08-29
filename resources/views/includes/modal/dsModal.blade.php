@@ -487,7 +487,17 @@
         <form id="ds_export_form" class='form_to_submit' method="GET" action='{{url('exportdefectmats')}}'>                
             <div class="modal-body" style="">
                 <!-- ____________ FORM __________________ -->
-        
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="ds_item" class="col-form-label">ITEM:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <select class='form-control' name="item" id="ds_item">
+                            <option value="1">DEFECTS</option>
+                            <option value="2">REPAIRED</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group row">
                     <div class="col-4">
                         <label for="ds_date_from" class="col-form-label">FROM:</label>                  
@@ -503,7 +513,7 @@
                     <div class="col-8">
                         <input type="date" class="form-control" name="date_to" id="ds_date_to" value="{{Date('Y-m-d')}}">
                     </div>
-                </div>                
+                </div>                               
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">

@@ -13,7 +13,7 @@
     <div class="white_bkg">
         <div class="row">
             <div class="col-md"></div>
-            <div class="col-md-5">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">                        
                         <h5>Work Order Results</h5>

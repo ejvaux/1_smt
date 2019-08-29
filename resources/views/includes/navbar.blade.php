@@ -29,8 +29,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('sp')}}" target="_blank"><span class='font-weight-bold'>Scan</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url('lr')}}" target="_blank"><span class='font-weight-bold'>Results</span></a>
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
+                            Results <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="nav-link" href="{{url('lr')}}" target="_blank">Line</a>                             
+                            <a class="nav-link" href="{{url('wor')}}" target="_blank">Work Order</a> 
+                        </div>
+                        {{-- <a class="nav-link" href="{{url('lr')}}" target="_blank"><span class='font-weight-bold'>Results</span></a> --}}
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >

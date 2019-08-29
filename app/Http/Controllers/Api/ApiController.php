@@ -34,7 +34,7 @@ class ApiController extends Controller
     Examine the function carefully.
     For ajax function, follow the url being requested.
     Follow the URL in the web.php
-    Check the controller and the function used.
+    Check the controller and the method used.
     GOODLUCK!
     
     */
@@ -361,7 +361,7 @@ class ApiController extends Controller
                 ];
             }            
         }
-        if($request->division_id == 2 && $request->div_process_id == 2 ){
+        if ($request->division_id == 2 && $request->div_process_id == 2 ){
             $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);            
             if(!$sn->first()){
                 $sn = PcbArchive::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);
@@ -376,7 +376,7 @@ class ApiController extends Controller
                 ];
             }
         }
-        if($request->division_id == 18 && $request->div_process_id == 5 ){
+        elseif ($request->division_id == 18 && $request->div_process_id == 5 ){
             $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',2)->where('type',1);            
             if(!$sn->first()){
                 $sn = PcbArchive::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',2)->where('type',1);
@@ -391,69 +391,11 @@ class ApiController extends Controller
                 ];
             }
         }
-        else{
+        else {
             return checkdupIn($request);
             /* return checkwosn($request); */
         }
-    }
-    public function scanIn($request)
-    {
-        /* CHECKING FOR BOTTOM */
-        if($request->division_id == 2 && $request->div_process_id == 2 ){
-            $sn = Pcb::where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);
-            if($sn->first()){
-                return $this->checkdupIn($request);
-            }
-            else{
-                return [
-                    'type' => 'error',
-                    'message' => 'Serial Number has no record on Bottom process.'
-                ];
-            }
-        }
-        else{
-            return $this->checkdupIn($request);
-        }
-        return [
-            'type' => 'error',
-            'message' => 'API ERROR: scanIn'
-        ];
-    }
-    public function checkdupIn($request)
-    {
-        $out = Pcb::where('serial_number',$request->serial_number)
-        ->where('div_process_id',$request->div_process_id)
-        ->where('type',1)
-        ->first();
-
-        $in = Pcb::where('serial_number',$request->serial_number)
-            ->where('jo_id',$request->jo_id)
-            ->where('div_process_id',$request->div_process_id)
-            ->where('type',0)
-            ->first();
-
-        if(!$out){  
-            if(!$in){
-                return $this->checkjoquantity2($request);
-            }
-            else{
-                return [
-                    'type' => 'error',
-                    'message' => 'Serial number already scanned IN.'
-                ];
-            }
-        }
-        else{
-            return [
-                'type' => 'error',
-                'message' => 'Serial number already processed in ' . $out->divprocess->name . '.'
-            ];
-        }
-        return [
-            'type' => 'error',
-            'message' => 'API ERROR: checkdupIn'
-        ];
-    }    
+    }   
 
     /* ------------- OUTPUT SCANNING ------------------- */
 
@@ -699,92 +641,6 @@ class ApiController extends Controller
                 'message' => 'Serial number already processed in ' . $out->divprocess->name . '.'
             ];
         }
-    }
-    public function scanOut($request)
-    {
-        /* CHECK FOR OUTPUT */
-        $out = Pcb::where('serial_number',$request->serial_number)
-                ->where('div_process_id',$request->div_process_id)
-                ->where('type',1)
-                ->first();
-        /* CHECK FOR INPUT */
-        $sn = Pcb::where('serial_number',$request->serial_number)
-                ->where('jo_id',$request->jo_id)
-                ->where('div_process_id',$request->div_process_id)
-                ->where('type',0);        
-
-        if(!$out){
-            if($sn->first()){
-                $sn = $sn->first();
-                if($sn->defect == 1){
-                    return [
-                        'type' => 'error',
-                        'message' => 'Scan Failed. PCB has defect.'
-                    ];
-                }
-                else{                
-                    return $this->checkdupOut($request);               
-                }       
-            }
-            else{
-                $in = Pcb::where('serial_number',$request->serial_number)
-                        ->where('div_process_id',$request->div_process_id)
-                        ->where('type',0)->get();
-                if($in->count() == 0){
-                    return [
-                        'type' => 'error',
-                        'message' => 'Serial Number has no INPUT record.'
-                    ];
-                }
-                else{
-                    $jos = '';
-                    foreach ($in as $i) {
-                        $jos .= ' [' . $i->jo_number . ']';
-                    } 
-                    return [
-                        'type' => 'error',
-                        'message' => 'Serial Number has an INPUT in different Work Order/s.'.$jos                                               
-                    ];
-                }
-                return [
-                    'type' => 'error',
-                    'message' => 'API ERROR: checking inputs'
-                ];
-            }
-            return [
-                'type' => 'error',
-                'message' => 'API ERROR: scanOut'
-            ];
-        }
-        else{
-            return [
-                'type' => 'error',
-                'message' => 'Serial number already processed in ' . $out->divprocess->name . '.'
-            ];
-        }
-        
-    }
-    public function checkdupOut($request)
-    {
-        $out = Pcb::where('serial_number',$request->serial_number)
-            ->where('jo_id',$request->jo_id)
-            ->where('div_process_id',$request->div_process_id)
-            ->where('type',1)
-            ->first();
-
-        if(!$out){  
-            return $this->checkjoquantity2($request);
-        }
-        else{
-            return [
-                'type' => 'error',
-                'message' => 'Serial number already scanned out.'
-            ];
-        }
-        return [
-            'type' => 'error',
-            'message' => 'API ERROR: checkdupIn'
-        ];
     }
 
     /* --------------------------------------------------------------------- */

@@ -26,16 +26,13 @@ class ResultsController extends Controller
                 $total = 0;
                 $jos = WorkOrder::where('SALES_ORDER',$wo)->get();
                 foreach ($jos as $jo) {
-                    $total += Pcb::where('jo_id',$jo->ID)->where('div_process_id',$request->input('pid'))->where('type',$request->input('type'))->count();
+                    $total += Pcb::where('jo_id',$jo->ID)->where('div_process_id',$request->input('pid'))->where('type',$request->input('type'))->whereNull('work_order')->count();
                 }
+                $total += Pcb::where('work_order',$wo)->count();
                 $wts[$wo] = $total;
                 
             }
-        }        
-        /* $jos = WorkOrder::where('SALES_ORDER',$wo)->get();
-        foreach ($jos as $jo) {
-            $total += Pcb::where('jo_id',$jo->ID)->where('div_process_id',2)->where('type',1)->count();
-        } */
+        }
         /* return dd($wts); */
         return view('pages.results.wo',compact('wts','dprocs','woi'));
     }

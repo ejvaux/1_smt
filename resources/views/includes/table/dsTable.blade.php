@@ -7,6 +7,7 @@
                     <th>@sortablelink('repair','Lead Time')</th>
                     <th>@sortablelink('defect_id','DIVISION')</th>
                     <th>@sortablelink('line_id','LINE')</th>
+                    <th>@sortablelink('line_id','MODEL')</th>
                     <th>@sortablelink('shift','SHIFT')</th>
                     <th>@sortablelink('process_id','PROCESS')</th>
                     <th>@sortablelink('pcb_id','S/N')</th>
@@ -22,21 +23,26 @@
             <tbody class='text-center'>
                 @if (count($defect_mats)>0)
                     @foreach($defect_mats as $defect_mat)
-                        <tr class='clickable-row'
+                        <tr 
                             @if ($defect_mat->repair)
-                            data-repby='{{$defect_mat->repairby->fname}} {{$defect_mat->repairby->lname}}'
+                                data-repby='{{$defect_mat->repairby->fname}} {{$defect_mat->repairby->lname}}'
+                                class='clickable-row border-left border-success'
+                            @else
+                                class='clickable-row border-left border-danger'
                             @endif
                             data-div='{{$defect_mat->defect->division->DIVISION_ID}}'
                             data-arr='{{$defect_mat}}' data-id='{{$defect_mat->id}}'
                             data-sn='{{$defect_mat->pcb->serial_number}}'
-                            data-rep='{{$defect_mat->repair}}'>                            
+                            data-rep='{{$defect_mat->repair}}'
+                            style='border-width:10px !important'>                            
                             {{-- Col --}}
-                                @if ($defect_mat->repair != true)
+                                {{-- @if ($defect_mat->repair != true)
                                     <th class='border-bottom-0 border-top-0 border-right border-danger p-0 m-0' style='border-width:6px !important'>
                                 @else
                                     <th class='border-bottom-0 border-top-0 border-right border-success p-0 m-0' style='border-width:6px !important'>
-                                @endif                                                       
-                                    {{ $loop->iteration + (($defect_mats->currentPage() - 1) * 20) }}                                
+                                @endif  --}}
+                                    <th>                                                  
+                                        {{ $loop->iteration + (($defect_mats->currentPage() - 1) * 20) }}                                
                                     </th>
                             {{-- Col --}}
                                 <th>
@@ -44,12 +50,27 @@
                                         <span class='text-success'>{{CustomFunctions::datefinished($defect_mat->created_at,$defect_mat->repaired_at)}}</span>
                                     @else
                                         <span class='text-danger'>{{CustomFunctions::datelapse($defect_mat->created_at)}}</span>
-                                    @endif    
-                                </th>
+                                    @endif
+                                </th>                              
                             {{-- Col --}}
                                 <td>{{$defect_mat->defect->division->DIVISION_NAME}}</td>
                             {{-- Col --}}
                                 <td>{{$defect_mat->line->name}}</td>
+                            {{-- Col --}}
+                                <td>
+                                    @php
+                                        $joid = \App\Models\Pcb::where('id',$defect_mat->pcb_id)->pluck('jo_id')->first();
+                                        $model = \App\Models\WorkOrder::where('ID', $joid)->pluck('ITEM_NAME')->first();
+                                        if (strpos($model, ',') !== false) {
+                                            $m = explode(",", $model);
+                                            $mod = $m[1];
+                                        }
+                                        else{
+                                            $mod = $model;
+                                        }
+                                        echo $mod;
+                                    @endphp
+                                </td>
                             {{-- Col --}}                            
                                 <td>
                                     @if ($defect_mat->shift == 1)

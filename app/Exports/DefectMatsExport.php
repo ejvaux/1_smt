@@ -18,10 +18,11 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
 {
     use Exportable;    
 
-    public function __construct($from,$to)
+    public function __construct($from,$to,$item)
     {
         $this->from = $from;
         $this->to = $to;
+        $this->item = $item;
     }
 
     public function headings(): array
@@ -100,7 +101,12 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
 
     public function query()
     {
-        $query = DefectMat::whereDate('created_at','>=',$this->from)->whereDate('created_at','<=',$this->to);
+        if($this->item == 1){
+            $query = DefectMat::whereDate('created_at','>=',$this->from)->whereDate('created_at','<=',$this->to);
+        }
+        else{
+            $query = DefectMat::whereDate('repaired_at','>=',$this->from)->whereDate('repaired_at','<=',$this->to);
+        }        
         return $query->orderBy('created_at');
     }
 

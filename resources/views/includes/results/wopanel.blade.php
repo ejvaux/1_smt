@@ -23,7 +23,7 @@
                     <option value="1">OUT</option>
                     <option value="0">IN</option>
                 </select>
-                <button type="submit">GO</button>
+                <button type="submit" class="form_submit_button">GO</button>
             </div>
         </div>
     </div>
@@ -40,18 +40,22 @@
                     </thead>
                     <tbody class='text-center'>
                         @if (isset($wts))
-                            @foreach ($wts as $wo => $total)
-                                <tr>
-                                    <th>
-                                        {{$wo}}                            
-                                    </th>
-                                    <th>
-                                        {{$total}}
-                                    </th>
-                                </tr>
-                            @endforeach
+                            @if (count($wts) > 0)
+                                @foreach ($wts as $wo => $total)
+                                    <tr>
+                                        <th>
+                                            {{$wo}}                            
+                                        </th>
+                                        <th>
+                                            {{$total}}
+                                        </th>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr><th colspan="2"><h3>NO DATA</h3></th></tr>
+                            @endif                            
                         @else
-                            <tr><th colspan="2">NO DATA</th></tr>
+                            <tr><th colspan="2"><h3>NO DATA</h3></th></tr>
                         @endif                                                
                     </tbody>
                 </table>

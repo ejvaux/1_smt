@@ -41,13 +41,9 @@ class DefectController extends Controller
             }
             else{
                 $defect_mats =DefectMat::sortable()->where('pcb_id',0)->orderBy('id','DESC')->paginate('20');;
-            }
-            /* $defect_mats = DefectMat::sortable()->where('pcb_id',$pcb->id)->orderBy('id','DESC')->paginate('20'); */
-            /* $defect_mats = DefectMat::whereHas('pcb', function ($query) use ($request) {
-                $query->where('serial_number', 'like', "%{$request->text}%")->paginate('20');
-            }); */
+            }            
         }
-        /* $defect_mats = DefectMat::sortable()->orderBy('id','DESC')->paginate('20'); */
+        
         $divisions = $this->divisions;
         $linenames = $this->linenames;
         $defects = $this->defects;
@@ -79,14 +75,19 @@ class DefectController extends Controller
         
     }
     public function exportdefectmats(Request $request)
-    {
-        if($request->input('date_from') == $request->input('date_to')){
-            $filename = $request->input('date_from');
+    {        
+        if($request->input('item') == 1){
+            $filename = 'DEFECTS_';
         }
         else{
-            $filename = $request->input('date_from').'_to_'.$request->input('date_to');
+            $filename = 'REPAIRED_';
         }
-
-        return Excel::download(new DefectMatsExport($request->input('date_from'),$request->input('date_to')), 'Defects_'.$filename.'.xlsx');
+        if($request->input('date_from') == $request->input('date_to')){
+            $filename .= $request->input('date_from');
+        }
+        else{
+            $filename .= $request->input('date_from').'_to_'.$request->input('date_to');
+        }
+        return Excel::download(new DefectMatsExport($request->input('date_from'),$request->input('date_to'),$request->input('item')), $filename.'.xlsx');
     }
 }
