@@ -19,10 +19,10 @@
                         </form>
                     </div>
                     <div class="col-md-3">
-                        <form action="{{url('qc')}}" method="GET">
+                        <form class='form_to_submit' action="{{url('qc')}}" method="GET">
                             <div class="input-group">                        
                                 <input type="date" class="form-control" id="" name="date" value='{{$date}}'>
-                                <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
+                                <button class="form_submit_button" type="submit" id=""><i class="fa fa-search"></i></button>                                            
                             </div>
                         </form>
                     </div>

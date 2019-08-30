@@ -63,7 +63,12 @@
                                         $model = \App\Models\WorkOrder::where('ID', $joid)->pluck('ITEM_NAME')->first();
                                         if (strpos($model, ',') !== false) {
                                             $m = explode(",", $model);
-                                            $mod = $m[1];
+                                            if($m[1] == 'Secure'){
+                                                $mod = 'Main Board';
+                                            }
+                                            else{
+                                                $mod = $m[1];
+                                            }
                                         }
                                         else{
                                             $mod = $model;

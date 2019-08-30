@@ -89,14 +89,14 @@
                         @endforeach
                     @else
                         <tr>
-                            <th colspan="10">
+                            <th colspan="13">
                                 <h4>No data to display</h4>
                             </th>
                         </tr>
                     @endif
                 @else
                     <tr>
-                        <th colspan="10">
+                        <th colspan="13">
                             <h4>No data to display</h4>
                         </th>
                     </tr>

@@ -28,7 +28,7 @@ class ResultsController extends Controller
                 foreach ($jos as $jo) {
                     $total += Pcb::where('jo_id',$jo->ID)->where('div_process_id',$request->input('pid'))->where('type',$request->input('type'))->whereNull('work_order')->count();
                 }
-                $total += Pcb::where('work_order',$wo)->count();
+                $total += Pcb::where('work_order',$wo)->where('div_process_id',$request->input('pid'))->where('type',$request->input('type'))->whereNotNull('work_order')->count();
                 $wts[$wo] = $total;
                 
             }
