@@ -56,6 +56,27 @@ var empset = 0;
 var lotset = 0;
 var x = $('#e_sound');
 var y = $('#s_sound');
+/* ---------- LOAD FUNCTIONS ---------- */
+if($('#_type').length){
+    if ($('#_type').val() == 0) {
+        $('#pcb_input').prop('checked',true);
+        /* $('#pcb_input').bootstrapToggle('on'); */
+        $('#pcb_input').bootstrapToggle('disable')
+    } 
+    else if ($('#_type').val() == 1) {
+        $('#pcb_input').prop('checked',false);
+        /* $('#pcb_input').bootstrapToggle('off'); */
+        $('#pcb_input').bootstrapToggle('disable')
+    }    
+}
+if($('#_div').length){
+    $('#pcb_line_id').attr('disabled',false);
+    $('#pcb_process_id').attr('disabled',false);
+}
+/* if($('#_line').length){
+    $('#pcb_line_id').attr('disabled',false);
+    $('#pcb_process_id').attr('disabled',false);
+} */
 /* ---------- FUNCTIONS ---------- */
 function scanddload(uri,id,dd,val,dis){
     $.get("api/"+uri+"/"+ id, 
@@ -70,7 +91,7 @@ function scanddload(uri,id,dd,val,dis){
             }
             else{
                 model.attr('disabled',true);
-                model.append("<option value=''>No Data Found.</option>");
+                model.append("<option value=''>NO DATA FOUND</option>");
             }            
         });    
 }
@@ -587,7 +608,25 @@ function closelotnumber(ln,eid){
         },
         global: false,
         success: function (data) {
-            if(data == 1){
+            if(data.type == 'success'){
+                lotset = 0;
+                $('#lot_num').val('No Lot Number Found.');
+                $('#scanform-lot_id').val('');
+                $('#lot_total').val('');
+                $('#close_lot_num').attr('disabled',true);
+                $('#create_lot_num').attr('disabled',false);
+                iziToast.success({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+            }
+            else{
+                iziToast.error({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+            }
+            /* if(data == 1){
                 lotset = 0;
                 $('#lot_num').val('No Lot Number Found.');
                 $('#scanform-lot_id').val('');
@@ -604,7 +643,7 @@ function closelotnumber(ln,eid){
                     message: 'Lot Number Closing Failed!',
                     position: 'topCenter'
                 });
-            }
+            } */
             checkscan();        
         }
     });

@@ -909,17 +909,38 @@ class ApiController extends Controller
     }
     public function closelotnumber(Request $request)
     {
-        $e = Lot::where('id',$request->input('ln'))->first();
-        $e->status = 1;
-        $e->closed_by = $request->eid;
-        $e->closed_at = Date('Y-m-d H:i:s');
-        $e->qty = Pcb::where('lot_id',$request->input('ln'))->count();
-        if($e->save()){
-            return 1;
+        $qty = Pcb::where('lot_id',$request->input('ln'))->count();
+        
+        if($qty > 0){
+            $e = Lot::where('id',$request->input('ln'))->first();
+            $e->status = 1;
+            $e->closed_by = $request->eid;
+            $e->closed_at = Date('Y-m-d H:i:s');
+            $e->qty = Pcb::where('lot_id',$request->input('ln'))->count();
+            if($e->save()){
+                return [
+                    'type' => 'success',
+                    'message' => 'Lot Number Closed Successfully!'
+                ];
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Lot closing failed. Try Again.'
+                ];
+            }
         }
         else{
-            return 0;
+            return [
+                'type' => 'error',
+                'message' => 'Cannot close empty lot.'
+            ];
         }
+        
+        return [
+            'type' => 'error',
+            'message' => 'API Error: Close Lot'
+        ];
     }
     public function getlotnumbertotal(Request $request)
     {

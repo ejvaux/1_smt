@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-    <div class="container">
+    <div class="container-fluid">
         <a class="navbar-brand" href="http://172.16.1.13:8000/">
             <img src="{{ asset('images/primatech-logo.png')}}" class="nav-badge">
             {{-- <b>{{ config('app.name', 'Laravel') }}</b> --}}
@@ -26,9 +26,9 @@
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @endif --}}                    
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{url('sp')}}" target="_blank"><span class='font-weight-bold'>Scan</span></a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle bold-text" href="#" role="button" data-toggle="dropdown" >
                             Results <span class="caret"></span>

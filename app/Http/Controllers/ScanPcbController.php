@@ -31,32 +31,50 @@ class ScanPcbController extends Controller
     public function index(Request $request)
     {
         $date1 = Date('Y-m-d');
-        ($request->input('div_id') != '' ? $div_id = $request->input('div_id') : $div_id = 0);
+        $divisions = $this->divisions;
+        $divprocesses = null;
+        $lines = null;
+        $sel_division = null;
+        $sel_line = null;
+        /* ($request->input('div_id') != '' ? $div_id = $request->input('div_id') : $div_id = 0);
         ($request->input('div_proc_id') != '' ? $div_proc_id = $request->input('div_proc_id') : $div_proc_id = 0);
-        ($request->input('line_id') != '' ? $line_id = $request->input('line_id') : $line_id = 0);
+        ($request->input('line_id') != '' ? $line_id = $request->input('line_id') : $line_id = 0); */
 
         $type = $request->input('type');
-        $divisions = $this->divisions;
-        $divprocesses = $this->divprocesses;
-        $sel_division = Division::where('DIVISION_ID',$div_id)->first();
+        $div = $request->input('div');
+        $lin = $request->input('line');
+
+        if(isset($div)){
+            $sel_division = Division::where('DIVISION_ID',$div)->first();
+            if(isset($lin)){
+                $lines = LineName::where('name',$lin)->where('division_id',$div)->get();
+            }
+            else{
+                $lines = LineName::where('division_id',$div)->get();
+            }            
+            $divprocesses = DivProcess::where('division_id',$div)->get();            
+        }
+        else{
+            $divisions = $this->divisions;
+        }
+                
+        /* $sel_division = Division::where('DIVISION_ID',$div)->first();
         $sel_div_process = DivProcess::where('id',$div_proc_id)->first();
-        $sel_line = LineName::where('id',$line_id)->first();
+        $sel_line = LineName::where('name',$line)->first(); */
 
         /* $workorders = WorkOrder::where('JOB_ORDER_NO','LIKE',"{$sel_division->SAP_DIVISION_CODE}%")->where('DATE_',$date1)->paginate('100'); */
         /* $pcbs = ''; */
         /* $pcbs = Pcb::paginate('100'); */
 
         return view('pages.scan.sp',compact(
-            /* 'pcbs', */
             'date1',
-            /* 'workorders', */
-            'divisions',
-            /* 'processes', */
             'type',
             'divprocesses',
+            'lines',
             'sel_division',
-            'sel_div_process',
-            'sel_line'
+            /* 'sel_div_process', */
+            'sel_line',
+            'divisions'
         ));
     }
     /* To be removed */

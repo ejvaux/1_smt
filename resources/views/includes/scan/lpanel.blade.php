@@ -31,11 +31,12 @@
                                         <label for="pcb_input_type" class="col-form-label">TYPE:</label>
                                     </div>
                                     <div class="col-md-8">
-                                        {{-- <input class='form-control pcbconfig configlock' type="text" id='display-input' value='{{ ($type == 1 ? 'IN' : 'OUT')}}' readonly> --}}                    
+                                        @isset($type)
+                                            <input id='_type' type="hidden" name="" value='{{$type}}'>
+                                        @endisset
                                         <div class="">
                                             <input class='' checked id="pcb_input" type="checkbox" data-toggle="toggle" data-on="SCAN AS IN" data-off="SCAN AS OUT" data-onstyle="primary" data-offstyle="secondary" data-width="100%" data-height="15">
-                                        </div>                                        
-                                        {{-- <input id='pcb_input_type' name='pcb_input_type' type="hidden" value='{{ $type }}'> --}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -45,15 +46,19 @@
                                         <label for="sel_division" class="col-form-label">DIVISION:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig configlock' type="text" id='display-division' value='{{-- {{ (count($sel_division)>0 ? $sel_division->DIVISION_NAME : '')}} --}}' readonly>                    
-                                        <select id="pcb_division_id" class="form-control configunlock" name="division_id" placeholder="" required>
-                                                <option value="0">- Please select -</option>
-                                                @foreach ($divisions as $division)
-                                                    <option value="{{$division->DIVISION_ID}}">{{$division->DIVISION_NAME}}</option>
-                                                @endforeach
-                                        </select>
-                                        {{-- <input id='sel_division_id' name='sel_division_id' type="hidden" value='{{ (count($sel_division)>0 ? $sel_division->DIVISION_ID : '')}}'>
-                                        <input id='sel_division_sap_id' name='sel_division_sap_id' type="hidden" value='{{ (count($sel_division)>0 ? $sel_division->SAP_DIVISION_CODE : '')}}'> --}}
+                                        @if (isset($sel_division))
+                                            <input id="_div" type="hidden" name="">
+                                            <input class='form-control pcbconfig' type="text" id='' value='{{$sel_division->DIVISION_NAME}}' readonly>
+                                            <input id="pcb_division_id" type="hidden" name="division_id" value="{{$sel_division->DIVISION_ID}}">
+                                        @else
+                                            <input class='form-control pcbconfig configlock' type="text" id='display-division' value='' readonly>                    
+                                            <select id="pcb_division_id" class="form-control configunlock" name="division_id" placeholder="" required>
+                                                    <option value="0">- Please select -</option>
+                                                    @foreach ($divisions as $division)
+                                                        <option value="{{$division->DIVISION_ID}}">{{$division->DIVISION_NAME}}</option>
+                                                    @endforeach
+                                            </select>
+                                        @endif                                                                                
                                     </div>
                                 </div>
                             </div>                                                
@@ -65,10 +70,26 @@
                                         <label for="sel_line" class="col-form-label">LINE:</label>                  
                                     </div>
                                     <div class="col-8">
-                                        <input class='form-control pcbconfig configlock' type="text" id='display-line' value='{{-- {{ (count($sel_line)>0 ? $sel_line->name : '')}} --}}' readonly>
-                                        <select id="pcb_line_id" class="form-control configunlock" name="line_id" placeholder="" disabled required>
-                                            <option value="0">- Select Division First -</option>
-                                        </select>
+                                        {{-- @if (isset($sel_line))
+                                            <input id="_line" type="hidden" name="">
+                                            <input class='form-control pcbconfig' type="text" id='' value='{{$sel_line->description}}' readonly>
+                                            <input id="pcb_line_id" type="hidden" name="line_id" value="{{$sel_line->name}}">
+                                        @else --}}
+                                            <input class='form-control pcbconfig configlock' type="text" id='display-line' value='{{-- {{ (count($sel_line)>0 ? $sel_line->name : '')}} --}}' readonly>
+                                            <select id="pcb_line_id" class="form-control configunlock" name="line_id" placeholder="" disabled required>
+                                                @if (isset($lines))
+                                                    @if ($lines->count() > 0)
+                                                        @foreach ($lines as $line)
+                                                            <option value="{{$line->id}}">{{$line->name}}</option>
+                                                        @endforeach
+                                                    @else
+                                                        <option value="0">- NO DATA FOUND -</option>
+                                                    @endif                                                    
+                                                @else
+                                                    <option value="0">- Select Division First -</option>
+                                                @endif                                            
+                                            </select>
+                                        {{-- @endif  --}}                                       
                                         {{-- <input id='sel_div_process_id' name='sel_div_process_id' type="hidden" value='{{ (count($sel_line)>0 ? $sel_line->id : '')}}'> --}}
                                     </div>
                                 </div>
@@ -81,7 +102,13 @@
                                     <div class="col-8">
                                         <input class='form-control pcbconfig configlock' type="text" id='display-process' value='{{-- {{ (count($sel_div_process)>0 ? $sel_div_process->name : '')}} --}}' readonly>                    
                                         <select class="form-control configunlock" id="pcb_process_id" disabled required>
-                                            <option value="0">- Select Division First -</option>
+                                            @if (isset($divprocesses))
+                                                @foreach ($divprocesses as $divprocess)
+                                                    <option value="{{$divprocess->id}}">{{$divprocess->name}}</option>
+                                                @endforeach
+                                            @else
+                                                <option value="0">- Select Division First -</option>
+                                            @endif
                                         </select>
                                         {{-- <input id='sel_div_process_id' name='sel_div_process_id' type="hidden" value='{{ (count($sel_div_process)>0 ? $sel_div_process->id : '')}}'> --}}
                                     </div>
