@@ -41,6 +41,12 @@
                             <form action="{{url('ds')}}" method="get">                   
                                 <div class="input-group">
                                     <input type="date" class='form-control' name="sdate" id="sdate" value="{{$dte}}">
+                                    <select class='form-control' name="shift" id="shift">
+                                        @if ($shift == '')selected @endif
+                                        <option value="" @if ($shift == '')selected @endif>ALL SHIFT</option>
+                                        <option value="1" @if ($shift == 1)selected @endif>DAY</option>
+                                        <option value="2" @if ($shift == 2)selected @endif>NIGHT</option>
+                                    </select>
                                     <button type="submit">Go</button>
                                 </div>
                             </form>

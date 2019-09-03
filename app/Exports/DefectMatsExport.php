@@ -18,11 +18,13 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
 {
     use Exportable;    
 
-    public function __construct($from,$to,$item)
+    public function __construct($from,$to,$status,$line,$shift)
     {
         $this->from = $from;
         $this->to = $to;
-        $this->item = $item;
+        $this->status = $status;
+        $this->line = $line;
+        $this->shift = $shift;
     }
 
     public function headings(): array
@@ -54,7 +56,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         $rname = '';
         $ltime = '';
         if($query->repair == 1){
-            $stat = 'REPAIRED';
+            $stat = 'GOOD';
             $rname = $query->repairby->lname . ', ' . $query->repairby->fname;
         }
         else{
@@ -106,13 +108,31 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
 
     public function query()
     {
-        if($this->item == 1){
-            $query = DefectMat::whereDate('created_at','>=',$this->from)->whereDate('created_at','<=',$this->to);
+        $dte = $this->from;
+        $dte2 = Carbon::parse($this->to.' 18:00:00')->addDay();
+        $query = DefectMat::where('created_at','>=',$dte.' 06:00:00')
+                            ->where('created_at','<=',$dte2);
+        if($this->shift != ''){
+            if($this->shift == 1){
+                $query->where('shift',1);
+            }
+            else if($this->shift == 2){
+                $query->where('shift',2);
+            }
         }
-        else{
-            $query = DefectMat::whereDate('repaired_at','>=',$this->from)->whereDate('repaired_at','<=',$this->to);
+        if($this->status != ''){
+            if($this->status == 1){
+                $query->where('repair',0);
+            }
+            else if($this->status == 2){
+                $query->where('repair',1);
+            }
+        }
+        if($this->line != ''){
+            $query->where('line_id',$this->line);
         }        
-        return $query->orderBy('created_at');
+                
+        return $query->orderBy('id','DESC');
     }
 
     public function title(): string

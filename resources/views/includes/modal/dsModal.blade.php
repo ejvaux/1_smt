@@ -489,12 +489,38 @@
                 <!-- ____________ FORM __________________ -->
                 <div class="form-group row">
                     <div class="col-4">
-                        <label for="ds_item" class="col-form-label">ITEM:</label>                  
+                        <label for="ds_status" class="col-form-label">STATUS:</label>                  
                     </div>
                     <div class="col-8">
-                        <select class='form-control' name="item" id="ds_item">
-                            <option value="1">DEFECTS</option>
-                            <option value="2">REPAIRED</option>
+                        <select class='form-control' name="status" id="ds_status">
+                            <option value="">ALL</option>
+                            <option value="1">NG</option>
+                            <option value="2">GOOD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="ds_line" class="col-form-label">LINE:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <select class='form-control' name="line" id="ds_line">
+                            <option value="">ALL</option>
+                            @foreach ($lines as $line)
+                                <option value="{{$line->id}}">{{$line->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="ds_shift" class="col-form-label">SHIFT:</label>                  
+                    </div>
+                    <div class="col-8">
+                        <select class='form-control' name="shift" id="ds_shift">
+                            <option value="">ALL</option>
+                            <option value="1">DAY</option>
+                            <option value="2">NIGHT</option>
                         </select>
                     </div>
                 </div>

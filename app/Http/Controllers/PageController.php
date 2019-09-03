@@ -87,18 +87,11 @@ class PageController extends Controller
 
     public function testing()
     {
-        $out = Pcb::select('*')->where('serial_number','M.GNC97J0353')
-                ->where('div_process_id',1)
-                ->where('type',1)
-                ->first();
-
-        if($out){
-            return 'true';
-        }
-        else{
-            return 'false';
-        }
-        
+        $from = '2019/08/31';
+        $to = '2019/08/31';
+        $dte = \Carbon\Carbon::parse($from . ' 06:00:00');
+        $dte2 = \Carbon\Carbon::parse($to . ' 18:00:00')->addDay();
+        return $dte . '_' . $dte2;
     }
 
 }

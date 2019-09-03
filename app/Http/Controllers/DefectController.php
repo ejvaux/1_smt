@@ -13,6 +13,7 @@ use App\Exports\DefectMatsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\MES\model\LineName;
 use App\Http\Controllers\MES\model\Employee;
+use Carbon\Carbon;
 
 class DefectController extends Controller
 {
@@ -20,7 +21,7 @@ class DefectController extends Controller
     {
         /* $this->middleware('auth'); */
         $this->divisions = Division::all();
-        $this->linenames = LineName::all();
+        $this->linenames = LineName::whereIn('division_id',[2,18])->get();
         $this->defects = Defect::all();
         $this->processes = Process::all();
         $this->employee = Employee::all();
@@ -30,9 +31,52 @@ class DefectController extends Controller
     public function index(Request $request)
     {   
         $t = $request->input('text');
+        ($request->input('shift') != "" ? $shift = $request->input('shift') : $shift = '');
         ($request->input('sdate') != "" ? $dte = $request->input('sdate') : $dte = Date('Y-m-d'));
-        if($t == ''){            
-            $defect_mats = DefectMat::sortable()->where('created_at','LIKE',"{$dte}%")->orderBy('id','DESC')->paginate('20');
+        $dte2 = Carbon::parse($dte)->addDays(1);
+        if($t == ''){
+            if($shift == ''){
+                $defect_mats = DefectMat::sortable()
+                            ->where(function ($query) use ($dte) {
+                                $query->whereDate('created_at',$dte)
+                                    ->where('shift', 1);
+                            })
+                            ->orwhere(function ($query) use ($dte) {
+                                $query->whereDate('created_at',$dte)
+                                    ->whereTime('created_at', '>=', '18:00:00')                                    
+                                    ->where('shift', 2);
+                            })
+                            ->orwhere(function ($query) use ($dte2) {
+                                $query->whereDate('created_at', $dte2)
+                                    ->whereTime('created_at', '<', '06:00:00')                                    
+                                    ->where('shift', 2);
+                            })                            
+                            ->orderBy('id','DESC')->paginate('20');
+            }
+            else{
+                if($shift == 1){
+                    $defect_mats = DefectMat::sortable()
+                        ->whereDate('created_at',$dte)
+                        ->where('shift', 1)
+                        ->orderBy('id','DESC')
+                        ->paginate('20');
+                }
+                else if ($shift == 2){
+                    $defect_mats = DefectMat::sortable()
+                        ->where(function ($query) use ($dte) {
+                            $query->whereDate('created_at',$dte)
+                                ->whereTime('created_at', '>=', '18:00:00')                                    
+                                ->where('shift', 2);
+                        })
+                        ->orwhere(function ($query) use ($dte2) {
+                            $query->whereDate('created_at', $dte2)
+                                ->whereTime('created_at', '<', '06:00:00')                                    
+                                ->where('shift', 2);
+                        })                            
+                        ->orderBy('id','DESC')->paginate('20');
+                }
+            }
+            
         }
         else{
             $pcb = Pcb::where('serial_number',$t)->where('defect',1)->first();
@@ -40,17 +84,26 @@ class DefectController extends Controller
                 $defect_mats = DefectMat::sortable()->where('pcb_id',$pcb->id)->orderBy('id','DESC')->paginate('20');
             }
             else{
-                $defect_mats =DefectMat::sortable()->where('pcb_id',0)->orderBy('id','DESC')->paginate('20');;
+                $defect_mats = DefectMat::sortable()->where('pcb_id',0)->orderBy('id','DESC')->paginate('20');;
             }            
         }
         
         $divisions = $this->divisions;
-        $linenames = $this->linenames;
+        $lines = $this->linenames;
         $defects = $this->defects;
         $processes = $this->processes;
         $defect_types = $this->defect_types;
 
-        return view('pages.defect.ds',compact('defect_mats','divisions','linenames','defects','processes','dte','defect_types'));
+        return view('pages.defect.ds',compact(
+            'shift',
+            'defect_mats',
+            'divisions',
+            'lines',
+            'defects',
+            'processes',
+            'dte',
+            'defect_types'
+        ));
     }
     public function scanpinemp(Request $request)
     {
@@ -76,18 +129,19 @@ class DefectController extends Controller
     }
     public function exportdefectmats(Request $request)
     {        
-        if($request->input('item') == 1){
-            $filename = 'DEFECTS_';
-        }
-        else{
-            $filename = 'REPAIRED_';
-        }
+        $filename = 'DEFECTS_';
         if($request->input('date_from') == $request->input('date_to')){
-            $filename .= $request->input('date_from');
+            $filename .= $request->input('date_from').'_'.Date('His');
         }
         else{
-            $filename .= $request->input('date_from').'_to_'.$request->input('date_to');
+            $filename .= $request->input('date_from').'_to_'.$request->input('date_to').'_'.Date('His');
         }
-        return Excel::download(new DefectMatsExport($request->input('date_from'),$request->input('date_to'),$request->input('item')), $filename.'.xlsx');
+        return Excel::download(new DefectMatsExport(
+            $request->input('date_from'),
+            $request->input('date_to'),
+            $request->input('status'),
+            $request->input('line'),
+            $request->input('shift')
+        ), $filename.'.xlsx');
     }
 }
