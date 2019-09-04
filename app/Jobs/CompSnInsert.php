@@ -45,7 +45,7 @@ class CompSnInsert implements ShouldQueue
                 if($comp){                                
                     /* $comp->sn = array($this->sn); */
                     $cc = $comp->sn;
-                    if(count($comp->sn) > 999){
+                    if(count($comp->sn) > 499){
                         $c = new MatSnComp;
                         $c->model_id = $mat_comp->model_id;
                         $c->line_id = $mat_comp->line_id;

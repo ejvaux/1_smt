@@ -5,8 +5,9 @@
                 <tr class="text-center">
                     <th>#</th>
                     <th>DATE</th>
-                    <th>JOB ORDER</th>
+                    <th>PART NAME</th>
                     <th>WORK ORDER</th>
+                    <th>JOB ORDER</th>
                     <th>LINE</th>
                     <th>QTY</th>
                     <th>PART CODE</th>
@@ -19,8 +20,25 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <th>{{ $jo->DATE_ }}</th>
-                                <td>{{ $jo->JOB_ORDER_NO }}</td>
+                                <td>
+                                    @php
+                                        if (strpos($jo->ITEM_NAME, ',') !== false) {
+                                            $m = explode(",", $jo->ITEM_NAME);
+                                            if($m[1] == 'Secure'){
+                                                $mod = 'Main Board';
+                                            }
+                                            else{
+                                                $mod = $m[1];
+                                            }
+                                        }
+                                        else{
+                                            $mod = $jo->ITEM_NAME;
+                                        }
+                                        echo $mod;
+                                    @endphp
+                                </td>
                                 <td>{{ $jo->SALES_ORDER }}</td>
+                                <td>{{ $jo->JOB_ORDER_NO }}</td>
                                 <td>{{ $jo->MACHINE_CODE }}</td>
                                 <td>{{ $jo->PLAN_QTY }}</td>
                                 <td>{{ $jo->ITEM_CODE }}</td>                                
