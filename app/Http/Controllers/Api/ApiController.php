@@ -30,7 +30,7 @@ class ApiController extends Controller
 
     Message to the next developer.
     Please start at the event trigger by the element.
-    Then check the function being call.
+    Then check the function being called.
     Examine the function carefully.
     For ajax function, follow the url being requested.
     Follow the URL in the web.php
@@ -660,7 +660,7 @@ class ApiController extends Controller
 
     /* --------------------------------------------------------------------- */
     public function checkjoquantity(Request $request)
-    {        
+    {
         $q = WorkOrder::where('ID',$request->jo_id)->pluck('PLAN_QTY')->first();
         $o = Pcb::where('jo_id',$request->jo_id)->where('type',1)->count();
         $t = $q - $o;

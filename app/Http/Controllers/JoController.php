@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WorkOrder;
 use App\Models\WoSn;
+use App\Models\Pcb;
 
 class JoController extends Controller
 {
@@ -35,5 +36,17 @@ class JoController extends Controller
                 ->orderby('MACHINE_CODE')->get();
         }
         return view('pages.jo.jo',compact('jos','date'));
+    }
+    public function getJOqty(Request $request)
+    {
+        $joid = $request->input('joid');
+        $qty = WorkOrder::where('ID',$joid)->pluck('PLAN_QTY')->first();
+        $aqty = Pcb::where('jo_id',$joid)->where('type',1)->count();
+        $rqty = $qty - $aqty;
+        return [
+            'type' => 'success',
+            'actual' => $aqty,
+            'remaining' => $rqty
+        ];
     }
 }

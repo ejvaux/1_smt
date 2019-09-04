@@ -10,6 +10,7 @@
                     <th>JOB ORDER</th>
                     <th>LINE</th>
                     <th>QTY</th>
+                    <th>REMAINING QTY</th>
                     <th>PART CODE</th>
                 </tr>
             </thead>
@@ -41,19 +42,29 @@
                                 <td>{{ $jo->JOB_ORDER_NO }}</td>
                                 <td>{{ $jo->MACHINE_CODE }}</td>
                                 <td>{{ $jo->PLAN_QTY }}</td>
+                                {{-- <td id='remcheckcol_{{$jo->ID}}'>
+                                    <button id="{{$jo->ID}}" class="btn btn-outline-secondary py-0 remcheck">CALCULATE</button>
+                                </td> --}}
+                                <td>
+                                    @php
+                                        $aqty = \App\Models\Pcb::where('jo_id',$jo->ID)->where('type',1)->count();
+                                        $rqty = $jo->PLAN_QTY - $aqty;
+                                        echo $rqty;
+                                    @endphp
+                                </td>
                                 <td>{{ $jo->ITEM_CODE }}</td>                                
                             </tr>
                         @endforeach
                     @else
                         <tr>
-                            <th colspan="7">
+                            <th colspan="9">
                                 <h4>No data to display. Try to set the Work Order and then reload the table.</h4>
                             </th>
                         </tr>
                     @endif
                 @else
                     <tr>
-                        <th colspan="7">
+                        <th colspan="9">
                             <h4>No data to display. Try to set the Work Order and then reload the table.</h4>
                         </th>
                     </tr>

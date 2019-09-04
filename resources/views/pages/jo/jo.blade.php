@@ -28,10 +28,10 @@
                                 </form>
                             </div>
                             <div class="col-md-3">
-                                <form action="{{url('jo')}}" method="get">
+                                <form class='form_to_submit' action="{{url('jo')}}" method="get">
                                     <div class="input-group">                        
                                         <input type="date" class="form-control" id="" name="date" value='{{$date}}'>
-                                        <button type="submit" class='' id=""><i class="fa fa-search"></i></button>                                            
+                                        <button type="submit" class='form_submit_button' id=""><i class="fa fa-search"></i></button>                                            
                                     </div>
                                 </form>
                             </div>
