@@ -87,11 +87,19 @@ class PageController extends Controller
 
     public function testing()
     {
-        $from = '2019/08/31';
-        $to = '2019/08/31';
-        $dte = \Carbon\Carbon::parse($from . ' 06:00:00');
-        $dte2 = \Carbon\Carbon::parse($to . ' 18:00:00')->addDay();
-        return $dte . '_' . $dte2;
+        $joid = '38853';
+
+        $string = \App\Models\WorkOrder::where('ID',$joid)->pluck('ITEM_CODE')->first();
+
+        if($string[-1] == 'B' || $string[-1] == 'b'){
+            echo 'BOTTOM';
+        }
+        else if($string[-1] == 'T'){
+            echo 'TOP';
+        }
+        else {
+            echo $string;
+        }
     }
 
 }

@@ -90,6 +90,23 @@ class ApiController extends Controller
     {   
         if($request->division_id == 2)
         {
+            // Setting div process for SMT
+            $icode = WorkOrder::where('ID',$request->jo_id)->pluck('ITEM_CODE')->first();
+            if($icode[-1] == 'B' || $icode[-1] == 'b'){
+                $dproc = 1;
+            }
+            else if($icode[-1] == 'T'){
+                $dproc = 2;
+            }
+            else {
+                return [
+                    'type' => 'error',
+                    'message' => 'ITEM CODE is not recognized. Cannot input scan process. Please contact the system support.'
+                ];
+            }
+            $request->div_process_id = $dproc;
+
+            //Checking WOSN
             if($request->work_order){
                 $wo = $request->work_order;
             }
@@ -256,19 +273,15 @@ class ApiController extends Controller
         {
             if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
                 $a = new Pcb;
-                $a->serial_number = strtoupper($request->serial_number);
-                if($jo_id == ''){
-                    $a->jo_id = $request->jo_id;
-                }
-                else{
-                    $a->jo_id = $jo_id;
-                }
-                
+                $a->serial_number = strtoupper($request->serial_number);  
+
+                $a->jo_id = $request->jo_id;
                 $a->jo_number = $request->jo_number;
                 $a->lot_id = 0;
                 $a->division_id = $request->division_id;
                 $a->line_id = $request->line_id;
                 $a->div_process_id = $request->div_process_id;
+                /* $a->div_process_id = $dproc; */
                 $a->type = $request->type;
                 $a->employee_id = $request->employee_id;
                 $a->shift = CustomFunctions::genshift();
@@ -361,6 +374,8 @@ class ApiController extends Controller
                 ];
             }            
         }
+        
+        // Checking output scan
         if ($request->division_id == 2 && $request->div_process_id == 2 ){
             $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);            
             if(!$sn->first()){
@@ -400,7 +415,7 @@ class ApiController extends Controller
     /* ------------- OUTPUT SCANNING ------------------- */
 
     public function scanOut2($request)
-    {
+    {  
         /* CHECK FOR OUTPUT */
         $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
