@@ -7,11 +7,15 @@ use App\Models\Pcb;
 use App\Models\PcbArchive;
 use Carbon\Carbon;
 use App\Http\Controllers\MES\model\LineName;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LineExport;
 
 class LineResultController extends Controller
 {
     public function index(Request $request)
     {
+        $dlines = Linename::whereIn('division_id',[2,18])->get();
+        $today = Date('Y-m-d');
         $table = 1;
         if($request->input('date')){
             $date = $request->input('date');
@@ -102,7 +106,19 @@ class LineResultController extends Controller
                 ->where('type',1)->count();
         }        
         
-        return view('pages.lr.lr',compact('date','date2','lid','linename','lines','in1','out1','in2','out2'));
+        return view('pages.lr.lr',compact(
+            'date',
+            'date2',
+            'lid',
+            'linename',
+            'lines',
+            'in1',
+            'out1',
+            'in2',
+            'out2',
+            'dlines',
+            'today'
+        ));
     }
 
     public function resultTable(Request $request)
@@ -191,5 +207,19 @@ class LineResultController extends Controller
         }
 
         return view('includes.table.lrTable',compact('lines','linename','in1','out1','in2','out2'));
+    }
+
+    public function exportlineresult(Request $request)
+    {
+        $filename = LineName::where('id',$request->input('line'))->pluck('name')->first() .'_'. Date('Y-m-d _his');
+        
+        return Excel::download(new LineExport(
+            $request->input('line'),
+            $request->input('type'),
+            $request->input('fromdate'),
+            $request->input('todate'),
+            $request->input('fromtime'),
+            $request->input('totime')
+        ), $filename.'.xlsx');
     }
 }

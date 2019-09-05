@@ -81,6 +81,7 @@ Route::get('joqty', 'JoController@getJOqty');
 /* Line Results */
 Route::get('lr', 'LineResultController@index');
 Route::get('rt', 'LineResultController@resultTable');
+Route::get('exportlr', 'LineResultController@exportlineresult');
 /* Work Order Results */
 Route::get('wor', 'ResultsController@index');
 /* Serial Number - Work Order */

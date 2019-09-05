@@ -55,11 +55,11 @@ function loadlrt(date,line)
 
 /* EVENTS */
 
-$('#line1').on('change', function(){
+$('#line1').on('change', function(e){
     loadlrt( $('#date').val(),$('#line').val());
 });
 
-$('#date-btn1').on('click', function(){
+$('#date-btn1').on('click', function(e){
     /* if($('#line').val() != ''){
         loadlrt( $('#date').val(),$('#line').val());
     }
@@ -71,4 +71,8 @@ $('#date-btn1').on('click', function(){
         });
     } */
     loadlrt( $('#date').val(),$('#line').val());
+});
+
+$('#export-lr-btn').on('click', function(e){
+    $('#export-lr-modal').modal('show');
 });

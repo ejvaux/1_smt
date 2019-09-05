@@ -32,7 +32,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         return [
             'STATUS',
             'LEAD TIME',
-            'MODEL',
+            'PART NAME',
             'DIVISION',
             'LINE',
             'SHIFT',
