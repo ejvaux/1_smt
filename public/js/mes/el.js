@@ -1,9 +1,14 @@
-$('#repair').bootstrapToggle({
+$('#repair,#repair-add-check').bootstrapToggle({
     on: 'Yes',
     off: 'No',
     onstyle: 'success',
     offstyle: 'danger'
-  });
+});
+
+$('#employee-dd').select2({
+    width: '100%',
+    maximumSelectionLength: 20
+});
 
 $('.editEmployee').on('click', function(){
     /* alert('Test'); */
@@ -33,4 +38,13 @@ $('.deleteEmployee').on('click', function(){
             /* $('#del_comp_form_'+$(this).data('id')).trigger('submit'); */
         }
     })
+});
+$('#add-el-btn').on('click',function(e){
+    $('#add-el-modal').modal('show');
+});
+$('#export-el-btn').on('click', function(e){
+    $('#export-el-modal').modal('show');
+});
+$('#export-el-modal').on('hidden.bs.modal',function(){
+    $("#employee-dd").val([]).trigger("change");
 });

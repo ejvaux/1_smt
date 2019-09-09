@@ -5,6 +5,8 @@ namespace App\Http\Controllers\MES\api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MES\model\Employee;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployeeExport;
 
 class EmployeesController extends Controller
 {
@@ -36,7 +38,29 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        // Please use 'adler32' to hash the 'id' of the employee
+        $a =  new Employee;
+        $a->fname = $request->input('fname');
+        $a->lname = $request->input('lname');
+        if($request->input('repair') != null){
+            $a->repair = 1;
+        }
+        else{
+            $a->repair = 0;
+        }        
+        $a->pin = 0;
+        if($a->save()){
+            $p = $a->id;
+            $a->pin = sprintf("%u", crc32($p));
+            if($a->save()){
+                return redirect()->back()->with('success','Employee Added Successfully.');
+            }
+            else{
+                return redirect()->back()->with('error','Saving Employee Details Failed.');
+            }
+        }
+        else{
+            return redirect()->back()->with('error','Saving Employee Details Failed.');
+        }        
     }
 
     /**
@@ -99,5 +123,18 @@ class EmployeesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function exportemployee(Request $request)
+    {
+        $employees = $request->input('employees');
+        $filename = 'smt_employees_'. Date('Y-m-d_his');
+        
+        return Excel::download(new EmployeeExport(
+            $employees
+        ), $filename.'.xlsx');
+
+        /* $employees = $request->input('employees');
+        return $employees; */
     }
 }

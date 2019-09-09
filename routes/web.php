@@ -147,6 +147,9 @@ Route::get('el', 'MES\view\MasterController@employee');
 Route::get('ml', 'MES\view\MasterController@machine');
 Route::get('ln', 'MES\view\MasterController@line');
 
+/* ----- Export ----- */
+Route::get('exportel', 'MES\api\EmployeesController@exportemployee');
+
 // create feederlist
 Route::get('cflh', 'MES\view\MasterController@createfeederlisthome');
 Route::get('cfln', 'MES\view\MasterController@createfeederlistnew');

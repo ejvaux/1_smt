@@ -42,69 +42,72 @@ class LineResultController extends Controller
         }
         else{
             $lid = 0;
-        }        
-        $linename = Linename::select('name')->where('id',$lid)->first();
-
-        if($table == 1){
-            $in1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
-            $out1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
-            
-            $in2 = Pcb::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count() +
-                Pcb::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count();
-    
-            $out2 = Pcb::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count() +
-                Pcb::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count();
         }
-        else{
-            $in1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
-            $out1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
-            
-            $in2 = PcbArchive::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count() +
-                PcbArchive::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count();
-    
-            $out2 = PcbArchive::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count() +
-                PcbArchive::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count();
-        }        
+
+        if($request->input('line')){
+            $linename = Linename::select('name')->where('id',$lid)->first();
+
+            if($table == 1){
+                $in1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
+                $out1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
+                
+                $in2 = Pcb::select('id')
+                    ->whereDate('created_at', $date)
+                    ->whereTime('created_at', '>=', '18:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',0)->count() +
+                    Pcb::select('id')
+                    ->whereDate('created_at', $date2)
+                    ->whereTime('created_at', '<', '06:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',0)->count();
+        
+                $out2 = Pcb::select('id')
+                    ->whereDate('created_at', $date)
+                    ->whereTime('created_at', '>=', '18:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',1)->count() +
+                    Pcb::select('id')
+                    ->whereDate('created_at', $date2)
+                    ->whereTime('created_at', '<', '06:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',1)->count();
+            }
+            else{
+                $in1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
+                $out1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
+                
+                $in2 = PcbArchive::select('id')
+                    ->whereDate('created_at', $date)
+                    ->whereTime('created_at', '>=', '18:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',0)->count() +
+                    PcbArchive::select('id')
+                    ->whereDate('created_at', $date2)
+                    ->whereTime('created_at', '<', '06:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',0)->count();
+        
+                $out2 = PcbArchive::select('id')
+                    ->whereDate('created_at', $date)
+                    ->whereTime('created_at', '>=', '18:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',1)->count() +
+                    PcbArchive::select('id')
+                    ->whereDate('created_at', $date2)
+                    ->whereTime('created_at', '<', '06:00:00')
+                    ->where('line_id',$lid)
+                    ->where('shift',2)
+                    ->where('type',1)->count();
+            }
+        }                
         
         return view('pages.lr.lr',compact(
             'date',
@@ -211,7 +214,7 @@ class LineResultController extends Controller
 
     public function exportlineresult(Request $request)
     {
-        $filename = LineName::where('id',$request->input('line'))->pluck('name')->first() .'_'. Date('Y-m-d _his');
+        $filename = LineName::where('id',$request->input('line'))->pluck('name')->first() .'_'. Date('Y-m-d_his');
         
         return Excel::download(new LineExport(
             $request->input('line'),

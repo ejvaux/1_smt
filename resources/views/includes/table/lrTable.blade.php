@@ -20,48 +20,12 @@
                             <tr>
                                 <th>DAY</th>
                                 <td>{{$in1}}</td>
-                                <td>{{$out1}}</td>
-                                {{-- <td>
-                                    {{ App\Models\Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$line->line_id)->where('shift',1)->where('type',0)->count() }}
-                                </td>
-                                <td>
-                                    {{ App\Models\Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$line->line_id)->where('shift',1)->where('type',1)->count() }}
-                                </td> --}}
+                                <td>{{$out1}}</td>                               
                             </tr>
                             <tr>
                                 <th>NIGHT</th>
                                 <td>{{$in2}}</td>
                                 <td>{{$out2}}</td>
-                                {{-- <td>
-                                    {{
-                                    App\Models\Pcb::select('id')
-                                    ->whereDate('created_at', $date)
-                                    ->whereTime('created_at', '>=', '18:00:00')
-                                    ->where('line_id',$line->line_id)
-                                    ->where('shift',2)
-                                    ->where('type',0)->count() +
-                                    App\Models\Pcb::select('id')
-                                    ->whereDate('created_at', $date2)
-                                    ->whereTime('created_at', '<', '06:00:00')
-                                    ->where('line_id',$line->line_id)
-                                    ->where('shift',2)
-                                    ->where('type',0)->count()
-                                    }}
-                                </td>
-                                <td>
-                                    {{ App\Models\Pcb::select('id')
-                                    ->whereDate('created_at', $date)
-                                    ->whereTime('created_at', '>=', '18:00:00')
-                                    ->where('line_id',$line->line_id)
-                                    ->where('shift',2)
-                                    ->where('type',1)->count() +
-                                    App\Models\Pcb::select('id')
-                                    ->whereDate('created_at', $date2)
-                                    ->whereTime('created_at', '<', '06:00:00')
-                                    ->where('line_id',$line->line_id)
-                                    ->where('shift',2)
-                                    ->where('type',1)->count()}}
-                                </td> --}}
                             </tr>
                             <tr>
                                 <th>TOTALS</th>
@@ -75,5 +39,5 @@
         </div>
     </div>
 @else
-    <h3>NO DATA</h3>
+    <h3>NO DATA TO DISPLAY</h3>
 @endif

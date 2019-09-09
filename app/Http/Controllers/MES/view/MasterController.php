@@ -88,8 +88,9 @@ class MasterController extends Controller
     public function employee(Request $request)
     {
         $t = $request->input('text');
+        $emps = Employee::all();
         if($t == ''){
-            $employees = Employee::sortable()->orderBy('id')->paginate('20');
+            $employees = Employee::sortable()->orderBy('id','DESC')->paginate('20');
         }
         else{
             $employees = Employee::sortable()
@@ -97,7 +98,7 @@ class MasterController extends Controller
                 ->orwhere('lname','LIKE','%'.$t.'%')
             ->orderBy('id')->paginate('20');
         }       
-        return view('mes.pages.el',compact('employees'));
+        return view('mes.pages.el',compact('employees','emps'));
     }
     public function machine(Request $request)
     {
