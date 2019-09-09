@@ -27,7 +27,7 @@
                                         <form class="formGetPcb" method="POST" action='{{url('tracking/')}}'>
                                             @csrf
                                             @method('GET')                                            
-                                            <input type="Text" class="form-control mb-2" name="myInputPCB" placeholder="Search PCB Here" autocomplete="off">
+                                            <input id="pcb-search-textbox" type="Text" class="form-control mb-2" name="myInputPCB" placeholder="Search PCB Here" autocomplete="off">
                                         </form>                                        
                                     </div>
                                 </div>
