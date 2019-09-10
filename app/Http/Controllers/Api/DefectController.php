@@ -104,74 +104,16 @@ class DefectController extends Controller
     public function tempstore(Request $request)
     {
         $request->validate([
-            'serial_number' => 'string|required',
-            'division_id' => 'integer|required',
-            'defect_id' => 'integer|required',
-            'defect_type_id' => 'integer|required',
-            'process_id' => 'integer|required',
-            'line_id' => 'integer|required',
-            'employee_id' => 'integer|required',
+            'serial_number' => 'required',
+            'employee_id' => 'required',
+            'division_id' => 'required',
+            'defect_id' => 'required',
+            'defect_type_id' => 'required',
+            'process_id' => 'required',
+            'line_id' => 'required',
         ]);
         
-        /* if($a = Pcb::where('serial_number',$request->input('serial_number'))->first()){
-            if($a->heat <= 6){
-                $a->heat = $a->heat + 1;
-                $a->defect = 1;
-            }
-            else{
-                $a->heat = $a->heat + 1;
-                return redirect()->back()->with('error','Max Heat Cycles Reached!');
-            }
-        }
-        else{
-            $a = new Pcb;
-            $a->serial_number = $request->input('serial_number');
-            $a->defect = 1;
-            $a->heat = 1;
-        }
-        
-        if($a->save())
-        {
-            $date = Date('H:i');
-            if($date > '05:59' && $date < '18:00'){
-                $shift = 1;
-            }
-            else if($date >= '18:00' || $date < '06:00'){
-                $shift = 2;
-            }
-            else{
-                $shift = 0;
-            }
-            $b = new DefectMat;
-            $b->pcb_id = $a->id;
-            $b->division_id = $request->input('division_id');
-            $b->defect_id = $request->input('defect_id');
-            $b->defect_type_id = $request->input('defect_type_id');
-            $b->process_id = $request->input('process_id');            
-            $b->line_id = $request->input('line_id');
-            $b->shift = $shift;
-            $b->employee_id = $request->input('employee_id');
-            $b->repair = 0;
-            if($b->save())
-            {
-                if($a->heat == 7){
-                    return redirect()->back()->with('success','Data Saved Successfully. Max Heat Cycles Reached!');
-                }
-                else{
-                    return redirect()->back()->with('success','Data Saved Successfully.');
-                }                
-            }
-            else
-            {
-                return redirect()->back()->with('error','Saving Defect Material Failed.');
-            }
-        }
-        else
-        {
-            return redirect()->back()->with('error','Saving Serial Number Failed.');
-        } */
-        
-        if($a = Pcb::where('serial_number',$request->input('serial_number'))->orderBy('id','DESC')->first()){
+        /* if($a = Pcb::where('serial_number',$request->input('serial_number'))->orderBy('id','DESC')->first()){
             if($a->heat <= 6){
                 $a->heat = $a->heat + 1;
                 $a->defect = 1;
@@ -223,6 +165,75 @@ class DefectController extends Controller
         else
         {
             return redirect()->back()->with('error','Saving Serial Number Failed.');
+        } */
+
+        if($a = Pcb::where('serial_number',$request->input('serial_number'))->orderBy('id','DESC')->first()){
+            if($a->heat <= 6){
+                $a->heat = $a->heat + 1;
+                $a->defect = 1;
+                $a->RESULT = 'NG';
+                $a->ERROR_CODE = Defect::where('DEFECT_ID',$request->input('defect_id'))->pluck('DEFECT_CODE')->first();
+            }
+            else{
+                $a->heat = $a->heat + 1;
+                return [
+                    'type' => 'error',
+                    'message' => 'Max Heat Cycles Reached!'
+                ];
+            }
+        }
+        
+        if($a->save())
+        {
+            $date = Date('H:i');
+            if($date > '05:59' && $date < '18:00'){
+                $shift = 1;
+            }
+            else if($date >= '18:00' || $date < '06:00'){
+                $shift = 2;
+            }
+            else{
+                $shift = 0;
+            }
+            $b = new DefectMat;
+            $b->pcb_id = $a->id;
+            $b->division_id = $request->input('division_id');
+            $b->defect_id = $request->input('defect_id');
+            $b->defect_type_id = $request->input('defect_type_id');
+            $b->process_id = $request->input('process_id');            
+            $b->line_id = $request->input('line_id');
+            $b->shift = $shift;
+            $b->employee_id = $request->input('employee_id');
+            $b->repair = 0;
+            if($b->save())
+            {
+                if($a->heat == 7){
+                    return [
+                        'type' => 'success',
+                        'message' => 'Data Saved Successfully. Max Heat Cycles Reached!'
+                    ];
+                }
+                else{
+                    return [
+                        'type' => 'success',
+                        'message' => 'Data Saved Successfully.'
+                    ];
+                }                
+            }
+            else
+            {
+                return [
+                    'type' => 'error',
+                    'message' => 'Saving Defect Material Failed.'
+                ];
+            }
+        }
+        else
+        {
+            return [
+                'type' => 'error',
+                'message' => 'Saving Serial Number Failed.'
+            ];
         }
     }
     public function repairdef(Request $request, $id)

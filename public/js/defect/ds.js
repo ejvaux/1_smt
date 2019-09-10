@@ -1,3 +1,45 @@
+/* ---------- AJAX SETUP ---------- */
+$.ajaxSetup({
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        var msg = '';
+        var file = '';
+        var line = '';
+        if(XMLHttpRequest.responseText != null){
+            msg = XMLHttpRequest.responseJSON.message;
+            file = XMLHttpRequest.responseJSON.file ;
+            line = XMLHttpRequest.responseJSON.line ;
+            console.log(XMLHttpRequest.responseText);
+            console.log(XMLHttpRequest);
+        }
+        if (XMLHttpRequest.readyState == 4) {
+            // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file + '<br>Line: ' + line,
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else if (XMLHttpRequest.readyState == 0) {                
+            // Network error (i.e. connection refused, access denied due to CORS, etc.)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: 'Network Error',
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else {
+            iziToast.warning({
+                title: 'ERROR',
+                message: 'Unknown Error',
+                position: 'topCenter',
+                close: false,
+            });
+            // something weird is happening
+        }
+    }
+});
 /* ---------- FUNCTIONS ---------- */
 function empcheckpin(pin,set)
 {
@@ -171,6 +213,84 @@ function resetsn(){
     $('#scan_lbl_div').hide();
     $('#scan_sn').show();
     $('#scan_sn').focus();
+    $('#process_id, #defect_id').empty();
+    $('#process_id, #defect_id').append("<option value=''>- Scan Serial Number first -</option>");
+    $('#process_id, #defect_id').attr('disabled',true);
+    $('#defect_type_id').val('');
+}
+function addDefect(){
+    var formdata = $('#add_defect_form').serialize();
+    $.ajax({
+        url: 'defectmats_temp',
+        type:'POST',
+        data: formdata,
+        success: function (data) {
+            if(data.type == 'success'){                
+                iziToast.success({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+                loadtable();
+            }
+            else if(data.type == 'error'){
+                iziToast.warning({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+            }
+            else{
+                iziToast.warning({
+                    message: 'Unknown Error!',
+                    position: 'topCenter'
+                });
+            }
+            resetsn();
+        },
+        error: function(data) {
+            var msg = '';
+            $.each(data.responseJSON.errors, function( index, value ) {
+                $.each(value, function ( index1, value1 ) {
+                    msg += value1 + "<br>";
+                });                
+            });
+            iziToast.warning({
+                message: msg,
+                position: 'topCenter'
+            });
+        }
+
+    });
+    /* alert(formdata); */
+}
+function loadtable(){
+    $.ajax({
+        url: 'ds',
+        type:'get',
+        global: false,
+        data: {
+            'table' : 1,
+            'sdate' : $('#sdate').val(),
+            'shift' : $('#shift').val()
+        },
+        success: function (data) {
+            $('#dsTable-div').html(data);
+        }
+    });
+}
+function searchSN(){
+    $.ajax({
+        url: 'ds',
+        type:'get',
+        global: false,
+        data: {
+            'table' : 1,
+            'text' : $('#text').val()
+        },
+        success: function (data) {
+            $('#dsTable-div').html(data);
+            $('#text').val('');
+        }
+    });
 }
 /* ---------- EVENTS ---------- */
 $('#addDefect_btn').on('click', function(){
@@ -309,4 +429,19 @@ $('#reset_sn').on('click', function(e){
 });
 $('#ds-export-btn').on('click', function(e){
     $('#ds_export_modal').modal('show');
+});
+$('#add_defect_submit').on('click', function(){
+    addDefect();
+});
+$('#refresh-table-button, #date-search-button').on('click', function(e){
+    loadtable();
+});
+$('#sn-search-button').on('click', function(e){
+    searchSN();
+});
+$('#text').on('keypress', function(e){
+    if(e.keyCode == 13)
+    {
+        searchSN();
+    }
 });

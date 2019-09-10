@@ -93,17 +93,31 @@ class DefectController extends Controller
         $defects = $this->defects;
         $processes = $this->processes;
         $defect_types = $this->defect_types;
-
-        return view('pages.defect.ds',compact(
-            'shift',
-            'defect_mats',
-            'divisions',
-            'lines',
-            'defects',
-            'processes',
-            'dte',
-            'defect_types'
-        ));
+        
+        if($request->input('table')){
+            return view('includes.table.dsTable',compact(
+                'shift',
+                'defect_mats',
+                'divisions',
+                'lines',
+                'defects',
+                'processes',
+                'dte',
+                'defect_types'
+            ));
+        }
+        else{
+            return view('pages.defect.ds',compact(
+                'shift',
+                'defect_mats',
+                'divisions',
+                'lines',
+                'defects',
+                'processes',
+                'dte',
+                'defect_types'
+            ));
+        }        
     }
     public function scanpinemp(Request $request)
     {

@@ -484,7 +484,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        <form id="ds_export_form" class='form_to_submit' method="GET" action='{{url('exportdefectmats')}}'>                
+        <form id="ds_export_form" class='' method="GET" action='{{url('exportdefectmats')}}'>                
             <div class="modal-body" style="">
                 <!-- ____________ FORM __________________ -->
                 <div class="form-group row">
