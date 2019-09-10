@@ -77,8 +77,7 @@
         </div>
     </div>
     <div class="col-md-6 text-right">
-        <button type="button" class="btn btn-primary" name="submit" id="add_defect_submit"><i class="far fa-save"></i> Add</button>
-        <button type="button" class="btn btn-success" id="refresh-table-button"><i class="fas fa-sync-alt"></i> Refresh Table</button>
+        <button type="button" class="btn btn-primary" name="submit" id="add_defect_submit"><i class="far fa-save"></i> Add Defect</button>        
     </div>  
 </div>
 </form>

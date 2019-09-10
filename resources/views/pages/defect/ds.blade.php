@@ -37,7 +37,10 @@
                                 <li class="nav-item bold-text">
                                     <a class="nav-link" href="#export-tab" role="tab" data-toggle="tab">EXPORT</a>
                                 </li>
-                                <li class="nav-item bold-text ml-auto" style="width:30%">
+                                <li class="nav-item bold-text ml-auto">
+                                    <button type="button" class="btn btn-success" id="refresh-table-button"><i class="fas fa-sync-alt"></i> Refresh Table</button>
+                                </li>
+                                <li class="nav-item bold-text ml-2" style="width:30%">
                                     <form action="" method="get">                   
                                         <div class="input-group">
                                             <input type="date" class='form-control' name="sdate" id="sdate" value="{{$dte}}">
