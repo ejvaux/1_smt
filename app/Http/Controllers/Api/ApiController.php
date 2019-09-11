@@ -209,24 +209,28 @@ class ApiController extends Controller
     {        
         function checkdupIn($request)
         {
-            $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
+            $out = Pcb::select('div_process_id')
+                ->where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
                 ->first();
 
-            $in = Pcb::select('id')->where('serial_number',$request->serial_number)
+            $in = Pcb::select('id')
+                ->where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',0)
                 ->first();
 
             if(!$out){
-                $out = PcbArchive::select('div_process_id')->where('serial_number',$request->serial_number)
+                $out = PcbArchive::select('div_process_id')
+                    ->where('serial_number',$request->serial_number)
                     ->where('div_process_id',$request->div_process_id)
                     ->where('type',1)
                     ->first();
             }
             if(!$in){
-                $in = PcbArchive::select('id')->where('serial_number',$request->serial_number)
+                $in = PcbArchive::select('id')
+                    ->where('serial_number',$request->serial_number)
                     ->where('div_process_id',$request->div_process_id)
                     ->where('type',0)
                     ->first();
@@ -375,11 +379,15 @@ class ApiController extends Controller
             }            
         }
         
-        // Checking output scan
+        // CHECKING BOTTOM OUT
         if ($request->division_id == 2 && $request->div_process_id == 2 ){
-            $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);            
+            $sn = Pcb::select('id')->where('serial_number',$request->serial_number)
+                                ->where('div_process_id',1)
+                                ->where('type',1);            
             if(!$sn->first()){
-                $sn = PcbArchive::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',1)->where('type',1);
+                $sn = PcbArchive::select('id')->where('serial_number',$request->serial_number)
+                                            ->where('div_process_id',1)
+                                            ->where('type',1);
             }
             if($sn->first()){
                 return checkdupIn($request);
@@ -391,8 +399,12 @@ class ApiController extends Controller
                 ];
             }
         }
+
+        // CHECKING TOP OUT
         elseif ($request->division_id == 18 && $request->div_process_id == 5 ){
-            $sn = Pcb::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',2)->where('type',1);            
+            $sn = Pcb::select('id')->where('serial_number',$request->serial_number)
+                                ->where('div_process_id',2)
+                                ->where('type',1);            
             if(!$sn->first()){
                 $sn = PcbArchive::select('id')->where('serial_number',$request->serial_number)->where('div_process_id',2)->where('type',1);
             }
@@ -415,39 +427,17 @@ class ApiController extends Controller
     /* ------------- OUTPUT SCANNING ------------------- */
 
     public function scanOut2($request)
-    {  
-        /* CHECK FOR OUTPUT */
-        $out = Pcb::select('div_process_id')->where('serial_number',$request->serial_number)
-                ->where('div_process_id',$request->div_process_id)
-                ->where('type',1)
-                ->first();
-        if(!$out){
-            $out = PcbArchive::select('div_process_id')->where('serial_number',$request->serial_number)
-                ->where('div_process_id',$request->div_process_id)
-                ->where('type',1)
-                ->first();
-        }
-        /* CHECK FOR INPUT */
-        $sn = Pcb::select('defect')->where('serial_number',$request->serial_number)
-                /* ->where('jo_id',$request->jo_id) */
-                ->where('div_process_id',$request->div_process_id)
-                ->where('type',0);        
-        if(!$sn->first()){
-            $sn = PcbArchive::select('defect')->where('serial_number',$request->serial_number)
-                /* ->where('jo_id',$request->jo_id) */
-                ->where('div_process_id',$request->div_process_id)
-                ->where('type',0);
-        }
+    {          
         function checkdupOut($request)
         {
-            $out = Pcb::select('id')->where('serial_number',$request->serial_number)
-                /* ->where('jo_id',$request->jo_id) */
+            $out = Pcb::select('id')
+                ->where('serial_number',$request->serial_number)
                 ->where('div_process_id',$request->div_process_id)
                 ->where('type',1)
                 ->first();
             if(!$out){
-                $out = PcbArchive::select('id')->where('serial_number',$request->serial_number)
-                    /* ->where('jo_id',$request->jo_id) */
+                $out = PcbArchive::select('id')
+                    ->where('serial_number',$request->serial_number)
                     ->where('div_process_id',$request->div_process_id)
                     ->where('type',1)
                     ->first();
@@ -602,6 +592,31 @@ class ApiController extends Controller
                 ];
             }            
         }
+
+        /* CHECK FOR OUTPUT */
+        $out = Pcb::select('div_process_id')
+                ->where('serial_number',$request->serial_number)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',1)
+                ->first();
+        if(!$out){
+            $out = PcbArchive::select('div_process_id')
+                ->where('serial_number',$request->serial_number)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',1)
+                ->first();
+        }
+        /* CHECK FOR INPUT */
+        $sn = Pcb::select('defect')
+                ->where('serial_number',$request->serial_number)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',0);        
+        if(!$sn->first()){
+            $sn = PcbArchive::select('defect')
+                ->where('serial_number',$request->serial_number)
+                ->where('div_process_id',$request->div_process_id)
+                ->where('type',0);
+        }
         if(!$out){
             if($sn->first()){
                 $sn = $sn->first();
@@ -612,15 +627,22 @@ class ApiController extends Controller
                     ];
                 }
                 else{                
-                    return checkdupOut($request);               
+                    /* return checkdupOut($request); */
+                    return checkjoquantity2($request);              
                 }       
             }
             else{
-                $in = Pcb::select('jo_number')->where('serial_number',$request->serial_number)
+                return [
+                    'type' => 'error',
+                    'message' => 'Serial Number has no INPUT record.'
+                ];
+                /* $in = Pcb::select('jo_number')
+                        ->where('serial_number',$request->serial_number)
                         ->where('div_process_id',$request->div_process_id)
                         ->where('type',0)->get();
                 if(!$in){
-                    $in = PcbArchive::select('jo_number')->where('serial_number',$request->serial_number)
+                    $in = PcbArchive::select('jo_number')
+                        ->where('serial_number',$request->serial_number)
                         ->where('div_process_id',$request->div_process_id)
                         ->where('type',0)->get();
                 }
@@ -643,7 +665,7 @@ class ApiController extends Controller
                 return [
                     'type' => 'error',
                     'message' => 'API ERROR: checking inputs'
-                ];
+                ]; */
             }
             return [
                 'type' => 'error',
