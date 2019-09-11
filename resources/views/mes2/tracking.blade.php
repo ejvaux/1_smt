@@ -12,7 +12,7 @@
 <div class="container-fluid border mt-3 border-dark" style="overflow-x:auto;">
     <div class="card mt-3 border mb-3 border-secondary"style="overflow-x:auto;">
         <div class="card-header">
-            <h5>SMT Process Tracker</h5>
+            <h5>SMT PCB Tracker</h5>
         </div>
         <div class="card-body">
             <div class="container-fluid border-secondary" id="table_display" style="width: 100%;"style="overflow-x:auto;">

@@ -46,7 +46,8 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="nav-link" href="{{url('jo')}}" target="_blank">JO</a>                             
                             <a class="nav-link" href="{{url('tracking')}}" target="_blank">PCB</a>
-                            <a class="nav-link" href="{{url('tc')}}" target="_blank">Component</a>                            
+                            <a class="nav-link" href="{{url('tc')}}" target="_blank">Component</a>
+                            <a class="nav-link" href="{{url('pt')}}" target="_blank">Process</a>                              
                             {{-- <a class="nav-link" href="{{url('sr')}}" target="_blank">SN/Reel</a> --}}
                         </div>
                     </li>

@@ -157,5 +157,14 @@ background-color:#5682c9;
 .tbl4{
     background-color:#d085fc;
 }
-
+.blinking{
+    animation:blinkingText 0.8s infinite;
+}
+@keyframes blinkingText{
+    0%{     color: tomato;    }
+    /* 49%{    color: transparent; } */
+    50%{    color: transparent; }
+    /* 99%{    color:transparent;  } */
+    100%{   color: tomato;    }
+}
 

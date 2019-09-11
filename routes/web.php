@@ -78,6 +78,9 @@ Route::get('ep/sn', 'ExportsController@exportpcb');
 /* JO Tracking */
 Route::get('jo', 'JoController@index');
 Route::get('joqty', 'JoController@getJOqty');
+/* Process Tracking */
+Route::get('pt', 'TrackingController@process');
+Route::get('ptcheck', 'TrackingController@checkprocess');
 /* Line Results */
 Route::get('lr', 'LineResultController@index');
 Route::get('rt', 'LineResultController@resultTable');
