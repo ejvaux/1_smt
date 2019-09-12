@@ -130,7 +130,7 @@ function checkproc(sn){
             else{
                 swal.fire({
                     type: 'warning',
-                    title: 'PROCESS INCOMPLETE',
+                    title: 'PROCESS INCOMPLETE!',
                     allowOutsideClick: false
                 });
 
