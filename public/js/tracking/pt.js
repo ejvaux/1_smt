@@ -64,33 +64,62 @@ function checkproc(sn){
             'sn':  sn
         },
         success: function (data) {
+            /* alert(JSON.stringify(data)); */
             if(data.bi){
                 $('#bi').html(check);
                 p += 1;
+                if(data.bi.defect == 0){
+                    $('#dbi').html('<span class="text-success font-weight-bold">GOOD</span>');
+                }
+                else{
+                    $('#dbi').html('<span class="text-danger font-weight-bold">NG</span>');
+                }
             }
             else{
                 $('#bi').html(times);
+                $('#dbi').html('-');
             }
             if(data.bo){
                 $('#bo').html(check);
                 p += 1;
+                if(data.bi.defect == 0){
+                    $('#dbo').html('<span class="text-success font-weight-bold">GOOD</span>');
+                }
+                else{
+                    $('#dbo').html('<span class="text-danger font-weight-bold">NG</span>');
+                }
             }
             else{
                 $('#bo').html(times);
+                $('#dbo').html('-');
             }
             if(data.ti){
                 $('#ti').html(check);
                 p += 1;
+                if(data.bi.defect == 0){
+                    $('#dti').html('<span class="text-success font-weight-bold">GOOD</span>');
+                }
+                else{
+                    $('#dti').html('<span class="text-danger font-weight-bold">NG</span>');
+                }
             }
             else{
                 $('#ti').html(times);
+                $('#dti').html('-');
             }
             if(data.to){
                 $('#to').html(check);
                 p += 1;
+                if(data.bi.defect == 0){
+                    $('#dto').html('<span class="text-success font-weight-bold">GOOD</span>');
+                }
+                else{
+                    $('#dto').html('<span class="text-danger font-weight-bold">NG</span>');
+                }
             }
             else{
                 $('#to').html(times);
+                $('#dto').html('-');
             }            
             if(p == 4)
             {
@@ -116,6 +145,8 @@ function checkproc(sn){
 $('#sn').on('keypress', function(e){
     if(e.keyCode == 13)
     {
-        checkproc($(this).val());
+        if($(this).val()){
+            checkproc($(this).val());
+        }        
     }
 })

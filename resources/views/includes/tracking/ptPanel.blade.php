@@ -12,24 +12,29 @@
                     <thead class="text-center">
                         <tr>
                             <th>PROCESS</th>
+                            <th>DEFECT</th>
                             <th>STATUS</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
                         <tr>
                             <td>BOTTOM IN</td>
+                            <td id="dbi">-</td>
                             <td id="bi">-</td>
                         </tr>
                         <tr>
                             <td>BOTTOM OUT</td>
+                            <td id="dbo">-</td>
                             <td id="bo">-</td>
                         </tr>
                         <tr>
                             <td>TOP IN</td>
+                            <td id="dti">-</td>
                             <td id="ti">-</td>
                         </tr>
                         <tr>
                             <td>TOP OUT</td>
+                            <td id="dto">-</td>
                             <td id="to">-</td>
                         </tr>
                     </tbody>

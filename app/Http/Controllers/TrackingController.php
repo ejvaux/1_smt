@@ -23,10 +23,10 @@ class TrackingController extends Controller
     public function checkprocess(Request $request)
     {
         $sn = $request->input('sn');        
-        $bi = Pcb::where('serial_number',$sn)->where('div_process_id',1)->where('type',0)->pluck('id')->first();
-        $bo = Pcb::where('serial_number',$sn)->where('div_process_id',1)->where('type',1)->pluck('id')->first();
-        $ti = Pcb::where('serial_number',$sn)->where('div_process_id',2)->where('type',0)->pluck('id')->first();
-        $to = Pcb::where('serial_number',$sn)->where('div_process_id',2)->where('type',1)->pluck('id')->first();
+        $bi = Pcb::select('defect')->where('serial_number',$sn)->where('div_process_id',1)->where('type',0)->first();
+        $bo = Pcb::select('defect')->where('serial_number',$sn)->where('div_process_id',1)->where('type',1)->first();
+        $ti = Pcb::select('defect')->where('serial_number',$sn)->where('div_process_id',2)->where('type',0)->first();
+        $to = Pcb::select('defect')->where('serial_number',$sn)->where('div_process_id',2)->where('type',1)->first();
 
         return [
             'sn' => $sn,
