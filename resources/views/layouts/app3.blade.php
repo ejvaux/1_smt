@@ -30,10 +30,8 @@
         <main class="py-4">
             @yield('content')
         </main>        
-        {{-- @include('includes.footer') --}}
-        <div class="footer-copyright text-center py-3 text-muted"><span style='font-size:1.1rem'><!-- © --><i class="far fa-copyright"></i> 2019 Prima Tech Phils., Inc.</span>
-            <br>Designed and built by:<br>
-            <span class="font-italic font-weight-bold" style='font-size: 1.1rem'>Edmund O. Mati Jr.</span>
+        @include('includes.footer')
+        
     </div>
     </div>
 </body>
