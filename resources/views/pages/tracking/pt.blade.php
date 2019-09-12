@@ -13,7 +13,7 @@
     <source src="{{asset('sounds/ce.mp3')}}" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
-<audio id="a_sound" loop>
+<audio id="a_sound">
     <source src="{{asset('sounds/error.mp3')}}" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
