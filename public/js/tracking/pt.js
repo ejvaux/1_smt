@@ -53,6 +53,7 @@ var check = '<i class="fas fa-check text-success"></i>';
 var times = '<i class="fas fa-times text-danger"></i>';
 var x = $('#e_sound');
 var y = $('#s_sound');
+var a = $('#a_sound');
 /* FUNCTIONS */
 function checkproc(sn){
     var p = 0;
@@ -96,14 +97,16 @@ function checkproc(sn){
                 $('#cardlabel').html(data.sn);
                 $('#cardlabel').removeClass('text-danger blinking');
                 $('#cardlabel').addClass('text-success');
+                a[0].pause();
+                a[0].currentTime = 0;
             }
             else{
                 $('#cardlabel').html('*** ' + data.sn + ' ***');
                 $('#cardlabel').removeClass('text-success');
                 $('#cardlabel').addClass('text-danger blinking');
-                x[0].pause();
-                x[0].currentTime = 0;
-                x[0].play();
+                a[0].pause();
+                a[0].currentTime = 0;
+                a[0].play();
             }            
             $('#sn').val('');
         }
