@@ -161,10 +161,10 @@ background-color:#5682c9;
     animation:blinkingText 0.8s infinite;
 }
 @keyframes blinkingText{
-    0%{     color: tomato;    }
+    0%{     color: red;    }
     /* 49%{    color: transparent; } */
     50%{    color: transparent; }
     /* 99%{    color:transparent;  } */
-    100%{   color: tomato;    }
+    100%{   color: red;    }
 }
 

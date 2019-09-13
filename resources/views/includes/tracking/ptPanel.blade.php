@@ -8,6 +8,7 @@
         <div class="card">
             <div class="card-body">
                     <h2 id="cardlabel" class="text-center font-weight-bold"></h2>
+                    <h4 id="cardlabel2" class="text-center font-weight-bold"></h4>
                 <table class="table">
                     <thead class="text-center">
                         <tr>

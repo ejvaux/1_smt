@@ -77,7 +77,7 @@ function checkproc(sn){
             }
             else{
                 $('#bi').html(times);
-                $('#dbi').html('-');
+                $('#dbi').html('');
             }
             if(data.bo){
                 $('#bo').html(check);
@@ -91,7 +91,7 @@ function checkproc(sn){
             }
             else{
                 $('#bo').html(times);
-                $('#dbo').html('-');
+                $('#dbo').html('');
             }
             if(data.ti){
                 $('#ti').html(check);
@@ -105,7 +105,7 @@ function checkproc(sn){
             }
             else{
                 $('#ti').html(times);
-                $('#dti').html('-');
+                $('#dti').html('');
             }
             if(data.to){
                 $('#to').html(check);
@@ -119,22 +119,29 @@ function checkproc(sn){
             }
             else{
                 $('#to').html(times);
-                $('#dto').html('-');
+                $('#dto').html('');
             }            
             if(p == 4)
             {
-                $('#cardlabel').html(data.sn);
+                $('#cardlabel').html('- PROCESS COMPLETE -');
+                $('#cardlabel2').html(data.sn);
                 $('#cardlabel').removeClass('text-danger blinking');
                 $('#cardlabel').addClass('text-success');
+                y[0].pause();
+                y[0].currentTime = 0;
+                y[0].play();
             }
             else{
                 swal.fire({
                     type: 'warning',
-                    title: 'PROCESS INCOMPLETE!',
-                    allowOutsideClick: false
+                    title: 'PROCESS INCOMPLETE!', 
+                    allowOutsideClick: false,
+                    onAfterClose:() => {
+                        x[0].pause();
+                    }
                 });
-
-                $('#cardlabel').html('*** ' + data.sn + ' ***');
+                $('#cardlabel').html('*** PROCESS INCOMPLETE ***');
+                $('#cardlabel2').html(data.sn);
                 $('#cardlabel').removeClass('text-success');
                 $('#cardlabel').addClass('text-danger blinking');
                 /* $('#sn').focus(); */

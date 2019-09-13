@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<audio id="e_sound">
+<audio id="e_sound" loop>
     <source src="{{asset('sounds/ce.mp3')}}" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
