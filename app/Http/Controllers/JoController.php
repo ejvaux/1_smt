@@ -12,6 +12,7 @@ class JoController extends Controller
     public function index(Request $request)
     {
         $t = $request->input('text');
+        $wo = '';
         if($request->input('date') != ''){
             $date = $request->input('date');
         }
@@ -21,6 +22,7 @@ class JoController extends Controller
         if($t){
             $w = WoSn::where('SERIAL_NUMBER',$t)->first();
             if($w){
+                $wo = $w->WORK_ORDER;
                 $jos = WorkOrder::where('SALES_ORDER',$w->WORK_ORDER)->orderby('MACHINE_CODE')->get();
             }
             else{
@@ -35,7 +37,7 @@ class JoController extends Controller
                 })
                 ->orderby('MACHINE_CODE')->get();
         }
-        return view('pages.jo.jo',compact('jos','date'));
+        return view('pages.jo.jo',compact('jos','date','wo'));
     }
     public function getJOqty(Request $request)
     {

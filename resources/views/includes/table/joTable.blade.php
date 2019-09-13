@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody class='text-center'>
-                @isset ($jos)
+                @if (isset($jos))
                     @if (count($jos)>0)
                         @foreach ($jos as $jo)
                             <tr>
@@ -58,17 +58,17 @@
                     @else
                         <tr>
                             <th colspan="9">
-                                <h4>No data to display. Try to set the Work Order and then reload the table.</h4>
+                                <h4>No data.</h4>
                             </th>
                         </tr>
                     @endif
                 @else
                     <tr>
                         <th colspan="9">
-                            <h4>No data to display. Try to set the Work Order and then reload the table.</h4>
+                            <h4>No data.</h4>
                         </th>
                     </tr>
-                @endisset
+                @endif
             </tbody>
         </table>
     </div>

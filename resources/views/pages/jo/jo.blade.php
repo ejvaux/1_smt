@@ -35,6 +35,13 @@
                                     </div>
                                 </form>
                             </div>
+                            <div class="col-md-3 ml-auto">
+                                @if ($wo == '')
+                                    <h4 class="text-danger font-weight-bold">Serial Number not found in the database.</h4>
+                                @else
+                                    <h4>Work Order: <span class="font-weight-bold">{{$wo}}</span></h4>
+                                @endif
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md">
