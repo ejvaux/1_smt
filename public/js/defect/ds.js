@@ -390,6 +390,39 @@ $('#repair_defectmat_form').on('submit', function(){
         $('.form_submit_button').html('<i class="far fa-save"></i> Save');
         return false;        
     }
+    else{
+        var formdata = $(this).serialize();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            global: false,
+            data: formdata,
+            success: function (data) {
+                $('#repair_modal').modal('hide');
+                $('#aremarks').val('');                
+                if(data.type == 'success'){
+                    iziToast.success({
+                        message: data.message,
+                        position: 'topCenter'
+                    });
+                }
+                else if(data.type == 'error'){
+                    iziToast.warning({
+                        message: data.message,
+                        position: 'topCenter'
+                    });
+                }
+                else{
+                    iziToast.warning({
+                        message: 'Unknown Error!',
+                        position: 'topCenter'
+                    });
+                }
+                loadtable();             
+            }
+        });        
+        return false;
+    }
 });
 $('#serial_number').on('keypress', function(e){
     if(e.keyCode == 13)
@@ -445,3 +478,6 @@ $('#text').on('keypress', function(e){
         searchSN();
     }
 });
+/* $('#add_repair_submit').on('click', function(e){
+    repairdefect();
+}); */

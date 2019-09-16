@@ -253,11 +253,28 @@ class DefectController extends Controller
             if($ee){
                 $ee->defect = 0;
                 $ee->save();
-            }            
-            return redirect()->back()->with('success','Data Updated Successfully.');
+            }
+            if($request->input('mode')){
+                return [
+                    'type' => 'success',
+                    'message' => 'Data Updated Successfully.'
+                ];
+            }
+            else{
+                return redirect()->back()->with('success','Data Updated Successfully.');
+            }              
+            
         }
         else{
-            return redirect()->back()->with('error','Updating Failed.');
+            if($request->input('mode')){
+                return [
+                    'type' => 'error',
+                    'message' => 'Updating Failed.'
+                ];
+            }
+            else{
+                return redirect()->back()->with('error','Updating Failed.');
+            }            
         }
     }
 }

@@ -182,8 +182,8 @@
             </div>
             <form id="repair_defectmat_form" class='form_to_submit' method="post" action=''>
                 @csrf
+                <input type="hidden" name="mode" value="1">
             <div class="modal-body" style="">
-
                 <!-- ____________ FORM __________________ -->
         
                 <div class="form-group row">
@@ -210,7 +210,7 @@
                 <!-- ____________ FORM END __________________ -->
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary form_submit_button" name="submit" id="add_repair_submit"><i class="far fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-primary" name="submit" id="add_repair_submit"><i class="far fa-save"></i> Save</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
             </div>
             </form>
