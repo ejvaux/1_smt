@@ -252,6 +252,8 @@ class DefectController extends Controller
             $ee = Pcb::where('id',$e->pcb_id)->first();
             if($ee){
                 $ee->defect = 0;
+                $ee->RESULT = 'OK';
+                $ee->ERROR_CODE = null;
                 $ee->save();
             }
             if($request->input('mode')){
