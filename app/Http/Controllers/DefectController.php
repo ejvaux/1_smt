@@ -32,7 +32,7 @@ class DefectController extends Controller
     {   
         $t = $request->input('text');
         ($request->input('shift') != "" ? $shift = $request->input('shift') : $shift = '');
-        ($request->input('sdate') != "" ? $dte = $request->input('sdate') : $dte = Date('Y-m-d'));
+        ($request->input('sdate') != "" ? $dte = $request->input('sdate') : $dte = '');
         $dte2 = Carbon::parse($dte)->addDays(1);
         if($t == ''){
             if($shift == ''){
@@ -52,6 +52,9 @@ class DefectController extends Controller
                                     ->where('shift', 2);
                             })                            
                             ->orderBy('id','DESC')->paginate('20');
+                if($dte == ''){
+                    $dte = Date('Y-m-d');
+                }
             }
             else{
                 if($shift == 1){
@@ -89,7 +92,7 @@ class DefectController extends Controller
         $processes = $this->processes;
         $defect_types = $this->defect_types;
         
-        if($request->input('table')){
+        if($request->input('table') && !$request->input('page')){
             return view('includes.table.dsTable',compact(
                 'shift',
                 'defect_mats',

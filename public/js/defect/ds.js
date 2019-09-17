@@ -263,25 +263,39 @@ function addDefect(){
     /* alert(formdata); */
 }
 function loadtable(){
+    
+    var toast = document.querySelector('.iziToast');
+    if(toast){
+        iziToast.hide({
+            transitionOut: 'fadeOutUp'
+        }, toast);
+    }   
+
     $.ajax({
         url: 'ds',
         type:'get',
-        global: false,
         data: {
             'table' : 1,
             'sdate' : $('#sdate').val(),
             'shift' : $('#shift').val()
         },
         success: function (data) {
-            $('#dsTable-div').html(data);
+            $('#dsTable-div').html(data); 
         }
     });
 }
 function searchSN(){
+    
+    var toast = document.querySelector('.iziToast');
+    if(toast){
+        iziToast.hide({
+            transitionOut: 'fadeOutUp'
+        }, toast);
+    }  
+
     $.ajax({
         url: 'ds',
         type:'get',
-        global: false,
         data: {
             'table' : 1,
             'text' : $('#text').val()
@@ -478,6 +492,3 @@ $('#text').on('keypress', function(e){
         searchSN();
     }
 });
-/* $('#add_repair_submit').on('click', function(e){
-    repairdefect();
-}); */
