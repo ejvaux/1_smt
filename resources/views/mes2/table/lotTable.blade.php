@@ -26,8 +26,15 @@
                             <tr>                                
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
-                                    @if ($lot->status == 0)
+                                    @if ($lot->status == 0)                                        
+                                        {{-- <form method="POST" id="qclotclose{{$lot->id}}" action='{{url('qclotclose')}}'>
+                                            @csrf
+                                            @method('GET')  
+                                            <input id="lot{{$lot->id}}" type="hidden" class="text" value='{{$lot->id}}' name='id1'>
+                                            <input id="userg{{$lot->id}}" type="hidden" name="userid" value="">
+                                        </form> --}}
                                         <span class="text-warning font-weight-bold">OPEN</span>
+                                        {{-- <button type='button' data-idqc='{{$lot->id}}' class="btn btn-outline-warning gbtn btn-sm"><i class="far fa-check-circle"></i> Close Lot</button> --}}
                                     @else
                                         @if ($lot->qc_status == 1)
                                             <span class="text-success font-weight-bold">GOOD</span>

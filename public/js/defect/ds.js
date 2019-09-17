@@ -263,6 +263,12 @@ function addDefect(){
     /* alert(formdata); */
 }
 function loadtable(){
+    
+    var toast = document.querySelector('.iziToast');
+    iziToast.hide({
+        transitionOut: 'fadeOutUp'
+    }, toast);
+
     $.ajax({
         url: 'ds',
         type:'get',
@@ -273,11 +279,17 @@ function loadtable(){
             'shift' : $('#shift').val()
         },
         success: function (data) {
-            $('#dsTable-div').html(data);
+            $('#dsTable-div').html(data); 
         }
     });
 }
 function searchSN(){
+    
+    var toast = document.querySelector('.iziToast');
+    iziToast.hide({
+        transitionOut: 'fadeOutUp'
+    }, toast);
+
     $.ajax({
         url: 'ds',
         type:'get',

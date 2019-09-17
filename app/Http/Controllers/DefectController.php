@@ -84,7 +84,7 @@ class DefectController extends Controller
                 $defect_mats = DefectMat::sortable()->where('pcb_id',$pcb->id)->orderBy('id','DESC')->paginate('20');
             }
             else{
-                $defect_mats = DefectMat::sortable()->where('pcb_id',0)->orderBy('id','DESC')->paginate('20');;
+                $defect_mats = DefectMat::sortable()->where('pcb_id',0)->orderBy('id','DESC')->paginate('20');
             }            
         }
         
