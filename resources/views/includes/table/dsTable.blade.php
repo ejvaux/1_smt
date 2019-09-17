@@ -148,7 +148,7 @@
                     @else
                     <tr>
                         <td colspan="14">
-                            <h4>No data to display.</h4>
+                            <h4>No data to display. Try to refresh the table.</h4>
                         </td>
                     </tr>                    
                     @endif
