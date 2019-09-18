@@ -24,20 +24,16 @@
                             <div class="col p-0 border-fluid">
                                 <div class="row ">
                                     <div class="col-md-6 mr-auto mt">                                        
-                                        <form class="formGetPcb" method="POST" action='{{url('tracking/')}}'>
+                                        {{-- <form class="formGetPcb" method="POST" action='{{url('tracking/')}}'>
                                             @csrf
-                                            @method('GET')                                            
+                                            @method('GET') --}}                                            
                                             <input id="pcb-search-textbox" type="Text" class="form-control mb-2" name="myInputPCB" placeholder="Search PCB Here" autocomplete="off">
-                                        </form>                                        
+                                        {{-- </form> --}}                                        
                                     </div>
                                 </div>
-                                @include('mes2.table.pcbtrackingTable')
-                                <div class="row mb-1 text-center">
-                                    <div class="col-md">
-                                        <h3>- - - DEFECT ENTRY - - -</h3>
-                                    </div>
-                                </div>
-                                @include('mes2.table.pcbdtrackingTable')
+                                <div id="pcbtablediv">
+                                    @include('mes2.inc.pcbtablediv')
+                                </div>                                
                             </div>
                         </div>
                         {{-- End Table --}}                    

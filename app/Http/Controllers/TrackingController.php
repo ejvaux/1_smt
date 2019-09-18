@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pcb;
+use App\Models\PcbArchive;
+use App\Models\DefectMat;
 
 class TrackingController extends Controller
 {
@@ -36,5 +38,22 @@ class TrackingController extends Controller
             'to' => $to
         ];
 
+    }
+    public function pcb(Request $request)
+    {
+        $ids = [];
+        $get = $request->input('sn');
+        if ($get) {
+            $Pcbs1 = Pcb::where('serial_number',$get)->orderBy('serial_number')->orderBy('div_process_id','DESC')->orderBy('type','DESC')->get();
+            $Pcbs2 = PcbArchive::where('serial_number',$get)->orderBy('serial_number')->orderBy('div_process_id','DESC')->orderBy('type','DESC')->get();
+            $Pcbs = $Pcbs1->merge($Pcbs2);
+            foreach ($Pcbs as $pcb) {
+                $ids[] = $pcb->id;
+            }
+            $pcbds = DefectMat::whereIn('pcb_id',$ids)->get();
+            return view('mes2.inc.pcbtablediv',compact('Pcbs','pcbds'));
+        } else {
+            return view('mes2.tracking');
+        }
     }
 }

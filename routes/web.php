@@ -199,7 +199,7 @@ Route::get('testt', 'PageController@testing');
 Route::resource('process','MES2\ProcessController');
 Route::get('processDelete', 'MES2\ProcessController@destroy');
 Route::resource('defecttype','MES2\DefectTypeController');
-Route::resource('tracking','MES2\trackingController');
+Route::get('tracking','TrackingController@pcb');
 Route::resource('tc','MES2\trackingComponentController');
 Route::resource('qc','MES2\qcController');
 Route::get('qcs','MES2\qcController@searchdate');

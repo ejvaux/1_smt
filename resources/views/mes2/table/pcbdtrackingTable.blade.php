@@ -87,7 +87,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <th colspan="12">
+                        <th colspan="13">
                             <h4>No data to display. </h4>
                         </th>
                     </tr>
