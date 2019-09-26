@@ -171,8 +171,8 @@ class DefectController extends Controller
             if($a->heat <= 6){
                 $a->heat = $a->heat + 1;
                 $a->defect = 1;
-                $a->RESULT = 'NG';
-                $a->ERROR_CODE = Defect::where('DEFECT_ID',$request->input('defect_id'))->pluck('DEFECT_CODE')->first();
+                /* $a->RESULT = 'NG';
+                $a->ERROR_CODE = Defect::where('DEFECT_ID',$request->input('defect_id'))->pluck('DEFECT_CODE')->first(); */
             }
             else{
                 $a->heat = $a->heat + 1;

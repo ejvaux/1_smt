@@ -53,7 +53,7 @@ class PcbExportScript extends Command
                 break;
             }
         } */
-        $pcb = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->first();
+        $pcb = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->where('defect',0)->first();
         $wo = $pcb->work_order;
         $temp = $pcb;
         if($wo != ''){
