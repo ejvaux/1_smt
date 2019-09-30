@@ -109,9 +109,9 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
     public function query()
     {
         $dte = $this->from;
-        $dte2 = Carbon::parse($this->to.' 18:00:00')->addDay();
+        $dte2 = Carbon::parse($this->to.' 06:00:00')->addDay();
         $query = DefectMat::where('created_at','>=',$dte.' 06:00:00')
-                            ->where('created_at','<=',$dte2);
+                            ->where('created_at','<',$dte2);
         if($this->shift != ''){
             if($this->shift == 1){
                 $query->where('shift',1);
