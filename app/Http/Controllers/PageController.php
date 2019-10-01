@@ -86,20 +86,22 @@ class PageController extends Controller
     }
 
     public function testing()
-    {
-        $joid = '38853';
+    { 
+        $pcbs = \App\Models\Pcb::where('division_id',2)
+                ->where('type',1)
+                ->where('defect',0)
+                ->where('RESULT','NG')
+                ->whereNull('work_order')
+                ->get();
+        $count = 0;
+        foreach ($pcbs as $pcb) {
+            $wo = \App\Models\WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();
+            Pcb::where('id',$pcb->id)->update(['work_order'=> $wo]);
+            $count++;
+        }
 
-        $string = \App\Models\WorkOrder::where('ID',$joid)->pluck('ITEM_CODE')->first();
-
-        if($string[-1] == 'B' || $string[-1] == 'b'){
-            echo 'BOTTOM';
-        }
-        else if($string[-1] == 'T'){
-            echo 'TOP';
-        }
-        else {
-            echo $string;
-        }
+        return $count.' UPDATED.';
+        
     }
 
 }

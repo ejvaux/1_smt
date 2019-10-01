@@ -8,9 +8,9 @@
             <button id="exportBtn" type="submit" class="btn btn-primary btn-sm form-control" style='display:none'>Export</button>
         </form>
     </div>
-    <div class="col-md">
+    {{-- <div class="col-md">
         <label id='snhead1' class="font-weight-bold" style="font-size:1.5rem"></label>
-    </div>
+    </div> --}}
 </div>
 <div id="sntTableDiv">
     @include('includes.table.sntTable')
