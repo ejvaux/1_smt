@@ -53,7 +53,7 @@ class PcbExportScript extends Command
                 break;
             }
         } */
-        $pcb = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->first();
+        $pcb = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->where('defect',0)->first();
         $wo = $pcb->work_order;
         $temp = $pcb;
         if($wo != ''){
@@ -78,6 +78,10 @@ class PcbExportScript extends Command
             $filename .= $qty;
             Excel::store(new PcbExport($temp->work_order), $filename.'.xlsx','export_smt');            
             $pcbx->update(['exported'=> 1]);
+        }
+        else{
+            $wo = WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();
+            Pcb::where('id',$pcb->id)->update(['work_order'=> $wo]);
         }
     }
 }

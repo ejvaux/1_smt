@@ -3,33 +3,23 @@
 namespace App\Exports;
 
 use App\Models\MatSnComp;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\FromArray;
 
-class ReelSnExport implements WithHeadings, WithStrictNullComparison, WithTitle, FromArray
+class ReelSnExport implements FromView, WithTitle
 {
-    use Exportable;
-
     public function __construct($rid)
     {
         $this->rid = $rid;
     }
 
-    public function headings(): array
+    /* public function headings(): array
     {
         return [
             'SN'
         ];
-    }
-
-    public function title(): string
-    {
-        return 'Sheet1';
-    }
+    }   
 
     public function array(): array
     {
@@ -41,10 +31,18 @@ class ReelSnExport implements WithHeadings, WithStrictNullComparison, WithTitle,
             }
         }
         return $sns;
-        /* return [
-            [1, 2, 3],
-            [4, 5, 6]
-        ]; */
+    } */
+
+    public function view(): View
+    {
+        $serials = MatSnComp::select('mat_comp_id','component_id','sn')->where('RID',$this->rid)->get();
+        $reel = $this->rid;
+        return view('includes.table.reelTableExport', compact('serials','reel'));
+    }
+
+    public function title(): string
+    {
+        return 'Sheet1';
     }
 
     /**

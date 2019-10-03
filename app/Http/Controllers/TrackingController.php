@@ -30,6 +30,19 @@ class TrackingController extends Controller
         $ti = Pcb::select('defect')->where('serial_number',$sn)->where('div_process_id',2)->where('type',0)->first();
         $to = Pcb::select('defect')->where('serial_number',$sn)->where('div_process_id',2)->where('type',1)->first();
 
+        if(!$bi){
+            $bi = PcbArchive::select('defect')->where('serial_number',$sn)->where('div_process_id',1)->where('type',0)->first();
+        }
+        if(!$bo){
+            $bo = PcbArchive::select('defect')->where('serial_number',$sn)->where('div_process_id',1)->where('type',1)->first();
+        }
+        if(!$ti){
+            $ti = PcbArchive::select('defect')->where('serial_number',$sn)->where('div_process_id',2)->where('type',0)->first();
+        }
+        if(!$to){
+            $to = PcbArchive::select('defect')->where('serial_number',$sn)->where('div_process_id',2)->where('type',1)->first();
+        }
+
         return [
             'sn' => $sn,
             'bi' => $bi,

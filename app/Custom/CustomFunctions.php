@@ -209,6 +209,7 @@ class CustomFunctions
     }
     public static function getmachcode($machine){
         $m_code =substr($machine,0,-1);
+        $m_code = substr($m_code,0,-2) . '-' . substr($m_code,-2);
         return $m_code;
     }
     public static function getmachtable($machine){

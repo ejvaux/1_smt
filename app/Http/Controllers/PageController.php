@@ -85,26 +85,23 @@ class PageController extends Controller
         return view('pages.materials.errorlogs',compact('models','position','mounter','emp','mounters','machine','line'));
     }
 
-    public function testing(Request $request)
-    {
-        /* $joid = '38853';
-
-        $string = \App\Models\WorkOrder::where('ID',$joid)->pluck('ITEM_CODE')->first();
-
-        if($string[-1] == 'B' || $string[-1] == 'b'){
-            echo 'BOTTOM';
+    public function testing()
+    { 
+        $pcbs = \App\Models\Pcb::where('division_id',2)
+                ->where('type',1)
+                ->where('defect',0)
+                ->where('RESULT','NG')
+                ->whereNull('work_order')
+                ->get();
+        $count = 0;
+        foreach ($pcbs as $pcb) {
+            $wo = \App\Models\WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();
+            Pcb::where('id',$pcb->id)->update(['work_order'=> $wo]);
+            $count++;
         }
-        else if($string[-1] == 'T'){
-            echo 'TOP';
-        }
-        else {
-            echo $string;
-        } */
-        return [
-            'type' => 'success',
-            'message' => $request->message,
-            'message2' => $request->message2
-        ];
+
+        return $count.' UPDATED.';
+        
     }
 
 }

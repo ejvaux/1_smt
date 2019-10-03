@@ -1,73 +1,61 @@
-{{-- <div class="row">
-    <div class="col-md text-center">
-        <h2 id='snhead'>@isset($sn){{$sn}}@endisset</h2>
-    </div>
-</div> --}}
 <div class="table-responsive-lg w-100 text-nowrap" style='min-height: 400px;overflow:auto'{{-- style="width: 100%;height: 410px;overflow:auto" --}}>
     <input id='snhead' type="hidden" value="@isset($sn){{$sn}}@endisset" >    
     @isset ($reels)
         @if (count($reels)>0)
-            @foreach ($reels as $reel)
-                <table class="table table-sm" id="datatable2">
-                    <thead >
-                        <tr class="text-center">
-                            <th>#</th>
-                            <th>PN</th>
-                            <th>RID</th>
-                            <th>QTY / REEL</th>
-                            <th>MACHINE</th>
-                            <th>TABLE</th>
-                            <th>POSITION</th>
-                            <th>FEEDER</th>
-                        </tr>
-                    </thead>
-                    <tbody class='text-center'>
-                @foreach ($reel as $item => $prop)
-                    {{-- @if ($loop->iteration % 3 == 1)
+            <table class="table table-sm" id="datatable2">
+                <thead >
+                    <tr class="text-center">
+                        <th>#</th>
+                        <th>SN</th>
+                        <th>RID</th>
+                        <th>PN</th>
+                        <th>DATETIME</th>
+                        <th>PROGRAM</th>
+                        <th>MACHINE</th>
+                        <th>TABLE</th>
+                        <th>FEEDER</th>
+                        <th>POSITION</th>
+                    </tr>
+                </thead>
+                <tbody class='text-center'>
+                    @php
+                        $c = 1;
+                    @endphp
+                @foreach ($reels as $reel)
+                    @foreach ($reel->materials as $re => $r)                      
                         <tr>
-                            <td>{{App\Http\Controllers\MES\model\Component::where('id',$item)->pluck('product_number')->first()}}</td>
-                            <td class='border-right'>{{$prop['RID']}}</td>
-                    @elseif($loop->iteration % 3 == 0)
-                            <td>{{App\Http\Controllers\MES\model\Component::where('id',$item)->pluck('product_number')->first()}}</td>
-                            <td>{{$prop['RID']}}</td>
+                            <td>{{/* $loop->iteration */$c++}}</td>
+                            <td>{{$sn}}</td>
+                            <td>{{$r['RID']}}</td>
+                            <td>{{App\Http\Controllers\MES\model\Component::where('id',$re)->pluck('product_number')->first()}}</td>                            
+                            <td>{{App\MatLoadModel::where('ReelInfo','LIKE','RID:'.$r['RID'].'%')->pluck('created_at')->first()}}</td>
+                            <td>{{App\modelSMT::where('id',$reel->model_id)->pluck('program_name')->first()}}</td>
+                            <td>{{CustomFunctions::getmachcode($r['machine'])}}</td>
+                            <td>{{CustomFunctions::getmachtable($r['machine'])}}</td>
+                            <td>{{$r['feeder']}}</td>
+                            <td>{{App\Http\Controllers\MES\model\Position::where('id',$r['position'])->pluck('name')->first()}}</td>
                         </tr>
-                    @else
-                            <td>{{App\Http\Controllers\MES\model\Component::where('id',$item)->pluck('product_number')->first()}}</td>
-                            <td class='border-right'>{{$prop['RID']}}</td>
-                    @endif --}}
+                    @endforeach
+                @endforeach
+                {{-- @foreach ($reels as $item => $prop)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{App\Http\Controllers\MES\model\Component::where('id',$item)->pluck('product_number')->first()}}</td>
+                        <td>{{$sn}}</td>
                         <td>{{$prop['RID']}}</td>
-                        <td>{{$prop['QTY']}}</td>
+                        <td>{{App\Http\Controllers\MES\model\Component::where('id',$item)->pluck('product_number')->first()}}</td>
+                        <td>{{App\Http\Controllers\MES\model\LineName::where('id',$prop['line'])->pluck('name')->first()}}</td>
                         <td>{{CustomFunctions::getmachcode($prop['machine'])}}</td>
                         <td>{{CustomFunctions::getmachtable($prop['machine'])}}</td>
-                        <td>{{App\Http\Controllers\MES\model\Position::where('id',$prop['position'])->pluck('name')->first()}}</td>
                         <td>{{$prop['feeder']}}</td>
+                        <td>{{App\Http\Controllers\MES\model\Position::where('id',$prop['position'])->pluck('name')->first()}}</td>
                     </tr>
-                @endforeach                    
-                {{-- <tr>
-                    @for ($i = 0; $i < 6; $i++)
-                        <td></td>
-                    @endfor
-                </tr> --}}
-                    </tbody>
-                </table>
-            @endforeach
+                @endforeach --}}
+                </tbody>
+            </table>
         @else
-            {{-- <tr>
-                <th colspan="6">
-                    <h4>No data to display</h4>
-                </th>
-            </tr> --}}
             <h4 class='text-center'>No data to display</h4>
         @endif
     @else
-        {{-- <tr>
-            <th colspan="6">
-                <h4>No data to display.</h4>
-            </th>
-        </tr> --}}
         <h4 class='text-center'>No data to display</h4>
     @endisset    
 </div>
