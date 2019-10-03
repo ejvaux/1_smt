@@ -48,6 +48,7 @@ class VerifyCsrfToken extends Middleware
         'materialload',
         'loadsnpn',
         'exportsnpn',
-        'update_usage'
+        'update_usage',
+        'testt'
     ];
 }

@@ -63,6 +63,8 @@ Route::post('ajax/loadError', 'AjaxController@LoadError');
 
 /* PCB scanning */
 Route::get('sp', 'ScanPcbController@index');
+/* PCB Automatic Scanning */
+Route::get('autoscan', 'ScanPcbController@auto');
 /* Scan Setting */
 Route::get('scansetting', 'ScanPcbController@scansetting');
 /* Defect Scanning */
@@ -191,6 +193,7 @@ Route::post('update_usage', 'MES\api\FeedersController@update_usage');
 
 // Testing
 Route::get('testt', 'PageController@testing');
+Route::post('testt', 'PageController@testing');
 
 /* ----- MES END ----- */
 

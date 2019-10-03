@@ -86,5 +86,11 @@ class ScanPcbController extends Controller
         return view('includes.scansetting',compact(
             'divisions'
         ));
-    }    
+    }
+    public function auto(Request $request)
+    {        
+        return view('pages.autoscan.auto'/* ,compact(
+            'divisions'
+        ) */);
+    }
 }

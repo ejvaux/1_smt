@@ -85,9 +85,9 @@ class PageController extends Controller
         return view('pages.materials.errorlogs',compact('models','position','mounter','emp','mounters','machine','line'));
     }
 
-    public function testing()
+    public function testing(Request $request)
     {
-        $joid = '38853';
+        /* $joid = '38853';
 
         $string = \App\Models\WorkOrder::where('ID',$joid)->pluck('ITEM_CODE')->first();
 
@@ -99,7 +99,12 @@ class PageController extends Controller
         }
         else {
             echo $string;
-        }
+        } */
+        return [
+            'type' => 'success',
+            'message' => $request->message,
+            'message2' => $request->message2
+        ];
     }
 
 }
