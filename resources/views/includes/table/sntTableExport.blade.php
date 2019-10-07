@@ -1,6 +1,7 @@
 <table class="table table-sm">
     <thead >
         <tr class="text-center">
+            <th>WORK ORDER</th>
             <th>SN</th>
             <th>RID</th>
             <th>PN</th>
@@ -10,12 +11,26 @@
             <th>TABLE</th>
             <th>FEEDER</th>
             <th>POSITION</th>
+            <th>JOB ORDER</th>
+            <th>EMPLOYEE</th>
         </tr>
     </thead>                        
     <tbody class='text-center'>
     @foreach ($reels as $reel)
+        @php
+            if(!$pcb = App\Models\Pcb::with(['employee'])->select('work_order','jo_number','employee_id','created_at','jo_id')->where('serial_number',$sn)->where('mat_comp_id',$reel->id)->where('type',0)->first()){
+                $pcb = App\Models\PcbArchive::with(['employee'])->select('work_order','jo_number','employee_id','created_at','jo_id')->where('serial_number',$sn)->where('mat_comp_id',$reel->id)->where('type',0)->first();
+            }
+            if(!$pcb->work_order){
+                $wot = \App\Models\WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();
+            }
+            else{
+                $wot = $pcb->work_order;
+            }
+        @endphp
         @foreach ($reel->materials as $re => $r)                      
             <tr>
+                <td>{{$wot}}</td>
                 <td>{{$sn}}</td>
                 <td>{{$r['RID']}}</td>
                 <td>{{App\Http\Controllers\MES\model\Component::where('id',$re)->pluck('product_number')->first()}}</td>                          
@@ -25,6 +40,8 @@
                 <td>{{CustomFunctions::getmachtable($r['machine'])}}</td>
                 <td>{{$r['feeder']}}</td>
                 <td>{{App\Http\Controllers\MES\model\Position::where('id',$r['position'])->pluck('name')->first()}}</td>
+                <td>{{$pcb->jo_number}}</td>
+                <td>{{$pcb->employee->fname}} {{$pcb->employee->lname}}</td>
             </tr>
         @endforeach
     @endforeach
