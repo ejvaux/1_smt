@@ -23,4 +23,8 @@ class MatComp extends Model
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Component','materials','id');
     }
+    public function pcb()
+    {
+        return $this->hasMany('App\Models\Pcb','mat_comp_id');
+    }
 }

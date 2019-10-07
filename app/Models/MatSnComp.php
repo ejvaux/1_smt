@@ -30,4 +30,8 @@ class MatSnComp extends Model
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Component','component_id');
     }
+    public function matcomp()
+    {
+        return $this->belongsTo('App\Models\MatComp','mat_comp_id');
+    }
 }
