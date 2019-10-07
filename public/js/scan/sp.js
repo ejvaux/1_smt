@@ -213,7 +213,7 @@ function serialscan()
             }
             else{
                 iziToast.warning({
-                    message: 'Unknown Error!',
+                    message: data,
                     position: 'topCenter'
                 });
                 x[0].pause();

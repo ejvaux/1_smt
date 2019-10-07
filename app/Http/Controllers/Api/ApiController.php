@@ -23,6 +23,7 @@ use App\Custom\CustomFunctions;
 use App\Jobs\CompSnInsert;
 use App\Jobs\RemoteInsert;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -275,78 +276,101 @@ class ApiController extends Controller
             }
         }
         function insertsn( $request,$jo_id='')
-        {
+        {            
             if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
-                $a = new Pcb;
-                $a->serial_number = strtoupper($request->serial_number);  
+                try {   
+                    DB::transaction(function () use($request,$jo_id) {
+                        $a = new Pcb;
+                        $a->serial_number = strtoupper($request->serial_number);  
 
-                $a->jo_id = $request->jo_id;
-                $a->jo_number = $request->jo_number;
-                $a->lot_id = 0;
-                $a->division_id = $request->division_id;
-                $a->line_id = $request->line_id;
-                $a->div_process_id = $request->div_process_id;
-                /* $a->div_process_id = $dproc; */
-                $a->type = $request->type;
-                $a->employee_id = $request->employee_id;
-                $a->shift = CustomFunctions::genshift();
-                $a->defect = 0;
-                $a->heat = 0;
+                        $a->jo_id = $request->jo_id;
+                        $a->jo_number = $request->jo_number;
+                        $a->lot_id = 0;
+                        $a->division_id = $request->division_id;
+                        $a->line_id = $request->line_id;
+                        $a->div_process_id = $request->div_process_id;
+                        /* $a->div_process_id = $dproc; */
+                        $a->type = $request->type;
+                        $a->employee_id = $request->employee_id;
+                        $a->shift = CustomFunctions::genshift();
+                        $a->defect = 0;
+                        $a->heat = 0;
 
-                /* work order */
-                $a->work_order = $request->work_order;
+                        /* work order */
+                        $a->work_order = $request->work_order;
 
-                $mcid = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
-                
-                if($mcid){
-                    $a->mat_comp_id = $mcid->id;
+                        $mcid = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
+                        
+                        if($mcid){
+                            $a->mat_comp_id = $mcid->id;                            
+                        }
+                        else{
+                            $a->mat_comp_id = null;
+                        }
+
+                        /* For Exporting */        
+                        if($request->division_id == 2){
+                            $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
+                            
+                            if($request->type == 0){
+                                $pname .= '.INPUT-';
+                            }
+                            else{
+                                $pname .= '.V/I-';
+                            }
+                            if($request->div_process_id == 1){
+                                $pname .= 'B';
+                            }
+                            elseif($request->div_process_id == 2){
+                                $pname .= 'T';
+                            }
+                        }
+                        else if( $request->division_id == 17 || $request->division_id == 18){
+                            $pname = 'DIP';
+                            if($request->type == 0){
+                                $pname .= '.INPUT';
+                            }
+                            else{
+                                $pname .= '.V/I';
+                            }
+                        }
+                        else{
+                            $pname = '';
+                        }
+                        $a->RESULT = 'OK';
+                        $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
+                        $a->PROCESS_NAME = $pname;
+                        $a->save();
+                    }, 3);
 
                     /* Insert mat_sn_comps table */
                     try {
                         CompSnInsert::dispatch($request->serial_number,$mcid->id);
-                        /* RemoteInsert::dispatch($request->serial_number,$mcid->id); */
                     } catch (\Throwable $th) {
                         Log::error($th);
                     }
-                }
-                else{
-                    $a->mat_comp_id = null;
-                }
 
-                /* For Exporting */        
-                if($request->division_id == 2){
-                    $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
-                    
-                    if($request->type == 0){
-                        $pname .= '.INPUT-';
+                    return [
+                        'type' => 'success',
+                        'message' => 'Scan Successful!'
+                    ];  
+                } catch (\Throwable $th) {
+                    /* return [
+                        'type' => 'error',
+                        'message' => 'API ERROR: input_insertsn'
+                    ]; */
+                    if($th->getCode() == 23000){
+                        return [
+                            'type' => 'error',
+                            'message' => 'Serial Number Already Scanned.'
+                        ];
                     }
                     else{
-                        $pname .= '.V/I-';
-                    }
-                    if($request->div_process_id == 1){
-                        $pname .= 'B';
-                    }
-                    elseif($request->div_process_id == 2){
-                        $pname .= 'T';
-                    }
+                        Log::error($th);               
+                        return $th;
+                    }                    
                 }
-                else if( $request->division_id == 17 || $request->division_id == 18){
-                    $pname = 'DIP';
-                    if($request->type == 0){
-                        $pname .= '.INPUT';
-                    }
-                    else{
-                        $pname .= '.V/I';
-                    }
-                }
-                else{
-                    $pname = '';
-                }
-                $a->RESULT = 'OK';
-                $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
-                $a->PROCESS_NAME = $pname;
-        
-                if($a->save()){
+                /* if($a->save()){
                     if($jo_id == ''){
                         return [
                             'type' => 'success',
@@ -358,19 +382,18 @@ class ApiController extends Controller
                             'type' => 'success',
                             'message' => 'Scan Successful! Scanned PCB is in different Job Order.'
                         ];
-                    }
-                    
+                    }                    
                 }
                 else{
                     return [
                         'type' => 'error',
                         'message' => 'Scan Failed!'
                     ];
-                }
-                return [
+                } */                
+                /* return [
                     'type' => 'error',
                     'message' => 'API ERROR: insertsn'
-                ];
+                ]; */
             }
             else{
                 return [
@@ -421,7 +444,6 @@ class ApiController extends Controller
         }
         else {
             return checkdupIn($request);
-            /* return checkwosn($request); */
         }
     }   
 
@@ -501,67 +523,89 @@ class ApiController extends Controller
         function insertsn($request,$jo_id = '')
         {
             if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
-                $a = new Pcb;
-                $a->serial_number = strtoupper($request->serial_number);
-                if($jo_id == ''){
-                    $a->jo_id = $request->jo_id;
-                }
-                else{
-                    $a->jo_id = $jo_id;
-                }      
-                if($request->lot_id){
-                    $a->lot_id = $request->lot_id;
-                }
-                else{
-                    $a->lot_id = 0;
-                }
-                $a->jo_number = $request->jo_number;
-                $a->division_id = $request->division_id;
-                $a->line_id = $request->line_id;
-                $a->div_process_id = $request->div_process_id;
-                $a->type = $request->type;
-                $a->employee_id = $request->employee_id;
-                $a->shift = CustomFunctions::genshift();
-                $a->defect = 0;
-                $a->heat = 0;
+                try {
+                    DB::transaction(function () use($request,$jo_id) {
+                        $a = new Pcb;
+                        $a->serial_number = strtoupper($request->serial_number);
+                        if($jo_id == ''){
+                            $a->jo_id = $request->jo_id;
+                        }
+                        else{
+                            $a->jo_id = $jo_id;
+                        }      
+                        if($request->lot_id){
+                            $a->lot_id = $request->lot_id;
+                        }
+                        else{
+                            $a->lot_id = 0;
+                        }
+                        $a->jo_number = $request->jo_number;
+                        $a->division_id = $request->division_id;
+                        $a->line_id = $request->line_id;
+                        $a->div_process_id = $request->div_process_id;
+                        $a->type = $request->type;
+                        $a->employee_id = $request->employee_id;
+                        $a->shift = CustomFunctions::genshift();
+                        $a->defect = 0;
+                        $a->heat = 0;
 
-                /* work order */
-                $a->work_order = $request->work_order;
+                        /* work order */
+                        $a->work_order = $request->work_order;
 
-                /* For Exporting */        
-                if($request->division_id == 2){
-                    $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
-                    
-                    if($request->type == 0){
-                        $pname .= '.INPUT-';
+                        /* For Exporting */        
+                        if($request->division_id == 2){
+                            $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
+                            
+                            if($request->type == 0){
+                                $pname .= '.INPUT-';
+                            }
+                            else{
+                                $pname .= '.V/I-';
+                            }
+                            if($request->div_process_id == 1){
+                                $pname .= 'B';
+                            }
+                            elseif($request->div_process_id == 2){
+                                $pname .= 'T';
+                            }
+                        }
+                        else if( $request->division_id == 17 || $request->division_id == 18){
+                            $pname = 'DIP';
+                            if($request->type == 0){
+                                $pname .= '.INPUT';
+                            }
+                            else{
+                                $pname .= '.V/I';
+                            }
+                        }
+                        else{
+                            $pname = '';
+                        }
+                        $a->RESULT = 'OK';
+                        $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
+                        $a->PROCESS_NAME = $pname;
+                        $a->save();
+                    }, 3);
+                    return [
+                        'type' => 'success',
+                        'message' => 'Scan Successful!'
+                    ];
+                } catch (\Throwable $th) {
+                    /* return [
+                        'type' => 'error',
+                        'message' => 'API ERROR: output_insertsn'
+                    ]; */
+                    if($th->getCode() == 23000){
+                        return [
+                            'type' => 'error',
+                            'message' => 'Serial Number Already Scanned.'
+                        ];
                     }
-                    else{
-                        $pname .= '.V/I-';
-                    }
-                    if($request->div_process_id == 1){
-                        $pname .= 'B';
-                    }
-                    elseif($request->div_process_id == 2){
-                        $pname .= 'T';
+                    else{                        
+                        return $th;
                     }
                 }
-                else if( $request->division_id == 17 || $request->division_id == 18){
-                    $pname = 'DIP';
-                    if($request->type == 0){
-                        $pname .= '.INPUT';
-                    }
-                    else{
-                        $pname .= '.V/I';
-                    }
-                }
-                else{
-                    $pname = '';
-                }
-                $a->RESULT = 'OK';
-                $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
-                $a->PROCESS_NAME = $pname;
-
-                if($a->save()){
+               /*  if($a->save()){
                     if($jo_id == ''){
                         return [
                             'type' => 'success',
@@ -584,7 +628,11 @@ class ApiController extends Controller
                 return [
                     'type' => 'error',
                     'message' => 'API ERROR: insertsn'
-                ];
+                ]; */
+                /* return [
+                    'type' => 'success',
+                    'message' => 'Scan Successful!'
+                ]; */
             }
             else{
                 return [
