@@ -341,14 +341,15 @@ class ApiController extends Controller
                         $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
                         $a->PROCESS_NAME = $pname;
                         $a->save();
-                    }, 3);
 
-                    /* Insert mat_sn_comps table */
-                    try {
-                        CompSnInsert::dispatch($request->serial_number,$mcid->id);
-                    } catch (\Throwable $th) {
-                        Log::error($th);
-                    }
+                        /* Insert mat_sn_comps table */
+                        try {
+                            CompSnInsert::dispatch($request->serial_number,$mcid->id);
+                        } catch (\Throwable $th) {
+                            Log::error($th);
+                        }
+                        
+                    }, 3);                    
 
                     return [
                         'type' => 'success',
