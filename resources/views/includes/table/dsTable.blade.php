@@ -5,19 +5,19 @@
                 <thead class="thead-light">
                     <tr class="text-center">
                         <th>#</th>
-                        <th>@sortablelink('repair','Lead Time')</th>
-                        <th>@sortablelink('defect_id','DIVISION')</th>
-                        <th>@sortablelink('line_id','LINE')</th>
-                        <th>@sortablelink('line_id','MODEL')</th>
-                        <th>@sortablelink('shift','SHIFT')</th>
-                        <th>@sortablelink('process_id','PROCESS')</th>
-                        <th>@sortablelink('pcb_id','S/N')</th>
-                        <th>@sortablelink('defect_id','DEFECT')</th>
-                        <th>@sortablelink('defect_type_id','DEFECT TYPE')</th>
-                        <th>@sortablelink('employee_id','INSERTED BY')</th>
-                        <th>@sortablelink('defected_at','DEFECTED AT')</th>
-                        <th>@sortablelink('repair_by','REPAIRED BY')</th>
-                        <th>@sortablelink('repaired_at','REPAIRED AT')</th>
+                        <th>Lead Time</th>
+                        <th>DIVISION</th>
+                        <th>LINE</th>
+                        <th>MODEL</th>
+                        <th>SHIFT</th>
+                        <th>PROCESS</th>
+                        <th>S/N</th>
+                        <th>DEFECT</th>
+                        <th>DEFECT TYPE</th>
+                        <th>INSERTED BY</th>
+                        <th>DEFECTED AT</th>
+                        <th>REPAIRED BY</th>
+                        <th>REPAIRED AT</th>
                         {{-- <th>@sortablelink('created_at','INSERTED AT')</th> --}}                    
                     </tr>
                 </thead>
