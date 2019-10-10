@@ -342,12 +342,14 @@ class ApiController extends Controller
                         $a->PROCESS_NAME = $pname;
                         $a->save();
 
-                        /* Insert mat_sn_comps table */
-                        try {
-                            CompSnInsert::dispatch($request->serial_number,$mcid->id);
-                        } catch (\Throwable $th) {
-                            Log::error($th);
-                        }
+                        if($mcid){
+                            /* Insert mat_sn_comps table */
+                            try {
+                                CompSnInsert::dispatch($request->serial_number,$mcid->id);
+                            } catch (\Throwable $th) {
+                                Log::error($th);
+                            }
+                        }                        
                         
                     }, 3);                    
 
@@ -356,10 +358,6 @@ class ApiController extends Controller
                         'message' => 'Scan Successful!'
                     ];  
                 } catch (\Throwable $th) {
-                    /* return [
-                        'type' => 'error',
-                        'message' => 'API ERROR: input_insertsn'
-                    ]; */
                     if($th->getCode() == 23000){
                         return [
                             'type' => 'error',
@@ -368,7 +366,11 @@ class ApiController extends Controller
                     }
                     else{
                         Log::error($th);               
-                        return $th;
+                        /* return $th; */
+                        return [
+                            'type' => 'error',
+                            'message' => 'Scan Failed. Please try again.'
+                        ];
                     }                    
                 }
                 /* if($a->save()){
@@ -592,18 +594,18 @@ class ApiController extends Controller
                         'message' => 'Scan Successful!'
                     ];
                 } catch (\Throwable $th) {
-                    /* return [
-                        'type' => 'error',
-                        'message' => 'API ERROR: output_insertsn'
-                    ]; */
                     if($th->getCode() == 23000){
                         return [
                             'type' => 'error',
                             'message' => 'Serial Number Already Scanned.'
                         ];
                     }
-                    else{                        
-                        return $th;
+                    else{
+                        Log::error($th);
+                        return [
+                            'type' => 'error',
+                            'message' => 'Scan Failed. Please try again.'
+                        ];
                     }
                 }
                /*  if($a->save()){
