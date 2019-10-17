@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Defect;
@@ -111,6 +112,7 @@ class DefectController extends Controller
             'defect_type_id' => 'required',
             'process_id' => 'required',
             'line_id' => 'required',
+            'd_locations' => 'required',
         ]);
         
         /* if($a = Pcb::where('serial_number',$request->input('serial_number'))->orderBy('id','DESC')->first()){
@@ -167,20 +169,19 @@ class DefectController extends Controller
             return redirect()->back()->with('error','Saving Serial Number Failed.');
         } */
 
-        if($a = Pcb::where('serial_number',$request->input('serial_number'))->orderBy('id','DESC')->first()){
-            if($a->heat <= 6){
-                $a->heat = $a->heat + 1;
-                $a->defect = 1;
-                /* $a->RESULT = 'NG';
-                $a->ERROR_CODE = Defect::where('DEFECT_ID',$request->input('defect_id'))->pluck('DEFECT_CODE')->first(); */
-            }
-            else{
-                $a->heat = $a->heat + 1;
-                return [
-                    'type' => 'error',
-                    'message' => 'Max Heat Cycles Reached!'
-                ];
-            }
+        if($a = Pcb::where('serial_number',$request->input('serial_number'))->first()){
+            if($a->defect != 1){
+                if(Pcb::where('serial_number',$request->input('serial_number'))->sum('heat') <= 6){
+                    $a->heat = $a->heat + 1;
+                    $a->defect = 1;
+                }
+                else{
+                    return [
+                        'type' => 'error',
+                        'message' => 'Max Heat Cycles Reached!'
+                    ];
+                }
+            }            
         }
         
         if($a->save())
@@ -200,6 +201,10 @@ class DefectController extends Controller
             $b->division_id = $request->input('division_id');
             $b->defect_id = $request->input('defect_id');
             $b->defect_type_id = $request->input('defect_type_id');
+            $b->d_locations = $request->input('d_locations');
+            /* $b->d_locations = [
+                'location_id' => $request->input('d_locations')
+            ]; */
             $b->process_id = $request->input('process_id');            
             $b->line_id = $request->input('line_id');
             $b->shift = $shift;
@@ -210,13 +215,13 @@ class DefectController extends Controller
                 if($a->heat == 7){
                     return [
                         'type' => 'success',
-                        'message' => 'Data Saved Successfully. Max Heat Cycles Reached!'
+                        'message' => 'Defect Saved Successfully. Max Heat Cycles Reached!'
                     ];
                 }
                 else{
                     return [
                         'type' => 'success',
-                        'message' => 'Data Saved Successfully.'
+                        'message' => 'Defect Saved Successfully.'
                     ];
                 }                
             }
@@ -277,6 +282,63 @@ class DefectController extends Controller
             else{
                 return redirect()->back()->with('error','Updating Failed.');
             }            
+        }
+    }
+    public function repairdef1(Request $request)
+    {
+        $request->validate([
+            'serial_number' => 'string|required',
+            'remarks' => 'string|required',
+            'repaired_by' => 'integer|required',
+        ]);
+        /* $e = DefectMat::where('id',$id)->first(); */
+        $sn = Pcb::where('serial_number',$request->input('serial_number'));
+        $snid = $sn->pluck('id')->toArray();
+        try {
+            $es = DefectMat::whereIN('pcb_id',$snid)->where('repair',0)
+            ->update([
+                "remarks"       => $request->input('remarks'),
+                "repair_by"     => $request->input('repaired_by'),
+                "repair"        => 1,
+                "repaired_at"   => \Carbon\Carbon::now()
+            ]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            /* throw $th; */
+            return [
+                'type' => 'error',
+                'message' => 'ERROR: Updating in defect data.'
+            ];
+        }        
+        try {
+            $sn->update([
+                'defect' => 0,
+                'RESULT' => 'OK',
+                'ERROR_CODE' => null
+            ]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return [
+                'type' => 'error',
+                'message' => 'ERROR: Updating the pcb data.'
+            ];
+        }
+        return [
+            'type' => 'success',
+            'message' => 'Data Updated Successfully.'
+        ];        
+    }
+    public function repairchecksn(Request $request)
+    {
+        $a = Pcb::where('serial_number',$request->sn)->where('defect',1)->orderBy('id','DESC');
+        if($a->first()){
+            return $a->first();            
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Serial Number has no defect.'
+            ];
         }
     }
 }

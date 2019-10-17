@@ -35,6 +35,9 @@
                                     <a class="nav-link" href="#search-tab" role="tab" data-toggle="tab">SEARCH</a>
                                 </li> --}}
                                 <li class="nav-item bold-text">
+                                    <a class="nav-link" href="#repair-tab" role="tab" data-toggle="tab">REPAIR</a>
+                                </li>
+                                <li class="nav-item bold-text">
                                     <a class="nav-link" href="#export-tab" role="tab" data-toggle="tab">EXPORT</a>
                                 </li>
                                 <li class="nav-item bold-text ml-auto">
@@ -73,6 +76,9 @@
                                 {{-- <div class="tab-pane container py-5" id="search-tab" style='height:100%'>
                                     @include('pages.defect.searchTab')
                                 </div> --}}
+                                <div class="tab-pane container py-5" id="repair-tab" style='height:100%'>
+                                    @include('pages.defect.repairTab')
+                                </div>
                                 <div class="tab-pane container py-5" id="export-tab" style='height:100%'>
                                     @include('pages.defect.exportTab')
                                 </div>

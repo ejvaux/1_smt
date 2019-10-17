@@ -9,6 +9,7 @@ use App\Models\Division;
 use App\Models\Process;
 use App\Models\Pcb;
 use App\Models\DefectType;
+use App\Models\Location;
 use App\Exports\DefectMatsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\MES\model\LineName;
@@ -26,6 +27,7 @@ class DefectController extends Controller
         $this->processes = Process::all();
         $this->employee = Employee::all();
         $this->defect_types = DefectType::all();
+        $this->locations = Location::all();
     }
 
     public function index(Request $request)
@@ -91,6 +93,7 @@ class DefectController extends Controller
         $defects = $this->defects;
         $processes = $this->processes;
         $defect_types = $this->defect_types;
+        $locations = $this->locations;
         
         if($request->input('table') && !$request->input('page')){
             return view('includes.table.dsTable',compact(
@@ -101,7 +104,8 @@ class DefectController extends Controller
                 'defects',
                 'processes',
                 'dte',
-                'defect_types'
+                'defect_types',
+                'locations'
             ));
         }
         else{
@@ -113,7 +117,8 @@ class DefectController extends Controller
                 'defects',
                 'processes',
                 'dte',
-                'defect_types'
+                'defect_types',
+                'locations'
             ));
         }        
     }

@@ -98,11 +98,11 @@ function empcheckpin(pin,set)
                     $('#adivision_id').focus();
                 }
                 
-                iziToast.success({
+                /* iziToast.success({
                     title: 'SUCCESS',
                     message: 'Employee found.',
                     position: 'topCenter'
-                });
+                }); */
             }
             else
             {
@@ -188,8 +188,11 @@ function checksn(sn){
                     $('#scan_serial_number').val(data.serial_number);
                     $('#scan_lbl_div').show();
                     $('#division_id').val(data.division_id);
-                    ddpop(data.division_id,'process_id','defect_id','line_id');
-                    $('#division_id option:not(:selected)').attr('disabled', true);
+                    /* if ($('#department_id').val() != '') {
+                        ddpop($('#department_id').val(),'process_id','defect_id','line_id');
+                        ddpop(data.division_id,'process_id','defect_id','line_id');
+                    } */                    
+                    /* $('#division_id option:not(:selected)').attr('disabled', true); */
                     $('#line_id').val(data.line_id);
                     $('#scan_employee').focus();
                     /* iziToast.warning({
@@ -206,6 +209,30 @@ function checksn(sn){
                 }
             });
 }
+function achecksn(sn){
+    $('#ascan_sn').val('Please Wait . . .');
+    $('#ascan_sn').attr('readonly', true);
+    $.get("api/repairchecksn",
+            { 
+                sn:  sn
+            }, 
+            function(data) {
+                if(data.type != 'error'){
+                    $('#ascan_sn').hide();
+                    $('#ascan_lbl').val(data.serial_number);
+                    $('#ascan_serial_number').val(data.serial_number);
+                    $('#ascan_lbl_div').show();
+                    searchSN(sn);
+                }
+                else{
+                    aresetsn();
+                    iziToast.error({
+                        message: data.message,
+                        position: 'topCenter'
+                    });
+                }
+            });
+}
 function resetsn(){
     $('#scan_sn').val('');
     $('#scan_serial_number').val('');
@@ -213,10 +240,22 @@ function resetsn(){
     $('#scan_lbl_div').hide();
     $('#scan_sn').show();
     $('#scan_sn').focus();
-    $('#process_id, #defect_id').empty();
+    /* $('#process_id, #defect_id').empty();
     $('#process_id, #defect_id').append("<option value=''>- Scan Serial Number first -</option>");
     $('#process_id, #defect_id').attr('disabled',true);
-    $('#defect_type_id').val('');
+    $('#defect_type_id').val(''); */
+    /* $('#defect_type_id').val($('#defect_type_id option:first').val()); */
+    $('#process_id').val($('#process_id option:first').val());
+    $('#defect_id').val($('#defect_id option:first').val());
+    $('#locations').val(null).trigger('change');
+}
+function aresetsn(){
+    $('#ascan_sn').val('');
+    $('#ascan_serial_number').val('');
+    $('#ascan_sn').attr('readonly', false);
+    $('#ascan_lbl_div').hide();
+    $('#ascan_sn').show();
+    $('#ascan_sn').focus();
 }
 function addDefect(){
     var formdata = $('#add_defect_form').serialize();
@@ -230,7 +269,7 @@ function addDefect(){
                     message: data.message,
                     position: 'topCenter'
                 });
-                loadtable();
+                /* loadtable(); */
             }
             else if(data.type == 'error'){
                 iziToast.warning({
@@ -245,6 +284,49 @@ function addDefect(){
                 });
             }
             resetsn();
+        },
+        error: function(data) {
+            var msg = '';
+            $.each(data.responseJSON.errors, function( index, value ) {
+                $.each(value, function ( index1, value1 ) {
+                    msg += value1 + "<br>";
+                });                
+            });
+            iziToast.warning({
+                message: msg,
+                position: 'topCenter'
+            });
+        }
+    });
+    /* alert(formdata); */
+}
+function repairDefect(){
+    var formdata = $('#repair_defectmat_form').serialize();
+    $.ajax({
+        url: 'defectmats_rep1',
+        type:'POST',
+        data: formdata,
+        success: function (data) {
+            if(data.type == 'success'){                
+                iziToast.success({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+                searchSN();
+            }
+            else if(data.type == 'error'){
+                iziToast.warning({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+            }
+            else{
+                iziToast.warning({
+                    message: 'Unknown Error!',
+                    position: 'topCenter'
+                });
+            }
+            aresetsn();            
         },
         error: function(data) {
             var msg = '';
@@ -284,7 +366,7 @@ function loadtable(){
         }
     });
 }
-function searchSN(){
+function searchSN(sn){
     
     var toast = document.querySelector('.iziToast');
     if(toast){
@@ -298,7 +380,7 @@ function searchSN(){
         type:'get',
         data: {
             'table' : 1,
-            'text' : $('#text').val()
+            'text' : sn
         },
         success: function (data) {
             $('#dsTable-div').html(data);
@@ -432,7 +514,7 @@ $('#repair_defectmat_form').on('submit', function(){
                         position: 'topCenter'
                     });
                 }
-                loadtable();             
+                searchSN($(this).val());            
             }
         });        
         return false;
@@ -455,7 +537,7 @@ $('.repair_defectmat_btn').on('click', function(){
 $('.details_defectmat_btn').on('click', function(){
     alert('Details');
 });
-$('#division_id').on('change',function(){
+$('#division_id, #department_id').on('change',function(){
     ddpop($(this).val(),'process_id','defect_id','line_id');
 })
 $('#adivision_id').on('change',function(){
@@ -471,8 +553,18 @@ $('#scan_sn').on('keypress', function(e){
         checksn($(this).val());
     }
 });
+$('#ascan_sn').on('keypress', function(e){    
+    if(e.keyCode == 13)
+    {
+        e.preventDefault();
+        achecksn($(this).val());
+    }
+});
 $('#reset_sn').on('click', function(e){
     resetsn();
+});
+$('#areset_sn').on('click', function(e){
+    aresetsn();
 });
 $('#ds-export-btn').on('click', function(e){
     $('#ds_export_modal').modal('show');
@@ -480,15 +572,18 @@ $('#ds-export-btn').on('click', function(e){
 $('#add_defect_submit').on('click', function(){
     addDefect();
 });
+$('#repair_defect_submit').on('click', function(){
+    repairDefect();
+});
 $('#refresh-table-button, #date-search-button').on('click', function(e){
     loadtable();
 });
 $('#sn-search-button').on('click', function(e){
-    searchSN();
+    searchSN($('#text').val());
 });
 $('#text').on('keypress', function(e){
     if(e.keyCode == 13)
     {
-        searchSN();
+        searchSN($(this).val());
     }
 });

@@ -9,6 +9,11 @@ class DefectMat extends Model
 {
     protected $table = 'defect_mats';
 
+    protected $casts = [
+        'd_locations' => 'json',
+        'r_locations' => 'json'
+    ];
+
     use Sortable;
 
     /* protected $fillable = ['id']; */
@@ -57,5 +62,9 @@ class DefectMat extends Model
     public function defectType()
     {
         return $this->belongsTo('App\Models\DefectType','defect_type_id');
+    }
+    public function division()
+    {
+        return $this->belongsTo('App\Models\Division','division_id','DIVISION_ID');
     }
 }

@@ -2322,10 +2322,10 @@ function displaymenu(sn,rep,id,div,repby,arr){
                 $('#aprocess_id').val(arr.process_id);
                 $('#adefect_id').val(arr.defect_id);
             }],
-            ["<a id='repair_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm repair_defectmat_btn py-1 px-2' title='Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-hammer'></i> Repair</a>", function (instance, toast) { 
+            /* ["<a id='repair_defectmat_btn_{{$defect_mat->id}}' style='font-size:20px' class='btn btn-outline-primary nav-link btn-sm repair_defectmat_btn py-1 px-2' title='Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-hammer'></i> Repair</a>", function (instance, toast) { 
                 $('#repair_defectmat_form').attr('action', '/1_smt/public/defectmats_rep/'+id);
                 $('#repair_modal').modal('show');
-            }],
+            }], */
         ]
     }
     else{
