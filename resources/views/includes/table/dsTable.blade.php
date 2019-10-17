@@ -6,12 +6,12 @@
                     <tr class="text-center">
                         <th>#</th>
                         <th>@sortablelink('repair','Lead Time')</th>
+                        <th>@sortablelink('pcb_id','S/N')</th>
                         <th>@sortablelink('defect_id','DIVISION')</th>
                         <th>@sortablelink('line_id','LINE')</th>
                         <th>@sortablelink('line_id','MODEL')</th>
                         <th>@sortablelink('shift','SHIFT')</th>
                         <th>@sortablelink('process_id','PROCESS')</th>
-                        <th>@sortablelink('pcb_id','S/N')</th>
                         <th>@sortablelink('defect_id','DEFECT')</th>
                         <th>@sortablelink('defect_type_id','DEFECT TYPE')</th>
                         <th>@sortablelink('employee_id','INSERTED BY')</th>
@@ -44,7 +44,7 @@
                                     @endif  --}}
                                         <th>                                                  
                                             {{ $loop->iteration + (($defect_mats->currentPage() - 1) * 20) }}                                
-                                        </th>
+                                        </th>                                
                                 {{-- Col --}}
                                     <th>
                                         @if ($defect_mat->repair)
@@ -52,9 +52,14 @@
                                         @else
                                             <span class='text-danger'>{{CustomFunctions::datelapse($defect_mat->created_at)}}</span>
                                         @endif
-                                    </th>                              
+                                    </th>
                                 {{-- Col --}}
-                                    <td>{{$defect_mat->defect->division->DIVISION_NAME}}</td>
+                                    <td>
+                                        {{$defect_mat->pcb->serial_number}}                            
+                                    </td>                             
+                                {{-- Col --}}
+                                    {{-- <td>{{$defect_mat->defect->division->DIVISION_NAME}}</td> --}}
+                                    <td>{{$defect_mat->division->DIVISION_NAME}}</td>
                                 {{-- Col --}}
                                     <td>{{$defect_mat->line->name}}</td>
                                 {{-- Col --}}
@@ -92,32 +97,7 @@
                                         @else
                                             
                                         @endif                                
-                                    </td>
-                                {{-- Col --}}
-                                    <td>
-                                        {{$defect_mat->pcb->serial_number}}
-                                        {{-- <div class="btn-group dropright">
-                                            <button class="btn btn-light p-0" data-toggle="dropdown">
-                                                {{$defect_mat->pcb->serial_number}}
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-sm">
-                                                <ul class="nav justify-content-center">                                            
-                                                @if ($defect_mat->repair != true)
-                                                    <li class="nav-item mr-1">
-                                                        <a id='edit_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm edit_defectmat_btn py-1 px-2' title='Edit' data-id='{{$defect_mat->id}}'><i class='fas fa-edit'></i> Edit</a>
-                                                    </li>
-                                                    <li class="nav-item">    
-                                                        <a id='repair_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm repair_defectmat_btn py-1 px-2' title='Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-hammer'></i> Repair</a>                                            
-                                                    </li>
-                                                @else 
-                                                    <li class="nav-item">
-                                                        <a id='details_defectmat_btn_{{$defect_mat->id}}' class='btn btn-outline-primary nav-link btn-sm details_defectmat_btn py-1 px-2' title='View Repair' data-id='{{$defect_mat->id}}'><i class='fas fa-eye'></i> Details</a>                                            
-                                                    </li>
-                                                @endif
-                                                </ul>
-                                            </div>
-                                        </div> --}}                             
-                                    </td>
+                                    </td>                                
                                 {{-- Col --}}
                                     <td>{{$defect_mat->defect->DEFECT_NAME}}</td>
                                 {{-- Col --}}
