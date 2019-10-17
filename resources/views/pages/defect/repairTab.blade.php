@@ -41,8 +41,12 @@
                     <label for="aremarks" class="col-form-label-sm">REMARKS:</label>                  
                 </div>
                 <div class="col-8">
-                    <textarea id='aremarks' class='form-control' id="" name="remarks" cols="30" rows="4" required></textarea>
-                    {{-- <input id='aremarks' class='form-control' id="" name="remarks" required> --}}
+                    {{-- <textarea id='aremarks' class='form-control' id="" name="remarks" cols="30" rows="4" required></textarea> --}}
+                    <select id="aremarks" class="form-control select2" name="remarks" placeholder="" required>
+                        @foreach ($defects as $defect)
+                            <option value="{{$defect->DEFECT_NAME}}">{{$defect->DEFECT_NAME}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>
