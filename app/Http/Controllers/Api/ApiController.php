@@ -174,34 +174,7 @@ class ApiController extends Controller
                     'message' => 'Invalid Serial Number. Try Again.'
                 ];
             }
-        }
-
-        /* ----------- */
-        /* if(preg_match("/^([a-zA-Z0-9.]){12}$/", $request->serial_number)){
-            if($request->type == 0){
-                return $this->scanIn2($request);
-            }
-            else if($request->type == 1){
-                return $this->scanOut2($request);
-            }
-            else{
-                return [
-                    'type' => 'error',
-                    'message' => 'Scan Failed. Scan type not allowed.'
-                ];
-            }
-            return [
-                'type' => 'error',
-                'message' => 'API ERROR: scantype'
-            ];   
-        }
-        else{
-            return [
-                'type' => 'error',
-                'message' => 'Invalid Serial Number. Try Again.'
-            ];
-        } */
-                 
+        }                 
     }
 
     /* --------------- INPUT SCANNING ------------------- */
@@ -240,7 +213,36 @@ class ApiController extends Controller
                 }
 
                 if(!$in){
-                    return checkjoquantity2($request);
+                    try {
+                        $def = Pcb::where('serial_number',$request->serial_number)
+                                ->where('defect',1)
+                                ->first();
+                        if (!$def) {
+                            $def = PcbArchive::where('serial_number',$request->serial_number)
+                                ->where('defect',1)
+                                ->first();
+                            if(!$def){
+                                return checkjoquantity2($request);
+                            }
+                            else{
+                                return [
+                                    'type' => 'error',
+                                    'message' => 'Scan Failed. PCB has defect.'
+                                ];
+                            }
+                        }
+                        else{
+                            return [
+                                'type' => 'error',
+                                'message' => 'Scan Failed. PCB has defect.'
+                            ];
+                        }
+                        
+                    } catch (\Throwable $th) {
+                        Log::error($th);
+                        return $th;
+                    }                    
+                    /* return checkjoquantity2($request); */                  
                 }
                 else{
                     return [
@@ -674,53 +676,54 @@ class ApiController extends Controller
             }
 
             if($sn->first()){
-                $sn = $sn->first();
+                try {
+                    $def = Pcb::where('serial_number',$request->serial_number)
+                            ->where('defect',1)
+                            ->first();
+                    if (!$def) {
+                        $def = PcbArchive::where('serial_number',$request->serial_number)
+                            ->where('defect',1)
+                            ->first();
+                        if(!$def){
+                            return checkjoquantity2($request);
+                        }
+                        else{
+                            return [
+                                'type' => 'error',
+                                'message' => 'Scan Failed. PCB has defect.'
+                            ];
+                        }
+                    }
+                    else{
+                        return [
+                            'type' => 'error',
+                            'message' => 'Scan Failed. PCB has defect.'
+                        ];
+                    }
+                    
+                } catch (\Throwable $th) {
+                    Log::error($th);
+                    return [
+                        'type' => 'error',
+                        'message' => 'Error: OUT. Checking defect.'
+                    ];
+                }
+                /* $sn = $sn->first();
                 if($sn->defect == 1){
                     return [
                         'type' => 'error',
                         'message' => 'Scan Failed. PCB has defect.'
                     ];
                 }
-                else{                
-                    /* return checkdupOut($request); */
+                else{
                     return checkjoquantity2($request);              
-                }       
+                } */       
             }
             else{
                 return [
                     'type' => 'error',
                     'message' => 'Serial Number has no INPUT record.'
-                ];
-                /* $in = Pcb::select('jo_number')
-                        ->where('serial_number',$request->serial_number)
-                        ->where('div_process_id',$request->div_process_id)
-                        ->where('type',0)->get();
-                if(!$in){
-                    $in = PcbArchive::select('jo_number')
-                        ->where('serial_number',$request->serial_number)
-                        ->where('div_process_id',$request->div_process_id)
-                        ->where('type',0)->get();
-                }
-                if($in->count() == 0){
-                    return [
-                        'type' => 'error',
-                        'message' => 'Serial Number has no INPUT record.'
-                    ];
-                }
-                else{
-                    $jos = '';
-                    foreach ($in as $i) {
-                        $jos .= ' [' . $i->jo_number . ']';
-                    } 
-                    return [
-                        'type' => 'error',
-                        'message' => 'Serial Number has an INPUT in different Job Order/s.'.$jos                                               
-                    ];
-                }
-                return [
-                    'type' => 'error',
-                    'message' => 'API ERROR: checking inputs'
-                ]; */
+                ];                
             }
             return [
                 'type' => 'error',

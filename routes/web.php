@@ -112,7 +112,8 @@ Route::namespace('Api')->group(function () {
     /* temp store defect mats */
     Route::post('defectmats_temp', 'DefectController@tempstore');
     /* Repairing Defect mats */
-    Route::post('defectmats_rep/{id}', 'DefectController@repairdef');    
+    Route::post('defectmats_rep/{id}', 'DefectController@repairdef');
+    Route::post('defectmats_rep1', 'DefectController@repairdef1');    
 
     Route::prefix('api')->group(function () {
 
@@ -125,6 +126,7 @@ Route::namespace('Api')->group(function () {
 
         /* Check Serial NO */
         Route::get('checksn', 'ApiController@checksn');
+        Route::get('repairchecksn', 'DefectController@repairchecksn');
 
         /* Lot Number */
         Route::get('getln', 'ApiController@getlotnumber');
