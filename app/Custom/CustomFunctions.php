@@ -29,7 +29,12 @@ use App\Http\Controllers\MES2\model\componentqty;
 
 
 class CustomFunctions
-{   
+{
+    public static function plural($n){
+        if($n > 1){
+            return 's';
+        }
+    } 
     public static function datelapse($dt){
         $date1 = strtotime($dt);
         $date2 = strtotime(date('Y-m-d H:i:s'));
@@ -78,13 +83,27 @@ class CustomFunctions
         /* $time = $days . " day, " . $hrs . " hr, " . $mnts . " min"; */
         $time = '';
         if($days > 0){
-            $time = $days . " day, ";
+            $time = $days . " day" . CustomFunctions::plural($days);
+            if($hrs > 0){
+                $time .= ", ". $hrs . " hr" . CustomFunctions::plural($hrs);
+            }
         }
-        if($hrs > 0){
-            $time .= $hrs . " hr, ";
-        }
-        if($mnts > 0){
-            $time .= $mnts . " min";
+        else{
+            if($hrs > 0){
+                $time .= $hrs . " hr" . CustomFunctions::plural($hrs);
+                if($mnts > 0){
+                    $time .= ", ". $mnts . " min" . CustomFunctions::plural($mnts);
+                }
+            }
+            else{
+                if($mnts > 0){
+                    $time .= $mnts . " min" . CustomFunctions::plural($mnts);
+                }
+            }
+            
+        }        
+        if($secs > 0 && $mnts <= 0 && $hrs <= 0 && $days <= 0){
+            $time .= $secs . " sec" . CustomFunctions::plural($secs);
         }
         return $time;
     }
