@@ -495,7 +495,8 @@ class ApiController extends Controller
                 // ---------------------
 
                 if(!$in){
-                    return defectCheck($request,$pcb);                  
+                    /* return defectCheck($request,$pcb); */
+                    return checkjoquantity($request,$pcb);
                 }
                 else{
                     return [
@@ -523,7 +524,8 @@ class ApiController extends Controller
                     })->all();
             
             if(!$def){
-                return checkjoquantity($request,$pcb);
+                /* return checkjoquantity($request,$pcb); */
+                return checkdup($request,$pcb);
             }
             else{
                 return [
@@ -667,14 +669,16 @@ class ApiController extends Controller
         // CHECKING BOTTOM OUT
         // -------------------
 
-        if ($request->division_id == 2 && $request->div_process_id == 2 ){
+        if ($request->division_id == 2 && $request->div_process_id == 2 )
+        {
 
             $sn = $pcb->filter(function ($value){
                 return $value->div_process_id == 1 && $value->type == 1;
             })->all();
 
             if($sn){
-                return checkdup($request,$pcb);
+                /* return checkdup($request,$pcb); */
+                return defectCheck($request,$pcb);
             }
             else{
                 return [
@@ -696,7 +700,8 @@ class ApiController extends Controller
             })->all();
 
             if($sn){
-                return checkdup($request,$pcb);
+                /* return checkdup($request,$pcb); */
+                return defectCheck($request,$pcb);
             }
             else{
                 return [
@@ -707,7 +712,8 @@ class ApiController extends Controller
         }
         else 
         {
-            return checkdup($request,$pcb);
+            /* return checkdup($request,$pcb); */
+            return defectCheck($request,$pcb);
         }
     } 
 
@@ -1047,7 +1053,8 @@ class ApiController extends Controller
                     ];                                      
                 }
                 else{
-                    return defectCheck($request,$pcb);
+                    /* return defectCheck($request,$pcb); */
+                    return checkjoquantity($request,$pcb);
                 }
             }
             else{
@@ -1069,7 +1076,8 @@ class ApiController extends Controller
                     })->all();
             
             if(!$def){
-                return checkjoquantity($request,$pcb);
+                /* return checkjoquantity($request,$pcb); */
+                return checkdup($request,$pcb);
             }
             else{
                 return [
@@ -1195,7 +1203,8 @@ class ApiController extends Controller
             }           
         }
 
-        return checkdup($request,$pcb);
+        /* return checkdup($request,$pcb); */
+        return defectCheck($request,$pcb);
     }
 
     /* --------------------------------------------------------------------- */
