@@ -31,12 +31,13 @@ class ApiController extends Controller
 
     Message to the next developer.
 
-    Please start at the event trigger by the element.
+    Please start at the trigger event of the element.
     Then check the function being called.
     Examine the function carefully.
-    For ajax function, follow the url being requested.
-    Follow the URL in the web.php
+    For ajax functions, follow the url being requested.
+    Follow the URL in the routes.
     Check the controller and the method used.
+    
     GOODLUCK!
     
     */
