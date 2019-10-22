@@ -24,6 +24,7 @@ use App\Models\WorkOrder;
 use App\Custom\CustomFunctions;
 use App\Notifications\PcbDataExport;
 use Notification;
+use Illuminate\Support\Facades\Log;
 
 class PageController extends Controller
 {
@@ -92,25 +93,23 @@ class PageController extends Controller
 
     public function testing()
     {
-        $last = \App\Models\WoSnHistory::/* where('ID',666432)-> */orderBy('id','DESC')->pluck('UPLOAD_DATETIME')->first();
-        $lapsed =  Carbon::now()->diffinMinutes(Carbon::parse($last));
-        $msg = '';
-        $err = 0;
-        if($lapsed >= 30 && $lapsed < 60){
-            $msg = 'CAUTION. Last PCB data upload passed '. $lapsed .' mins.';
-            $err = 1;
+        try {
+            $pcbs = Pcb::get();
+            $n = 0;
+            foreach ($pcbs as $pcb) {
+                $id = $pcb->id;
+                $ins = $pcb->toArray();
+                PcbArchive::insert($ins);
+                Pcb::where('id',$id)->delete();
+                $n++;
+            }            
+        } catch (\Throwable $th) {
+            Log::channel('single')->error("[PCB ARCHIVING] ".$th);
         }
-        elseif($lapsed >= 90){
-            $msg = 'WARNING!! Last PCB data upload passed '. floor($lapsed/60) .' hr and '. floor($lapsed%60) .' min/s. Please check the Integration System.';
-            $err = 1;
-        }
-        else{
-            $msg = 'Good. '.$lapsed.' min/s passed.';
-        }
-        if($err){
-            Notification::route('mail','edmund.mati@primatechphils.com')->notify( (new PcbDataExport($msg)) );
-        }
-        return $msg;
+        /* return 'good'; */
+        /* return $ins; */
+        /* return PcbArchive::where('id',$id)->get(); */
+        return $n;
     }
 
 }
