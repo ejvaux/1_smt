@@ -15,11 +15,8 @@ class RemoveIndexPcbTable extends Migration
     {
         Schema::table('pcb', function (Blueprint $table) {
             $table->dropIndex(['serial_number']);
-            $table->dropIndex(['jo_id']);
             $table->dropIndex(['div_process_id']);
             $table->dropIndex(['type']);
-            $table->dropIndex(['exported']);
-            $table->dropIndex(['work_order']);
         });
     }
 
@@ -32,11 +29,8 @@ class RemoveIndexPcbTable extends Migration
     {
         Schema::table('pcb', function (Blueprint $table) {
             $table->index('serial_number');
-            $table->index('jo_id');
             $table->index('div_process_id');
             $table->index('type');
-            $table->index('exported');
-            $table->index('work_order');
         });
     }
 }
