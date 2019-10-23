@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use App\Models\Pcb;
 use App\Models\PcbArchive;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PcbArchiving extends Command
 {
@@ -40,16 +42,29 @@ class PcbArchiving extends Command
      */
     public function handle()
     {
-        try {
-            $pcbs = Pcb::get();
-            foreach ($pcbs as $pcb) {
-                $id = $pcb->id;
-                $ins = $pcb->toArray();
-                PcbArchive::insert($ins);
-                Pcb::where('id',$id)->delete();
-            }            
-        } catch (\Throwable $th) {
-            Log::channel('single')->error("[PCB ARCHIVING] ".$th);
-        }
+        for ($i=0; $i < 280; $i++) { 
+            try {
+                $pcbs = Pcb::where('created_at','<=',Carbon::parse(Date('Y-m-d'))->subMonth())->limit(4)->get();
+                foreach ($pcbs as $pcb) {
+                    $id = $pcb->id;
+                    $ins = $pcb->toArray();
+                    /* DB::transaction(function () use($ins) {
+                        PcbArchive::insert($ins);
+                    });
+                    DB::transaction(function () use($id) {
+                        Pcb::where('id',$id)->delete();
+                    }); */
+                    /* PcbArchive::insert($ins);
+                    Pcb::where('id',$id)->delete(); */
+                    DB::transaction(function () use($ins,$id) {
+                        PcbArchive::insert($ins);
+                        Pcb::where('id',$id)->delete();
+                    });
+                }            
+            } catch (\Throwable $th) {
+                Log::channel('single')->error("[PCB ARCHIVING] ".$th);
+            }
+            sleep(1);
+        }        
     }
 }
