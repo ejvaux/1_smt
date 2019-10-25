@@ -501,14 +501,14 @@ class ApiController extends Controller
                 }
                 else{
                     return [
-                        'type' => 'success',
+                        'type' => 'error',
                         'message' => 'Serial number already scanned in ' . DivProcess::where('id',$request->div_process_id)->pluck('name')->first() . ' IN.'
                     ];
                 }
             }
             else{
                 return [
-                    'type' => 'success',
+                    'type' => 'error',
                     'message' => 'Serial number already processed in ' . DivProcess::where('id',$request->div_process_id)->pluck('name')->first() . '.'
                 ];
             }
@@ -1068,7 +1068,7 @@ class ApiController extends Controller
             }
             else{
                 return [
-                    'type' => 'success',
+                    'type' => 'error',
                     'message' => 'Serial number already processed in ' . DivProcess::where('id',$request->div_process_id)->pluck('name')->first() . '.'
                 ];
             }

@@ -14,202 +14,91 @@ class LineResultController extends Controller
 {
     public function index(Request $request)
     {
-        $dlines = Linename::whereIn('division_id',[2,18])->get();
-        $today = Date('Y-m-d');
-        $table = 1;
-        if($request->input('date')){
-            $date = $request->input('date');
-        }
-        else{
-            $date = Date('Y-m-d');
-        }
-        /* $date = Date('Y-m-d'); */
-        $date2 = Carbon::parse($date)->addDays(1);
-
-        $lines = Pcb::select('line_id')->whereDate('created_at',$date)->groupBy('line_id')->get();
-        if($lines->count() == 0){
-            $lines = PcbArchive::select('line_id')->whereDate('created_at',$date)->groupBy('line_id')->get();
-            $table = 2;
-        }
-
-        if($lines->count() != 0){
-            if($request->input('line')){
-                $lid = $request->input('line');
-            }
-            else{
-                $lid = $lines{0}->line_id;
-            }
-        }
-        else{
-            $lid = 0;
-        }
-
-        if($request->input('line')){
-            $linename = Linename::select('name')->where('id',$lid)->first();
-
-            if($table == 1){
-                $in1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
-                $out1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
-                
-                $in2 = Pcb::select('id')
-                    ->whereDate('created_at', $date)
-                    ->whereTime('created_at', '>=', '18:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',0)->count() +
-                    Pcb::select('id')
-                    ->whereDate('created_at', $date2)
-                    ->whereTime('created_at', '<', '06:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',0)->count();
-        
-                $out2 = Pcb::select('id')
-                    ->whereDate('created_at', $date)
-                    ->whereTime('created_at', '>=', '18:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',1)->count() +
-                    Pcb::select('id')
-                    ->whereDate('created_at', $date2)
-                    ->whereTime('created_at', '<', '06:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',1)->count();
-            }
-            else{
-                $in1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
-                $out1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
-                
-                $in2 = PcbArchive::select('id')
-                    ->whereDate('created_at', $date)
-                    ->whereTime('created_at', '>=', '18:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',0)->count() +
-                    PcbArchive::select('id')
-                    ->whereDate('created_at', $date2)
-                    ->whereTime('created_at', '<', '06:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',0)->count();
-        
-                $out2 = PcbArchive::select('id')
-                    ->whereDate('created_at', $date)
-                    ->whereTime('created_at', '>=', '18:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',1)->count() +
-                    PcbArchive::select('id')
-                    ->whereDate('created_at', $date2)
-                    ->whereTime('created_at', '<', '06:00:00')
-                    ->where('line_id',$lid)
-                    ->where('shift',2)
-                    ->where('type',1)->count();
-            }
-        }                
-        
+        $lines = Linename::whereIn('division_id',[2,18])->get();
+        $date = Date('Y-m-d');        
         return view('pages.lr.lr',compact(
             'date',
-            'date2',
-            'lid',
-            'linename',
-            'lines',
-            'in1',
-            'out1',
-            'in2',
-            'out2',
-            'dlines',
-            'today'
+            'lines'
         ));
     }
 
     public function resultTable(Request $request)
     {
-        $date = $request->input('date');
+        $line = $request->input('line');        
+        $date = $request->input('date').' 06:00:00';
         $date2 = Carbon::parse($date)->addDays(1);
+        $date3 = $request->input('date').' 18:00:00';
 
-        $lines = Pcb::select('line_id')->whereDate('created_at',$date)->groupBy('line_id')->get();
-        if($lines->count() == 0){
-            $lines = PcbArchive::select('line_id')->whereDate('created_at',$date)->groupBy('line_id')->get();
-            $table = 2;
-        }
+        $pcb = PcbArchive::where('line_id',$line)
+                    ->where('created_at','>=',$date)
+                    ->where('created_at','<',$date2);
+        $pcbs = Pcb::where('line_id',$line)
+                    ->where('created_at','>=',$date)
+                    ->where('created_at','<',$date2)
+                    ->union($pcb)
+                    ->get();
 
-        if($lines->count() != 0){
-            if($request->input('line')){
-                $lid = $request->input('line');
-            }
-            else{
-                $lid = $lines{0}->line_id;
-            }
-        }
-        else{
-            $lid = 0;
-        }        
-        $linename = Linename::select('name')->where('id',$lid)->first();
+        /* return $pcbs->filter(function ($value){
+                        return $value->employee_id;
+                    })->all(); */        
+        
+        // DAY
+        $dbi = $pcbs->filter(function ($value) use($date,$date3){
+                    return $value->div_process_id == 1 && $value->type == 0 
+                    && $value->created_at >= $date
+                    && $value->created_at < $date3;
+                })->count();
+        $dbo = $pcbs->filter(function ($value) use($date,$date3){
+                    return $value->div_process_id == 1 && $value->type == 1 
+                    && $value->created_at >= $date
+                    && $value->created_at < $date3;
+                })->count();
+        $dti = $pcbs->filter(function ($value) use($date,$date3){
+                    return $value->div_process_id == 2 && $value->type == 0 
+                    && $value->created_at >= $date
+                    && $value->created_at < $date3;
+                })->count();
+        $dto = $pcbs->filter(function ($value) use($date,$date3){
+                    return $value->div_process_id == 2 && $value->type == 1 
+                    && $value->created_at >= $date
+                    && $value->created_at < $date3;
+                })->count();
 
-        if($table == 1){
-            $in1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
-            $out1 = Pcb::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
-            
-            $in2 = Pcb::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count() +
-                Pcb::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count();
-    
-            $out2 = Pcb::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count() +
-                Pcb::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count();
-        }
-        else{
-            $in1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',0)->count();
-            $out1 = PcbArchive::select('type')->whereDate('created_at',$date)->where('line_id',$lid)->where('shift',1)->where('type',1)->count();
-            
-            $in2 = PcbArchive::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count() +
-                PcbArchive::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',0)->count();
-    
-            $out2 = PcbArchive::select('id')
-                ->whereDate('created_at', $date)
-                ->whereTime('created_at', '>=', '18:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count() +
-                PcbArchive::select('id')
-                ->whereDate('created_at', $date2)
-                ->whereTime('created_at', '<', '06:00:00')
-                ->where('line_id',$lid)
-                ->where('shift',2)
-                ->where('type',1)->count();
-        }
+        // Night
+        $nbi = $pcbs->filter(function ($value) use($date2,$date3){
+                    return $value->div_process_id == 1 && $value->type == 0 
+                    && $value->created_at >= $date3
+                    && $value->created_at < $date2;
+                })->count();
+        $nbo = $pcbs->filter(function ($value) use($date2,$date3){
+                    return $value->div_process_id == 1 && $value->type == 1 
+                    && $value->created_at >= $date3
+                    && $value->created_at < $date2;
+                })->count();
+        $nti = $pcbs->filter(function ($value) use($date2,$date3){
+                    return $value->div_process_id == 2 && $value->type == 0 
+                    && $value->created_at >= $date3
+                    && $value->created_at < $date2;
+                })->count();
+        $nto = $pcbs->filter(function ($value) use($date2,$date3){
+                    return $value->div_process_id == 2 && $value->type == 1 
+                    && $value->created_at >= $date3
+                    && $value->created_at < $date2;
+                })->count();
+        $linename = Linename::where('id',$line)->pluck('name')->first();
 
-        return view('includes.table.lrTable',compact('lines','linename','in1','out1','in2','out2'));
+        return view('includes.table.lrTable',compact(
+            'pcbs',
+            'linename',
+            'dbi',
+            'dbo',
+            'dti',
+            'dto',
+            'nbi',
+            'nbo',
+            'nti',
+            'nto'
+        ));
     }
 
     public function exportlineresult(Request $request)

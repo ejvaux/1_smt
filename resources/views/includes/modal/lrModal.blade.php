@@ -22,8 +22,8 @@
                     <div class="col-9"> 
                         <select class='form-control' name="line" id="line-lr-input" required>
                             <option value="">- PLEASE SELECT -</option>
-                            @foreach ($dlines as $dline)
-                                <option value="{{$dline->id}}">{{$dline->description}}</option>
+                            @foreach ($lines as $line)
+                                <option value="{{$line->id}}">{{$line->name}}</option>                   
                             @endforeach
                         </select>
                     </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-9">
                         <div class="input-group">
-                            <input class="form-control" type="date" name="fromdate" id="fromdate-lr-input" value="{{$today}}">
+                            <input class="form-control" type="date" name="fromdate" id="fromdate-lr-input" value="{{$date}}">
                             <input class="form-control" type="time" name="fromtime" id="fromtime-lr-input">
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-9">
                         <div class="input-group">
-                            <input class="form-control" type="date" name="todate" id="todate-lr-input" value="{{$today}}">
+                            <input class="form-control" type="date" name="todate" id="todate-lr-input" value="{{$date}}">
                             <input class="form-control" type="time" name="totime" id="totime-lr-input">
                         </div>                        
                     </div>
