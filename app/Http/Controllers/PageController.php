@@ -94,22 +94,22 @@ class PageController extends Controller
     public function testing()
     {
         try {
-            $pcbs = Pcb::get();
-            $n = 0;
+            $pcbs = Pcb::where('created_at','<=',Carbon::parse(Date('Y-m-d'))->subMonth())->limit(5)->get();
+            /* $n = 0;
             foreach ($pcbs as $pcb) {
                 $id = $pcb->id;
                 $ins = $pcb->toArray();
                 PcbArchive::insert($ins);
                 Pcb::where('id',$id)->delete();
                 $n++;
-            }            
+            } */            
         } catch (\Throwable $th) {
             Log::channel('single')->error("[PCB ARCHIVING] ".$th);
         }
         /* return 'good'; */
         /* return $ins; */
         /* return PcbArchive::where('id',$id)->get(); */
-        return $n;
+        return $pcbs;
     }
 
 }

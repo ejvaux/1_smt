@@ -657,7 +657,7 @@ class ApiController extends Controller
                     ];
                 }
                 else{
-                    Log::error($th);
+                    Log::error("[PCB SCAN IN] ".$th);
                     return [
                         'type' => 'error',
                         'message' => 'Scan Failed. Please try again.'
@@ -1203,7 +1203,7 @@ class ApiController extends Controller
                     ];
                 }
                 else{
-                    Log::error($th);
+                    Log::error("[PCB SCAN OUT] ".$th);
                     return [
                         'type' => 'error',
                         'message' => 'Scan Failed. Please try again.'
