@@ -501,14 +501,14 @@ class ApiController extends Controller
                 }
                 else{
                     return [
-                        'type' => 'error',
+                        'type' => 'success',
                         'message' => 'Serial number already scanned in ' . DivProcess::where('id',$request->div_process_id)->pluck('name')->first() . ' IN.'
                     ];
                 }
             }
             else{
                 return [
-                    'type' => 'error',
+                    'type' => 'success',
                     'message' => 'Serial number already processed in ' . DivProcess::where('id',$request->div_process_id)->pluck('name')->first() . '.'
                 ];
             }
@@ -672,20 +672,27 @@ class ApiController extends Controller
 
         if ($request->division_id == 2 && $request->div_process_id == 2 )
         {
-
-            $sn = $pcb->filter(function ($value){
+            $msg = '';
+            $bo = $pcb->filter(function ($value){
                 return $value->div_process_id == 1 && $value->type == 1;
             })->all();
 
-            if($sn){
-                /* return checkdup($request,$pcb); */
+            if($bo){
                 return defectCheck($request,$pcb);
             }
             else{
+                $msg = '<b>BOTTOM OUT</b><br>';
+                $bi = $pcb->filter(function ($value){
+                    return $value->div_process_id == 1 && $value->type == 0;
+                })->all();
+
+                if(!$bi){
+                    $msg = $msg.'<b>BOTTOM IN</b><br>';
+                }
                 return [
                     'type' => 'error',
-                    'message' => 'Serial Number has no BOTTOM OUT.'
-                ];
+                    'message' => 'Serial Number has no scan in:<br><div style="text-align:center;">'.$msg.'</div>'
+                ];            
             }
         }
 
@@ -695,25 +702,43 @@ class ApiController extends Controller
 
         elseif ($request->division_id == 18 && $request->div_process_id == 5 )
         {
-
-            $sn = $pcb->filter(function ($value){
+            $msg = '';
+            $to = $pcb->filter(function ($value){
                 return $value->div_process_id == 2 && $value->type == 1;
             })->all();
 
-            if($sn){
-                /* return checkdup($request,$pcb); */
+            if($to){
                 return defectCheck($request,$pcb);
             }
             else{
+                $msg = '<b>TOP OUT</b><br>';
+                $ti = $pcb->filter(function ($value){
+                    return $value->div_process_id == 2 && $value->type == 0;
+                })->all();
+                $bo = $pcb->filter(function ($value){
+                    return $value->div_process_id == 1 && $value->type == 1;
+                })->all();
+                $bi = $pcb->filter(function ($value){
+                    return $value->div_process_id == 1 && $value->type == 0;
+                })->all();
+                
+                if(!$ti){
+                    $msg = $msg.'<b>TOP IN</b><br>';                    
+                }
+                if(!$bo){
+                    $msg = $msg.'<b>BOTTOM OUT</b><br>';
+                }
+                if(!$bi){
+                    $msg = $msg.'<b>BOTTOM IN</b><br>';
+                }
                 return [
                     'type' => 'error',
-                    'message' => 'Serial Number has no TOP OUT.'
+                    'message' => 'Serial Number has no scan in:<br><div style="text-align:center;">'.$msg.'</div>'
                 ];
             }
         }
         else 
         {
-            /* return checkdup($request,$pcb); */
             return defectCheck($request,$pcb);
         }
     } 
@@ -1033,34 +1058,17 @@ class ApiController extends Controller
                 return $value->div_process_id == $request->div_process_id && $value->type == 1;
             })->all();
 
-            $in = $pcb->filter(function ($value) use ($request) {
-                return $value->div_process_id == $request->div_process_id && $value->type == 0;
-            })->all();
-
             // ---------------------
             // Check div process OUT
             // ---------------------
 
             if(!$out)
             {
-                // ---------------------
-                // Check div process IN
-                // ---------------------
-
-                if(!$in){
-                    return [
-                        'type' => 'error',
-                        'message' => 'Serial number has no scan in ' . DivProcess::where('id',$request->div_process_id)->pluck('name')->first() . ' IN.'
-                    ];                                      
-                }
-                else{
-                    /* return defectCheck($request,$pcb); */
-                    return checkjoquantity($request,$pcb);
-                }
+                return checkjoquantity($request,$pcb);
             }
             else{
                 return [
-                    'type' => 'error',
+                    'type' => 'success',
                     'message' => 'Serial number already processed in ' . DivProcess::where('id',$request->div_process_id)->pluck('name')->first() . '.'
                 ];
             }
@@ -1203,9 +1211,107 @@ class ApiController extends Controller
                 }
             }           
         }
+        
+        // ----------------
+        // CHECKING BOTTOM IN
+        // ----------------
 
-        /* return checkdup($request,$pcb); */
-        return defectCheck($request,$pcb);
+        if ($request->division_id == 2 && $request->div_process_id == 1 ) {
+            $msg = '';
+            $bi = $pcb->filter(function ($value){
+                return $value->div_process_id == 1 && $value->type == 0;
+            })->all();
+            if ($bi) {
+                return defectCheck($request,$pcb);
+            }
+            else{
+                $msg = '<b>BOTTOM IN</b><br>';
+                return [
+                    'type' => 'error',
+                    'message' => 'Serial Number has no scan in:<br><div style="text-align:center;">'.$msg.'</div>'
+                ];
+            }
+        }
+
+        // ----------------
+        // CHECKING TOP IN
+        // ----------------
+
+        elseif ($request->division_id == 2 && $request->div_process_id == 2 ) {
+            $msg = '';
+            $ti = $pcb->filter(function ($value){
+                return $value->div_process_id == 2 && $value->type == 0;
+            })->all();
+            if ($ti) {
+                return defectCheck($request,$pcb);
+            }
+            else{
+                $msg = '<b>TOP IN</b><br>';
+                $bo = $pcb->filter(function ($value){
+                    return $value->div_process_id == 1 && $value->type == 1;
+                })->all();
+                $bi = $pcb->filter(function ($value){
+                    return $value->div_process_id == 1 && $value->type == 0;
+                })->all();
+                if (!$bo) {
+                    $msg = $msg.'<b>BOTTOM OUT</b><br>';
+                }
+                if (!$bi) {
+                    $msg = $msg.'<b>BOTTOM IN</b><br>';
+                }
+                return [
+                    'type' => 'error',
+                    'message' => 'Serial Number has no scan in:<br><div style="text-align:center;">'.$msg.'</div>'
+                ];
+            }
+        }
+
+        // ----------------
+        // CHECKING DIP IN
+        // ----------------
+
+        elseif ($request->division_id == 18 && $request->div_process_id == 5) {
+            $msg = '';
+            $di = $pcb->filter(function ($value){
+                return $value->div_process_id == 5 && $value->type == 0;
+            })->all();
+            if ($di) {
+                return defectCheck($request,$pcb);
+            }
+            else{
+                $msg = '<b>DIP IN</b><br>';
+                $to = $pcb->filter(function ($value){
+                    return $value->div_process_id == 2 && $value->type == 1;
+                })->all();
+                $ti = $pcb->filter(function ($value){
+                    return $value->div_process_id == 2 && $value->type == 0;
+                })->all();
+                $bo = $pcb->filter(function ($value){
+                    return $value->div_process_id == 1 && $value->type == 1;
+                })->all();
+                $bi = $pcb->filter(function ($value){
+                    return $value->div_process_id == 1 && $value->type == 0;
+                })->all();
+                if (!$to) {
+                    $msg = $msg.'<b>TOP OUT</b><br>';
+                }
+                if (!$ti) {
+                    $msg = $msg.'<b>TOP IN</b><br>';
+                }
+                if (!$bo) {
+                    $msg = $msg.'<b>BOTTOM OUT</b><br>';
+                }
+                if (!$bi) {
+                    $msg = $msg.'<b>BOTTOM IN</b><br>';
+                }
+                return [
+                    'type' => 'error',
+                    'message' => 'Serial Number has no scan in:<br><div style="text-align:center;">'.$msg.'</div>'
+                ];
+            }
+        }
+
+        /* return defectCheck($request,$pcb); */
     }
 
     /* --------------------------------------------------------------------- */
