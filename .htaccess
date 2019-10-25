@@ -1,0 +1,12 @@
+<FilesMatch "^\.env">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+<FilesMatch "composer.json">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+<FilesMatch "package.json">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
