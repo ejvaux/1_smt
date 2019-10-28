@@ -33,7 +33,8 @@ function loadsn($reel){
             $('#reelTableDiv').html(data);
             if ($('#reelhead').val() != '') {
                 $('#reelExport').val($('#reelhead').val());
-                $('#reelhead1').html($('#reelTB').val());
+                $('#reelhead1').html($('#reelhead').val());
+                // $('#reelhead1').html($('#reelTB').val());
                 $('#reelexportBtn').show();
             }
             else{

@@ -68,6 +68,15 @@ class SnReelController extends Controller
     public function loadsn(Request $request)
     {
         $rid = $reel = $request->input('rid');
+        if (strpos($rid,':') !== false) {
+            $rid1s = explode(';',$rid);
+            foreach ($rid1s as $rid1) {
+                $ri = explode(':',$rid1);
+                if ($ri[0] == 'RID') {
+                    $rid = $reel = $ri[1];
+                }
+            }
+        }
         $cid = MatSnComp::where('RID',$rid)->pluck('component_id')->first();
         $pn = Component::where('id',$cid)->pluck('product_number')->first();
         $total = 1;
