@@ -39,9 +39,14 @@ class SnReelController extends Controller
         if(!$top){
             $top = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->where('div_process_id',2)->orderBy('id','DESC')->first();
         } */
-        $pcb1 = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
+        /* $pcb1 = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
         $pcb2 = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
-        $pcbs = $pcb1->merge($pcb2);
+        $pcbs = $pcb1->merge($pcb2); */
+
+        $archive = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC');
+        $pcbs = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')
+                        ->union($archive)
+                        ->get();
         /* if($bot && $bot->count() != 0){
             array_push($mid, $bot->mat_comp_id);
             $sn = $request->input('sn');
