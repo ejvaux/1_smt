@@ -101,10 +101,7 @@ Route::get('exportrlsn', 'SnReelController@exportrlsn');
 Route::post('exportsnpn', 'SnReelController@exportsnpn');
 
 /* QR Generate */
-Route::get('qr-code', 'ScanPcbController@qrgen');
-/* Route::get('qr-code', function (Request $request) {
-    return QrCode::size(250)->generate($request->url);
-}); */
+Route::get('qrcode', 'PageController@qrgen');
 
 /* ---------- API NAMESPACE --------------- */
 Route::namespace('Api')->group(function () {

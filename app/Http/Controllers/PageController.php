@@ -111,5 +111,13 @@ class PageController extends Controller
         /* return PcbArchive::where('id',$id)->get(); */
         return $pcbs;
     }
+    public function qrgen()
+    {
+        return \QrCode::size(200)
+                /* ->format('png') */
+                ->generate('
+                The first argument passed to the select method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the where clause constraints. Parameter binding provides protection against SQL injection.
+                ');
+    }
 
 }
