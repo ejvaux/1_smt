@@ -31,30 +31,12 @@ class SnReelController extends Controller
         $sn = '';
         $reels = [];
         $mid = array();
-        /* $bot = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->where('div_process_id',1)->orderBy('id','DESC')->first();
-        $top = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->where('div_process_id',2)->orderBy('id','DESC')->first();
-        if(!$bot){
-            $bot = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->where('div_process_id',1)->orderBy('id','DESC')->first();
-        }
-        if(!$top){
-            $top = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->where('div_process_id',2)->orderBy('id','DESC')->first();
-        } */
-        /* $pcb1 = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
-        $pcb2 = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
-        $pcbs = $pcb1->merge($pcb2); */
 
         $archive = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC');
         $pcbs = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')
                         ->union($archive)
                         ->get();
-        /* if($bot && $bot->count() != 0){
-            array_push($mid, $bot->mat_comp_id);
-            $sn = $request->input('sn');
-        }
-        if($top && $top->count() != 0){
-            array_push($mid, $top->mat_comp_id);
-            $sn = $request->input('sn');
-        }  */
+        
         if($pcbs && $pcbs->count() != 0){
             foreach ($pcbs as $pcb) {
                 array_push($mid, $pcb->mat_comp_id);
@@ -63,12 +45,8 @@ class SnReelController extends Controller
         }
         $rs = MatComp::whereIn('id',$mid)->get();
         $reels = $rs;
-        /* foreach ($rs as $r) {
-            array_push($reels, [$r => $r->materials]);                     
-        } */
-        /* array_push($reels,$value ); */
-        return view('includes.table.sntTable',compact('reels','sn'));
-        /* return $reels; */
+        
+        return view('includes.table.sntTable',compact('reels','sn'));        
     }
     public function loadsn(Request $request)
     {
