@@ -36,11 +36,7 @@ class LineResultController extends Controller
                     ->where('created_at','>=',$date)
                     ->where('created_at','<',$date2)
                     ->union($pcb)
-                    ->get();
-
-        /* return $pcbs->filter(function ($value){
-                        return $value->employee_id;
-                    })->all(); */        
+                    ->get();       
         
         // DAY
         $dbi = $pcbs->filter(function ($value) use($date,$date3){
@@ -60,6 +56,16 @@ class LineResultController extends Controller
                 })->count();
         $dto = $pcbs->filter(function ($value) use($date,$date3){
                     return $value->div_process_id == 2 && $value->type == 1 
+                    && $value->created_at >= $date
+                    && $value->created_at < $date3;
+                })->count();
+        $ddi = $pcbs->filter(function ($value) use($date,$date3){
+                    return $value->div_process_id == 5 && $value->type == 0 
+                    && $value->created_at >= $date
+                    && $value->created_at < $date3;
+                })->count();
+        $ddo = $pcbs->filter(function ($value) use($date,$date3){
+                    return $value->div_process_id == 5 && $value->type == 1 
                     && $value->created_at >= $date
                     && $value->created_at < $date3;
                 })->count();
@@ -85,6 +91,17 @@ class LineResultController extends Controller
                     && $value->created_at >= $date3
                     && $value->created_at < $date2;
                 })->count();
+        $ndi = $pcbs->filter(function ($value) use($date2,$date3){
+                    return $value->div_process_id == 5 && $value->type == 0 
+                    && $value->created_at >= $date3
+                    && $value->created_at < $date2;
+                })->count();
+        $ndo = $pcbs->filter(function ($value) use($date2,$date3){
+                    return $value->div_process_id == 5 && $value->type == 1 
+                    && $value->created_at >= $date3
+                    && $value->created_at < $date2;
+                })->count();
+
         $linename = Linename::where('id',$line)->pluck('name')->first();
 
         return view('includes.table.lrTable',compact(
@@ -94,10 +111,14 @@ class LineResultController extends Controller
             'dbo',
             'dti',
             'dto',
+            'ddi',
+            'ddo',
             'nbi',
             'nbo',
             'nti',
-            'nto'
+            'nto',
+            'ndi',
+            'ndo'
         ));
     }
 

@@ -47,7 +47,7 @@ class PcbExportChecker extends Command
         $msg = '';
         $err = 0;
         $emails = NotificationEmail::all();
-        if($lapsed >= 30 && $lapsed < 60){
+        if($lapsed >= 60 && $lapsed < 90){
             $msg = 'The last PCB data upload was '. $lapsed .' mins ago.';
             $err = 1;
         }
