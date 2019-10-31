@@ -59,7 +59,7 @@
                             <td width='10%' class="border-right">{{topOutTotal}}</td>
                             <td width='10%' class="border-right">{{dipInTotal}}</td>
                             <td width='10%' class="border-right">{{dipOutTotal}}</td>
-                            <td width='20%'><u class="font-weight-bold">{{overallTotal}}</u></td>
+                            <td width='20%'><u class="grandTotal">{{grandTotal}}</u></td>
                         </tr>
                     </tbody>
                 </table>
@@ -115,7 +115,7 @@
                         this.tabledata.ndi + 
                         this.tabledata.ndo;
             },
-            overallTotal: function(){
+            grandTotal: function(){
                 return  this.tabledata.dbi + 
                         this.tabledata.dbo + 
                         this.tabledata.dti + 
@@ -136,5 +136,9 @@
     }
 </script>
 <style scoped>
-    
+    .grandTotal{
+        font-weight: bold;
+        text-decoration-line: underline;
+        text-decoration-style: double;
+    }
 </style>
