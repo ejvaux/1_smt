@@ -19,12 +19,11 @@ class ScanPcbController extends Controller
     public function __construct()
     {
         $this->divisions = Division::all();
-        $this->linenames = LineName::all();
+        $this->linenames = $this->lines = LineName::all();
         $this->defects = Defect::all();
         $this->processes = Process::all();
         $this->employee = Employee::all();
         $this->defect_types = DefectType::all();
-        $this->lines = LineName::all();
         $this->divprocesses = DivProcess::all();
     }
 

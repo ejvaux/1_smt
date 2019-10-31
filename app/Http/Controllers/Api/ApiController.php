@@ -1332,12 +1332,34 @@ class ApiController extends Controller
     public function loadempscantotaltable(Request $request)
     {
         $joid = $request->jo;
-        $emptotals = Pcb::select('employee_id')
+        $emptotals = [];
+        /* $emptotals = Pcb::select('employee_id')
                     ->where('jo_id',$joid)
                     ->orderBy('id')
                     ->groupBy('employee_id')
+                    ->get(); */
+        $emps = Pcb::with('employee')
+                    ->select('employee_id')
+                    ->where('jo_id',$joid)
+                    ->groupBy('employee_id')
                     ->get();
         
+        $pcb = Pcb::select('employee_id','type')
+                ->where('jo_id',$joid)
+                ->get();
+
+        foreach ($emps as $emp) {
+            $emptotals[] = [
+                'name' => $emp->employee->fname . " " . $emp->employee->lname,
+                'in' => $pcb->filter(function ($val) use ($emp) {
+                            return $val->employee_id == $emp->employee_id && $val->type == 0;
+                        })->count(),
+                'out' => $pcb->filter(function ($val) use ($emp) {
+                            return $val->employee_id == $emp->employee_id && $val->type == 1;
+                        })->count()
+            ];
+        }
+        /* return $emptotals; */
         return view('includes.scan.tsttab',compact('emptotals','joid'));
     }
     public function getlotnumber(Request $request)

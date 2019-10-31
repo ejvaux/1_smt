@@ -169,6 +169,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        'Barryvdh\Debugbar\ServiceProvider',
 
         /*
          * Application Service Providers...
@@ -230,6 +231,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'CustomFunctions' => App\Custom\CustomFunctions::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'Debugbar' => 'Barryvdh\Debugbar\Facade'
     ],
 
 ];

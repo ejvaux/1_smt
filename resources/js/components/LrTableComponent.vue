@@ -16,7 +16,7 @@
                             <th width='20%' colspan="2" class="border-right">BOTTOM</th>
                             <th width='20%' colspan="2" class="border-right">TOP</th>
                             <th width='20%' colspan="2" class="border-right">DIP</th>
-                            <th width='20%'>ALL</th>
+                            <th width='20%'>TOTAL</th>
                         </tr>
                     </thead>
                     <tbody class='text-center'>
@@ -28,7 +28,7 @@
                             <th width='10%' class="border-right">OUT</th>
                             <th width='10%' class="border-right">IN</th>
                             <th width='10%' class="border-right">OUT</th>
-                            <th width='20%'>TOTAL</th>
+                            <th width='20%'>ALL</th>
                         </tr>
                         <tr>
                             <th width='10%' rowspan="2" style='vertical-align:middle;text-align:center;' class="border-right">SHIFT</th>
