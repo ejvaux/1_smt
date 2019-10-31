@@ -19,7 +19,8 @@
                         <h5>Line Scan Results</h5>
                     </div>
                     <div class="card-body">                        
-                        @include('includes.lr.linepanel')
+                        {{-- @include('includes.lr.linepanel') --}}
+                        <lr-form-component :imgsrc="'{{ asset('images/loading3.gif')}}'" datenow="{{$date}}" :lines="{{$lines}}"></lr-form-component>
                     </div>
                 </div>
             </div>

@@ -37,7 +37,12 @@ class LineResultController extends Controller
                     ->where('created_at','<',$date2)
                     ->union($pcb)
                     ->get();       
-        
+        if($pcbs){
+            $check = 1;
+        }
+        else{
+            $check = 0;
+        }
         // DAY
         $dbi = $pcbs->filter(function ($value) use($date,$date3){
                     return $value->div_process_id == 1 && $value->type == 0 
@@ -104,7 +109,23 @@ class LineResultController extends Controller
 
         $linename = Linename::where('id',$line)->pluck('name')->first();
 
-        return view('includes.table.lrTable',compact(
+        return [
+            'pcbs' => $check,
+            'linename' => $linename,
+            'dbi' => $dbi,
+            'dbo' => $dbo,
+            'dti' => $dti,
+            'dto' => $dto,
+            'ddi' => $ddi,
+            'ddo' => $ddo,
+            'nbi' => $nbi,
+            'nbo' => $nbo,
+            'nti' => $nti,
+            'nto' => $nto,
+            'ndi' => $ndi,
+            'ndo' => $ndo
+        ];
+        /* return view('includes.table.lrTable',compact(
             'pcbs',
             'linename',
             'dbi',
@@ -119,7 +140,7 @@ class LineResultController extends Controller
             'nto',
             'ndi',
             'ndo'
-        ));
+        )); */
     }
 
     public function exportlineresult(Request $request)

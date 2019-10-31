@@ -4,12 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            {{-- <welcome-component :title="'{{$title}}'"></welcome-component> --}}
             <div class="card">
                 <div class="card-header">Welcome users!</div>
 
                 <div class="card-body center-text">
-                        <img src="{{ asset('images/prima.jpg')}}" class="home-image img-fluid"><br>
-                        
+                        <img src="{{ asset('images/prima.jpg')}}" class="home-image img-fluid"><br>                        
                     {{-- <h1>PRIMA TECH PHILS., INC.</h1>  --}}
                     <br>
                     <br>
