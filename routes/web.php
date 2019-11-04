@@ -17,6 +17,11 @@ use Illuminate\Http\Request;
     return view('welcome');
 }); */
 
+// Enabling DEBUGBAR in Production Only for Developers
+if(in_array(\Request::ip(),['172.16.1.14','172.16.4.32'])){
+    config(['app.debug' => TRUE]);
+}
+
 Auth::routes();
 
 Route::get('/', 'HomeController@index2');
