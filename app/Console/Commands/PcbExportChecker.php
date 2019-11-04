@@ -64,7 +64,6 @@ class PcbExportChecker extends Command
                 $email->notify( (new PcbDataExport($msg,$email->name)) );
                 sleep(5);
             }
-        }
-        
+        }        
     }
 }
