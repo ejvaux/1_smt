@@ -1318,8 +1318,15 @@ class ApiController extends Controller
     public function totalscan(Request $request)
     {
         $q = WorkOrder::where('ID',$request->jo)->pluck('PLAN_QTY')->first();
-        $in = Pcb::where('jo_id',$request->jo)->where('type',0)->count();
-        $out = Pcb::where('jo_id',$request->jo)->where('type',1)->count();        
+        $pcb = Pcb::select('id','type')->where('jo_id',$request->jo)->get();
+        $in = $pcb->filter(function ($val) {
+                    return $val->type == 0;
+                })->count();
+        $out = $pcb->filter(function ($val) {
+                    return $val->type == 1;
+                })->count();
+        /* $in = Pcb::where('jo_id',$request->jo)->where('type',0)->count();
+        $out = Pcb::where('jo_id',$request->jo)->where('type',1)->count(); */        
         $total = $q - $out;
         $total_in = $q - $in;
         return [
