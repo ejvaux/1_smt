@@ -14,9 +14,9 @@
                     <button type="button" class='' v-on:click="getLS">GO</button>
                 </div>
             </div>
-            <div class="col-md-2">
+            <!-- <div class="col-md-2">
                 <button type="button" id="" class="form-control" v-on:click="exportLS">EXPORT</button>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-md text-center">

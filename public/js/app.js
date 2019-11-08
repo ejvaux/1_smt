@@ -66116,18 +66116,6 @@ var render = function() {
             [_vm._v("GO")]
           )
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-2" }, [
-        _c(
-          "button",
-          {
-            staticClass: "form-control",
-            attrs: { type: "button", id: "" },
-            on: { click: _vm.exportLS }
-          },
-          [_vm._v("EXPORT")]
-        )
       ])
     ]),
     _vm._v(" "),
