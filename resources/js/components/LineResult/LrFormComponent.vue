@@ -61,21 +61,5 @@
     }
 </script>
 <style scoped>
-    #wait2{
-    width:100%;
-    height:100%;
-    /* position:fixed; */
-    text-align:center;
-    z-index:100000;
-    font-weight: bold;
-    font-size: 2em;
-    background: rgba(232, 232, 232, 0.5);
-    color: rgb(247, 89, 89);
-    border:solid;
-    width: 300px;
-    margin: 0 auto;
-    background-color:white;
-    border-radius: 200px;
-    padding: 2%;
-    }
+    
 </style>

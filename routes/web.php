@@ -94,6 +94,9 @@ Route::get('rt', 'LineResultController@resultTable');
 Route::get('exportlr', 'LineResultController@exportlineresult');
 /* Work Order Results */
 Route::get('wor', 'ResultsController@index');
+/* Overall line Results */
+Route::get('lsr', 'ResultsController@summary');
+Route::get('gs', 'ResultsController@getSummary');
 /* Serial Number - Work Order */
 Route::get('sr', 'SnReelController@index');
 Route::get('loadreel', 'SnReelController@loadreel');
