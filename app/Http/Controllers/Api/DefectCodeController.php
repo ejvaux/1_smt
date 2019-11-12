@@ -47,12 +47,12 @@ class DefectCodeController extends Controller
      */
     public function show($id)
     {
-        if($id == 18){
-            $defects = Defect::where('division_id',2)->orWhere('division_id',$id)->get();
+        if($id == 18 || $id == 19 || $id == 2){
+            $defects = Defect::whereIn('division_id',[2,18,19])->get();
         }
-        else if($id == 19){
+        /* else if($id == 19){
             $defects = Defect::where('division_id',2)->orWhere('division_id',$id)->get();
-        }
+        } */
         else{
             $defects = Defect::where('division_id',$id)->get();
         }

@@ -78,10 +78,10 @@ function get_errorcode()
 $(document).ready(function() {
     $('.select2').select2({width: '100%'});
     $('.sel2').select2({height: '100%'});
-    $('#scan_pos').select2({
+    /* $('#scan_pos').select2({
         dropdownCssClass: "below",
         width: '100%'
-    });
+    }); */
     //$('.select22').select2({dropdownParent: $(".modal"),width: '100%'}); search_select2
     
 });
@@ -105,8 +105,13 @@ $(document).ready(function() {
     });
 
     $('#scan_model').on('select2:select', function (e) {
-        $('#scan_line').select2('open');
-        /* $( "#scan_machine" ).focus(); */
+        /* $('#scan_line').select2('open'); */
+        /* $("#scan_machine").focus(); */
+        setTimeout(function() {
+            $('.select2-container-active').removeClass('select2-container-active');
+            $(':focus').blur();
+            $("#scan_machine").focus();
+        }, 1);
     });
 
 });

@@ -60,7 +60,7 @@
                                 <label for='scan_pos' class="col-form-label bold-text">POSITION:</label>
                             </div>
                             <div class="col-md-8">
-                                <select class="select22" id="scan_pos">
+                                <select class="select2" id="scan_pos">
                                     <option value="" selected>SELECT POSITION</option>
                                     @foreach ($position as $position_item)
                                     <option value="{{$position_item->id}}">{{$position_item->name}}</option>
