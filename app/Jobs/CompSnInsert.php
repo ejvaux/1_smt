@@ -41,16 +41,27 @@ class CompSnInsert implements ShouldQueue
         if($mat_comp1->first()){
             $mat_comp = $mat_comp1->first();
             foreach ($mat_comp->materials as $key => $value) {
-                $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC')->first();
-                if($comp){                                
-                    /* $comp->sn = array($this->sn); */
+                $cid = '';
+                if(isset($value['component_id'])){
+                    $cid = $value['component_id'];
+                }
+                else{
+                    $cid = $key;
+                }
+                /* $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC')->first(); */
+                $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)
+                                ->where('component_id',$cid)
+                                ->where('RID',$value['RID'])
+                                ->OrderBy('id','DESC')
+                                ->first();
+                if($comp){
                     $cc = $comp->sn;
                     if(count($comp->sn) > 499){
                         $c = new MatSnComp;
                         $c->model_id = $mat_comp->model_id;
                         $c->line_id = $mat_comp->line_id;
                         $c->mat_comp_id = $mat_comp->id;
-                        $c->component_id = $key;
+                        $c->component_id = $cid;
                         $c->RID = $value['RID'];
                         $c->sn = array($this->sn);
                         $c->save();
@@ -67,7 +78,7 @@ class CompSnInsert implements ShouldQueue
                     $c->model_id = $mat_comp->model_id;
                     $c->line_id = $mat_comp->line_id;
                     $c->mat_comp_id = $mat_comp->id;
-                    $c->component_id = $key;
+                    $c->component_id = $cid;
                     $c->RID = $value['RID'];
                     $c->sn = array($this->sn);
                     $c->save();
