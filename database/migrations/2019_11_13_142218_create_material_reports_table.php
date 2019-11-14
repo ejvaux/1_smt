@@ -24,7 +24,8 @@ class CreateMaterialReportsTable extends Migration
             $table->integer('reel_qty');
             $table->string('usage');
             $table->integer('target_qty');
-            $table->integer('sys_qty');            
+            $table->integer('sys_qty');
+            $table->integer('mat_load_id');
             $table->datetime('date');
             $table->timestamps();
         });

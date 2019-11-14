@@ -48,4 +48,12 @@ class MatLoadModel extends Model
     {
         return $this->belongsTo('App\employee','employee_id');
     }
+    public function machine()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\Machine','machine_id');
+    }
+    public function model()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\ModName','model_id');
+    }
 }
