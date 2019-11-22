@@ -101,11 +101,13 @@ class MaterialLoadController extends Controller
         $insrecord->results="MATCH";
         $insrecord->save();
 
-        try {
+        ApiController::insertmatcomp($request,$insrecord->id,$insrecord->created_at);
+
+        /* try {
             ApiController::insertmatcomp($request,$insrecord->id);
         } catch (\Throwable $th) {
             Log::error($th);
-        }
+        } */
 
        /*  $insrecord=new MatLoadModel();
         $insrecord->machine_id=$mach_type;

@@ -51,35 +51,43 @@ class SnReelController extends Controller
     public function loadsn(Request $request)
     {
         $rid = $reel = $request->input('rid');
-        if (strpos($rid,':') !== false) {
-            $rid1s = explode(';',$rid);
-            foreach ($rid1s as $rid1) {
-                $ri = explode(':',$rid1);
-                if ($ri[0] == 'RID') {
-                    $rid = $reel = $ri[1];
-                }
-            }
+        if (strpos($rid,':') !== false) {            
+            $rid = $reel = CustomFunctions::getQrData($rid,'RID');
         }
         $cid = MatSnComp::where('RID',$rid)->pluck('component_id')->first();
         $pn = Component::where('id',$cid)->pluck('product_number')->first();
         $total = 1;
         $pcbs = [];
-        $serials = MatSnComp::select('id','mat_comp_id','sn','RID','model_id','component_id')->where('RID',$rid)/* ->skip(5) *//* ->take(10) */->get();
+        $serials = MatSnComp::/* select('id','mat_comp_id','sn','RID','model_id','component_id')-> */where('RID',$rid)/* ->skip(5) *//* ->take(10) */->get();
         foreach ($serials as $serial) {
             $matcomp = Matcomp::where('id',$serial->mat_comp_id)->pluck('materials')->first();
             foreach ($matcomp as $cmp => $prop) {
-                if($cmp == $serial->component_id){
-                    $mach = $prop['machine'];
-                    $fdr = $prop['feeder'];
-                    $pos = Position::where('id',$prop['position'])->pluck('name')->first();
-                    break;
+                if(isset($prop['component_id'])){
+                    if($prop['component_id'] == $serial->component_id){
+                        $mach = $prop['machine'];
+                        $fdr = $prop['feeder'];
+                        $pos = Position::where('id',$prop['position'])->pluck('name')->first();
+                        break;
+                    }
                 }
+                else{
+                    if($cmp == $serial->component_id){
+                        $mach = $prop['machine'];
+                        $fdr = $prop['feeder'];
+                        $pos = Position::where('id',$prop['position'])->pluck('name')->first();
+                        break;
+                    }
+                }                
             }
             $prog = Modname::where('id',$serial->model_id)->pluck('program_name')->first();            
             foreach ($serial->sn as $key) {
-                $pcb = Pcb::where('serial_number',$key)->where('mat_comp_id',$serial->mat_comp_id)->first();
+                /* $pcb = Pcb::where('serial_number',$key)->where('mat_comp_id',$serial->mat_comp_id)->first();
                 if(!$pcb){
                     $pcb = PcbArchive::where('serial_number',$key)->where('mat_comp_id',$serial->mat_comp_id)->first();
+                } */
+                $pcb = Pcb::where('serial_number',$key)->where('line_id',$serial->line_id)->first();
+                if(!$pcb){
+                    $pcb = PcbArchive::where('serial_number',$key)->where('line_id',$serial->line_id)->first();
                 }
                 if($pcb){                    
                     if(!$pcb->work_order){

@@ -52,7 +52,7 @@
                                 <label for='scan_machine' class="col-form-label bold-text">MACHINE CODE:</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)">
+                                <input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)" autocomplete='off'>
                             </div>
                         </div>
                         <div class="row">
@@ -101,7 +101,7 @@
                                 <label for='scan_oldPN' class="col-form-label bold-text">LAST PRIMA PN:</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)">
+                                <input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)" autocomplete='off'>
                             </div>
                         </div>
                         <div class="row mb-1">
@@ -109,7 +109,7 @@
                                 <label for='scan_newPN' class="col-form-label bold-text">PRIMA PN TO LOAD:</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" >
+                                <input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" autocomplete='off'>
                             </div>
                         </div>
                         <div class="row no-gutters">

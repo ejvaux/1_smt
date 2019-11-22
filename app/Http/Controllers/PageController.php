@@ -61,7 +61,7 @@ class PageController extends Controller
     }
     public function mscan2(){
 
-        $models=modelSMT::all();
+        $models=modelSMT::where('version',1)->get();
         $position=LRPosition::all();
         $mounter=mounter::all();
         $emp=employee::all();

@@ -42,6 +42,7 @@ class MaterialReports extends Command
     public function handle()
     {
         $today = Date('Y-m-d');
+        /* $today = Date('2019-11-21'); */
         $dt = Carbon::parse($today)->subday();
         $from = Carbon::parse($today)->subday()->addHours(6);
         $to = Carbon::parse($today)->addHours(6);
@@ -51,7 +52,7 @@ class MaterialReports extends Command
                                 ->get();
         /* $mat_loads = MatLoadModel::where('id',62229)->first(); */
         foreach ($mat_loads as $mat_load) {
-            InsertMatRep::dispatch($mat_load);
+            InsertMatRep::dispatch($mat_load,$dt);
         }        
     }
 }

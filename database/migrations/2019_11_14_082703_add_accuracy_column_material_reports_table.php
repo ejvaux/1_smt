@@ -14,8 +14,8 @@ class AddAccuracyColumnMaterialReportsTable extends Migration
     public function up()
     {
         Schema::table('material_reports', function (Blueprint $table) {
-            $table->decimal('accuracy',5,2)->nullable()->after('sys_qty');
             $table->date('date')->change();
+            $table->integer('usage')->change();
         });
     }
 
@@ -26,12 +26,9 @@ class AddAccuracyColumnMaterialReportsTable extends Migration
      */
     public function down()
     {
-        Schema::table('material_reports', function (Blueprint $table) {
-            $table->dropColumn([
-                'accuracy',
-                ]);
-            
-            $table->datetime('date')->change();
+        Schema::table('material_reports', function (Blueprint $table) {            
+            $table->datetime('date')->change();            
+            $table->string('usage');
         });
     }
 }

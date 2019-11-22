@@ -49,9 +49,9 @@ class CompSnInsert implements ShouldQueue
                     $cid = $key;
                 }
                 /* $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC')->first(); */
-                $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)
+                $comp = MatSnComp::/* where('mat_comp_id',$mat_comp->id)
                                 ->where('component_id',$cid)
-                                ->where('RID',$value['RID'])
+                                -> */where('RID',$value['RID'])
                                 ->OrderBy('id','DESC')
                                 ->first();
                 if($comp){
