@@ -93,23 +93,58 @@ class PageController extends Controller
 
     public function testing()
     {
-        try {
-            $pcbs = Pcb::where('created_at','<=',Carbon::parse(Date('Y-m-d'))->subMonth())->limit(5)->get();
-            /* $n = 0;
-            foreach ($pcbs as $pcb) {
-                $id = $pcb->id;
-                $ins = $pcb->toArray();
-                PcbArchive::insert($ins);
-                Pcb::where('id',$id)->delete();
-                $n++;
-            } */            
-        } catch (\Throwable $th) {
-            Log::channel('single')->error("[PCB ARCHIVING] ".$th);
+        $this->sn = 'M.CK296P0040';
+        $mat_comp1 = MatComp::where('id',18);
+        if($mat_comp1->first()){
+            $mat_comp = $mat_comp1->first();
+            foreach ($mat_comp->materials as $key => $value) {
+                $cid = '';
+                if(isset($value['component_id'])){
+                    $cid = $value['component_id'];
+                }
+                else{
+                    $cid = $key;
+                }
+                /* $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC')->first(); */
+                $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)
+                                ->where('component_id',$cid)
+                                ->where('RID',$value['RID'])
+                                ->OrderBy('id','DESC')
+                                ->first();
+                if($comp){                                
+                    $cc = $comp->sn;
+                    if(count($comp->sn) > 499){
+                        $c = new MatSnComp;
+                        $c->model_id = $mat_comp->model_id;
+                        $c->line_id = $mat_comp->line_id;
+                        $c->mat_comp_id = $mat_comp->id;
+                        $c->component_id = $cid;
+                        $c->RID = $value['RID'];
+                        $c->sn = array($this->sn);
+                        $c->save();
+                    }
+                    else{
+                        $cc[] = $this->sn;
+                        $comp->sn = $cc;
+                        $comp->mat_comp_id = $mat_comp->id;
+                        $comp->save();
+                    }
+                }
+                else{
+                    $c = new MatSnComp;
+                    $c->model_id = $mat_comp->model_id;
+                    $c->line_id = $mat_comp->line_id;
+                    $c->mat_comp_id = $mat_comp->id;
+                    $c->component_id = $cid;
+                    $c->RID = $value['RID'];
+                    $c->sn = array($this->sn);
+                    $c->save();
+                }
+            }
         }
-        /* return 'good'; */
-        /* return $ins; */
-        /* return PcbArchive::where('id',$id)->get(); */
-        return $pcbs;
+        else{
+            return 'wala';
+        }
     }
     public function qrgen()
     {
