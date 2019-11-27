@@ -100,8 +100,8 @@ class MaterialLoadController extends Controller
         $insrecord->ReelInfo=$request->input('reelInfo');
         $insrecord->results="MATCH";
         $insrecord->save();
-
-        ApiController::insertmatcomp($request,$insrecord->id,$insrecord->created_at);
+        
+        ApiController::insertmatcomp($request,$insrecord->id);
 
         /* try {
             ApiController::insertmatcomp($request,$insrecord->id);

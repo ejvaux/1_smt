@@ -9,8 +9,8 @@ class MatLoadModel extends Model
     //
     
     protected $table = 'mat_load_history';
-    public $primarykey = 'id';
-    public $timestamps = true;
+    /* public $primarykey = 'id'; */
+    /* public $timestamps = true; */
 
     public function machine_rel()
     {

@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Pcb;
 use App\Models\PcbArchive;
 use App\Models\DefectMat;
+use App\Http\Controllers\MES\model\LineName;
+use App\MatLoadModel;
+use App\Http\Controllers\MES\model\Modname;
+use App\Http\Controllers\MES\model\Feeder;
 
 class TrackingController extends Controller
 {
@@ -68,5 +72,25 @@ class TrackingController extends Controller
         } else {
             return view('mes2.tracking');
         }
+    }
+    public function matloadlist()
+    {
+        $lines = LineName::where('division_id',2)->get();
+        return view('pages.tracking.mll',compact('lines'));
+    }
+    public function loadlist(Request $request)
+    {
+        $model_id = Modname::where('version',$request->line)->pluck('id')->first();
+        $feeders = Feeder::where('model_id',$model_id)
+                            ->where('line_id',$request->line)
+                            ->where('table_id','!=',0)
+                            ->groupBy('pos_id','mounter_id','table_id','machine_type_id')
+                            /* ->orderBy('id','DESC') */
+                            ->orderBy('machine_type_id')
+                            ->orderBy('table_id')
+                            ->orderBy('mounter_id')
+                            ->orderBy('pos_id')
+                            ->get();
+        return view('includes.table.mlTable',compact('feeders'));
     }
 }

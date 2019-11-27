@@ -81,34 +81,32 @@ class InsertMatRep implements ShouldQueue
             $feedTime = $prev->created_at;
             $reelQTY = CustomFunctions::getQrData($prev->ReelInfo,'QTY');
             $usage = $u;
-            if ($usage) {
-                $targetQTY = $reelQTY/$usage;
-            }
-            else{
-                $targetQTY = $reelQTY;
-            }
             $sysQTY = $total;
             $matloadID = $prev->id;
             $date = $dt;
+            if ($usage) {
+                $targetQTY = $reelQTY/$usage;
 
-            $rep = MaterialReport::where('mat_load_id',$matloadID)->first();
+                $rep = MaterialReport::where('mat_load_id',$matloadID)->first();
 
-            if(!$rep){
-                $mr = new MaterialReport;
-                $mr->line = $line;
-                $mr->pcb_pn = $pcbPN;
-                $mr->program = $program;
-                $mr->reel_id = $reelID;
-                $mr->component_pn = $compPN;
-                $mr->feed_time = $feedTime;
-                $mr->reel_qty = $reelQTY;
-                $mr->usage = $usage;
-                $mr->target_qty = $targetQTY;
-                $mr->sys_qty = $sysQTY;
-                $mr->mat_load_id = $matloadID;
-                $mr->date = $date;
-                $mr->save();
+                if(!$rep){
+                    $mr = new MaterialReport;
+                    $mr->line = $line;
+                    $mr->pcb_pn = $pcbPN;
+                    $mr->program = $program;
+                    $mr->reel_id = $reelID;
+                    $mr->component_pn = $compPN;
+                    $mr->feed_time = $feedTime;
+                    $mr->reel_qty = $reelQTY;
+                    $mr->usage = $usage;
+                    $mr->target_qty = $targetQTY;
+                    $mr->sys_qty = $sysQTY;
+                    $mr->mat_load_id = $matloadID;
+                    $mr->date = $date;
+                    $mr->save();
+                }
             }
+           
             /* if($rep){
                 $rep->line = $line;
                 $rep->pcb_pn = $pcbPN;

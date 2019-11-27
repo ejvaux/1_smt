@@ -1267,6 +1267,7 @@ function InsertRecord(order_id){
     var old_PN = document.getElementById('scan_oldPN').value;
     var new_PN = document.getElementById('scan_newPN').value;
     var reelInfo = document.getElementById('scan_newPN').value;
+
     if ($('#replenish').is(":checked")){
         var temp1 = new Array();
         if(old_PN.includes(",")){
@@ -1301,7 +1302,15 @@ function InsertRecord(order_id){
     }
     else if(new_PN.includes(";")){
         temp2 = new_PN.split(";");
-    }    
+    }
+
+    if(temp2.length > 12){
+        iziToast.error({
+            title: 'ERROR',
+            position: 'topCenter',
+            message: 'Error processing Reel Qr Code. Please try again.',
+        });
+    }
 
     for (b in temp2 ) {
         temp2[b] = (temp2[b]);

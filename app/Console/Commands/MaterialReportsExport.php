@@ -53,7 +53,10 @@ class MaterialReportsExport extends Command
             $email->notify( (new MaterialReportEmail($filename,$email)) );
         }
 
+        // Add Delay
+        sleep(20);
+        
         // Moving Sent file
-        /* Storage::disk('material_report')->move($filename.'.xlsx', 'Sent/'.$filename.'.xlsx'); */
+        Storage::disk('material_report')->move($filename.'.xlsx', 'Sent/'.$filename.'.xlsx');
     }
 }

@@ -1486,7 +1486,7 @@ class ApiController extends Controller
 
     /* mat_comp - mat_sn_comp */
 
-    public static function insertmatcomp(Request $request,$mat_load_id,$ft)
+    public static function insertmatcomp(Request $request,$mat_load_id)
     {
         $machine = $request->machine_id;
         $m_code =substr($machine,0,-1);
@@ -1507,7 +1507,7 @@ class ApiController extends Controller
                             'feeder' => $value['feeder'],
                             'RID' => $value['RID'],
                             'QTY' => $value['QTY'],
-                            'feedTime' => $ft
+                            'matload_id' => $ft
                             ];
                     unset($mt[$key]);
                 }
@@ -1538,7 +1538,7 @@ class ApiController extends Controller
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,
                                 'QTY' => $request->comp_qty,
-                                'feedTime' => $ft
+                                'matload_id' => $mat_load_id
                                 ];
             /* $mt2[$component->id] = [
                                     'machine' => $request->machine_id,
@@ -1571,7 +1571,7 @@ class ApiController extends Controller
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,
                                 'QTY' => $request->comp_qty,
-                                'feedTime' => $ft
+                                'matload_id' => $mat_load_id
                                 ];
             /* $mt[$component->id] = [
                                     'machine' => $request->machine_id,
