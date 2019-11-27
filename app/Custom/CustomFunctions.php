@@ -7,7 +7,6 @@ use App\Models\Lot;
 use App\Http\Controllers\MES\model\LineName;
 
 /* Models for component monitoring */
-//use App\Http\Controllers\MES\model\LineName;
 use App\ProdLine;
 use App\component;
 use App\ProcessList;
@@ -235,5 +234,24 @@ class CustomFunctions
         $table=substr($machine,-1);
         return $table_id= tableSMT::where('name',$table)->pluck('id')->first();
     }
-
+    public static function getQrData($rid,$prop){
+        if (strpos($rid,';') !== false) {
+            $rid1s = explode(';',$rid);
+            foreach ($rid1s as $rid1) {
+                $ri = explode(':',$rid1);
+                if ($ri[0] == $prop) {
+                    return $ri[1];
+                }
+            }
+        }
+        elseif (strpos($rid,',') !== false) {
+            $rid1s = explode(',',$rid);
+            foreach ($rid1s as $rid1) {
+                $ri = explode(':',$rid1);
+                if ($ri[0] == $prop) {
+                    return $ri[1];
+                }
+            }
+        }
+    }
 }

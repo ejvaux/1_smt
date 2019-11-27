@@ -9,8 +9,8 @@ class MatLoadModel extends Model
     //
     
     protected $table = 'mat_load_history';
-    public $primarykey = 'id';
-    public $timestamps = true;
+    /* public $primarykey = 'id'; */
+    /* public $timestamps = true; */
 
     public function machine_rel()
     {
@@ -47,5 +47,13 @@ class MatLoadModel extends Model
     public function employee_rel()
     {
         return $this->belongsTo('App\employee','employee_id');
+    }
+    public function machine()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\Machine','machine_id');
+    }
+    public function model()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\ModName','model_id');
     }
 }

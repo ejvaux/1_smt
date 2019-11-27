@@ -26,7 +26,7 @@
                                 <label for='scan_model' class="col-form-label bold-text">MODEL NAME:</label>
                             </div>
                             <div class="col-md-8">
-                                <select class="select2" id="scan_model">
+                                <select class="select2" id="scan_model" required>
                                     <option value="" selected>SELECT MODEL</option>
                                     @foreach ($models as $models_item)
                                     <option value="{{$models_item->id}}">{{$models_item->program_name}} - {{$models_item->code}}</option>
@@ -52,7 +52,7 @@
                                 <label for='scan_machine' class="col-form-label bold-text">MACHINE CODE:</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)">
+                                <input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)" autocomplete='off' required>
                             </div>
                         </div>
                         <div class="row">
@@ -60,7 +60,7 @@
                                 <label for='scan_pos' class="col-form-label bold-text">POSITION:</label>
                             </div>
                             <div class="col-md-8">
-                                <select class="select2" id="scan_pos">
+                                <select class="select2" id="scan_pos" required>
                                     <option value="" selected>SELECT POSITION</option>
                                     @foreach ($position as $position_item)
                                     <option value="{{$position_item->id}}">{{$position_item->name}}</option>
@@ -73,7 +73,7 @@
                                 <label for='scan_feed_slot' class="col-form-label bold-text">FEEDER SLOT#:</label>
                             </div>
                             <div class="col-md-8">
-                                <select class="select2" id="scan_feed_slot">
+                                <select class="select2" id="scan_feed_slot" required>
                                     <option value="" selected>SELECT FEEDER #</option>
                                     @foreach ($mounter as $mounter_item)
                                     <option value="{{$mounter_item->id}}">{{$mounter_item->code}}</option>
@@ -101,7 +101,7 @@
                                 <label for='scan_oldPN' class="col-form-label bold-text">LAST PRIMA PN:</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)">
+                                <input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)" autocomplete='off'>
                             </div>
                         </div>
                         <div class="row mb-1">
@@ -109,7 +109,7 @@
                                 <label for='scan_newPN' class="col-form-label bold-text">PRIMA PN TO LOAD:</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" >
+                                <input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" autocomplete='off'>
                             </div>
                         </div>
                         <div class="row no-gutters">

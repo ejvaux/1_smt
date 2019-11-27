@@ -591,8 +591,9 @@ class ApiController extends Controller
                     $a->work_order = $request->work_order;
 
                 // Machine Component
-                    $mcid = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first();
-                    
+                    /* $mcid = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first(); */
+                    $mcid = MatComp::where('line_id',$a->line_id)->orderBy('id','DESC')->first();
+
                     if($mcid){
                         $a->mat_comp_id = $mcid->id;                            
                     }
@@ -1492,12 +1493,12 @@ class ApiController extends Controller
         $mach = Machine::where('barcode',$m_code)->first();
         $line_id = $mach->line->linename->id;
         $component= Component::where('product_number',$request->new_PN)->first();
-        $m = MatComp::where('model_id',$request->model_id)->where('line_id',$line_id)->orderBy('id','DESC')->first();
+        $m = MatComp::where('model_id',$request->model_id)->where('line_id',$line_id)->latest('id')->first();
         
         if($m){
             $mt = $m->materials;
             $tu = '';
-            foreach ($mt as $key => $value) {
+            /* foreach ($mt as $key => $value) {
                 if(!isset($value['component_id'])){
                     $mt[] = [
                             'component_id' => $key,
@@ -1505,17 +1506,19 @@ class ApiController extends Controller
                             'position' => $value['position'],
                             'feeder' => $value['feeder'],
                             'RID' => $value['RID'],
-                            'QTY' => $value['QTY']
+                            'QTY' => $value['QTY'],
+                            'matload_id' => $ft
                             ];
                     unset($mt[$key]);
                 }
-            }
+            } */
             foreach ($mt as $key => $value) {
                 if(
                     $value['machine'] == $request->machine_id && 
                     $value['position'] == $request->position && 
                     $value['feeder'] == $request->feeder_slot
-                    ){
+                    )
+                {
                     $tu = $key;
                     break;
                 }
@@ -1534,7 +1537,8 @@ class ApiController extends Controller
                                 'position' => $request->position,
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,
-                                'QTY' => $request->comp_qty
+                                'QTY' => $request->comp_qty,
+                                'matload_id' => $mat_load_id
                                 ];
             /* $mt2[$component->id] = [
                                     'machine' => $request->machine_id,
@@ -1547,12 +1551,12 @@ class ApiController extends Controller
             
             /* $mt[] = $mt2;
             $im->materials = $mt2; */
-
-            try {
+            $im->save();                        
+            /* try {
                 $im->save();
             } catch (\Throwable $th) {
                 Log::error($th);
-            }
+            } */
         }
         else{
             $im = new MatComp;
@@ -1560,28 +1564,29 @@ class ApiController extends Controller
             $im->line_id = $line_id;
             $im->mat_load_id = $mat_load_id;
             $mt = $im->materials;
-            /* $mt2[] = [
+            $mt[] = [
                                 'component_id' => $component->id,
                                 'machine' => $request->machine_id,
                                 'position' => $request->position,
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,
-                                'QTY' => $request->comp_qty
-                                ]; */
-            $mt[$component->id] = [
+                                'QTY' => $request->comp_qty,
+                                'matload_id' => $mat_load_id
+                                ];
+            /* $mt[$component->id] = [
                                     'machine' => $request->machine_id,
                                     'position' => $request->position,
                                     'feeder' => $request->feeder_slot,
                                     'RID' => $request->comp_rid,
                                     'QTY' => $request->comp_qty
-                                    ];
+                                    ]; */
             $im->materials = $mt;
-
-            try {
+            $im->save();
+            /* try {
                 $im->save();
             } catch (\Throwable $th) {
                 Log::error($th);
-            }            
+            }  */           
         }
 
     }

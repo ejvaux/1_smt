@@ -65,6 +65,11 @@ return [
             'root' => 'D:\MES-SharedFiles\MES export\SMT Exports'
         ],
 
+        'material_report' => [
+            'driver' => 'local',
+            'root' => 'D:\MES-SharedFiles\MES export\SMT Materials Report'
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

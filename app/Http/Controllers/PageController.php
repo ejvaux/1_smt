@@ -26,6 +26,12 @@ use App\Notifications\PcbDataExport;
 use Notification;
 use Illuminate\Support\Facades\Log;
 
+// Testing
+use App\MatLoadModel;
+use App\Jobs\InsertMatRep;
+use App\Http\Controllers\MES\model\Feeder;
+use App\Models\MaterialReport;
+
 class PageController extends Controller
 {
     //
@@ -55,7 +61,7 @@ class PageController extends Controller
     }
     public function mscan2(){
 
-        $models=modelSMT::all();
+        $models=modelSMT::where('version','!=',0)->get();
         $position=LRPosition::all();
         $mounter=mounter::all();
         $emp=employee::all();
@@ -93,58 +99,21 @@ class PageController extends Controller
 
     public function testing()
     {
-        $this->sn = 'M.CK296P0040';
-        $mat_comp1 = MatComp::where('id',18);
-        if($mat_comp1->first()){
-            $mat_comp = $mat_comp1->first();
-            foreach ($mat_comp->materials as $key => $value) {
-                $cid = '';
-                if(isset($value['component_id'])){
-                    $cid = $value['component_id'];
-                }
-                else{
-                    $cid = $key;
-                }
-                /* $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC')->first(); */
-                $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)
-                                ->where('component_id',$cid)
-                                ->where('RID',$value['RID'])
-                                ->OrderBy('id','DESC')
-                                ->first();
-                if($comp){                                
-                    $cc = $comp->sn;
-                    if(count($comp->sn) > 499){
-                        $c = new MatSnComp;
-                        $c->model_id = $mat_comp->model_id;
-                        $c->line_id = $mat_comp->line_id;
-                        $c->mat_comp_id = $mat_comp->id;
-                        $c->component_id = $cid;
-                        $c->RID = $value['RID'];
-                        $c->sn = array($this->sn);
-                        $c->save();
-                    }
-                    else{
-                        $cc[] = $this->sn;
-                        $comp->sn = $cc;
-                        $comp->mat_comp_id = $mat_comp->id;
-                        $comp->save();
-                    }
-                }
-                else{
-                    $c = new MatSnComp;
-                    $c->model_id = $mat_comp->model_id;
-                    $c->line_id = $mat_comp->line_id;
-                    $c->mat_comp_id = $mat_comp->id;
-                    $c->component_id = $cid;
-                    $c->RID = $value['RID'];
-                    $c->sn = array($this->sn);
-                    $c->save();
-                }
-            }
+        /* $f = MatComp::where('line_id', 17)->latest('id')->first();
+        // return count($f->materials);
+        return $f; */
+
+        $f = MatLoadModel::where('model_id',23)->groupBy('machine_id','table_id','mounter_id','pos_id')->orderBy('id','DESC')->get();
+        $page = "<table>";
+
+        foreach ($f as $value) {
+            $page .= "<tr>";
+            $page .= "<td>". $value ."</td>";
+            $page .= "</tr>";
         }
-        else{
-            return 'wala';
-        }
+
+        $page .= "<table>";
+        return $f->count();
     }
     public function qrgen()
     {

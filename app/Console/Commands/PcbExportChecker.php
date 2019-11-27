@@ -46,7 +46,7 @@ class PcbExportChecker extends Command
         $lapsed =  Carbon::now()->diffinMinutes(Carbon::parse($last));
         $msg = '';
         $err = 0;
-        $emails = NotificationEmail::all();
+        $emails = NotificationEmail::where('type',0)->get();
         if($lapsed >= 60 && $lapsed < 90){
             $msg = 'The last PCB data upload was '. $lapsed .' mins ago.';
             $err = 1;
