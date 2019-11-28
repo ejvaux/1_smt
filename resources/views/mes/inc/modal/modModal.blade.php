@@ -45,3 +45,29 @@
             </div>
         </div>
     </div>
+{{-- Line Config --}}
+<div class="modal hide fade in" role="dialog" id="line_config_modal" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Line Configuration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="line_config_form"  method="post" action=''>
+            <div class="modal-body" style="">
+                <!-- ____________ FORM __________________ -->
+                <div id='lctable-div'>
+                    {{-- @include('mes.inc.table.lcTable') --}}
+                </div>                
+                <!-- ____________ FORM END __________________ -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" name="submit" id="line_config_submit"><i class="far fa-save"></i> SAVE</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

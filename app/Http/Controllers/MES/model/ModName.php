@@ -11,6 +11,10 @@ class ModName extends Model
 
     protected $table = 'smt_models';
 
+    protected $casts = [
+        'lines' => 'array'
+    ];
+
     use Sortable;
 
     /* protected $fillable = ['id']; */

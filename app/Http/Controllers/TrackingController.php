@@ -10,6 +10,8 @@ use App\Http\Controllers\MES\model\LineName;
 use App\MatLoadModel;
 use App\Http\Controllers\MES\model\Modname;
 use App\Http\Controllers\MES\model\Feeder;
+use App\Models\MatComp;
+use App\Http\Controllers\MES\model\Line;
 
 class TrackingController extends Controller
 {
@@ -80,7 +82,7 @@ class TrackingController extends Controller
     }
     public function loadlist(Request $request)
     {
-        $model_id = Modname::where('version',$request->line)->pluck('id')->first();
+        $model_id = Modname::where('lines','LIKE','%'.$request->line.'%')->pluck('id')->first();
         $feeders = Feeder::where('model_id',$model_id)
                             ->where('line_id',$request->line)
                             ->where('table_id','!=',0)
@@ -91,6 +93,21 @@ class TrackingController extends Controller
                             ->orderBy('mounter_id')
                             ->orderBy('pos_id')
                             ->get();
-        return view('includes.table.mlTable',compact('feeders'));
+        $f = MatComp::where('model_id', $model_id)->where('line_id',$request->line)->latest('id')->first();
+
+        $mach = Line::where('line_name_id',$request->line)->pluck('machine_id');
+        $mm = MatLoadModel::where('model_id',$model_id)
+                                ->whereIN('machine_id',$mach)
+                                ->groupBy('pos_id')
+                                ->groupBy('mounter_id')
+                                ->groupBy('table_id')
+                                ->groupBy('machine_id')
+                                ->orderBy('machine_id')
+                                ->orderBy('table_id')
+                                ->orderBy('mounter_id')
+                                ->orderBy('pos_id')
+                                ->get();
+
+        return view('includes.table.mlTable',compact('model_id','feeders','f','mm'));
     }
 }

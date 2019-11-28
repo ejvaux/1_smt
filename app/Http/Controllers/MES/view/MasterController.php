@@ -38,7 +38,7 @@ class MasterController extends Controller
         return redirect('fl');
     }
     public function feederlist(Request $request)
-    {
+    {        
         $t = $request->input('text');        
         if($t == ''){
             $models = ModName::sortable()->orderby('updated_at','DESC')->paginate('10');
@@ -239,5 +239,75 @@ class MasterController extends Controller
                 ->orwhere('updated_at','LIKE','%'.$t.'%')
         ->orderby('updated_at','DESC')->paginate('10');
         return view('mes.pages.fl',compact('models'));        
+    }
+    public function lineconfig(Request $request)
+    {
+        $lines = LineName::whereIn('division_id',[2])->get();
+        $mods = ModName::orderby('updated_at','DESC')->get();
+        return view('mes.inc.table.lcTable',compact('mods','lines'));
+    }
+    public function lineconfigUpdate(Request $request)
+    {
+        $t = [];
+        $lines = LineName::whereIn('division_id',[2])->pluck('id');
+        $mods = ModName::all();
+        foreach ($mods as $mod) {
+            $up = ModName::find($mod->id);
+            foreach ($lines as $line) {
+                $key = 'line_id_'.$line;
+                if($request[$key] == $mod->id){
+                    $ln = [];
+                    $ln = $up->lines;
+                    if (in_array($line,$ln) == false) {
+                        $ln[] = $line;
+                    }                    
+                    $up->lines = $ln;
+                    $up->save();
+                }
+                else{
+                    $ln2 = [];
+                    $ln2 = $up->lines;
+                    foreach ($ln2 as $key => $value) {
+                        if($value == $line){
+                            unset($ln2[$key]);
+                        }
+                    }
+                    /* $key = array_search($line) */
+                    /* unset($ln2[$line]); */
+                    $ln3 = array_values($ln2);
+                    $up->lines = $ln3;
+                    $up->save();
+                }
+            }
+        }
+        /* foreach ($lines as $line) {
+            $key = 'line_id_'.$line;
+            if($request[$key] > 0){
+                ModName::where('id',$request[$key])->update(['version'=>$line]);
+                $ln = [];
+                $up = ModName::find($request[$key]);
+                $ln = $up->lines;
+                $ln[] = $request[$key];
+                $up->lines = $ln;
+                $t[] = $request[$key];
+            }
+            $ln = [];
+            $up = ModName::find($request[$key]);
+            $ln = $up->lines;
+            $ln[] = $request[$key];
+            $up->lines = $ln;
+            $up->save();
+            $t[] = $request[$key];
+        }
+        return $t; */
+        /* ModName::whereNotIn('id',$t)->update(['version'=>0]); */
+        /* return [
+            'type' => 'error',
+            'message' => 'Serial Number Already Scanned.'
+        ]; */
+        return [
+            'type' => 'success',
+            'message' => 'Data Saved'
+        ]; 
     }
 }

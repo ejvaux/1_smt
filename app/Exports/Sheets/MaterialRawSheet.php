@@ -36,6 +36,16 @@ class MaterialRawSheet implements FromQuery, WithHeadings, WithMapping, WithStri
         Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array $style) {
             $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
         });
+        Sheet::macro('addComment', function (Sheet $sheet, string $cellRange, string $comment) {
+            $sheet->getDelegate()->getComment($cellRange)->getText()->createTextRun($comment."\n\n");
+        });
+        Sheet::macro('addBoldComment', function (Sheet $sheet, string $cellRange, string $comment) {
+            $sheet->getDelegate()->getComment($cellRange)->getText()->createTextRun($comment."\n\n")->getFont()->setBold(true);
+        });
+        Sheet::macro('resizeCommentBox', function (Sheet $sheet, string $cellRange) {
+            $sheet->getDelegate()->getComment($cellRange)->setWidth("5 cm");
+            $sheet->getDelegate()->getComment($cellRange)->setHeight("4 cm");
+        });
         return [
             AfterSheet::class    => function(AfterSheet $event) {
                 $event->sheet->styleCells(
@@ -67,6 +77,22 @@ class MaterialRawSheet implements FromQuery, WithHeadings, WithMapping, WithStri
                         ]
                     ]
                 );
+                $event->sheet->styleCells(
+                    'A1:K100',
+                    [
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                'color' => ['argb' => '000000'],
+                            ],
+                        ]
+                    ]
+                );
+                $event->sheet->addBoldComment('F1','Note:');
+                /* $event->sheet->addComment('F1','\n'); */
+                $event->sheet->addComment('F1','The Feeding Time is when the reel was loaded in the machine.');
+                $event->sheet->addBoldComment('F1','The Report includes only Reels that are finished or have been replenished.');
+                $event->sheet->resizeCommentBox('F1');
             },
         ];
     }
