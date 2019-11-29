@@ -33,42 +33,7 @@ function loadlinemach(){
             }            
         });
 }
-function loadlineconfig(){
-    $.ajax({
-        url: 'lcl',
-        type:'get',
-        success: function (data) {
-            $('#lctable-div').html(data);
-            $('.sel').select2({width: '100%'});
-        }
-    });
-}
-function lineconfigUpdate(){
-    var formdata = $('#line_config_form').serialize();
-    $.ajax({
-        url: 'lcu',
-        type:'post',
-        data: formdata,
-        success: function (data) {            
-            /* alert(JSON.stringify(data)); */
-            /* alert(data); */
-            if(data.type == 'success'){
-                $('#line_config_modal').modal('hide');              
-                iziToast.success({
-                    message: data.message,
-                    position: 'topCenter'
-                });
-            }
-            else if(data.type == 'error'){
-                iziToast.warning({
-                    message: data.message,
-                    position: 'topCenter'
-                });
-            }
-        }
-    });
-    /* alert(formdata); */
-}
+
 /* EVENTS */
 $('#flviewmachine').on('change', function(){
     window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $(this).val() + "/" + $('#flviewline').val();
@@ -246,13 +211,7 @@ $('#insert_mach1').on('click', function(){
         });
     }
 });
-$('#line_button').on('click',function(e){
-    loadlineconfig();
-    $('#line_config_modal').modal('show');
-});
-$('#line_config_submit').on('click',function(e){
-    lineconfigUpdate();
-})
+
 /* ADDING MACHINE AND LINE */
 /* HIDE/SHOW */
     /* Add Machine and Line */

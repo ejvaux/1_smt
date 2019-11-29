@@ -56,6 +56,7 @@
                 </button>
             </div>
             <form id="line_config_form"  method="post" action=''>
+                <input type="hidden" name="updated_by" id="ub_lc">
             <div class="modal-body" style="">
                 <!-- ____________ FORM __________________ -->
                 <div id='lctable-div'>

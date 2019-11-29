@@ -251,6 +251,7 @@ class MasterController extends Controller
         $t = [];
         $lines = LineName::whereIn('division_id',[2])->pluck('id');
         $mods = ModName::all();
+        $user = $request->updated_by;
         foreach ($mods as $mod) {
             $up = ModName::find($mod->id);
             foreach ($lines as $line) {
@@ -262,6 +263,7 @@ class MasterController extends Controller
                         $ln[] = $line;
                     }                    
                     $up->lines = $ln;
+                    $up->updated_by = $user;
                     $up->save();
                 }
                 else{
@@ -274,10 +276,11 @@ class MasterController extends Controller
                     }
                     $ln3 = array_values($ln2);  
                     $up->lines = $ln3;
-                    $up->save();
+                    $up->save(['timestamps' => false]);
                 }
             }
         }
+        /* return $request->updated_by; */
         return [
             'type' => 'success',
             'message' => 'Data Saved'
