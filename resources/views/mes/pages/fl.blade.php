@@ -4,13 +4,19 @@
         $('#tb1').addClass('active');
     </script>
 @endsection
+@section('js')    
+    
+@endsection
 @section('content')
     <div class="container mt-5" id="table_display" style="width: 100%;">
         <div class="row mb-2">
-            <div class="col-md">
+            <div class="col-md-2">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button id='add_model_button' class="btn btn-outline-info py-0 p-1">Add Model</button>
                 </div>
+            </div>
+            <div class="col-md">
+                <button id='line_button' class="btn btn-outline-info">Line Config</button>
             </div>
             <div class="col-md-3 ml-0 pl-1 ">
                 <form method="get" action="{{url('fl')}}">

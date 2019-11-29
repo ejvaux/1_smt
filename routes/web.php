@@ -161,6 +161,8 @@ Route::get('ls', 'MES\view\MasterController@linestruc');
 Route::get('el', 'MES\view\MasterController@employee');
 Route::get('ml', 'MES\view\MasterController@machine');
 Route::get('ln', 'MES\view\MasterController@line');
+Route::get('lcl', 'MES\view\MasterController@lineconfig');
+Route::post('lcu', 'MES\view\MasterController@lineconfigUpdate');
 
 /* ----- Export ----- */
 Route::get('exportel', 'MES\api\EmployeesController@exportemployee');

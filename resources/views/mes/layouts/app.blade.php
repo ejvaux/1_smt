@@ -19,7 +19,7 @@
         <!-- Header start -->
         <title>SMT Master Database</title>
         @include('mes.inc.header')
-        
+        @yield('js')
     </head>
 
     <body>

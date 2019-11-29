@@ -50,6 +50,7 @@ class VerifyCsrfToken extends Middleware
         'exportsnpn',
         'update_usage',
         'scanpinemp',
+        'lcu',
         'testt'
     ];
 }

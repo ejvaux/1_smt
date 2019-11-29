@@ -1514,16 +1514,17 @@ class ApiController extends Controller
             } */
             foreach ($mt as $key => $value) {
                 if(
-                    $value['machine'] == $request->machine_id && 
+                    strtoupper($value['machine']) == strtoupper($request->machine_id) && 
                     $value['position'] == $request->position && 
                     $value['feeder'] == $request->feeder_slot
                     )
                 {
                     $tu = $key;
-                    break;
+                    unset($mt[$tu]);
+                    /* break; */
                 }
             }                
-            unset($mt[$tu]);
+            /* unset($mt[$tu]); */
 
             $im = new MatComp;
             $im->model_id = $request->model_id;
@@ -1533,7 +1534,7 @@ class ApiController extends Controller
             $mt2 = $im->materials;
             $mt2[] = [
                                 'component_id' => $component->id,
-                                'machine' => $request->machine_id,
+                                'machine' => strtoupper($request->machine_id),
                                 'position' => $request->position,
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,
@@ -1566,7 +1567,7 @@ class ApiController extends Controller
             $mt = $im->materials;
             $mt[] = [
                                 'component_id' => $component->id,
-                                'machine' => $request->machine_id,
+                                'machine' => strtoupper($request->machine_id),
                                 'position' => $request->position,
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,

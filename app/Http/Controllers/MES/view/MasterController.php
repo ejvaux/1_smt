@@ -38,7 +38,7 @@ class MasterController extends Controller
         return redirect('fl');
     }
     public function feederlist(Request $request)
-    {
+    {        
         $t = $request->input('text');        
         if($t == ''){
             $models = ModName::sortable()->orderby('updated_at','DESC')->paginate('10');
@@ -239,5 +239,51 @@ class MasterController extends Controller
                 ->orwhere('updated_at','LIKE','%'.$t.'%')
         ->orderby('updated_at','DESC')->paginate('10');
         return view('mes.pages.fl',compact('models'));        
+    }
+    public function lineconfig(Request $request)
+    {
+        $lines = LineName::whereIn('division_id',[2])->get();
+        $mods = ModName::orderby('updated_at','DESC')->get();
+        return view('mes.inc.table.lcTable',compact('mods','lines'));
+    }
+    public function lineconfigUpdate(Request $request)
+    {
+        $t = [];
+        $lines = LineName::whereIn('division_id',[2])->pluck('id');
+        $mods = ModName::all();
+        $user = $request->updated_by;
+        foreach ($mods as $mod) {
+            $up = ModName::find($mod->id);
+            foreach ($lines as $line) {
+                $key = 'line_id_'.$line;
+                if($request[$key] == $mod->id){
+                    $ln = [];
+                    $ln = $up->lines;
+                    if (in_array($line,$ln) == false) {
+                        $ln[] = $line;
+                    }                    
+                    $up->lines = $ln;
+                    $up->updated_by = $user;
+                    $up->save();
+                }
+                else{
+                    $ln2 = [];
+                    $ln2 = $up->lines;
+                    foreach ($ln2 as $key => $value) {
+                        if($value == $line){
+                            unset($ln2[$key]);
+                        }
+                    }
+                    $ln3 = array_values($ln2);  
+                    $up->lines = $ln3;
+                    $up->save(['timestamps' => false]);
+                }
+            }
+        }
+        /* return $request->updated_by; */
+        return [
+            'type' => 'success',
+            'message' => 'Data Saved'
+        ]; 
     }
 }

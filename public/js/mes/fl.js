@@ -1,7 +1,8 @@
 /* Variable */
 var userID = $('meta[name="user_num"]').attr('content');
 /* Auto */
-$(document).ready(function(){
+$(document).ready(function(){    
+    $('.select2').select2({width: '100%'});
     $('#tabA'+$('#active-table').val()).tab('show');
     /* $('#tabA'+$('#active-table').val()).trigger('click');  */  
 });
@@ -32,6 +33,7 @@ function loadlinemach(){
             }            
         });
 }
+
 /* EVENTS */
 $('#flviewmachine').on('change', function(){
     window.location = "/1_smt/public/fld/" + $('#mdl_id').val() + "/" + $(this).val() + "/" + $('#flviewline').val();
@@ -170,7 +172,6 @@ $("#fdrmodl").on('click','#dit_comp_submit', function(){
         }
     });
 });
-
 $('#insert_mach1').on('click', function(){
     if($('#addmachlist').val() != ''){
         $.ajax(
@@ -210,6 +211,7 @@ $('#insert_mach1').on('click', function(){
         });
     }
 });
+
 /* ADDING MACHINE AND LINE */
 /* HIDE/SHOW */
     /* Add Machine and Line */

@@ -1327,6 +1327,7 @@ function InsertRecord(order_id){
         new_PN = temp2[4].substr(3);
     } */
     if(b!=0){
+        comp_rid = '';
         for (b in temp2 ) {
             var res2 = temp2[b].split(":");
             if(res2[0] == "PN"){
@@ -1339,6 +1340,13 @@ function InsertRecord(order_id){
                 comp_rid = res2[1];
             }
         }
+    }
+    if(comp_rid == ''){
+        iziToast.error({
+            title: 'ERROR',
+            position: 'topCenter',
+            message: 'Error processing Reel Qr Code. Please try again.',
+        });
     }
 
     $.ajaxSetup({

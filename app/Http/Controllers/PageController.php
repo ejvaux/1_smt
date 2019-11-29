@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Log;
 use App\MatLoadModel;
 use App\Jobs\InsertMatRep;
 use App\Http\Controllers\MES\model\Feeder;
+use App\Http\Controllers\MES\model\Modname;
 use App\Models\MaterialReport;
 
 class PageController extends Controller
@@ -61,7 +62,7 @@ class PageController extends Controller
     }
     public function mscan2(){
 
-        $models=modelSMT::where('version','!=',0)->get();
+        $models=modelSMT::where('lines','!=',"[]")->get();
         $position=LRPosition::all();
         $mounter=mounter::all();
         $emp=employee::all();
@@ -99,21 +100,17 @@ class PageController extends Controller
 
     public function testing()
     {
-        /* $f = MatComp::where('line_id', 17)->latest('id')->first();
-        // return count($f->materials);
-        return $f; */
-
-        $f = MatLoadModel::where('model_id',24)->groupBy('machine_id','table_id','mounter_id','pos_id')->orderBy('id','DESC')->get();
-        $page = "<table>";
-
-        foreach ($f as $value) {
-            $page .= "<tr>";
-            $page .= "<td>". $value ."</td>";
-            $page .= "</tr>";
+        $array = [
+            2,
+            2
+        ];
+        if(in_array(3,$array)){
+            return 'meron';
         }
-
-        $page .= "<table>";
-        return $f->count();
+        else{
+            return 'wala';
+        }
+        
     }
     public function qrgen()
     {
