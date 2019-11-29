@@ -272,39 +272,12 @@ class MasterController extends Controller
                             unset($ln2[$key]);
                         }
                     }
-                    /* $key = array_search($line) */
-                    /* unset($ln2[$line]); */
-                    $ln3 = array_values($ln2);
+                    $ln3 = array_values($ln2);  
                     $up->lines = $ln3;
                     $up->save();
                 }
             }
         }
-        /* foreach ($lines as $line) {
-            $key = 'line_id_'.$line;
-            if($request[$key] > 0){
-                ModName::where('id',$request[$key])->update(['version'=>$line]);
-                $ln = [];
-                $up = ModName::find($request[$key]);
-                $ln = $up->lines;
-                $ln[] = $request[$key];
-                $up->lines = $ln;
-                $t[] = $request[$key];
-            }
-            $ln = [];
-            $up = ModName::find($request[$key]);
-            $ln = $up->lines;
-            $ln[] = $request[$key];
-            $up->lines = $ln;
-            $up->save();
-            $t[] = $request[$key];
-        }
-        return $t; */
-        /* ModName::whereNotIn('id',$t)->update(['version'=>0]); */
-        /* return [
-            'type' => 'error',
-            'message' => 'Serial Number Already Scanned.'
-        ]; */
         return [
             'type' => 'success',
             'message' => 'Data Saved'
