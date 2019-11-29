@@ -100,8 +100,13 @@ $(document).ready(function() {
 
     $('#scan_pos').on('select2:select', function (e) {
        
-        document.getElementById("scan_feed_slot").focus();
-        $('#scan_feed_slot').select2('open');
+        /* document.getElementById("scan_feed_slot").focus();
+        $('#scan_feed_slot').select2('open'); */
+        setTimeout(function() {
+            $('.select2-container-active').removeClass('select2-container-active');
+            $(':focus').blur();
+            selinput();
+        }, 1);
     });
 
     $('#scan_model').on('select2:select', function (e) {
@@ -128,11 +133,12 @@ $('#scan_line').on('select2:close', function(e){
     }, 1);
 });
 $('#scan_feed_slot').on('select2:close', function(e){
-    setTimeout(function() {
+    /* setTimeout(function() {
         $('.select2-container-active').removeClass('select2-container-active');
         $(':focus').blur();
         selinput();
-    }, 1);
+    }, 1); */
+    $('#scan_pos').select2('open');
 });
 
 function selinput(){
@@ -140,7 +146,7 @@ function selinput(){
         $("#scan_newPN").focus();
     }
     else{
-        $("#scan_oldPN").focus();
+        /* $("#scan_oldPN").focus(); */
     }    
 }
 
@@ -640,12 +646,12 @@ function enterEvent(e) {
     function IsReplenish()
     {
         if ($('#replenish').is(":checked")){
-            document.getElementById("scan_oldPN").disabled = false;
-            $('#scan_oldPN').focus();
+            /* document.getElementById("scan_oldPN").disabled = false;
+            $('#scan_oldPN').focus(); */
             //alert('YES');
         }
         else{            
-            document.getElementById("scan_oldPN").disabled = true;
+            /* document.getElementById("scan_oldPN").disabled = true; */
             $("#scan_newPN").focus();
             //alert('NO');
         }
@@ -687,7 +693,9 @@ function event_mach(e){
         document.getElementById("scan_pos").focus();
         //sloaddetails();
         //loaddata_panel_right();
-        $('#scan_pos').select2('open');
+        /* $('#scan_pos').select2('open'); */
+        document.getElementById("scan_feed_slot").focus();
+        $('#scan_feed_slot').select2('open');
     }
 }
 
@@ -864,14 +872,14 @@ function resetval(){
         $('#scan_pos').val("").trigger('change');
         $('#scan_feed_slot').val("").trigger('change');
         document.getElementById('scan_machine').value="";
-        document.getElementById('scan_oldPN').value="";
+        /* document.getElementById('scan_oldPN').value=""; */
         document.getElementById('scan_newPN').value="";
         document.getElementById("scan_emp").focus();
     }
     else{
         $('#scan_pos').val("").trigger('change');
         $('#scan_feed_slot').val("").trigger('change');
-        document.getElementById('scan_oldPN').value="";
+        /* document.getElementById('scan_oldPN').value=""; */
         document.getElementById('scan_newPN').value="";
         $('#scan_pos').select2('open');
     }
@@ -881,7 +889,7 @@ function resetval1(){
     $('#scan_pos').val("").trigger('change');
     $('#scan_feed_slot').val("").trigger('change');
     /* document.getElementById('scan_machine').value=""; */
-    document.getElementById('scan_oldPN').value="";
+    /* document.getElementById('scan_oldPN').value=""; */
     document.getElementById('scan_newPN').value="";
     /* document.getElementById("scan_machine").focus(); */
     $('#scan_pos').select2('open');
@@ -904,7 +912,7 @@ function event_loadPN(e){
     var model_code = document.getElementById('scan_model').value;
     var position = document.getElementById('scan_pos').value;
     var feeder_slot = document.getElementById('scan_feed_slot').value;
-    var old_PN = document.getElementById('scan_oldPN').value;
+    /* var old_PN = document.getElementById('scan_oldPN').value; */
     var new_PN = document.getElementById('scan_newPN').value;
 
    
@@ -984,9 +992,9 @@ function event_loadPN(e){
                               })
                               
                             ErrorIns("OLD PN and NEW PN not matched");
-                            document.getElementById('scan_oldPN').value="";
+                            /* document.getElementById('scan_oldPN').value=""; */
                             document.getElementById('scan_newPN').value="";
-                            document.getElementById('scan_oldPN').focus();
+                            /* document.getElementById('scan_oldPN').focus(); */
                         }
 
                 }
@@ -1121,7 +1129,7 @@ function CheckFeeder(){
     var model_code = document.getElementById('scan_model').value;
     var position = document.getElementById('scan_pos').value;
     var feeder_slot = document.getElementById('scan_feed_slot').value;
-    var old_PN = document.getElementById('scan_oldPN').value;
+    /* var old_PN = document.getElementById('scan_oldPN').value; */
     var new_PN = document.getElementById('scan_newPN').value;
 
     if ($('#replenish').is(":checked")){
@@ -1192,7 +1200,7 @@ function CheckFeeder(){
             'model_id':model_code,
             'position':position,
             'feeder_slot':feeder_slot,
-            'old_PN':old_PN,
+            /* 'old_PN':old_PN, */
             'new_PN':new_PN
         },
         success: function (data) {
@@ -1210,9 +1218,9 @@ function CheckFeeder(){
                 }
             }
             else{
-                document.getElementById('scan_oldPN').value="";
+                /* document.getElementById('scan_oldPN').value=""; */
                 document.getElementById('scan_newPN').value="";
-                document.getElementById('scan_oldPN').focus();
+                /* document.getElementById('scan_oldPN').focus(); */
                     /* iziToast.error({
                         title: 'ERROR',
                         position: 'topCenter',
@@ -1264,7 +1272,7 @@ function InsertRecord(order_id){
     var model_code = document.getElementById('scan_model').value;
     var position = document.getElementById('scan_pos').value;
     var feeder_slot = document.getElementById('scan_feed_slot').value;
-    var old_PN = document.getElementById('scan_oldPN').value;
+    /* var old_PN = document.getElementById('scan_oldPN').value; */
     var new_PN = document.getElementById('scan_newPN').value;
     var reelInfo = document.getElementById('scan_newPN').value;
 
@@ -1349,7 +1357,7 @@ function InsertRecord(order_id){
             'model_id':model_code,
             'position':position,
             'feeder_slot':feeder_slot,
-            'old_PN':old_PN,
+            /* 'old_PN':old_PN, */
             'new_PN':new_PN,
             'order_id':order_id,
             'reelInfo':reelInfo,
@@ -1408,7 +1416,7 @@ function CheckRunning(order_id){
     var model_code = document.getElementById('scan_model').value;
     var position = document.getElementById('scan_pos').value;
     var feeder_slot = document.getElementById('scan_feed_slot').value;
-    var old_PN = document.getElementById('scan_oldPN').value;
+    /* var old_PN = document.getElementById('scan_oldPN').value; */
     var new_PN = document.getElementById('scan_newPN').value;
 
     if ($('#replenish').is(":checked")){
@@ -1478,7 +1486,7 @@ function CheckRunning(order_id){
             'model_id':model_code,
             'position':position,
             'feeder_slot':feeder_slot,
-            'old_PN':old_PN,
+            /* 'old_PN':old_PN, */
             'new_PN':new_PN,
             'order_id':order_id
         },
@@ -1979,7 +1987,7 @@ function ErrorIns(errorType){
     var model_code = document.getElementById('scan_model').value;
     var position = document.getElementById('scan_pos').value;
     var feeder_slot = document.getElementById('scan_feed_slot').value;
-    var old_PN = document.getElementById('scan_oldPN').value;
+    /* var old_PN = document.getElementById('scan_oldPN').value; */
     var new_PN = document.getElementById('scan_newPN').value;
     var reelInfo = document.getElementById('scan_newPN').value;
     if ($('#replenish').is(":checked")){
@@ -2048,7 +2056,7 @@ function ErrorIns(errorType){
             'model_id':model_code,
             'position':position,
             'feeder_slot':feeder_slot,
-            'old_PN':old_PN,
+            /* 'old_PN':old_PN, */
             'new_PN':new_PN,
             'errorType':errorType,
             'reelInfo':reelInfo

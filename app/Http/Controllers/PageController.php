@@ -103,7 +103,7 @@ class PageController extends Controller
         // return count($f->materials);
         return $f; */
 
-        $f = MatLoadModel::where('model_id',23)->groupBy('machine_id','table_id','mounter_id','pos_id')->orderBy('id','DESC')->get();
+        $f = MatLoadModel::where('model_id',24)->groupBy('machine_id','table_id','mounter_id','pos_id')->orderBy('id','DESC')->get();
         $page = "<table>";
 
         foreach ($f as $value) {

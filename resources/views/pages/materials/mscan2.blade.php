@@ -55,19 +55,6 @@
                                 <input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)" autocomplete='off' required>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for='scan_pos' class="col-form-label bold-text">POSITION:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <select class="select2" id="scan_pos" required>
-                                    <option value="" selected>SELECT POSITION</option>
-                                    @foreach ($position as $position_item)
-                                    <option value="{{$position_item->id}}">{{$position_item->name}}</option>
-                                    @endforeach 
-                                </select>
-                            </div>
-                        </div>
                         <div class="row mb-1">
                             <div class="col-md-4">
                                 <label for='scan_feed_slot' class="col-form-label bold-text">FEEDER SLOT#:</label>
@@ -81,15 +68,28 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-1">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for='scan_pos' class="col-form-label bold-text">POSITION:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <select class="select2" id="scan_pos" required>
+                                    <option value="" selected>SELECT POSITION</option>
+                                    @foreach ($position as $position_item)
+                                    <option value="{{$position_item->id}}">{{$position_item->name}}</option>
+                                    @endforeach 
+                                </select>
+                            </div>
+                        </div>
+                        {{-- <div class="row mb-1">
                             <div class="col-md-4">
                                 <label for='replenish' class="col-form-label bold-text">FOR REPLENISH? </label>
                             </div>
                             <div class="col-md-8">
-                                <input id="replenish" class="form-check-input form-control" data-width="100%" type="checkbox" data-toggle="toggle" data-on="YES" data-off="NO" data-offstyle="danger" onchange="IsReplenish()" checked>
+                                <input id="replenish" class="form-check-input form-control" data-width="100%" type="checkbox" data-toggle="toggle" data-on="YES" data-off="NO" data-offstyle="danger" onchange="IsReplenish()" disabled>
                             </div>                            
-                        </div>
-                        <div class="row mb-1">
+                        </div> --}}
+                        {{-- <div class="row mb-1">
                             <div class="col-md">
                                 <span style="font-size:0.8em">
                                     <b>NOTE:</b> Check this toggle button if you will load the same reel component/partname. This will require you to scan both reel barcodes.
@@ -103,7 +103,7 @@
                             <div class="col-md-8">
                                 <input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)" autocomplete='off'>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row mb-1">
                             <div class="col-md-4">
                                 <label for='scan_newPN' class="col-form-label bold-text">PRIMA PN TO LOAD:</label>
