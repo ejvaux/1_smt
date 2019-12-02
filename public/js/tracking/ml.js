@@ -14,5 +14,15 @@ function loadlist(line){
 
 // Events
 $('#ml-btn-submit').on('click', function(){
-    loadlist($('#line').val());
+    if ($('#line').val()) {
+        loadlist($('#line').val());
+    }
+    else{
+        iziToast.error({
+            title: 'ERROR',
+            position: 'topCenter',
+            message: 'Select Line First.',
+        });
+    }
+    
 });

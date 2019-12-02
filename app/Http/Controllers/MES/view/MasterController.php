@@ -260,7 +260,7 @@ class MasterController extends Controller
                     $ln = [];
                     $ln = $up->lines;
                     if (in_array($line,$ln) == false) {
-                        $ln[] = $line;
+                        $ln[] = "$line";
                     }                    
                     $up->lines = $ln;
                     $up->updated_by = $user;
