@@ -127,8 +127,7 @@ class AjaxController extends Controller
         $line_id = 0;
         $mach_type= machine::where('barcode',$m_code)->first();
         $table_id= tableSMT::where('name',$table)->first();
-        $comp_id= component::where('product_number',$component)->first();
-        $model_id = modelSMT::where('code',$request->input('model_id'))->first();
+        $comp_id= component::where('product_number',$component)->first();        
         if($mach_type){
             $line_id = $mach_type->line->linename->id;
             $mach_type=$mach_type->machine_type_id;
@@ -148,22 +147,16 @@ class AjaxController extends Controller
         else{
             $comp_id = "0";
         }
-        if($model_id){
-            $model_id = $model_id->id;
-        }
-        else{
-            $model_id = "0";
-        }
+        $model = modelSMT::where('lines','LIKE','%'.$line_id.'%')->first();
         
-        $data=feeders::where('machine_type_id',$mach_type)
-                        /* ->where('line_id',$request->input('line')) */
-                        ->where('line_id',$line_id)
-                       ->where('table_id',$table_id)
-                       ->where('model_id',$request->input('model_id'))
-                       ->where('mounter_id',$request->input('feeder_slot'))
-                       ->where('pos_id',$request->input('position'))
-                       ->where('component_id',$comp_id)
-                       ->first();
+        $data=feeders::where('model_id',$model->id)
+                    ->where('line_id',$line_id)
+                    ->where('machine_type_id',$mach_type)
+                    ->where('table_id',$table_id)
+                    ->where('mounter_id',$request->input('feeder_slot'))
+                    ->where('pos_id',$request->input('position'))
+                    ->where('component_id',$comp_id)
+                    ->first();
         
            /*  $data=feeders::where('machine_type_id',$mach_type)
                        ->where('table_id',$table_id)
@@ -172,7 +165,7 @@ class AjaxController extends Controller
                        ->where('pos_id',$request->input('position'))
                        ->where('component_id',$comp_id)
                        ->first(); */
-
+        
         if ($data) {
             return $data->order_id;
         }

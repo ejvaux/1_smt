@@ -1486,14 +1486,14 @@ class ApiController extends Controller
 
     /* mat_comp - mat_sn_comp */
 
-    public static function insertmatcomp(Request $request,$mat_load_id)
+    public static function insertmatcomp(Request $request,$mat_load)
     {
         $machine = $request->machine_id;
         $m_code =substr($machine,0,-1);
         $mach = Machine::where('barcode',$m_code)->first();
         $line_id = $mach->line->linename->id;
         $component= Component::where('product_number',$request->new_PN)->first();
-        $m = MatComp::where('model_id',$request->model_id)->where('line_id',$line_id)->latest('id')->first();
+        $m = MatComp::where('model_id',$mat_load->model_id)->where('line_id',$line_id)->latest('id')->first();
         
         if($m){
             $mt = $m->materials;
@@ -1527,9 +1527,9 @@ class ApiController extends Controller
             /* unset($mt[$tu]); */
 
             $im = new MatComp;
-            $im->model_id = $request->model_id;
+            $im->model_id = $mat_load->model_id;
             $im->line_id = $line_id;
-            $im->mat_load_id = $mat_load_id;
+            $im->mat_load_id = $mat_load->id;
             $im->materials = $mt;
             $mt2 = $im->materials;
             $mt2[] = [
@@ -1539,7 +1539,7 @@ class ApiController extends Controller
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,
                                 'QTY' => $request->comp_qty,
-                                'matload_id' => $mat_load_id
+                                'matload_id' => $mat_load->id
                                 ];
             /* $mt2[$component->id] = [
                                     'machine' => $request->machine_id,
@@ -1561,9 +1561,9 @@ class ApiController extends Controller
         }
         else{
             $im = new MatComp;
-            $im->model_id = $request->model_id;
+            $im->model_id = $mat_load->model_id;
             $im->line_id = $line_id;
-            $im->mat_load_id = $mat_load_id;
+            $im->mat_load_id = $mat_load->id;
             $mt = $im->materials;
             $mt[] = [
                                 'component_id' => $component->id,
@@ -1572,7 +1572,7 @@ class ApiController extends Controller
                                 'feeder' => $request->feeder_slot,
                                 'RID' => $request->comp_rid,
                                 'QTY' => $request->comp_qty,
-                                'matload_id' => $mat_load_id
+                                'matload_id' => $mat_load->id
                                 ];
             /* $mt[$component->id] = [
                                     'machine' => $request->machine_id,
@@ -1589,6 +1589,5 @@ class ApiController extends Controller
                 Log::error($th);
             }  */           
         }
-
     }
 }

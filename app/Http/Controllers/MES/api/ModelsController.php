@@ -48,7 +48,8 @@ class ModelsController extends Controller
             $m->code = $request->input('code');
             $m->program_name = $request->input('program_name');
             $m->updated_by = $request->input('updated_by');
-            $m->version = 1;
+            $m->version = 0;
+            $m->lines = [];
             /* $m->save(); */
             if($m->save()){
                 return redirect()->back()->with('success','Model Saved Successfully.');

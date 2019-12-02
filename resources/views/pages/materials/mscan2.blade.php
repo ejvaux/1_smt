@@ -21,7 +21,7 @@
                                 </div>                                
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-4">
                                 <label for='scan_model' class="col-form-label bold-text">MODEL NAME:</label>
                             </div>
@@ -33,7 +33,7 @@
                                     @endforeach     
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- <div class="row mb-1">
                             <div class="col-md-4">
                                 <label for='scan_line' class="col-form-label bold-text">LINE</label>

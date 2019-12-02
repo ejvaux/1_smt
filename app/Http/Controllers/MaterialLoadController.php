@@ -19,6 +19,8 @@ use App\RunningOnMachine;
 use Response;
 use App\Http\Controllers\Api\ApiController;
 use Log;
+use App\Custom\CustomFunctions;
+use App\Jobs\MatCompInsert;
 
 class MaterialLoadController extends Controller
 {
@@ -62,7 +64,9 @@ class MaterialLoadController extends Controller
         $mach_type= machine::where('barcode',$m_code)->first();
         $table_id= tableSMT::where('name',$table)->first();
         $comp_id= component::where('product_number',$component)->first();
-        $model_id = modelSMT::where('code',$request->input('model_id'))->first();
+        /* $model_id = modelSMT::where('code',$request->input('model_id'))->first(); */
+        $line_id = $mach_type->line->linename->id;
+        $model = modelSMT::where('lines','LIKE','%"'.$line_id.'"%')->first();
         if($mach_type){
             $mach_type=$mach_type->id;
         }
@@ -81,14 +85,28 @@ class MaterialLoadController extends Controller
         else{
             $comp_id = "0";
         }
-        if($model_id){
-            $model_id = $model_id->id;
-        }
-        else{
-            $model_id = "0";
+
+        // Check duplicate
+        $dup = MatLoadModel::where('machine_id',$mach_type)
+                            ->where('model_id',$model->id)
+                            ->where('table_id',$table_id)
+                            ->where('mounter_id',$request->input('feeder_slot'))
+                            ->where('pos_id',$request->input('position'))
+                            ->where('component_id',$comp_id)
+                            ->latest('id')
+                            ->first();
+        if($dup){
+            $rid1 = CustomFunctions::getQrData($dup->ReelInfo,'RID');
+            $rid2 = CustomFunctions::getQrData($request->input('reelInfo'),'RID');
+            if ($rid1 == $rid2) {
+                return [
+                    'type' => 'error',
+                    'message' => 'Reel Already Scanned.'
+                ];
+            }
         }
         
-        $insrecord=new MatLoadModel();
+        /* $insrecord=new MatLoadModel();
         $insrecord->machine_id=$mach_type;
         $insrecord->model_id=$request->input('model_id');
         $insrecord->table_id=$table_id;
@@ -99,15 +117,35 @@ class MaterialLoadController extends Controller
         $insrecord->employee_id=$request->input('emp_id');
         $insrecord->ReelInfo=$request->input('reelInfo');
         $insrecord->results="MATCH";
+        $insrecord->save(); */
+
+        $insrecord=new MatLoadModel();
+        $insrecord->machine_id=$mach_type;
+        $insrecord->model_id=$model->id;
+        $insrecord->table_id=$table_id;
+        $insrecord->mounter_id=$request->input('feeder_slot');
+        $insrecord->pos_id=$request->input('position');
+        $insrecord->component_id=$comp_id;
+        $insrecord->order_id=$request->input('order_id');
+        $insrecord->employee_id=$request->input('emp_id');
+        $insrecord->ReelInfo=$request->input('reelInfo');
+        $insrecord->results="MATCH";
         $insrecord->save();
         
-        ApiController::insertmatcomp($request,$insrecord->id);
-
-        /* try {
-            ApiController::insertmatcomp($request,$insrecord->id);
-        } catch (\Throwable $th) {
-            Log::error($th);
-        } */
+        $req = [
+            'machine_id' => $request->input('machine_id'),
+            'new_PN' => $request->input('new_PN'),
+            'position' => $request->input('position'),
+            'feeder_slot' => $request->input('feeder_slot'),
+            'comp_rid' => $request->input('comp_rid'),
+            'comp_qty' => $request->input('comp_qty'),
+            'id' => $insrecord->id,
+            'model_id' => $insrecord->model_id
+        ];
+        MatCompInsert::dispatch($req);
+        /* MatCompInsert::dispatch($req,$insrecord->id); */
+        /* ApiController::insertmatcomp($request,$insrecord); */
+        /* ApiController::insertmatcomp($request,$insrecord->id); */
 
        /*  $insrecord=new MatLoadModel();
         $insrecord->machine_id=$mach_type;
@@ -126,7 +164,7 @@ class MaterialLoadController extends Controller
 
         
         $running_mach = RunningOnMachine::where('machine_id',$mach_type)
-                                        ->where('model_id',$request->input('model_id'))
+                                        ->where('model_id',$model->id)
                                         ->where('table_id',$table_id)
                                         ->where('mounter_id',$request->input('feeder_slot'))
                                         ->where('pos_id',$request->input('position'))
@@ -140,11 +178,10 @@ class MaterialLoadController extends Controller
                                         ->first();    */                             
 
 
-        if($running_mach){
-            
+        if($running_mach){            
             $RunUpdate = RunningOnMachine::find($running_mach->id);
             $RunUpdate->machine_id=$mach_type;
-            $RunUpdate->model_id=$request->input('model_id');
+            $RunUpdate->model_id=$model->id;
             $RunUpdate->table_id=$table_id;
             $RunUpdate->mounter_id=$request->input('feeder_slot');
             $RunUpdate->pos_id=$request->input('position');
@@ -153,25 +190,12 @@ class MaterialLoadController extends Controller
             $RunUpdate->employee_id=$request->input('emp_id');
             $RunUpdate->datetime_update= date("Y-m-d");
             $RunUpdate->save();
-            return "update";
-
-            /* $RunUpdate = RunningOnMachine::find($running_mach->id);
-            $RunUpdate->machine_id=$mach_type;
-            $RunUpdate->model_id=$model_id;
-            $RunUpdate->table_id=$table_id;
-            $RunUpdate->mounter_id=$request->input('feeder_slot');
-            $RunUpdate->pos_id=$request->input('position');
-            $RunUpdate->component_id=$comp_id;
-            $RunUpdate->order_id=$request->input('order_id');
-            $RunUpdate->employee_id=$request->input('emp_id');
-            $RunUpdate->datetime_update= date("Y-m-d");
-            $RunUpdate->save();
-            return "update"; */
+            /* return "update"; */
         }
         else{
             $RunInsert=new RunningOnMachine();
             $RunInsert->machine_id=$mach_type;
-            $RunInsert->model_id=$request->input('model_id');
+            $RunInsert->model_id=$model->id;
             $RunInsert->table_id=$table_id;
             $RunInsert->mounter_id=$request->input('feeder_slot');
             $RunInsert->pos_id=$request->input('position');
@@ -180,22 +204,12 @@ class MaterialLoadController extends Controller
             $RunInsert->employee_id=$request->input('emp_id');
             $RunInsert->datetime_update= date("Y-m-d");
             $RunInsert->save();
-            return "insert";
-
-            /* $RunInsert=new RunningOnMachine();
-            $RunInsert->machine_id=$mach_type;
-            $RunInsert->model_id=$model_id;
-            $RunInsert->table_id=$table_id;
-            $RunInsert->mounter_id=$request->input('feeder_slot');
-            $RunInsert->pos_id=$request->input('position');
-            $RunInsert->component_id=$comp_id;
-            $RunInsert->order_id=$request->input('order_id');
-            $RunInsert->employee_id=$request->input('emp_id');
-            $RunInsert->datetime_update= date("Y-m-d");
-            $RunInsert->save();
-            return "insert"; */
+            /* return "insert"; */
         }
-
+        return [
+            'type' => 'success',
+            'message' => 'Data Recorded!: All inputs are correct.'
+        ];
 
     }
 
