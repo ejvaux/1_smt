@@ -82,7 +82,7 @@ class TrackingController extends Controller
     }
     public function loadlist(Request $request)
     {
-        $model_id = Modname::where('lines','LIKE','%'.$request->line.'%')->pluck('id')->first();
+        $model_id = Modname::where('lines','LIKE','%"'.$request->line.'"%')->pluck('id')->first();
         $feeders = Feeder::where('model_id',$model_id)
                             ->where('line_id',$request->line)
                             ->where('table_id','!=',0)
