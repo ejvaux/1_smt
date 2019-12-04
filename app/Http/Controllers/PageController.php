@@ -100,17 +100,11 @@ class PageController extends Controller
 
     public function testing()
     {
-        $array = [
-            2,
-            2
-        ];
-        if(in_array(3,$array)){
-            return 'meron';
-        }
-        else{
-            return 'wala';
-        }
-        
+        $r = MatComp::where('id',65471)->first();
+
+        $s = MatComp::where('id',65460)->first();
+
+        return count($r->materials) . " - " . count($s->materials);
     }
     public function qrgen()
     {

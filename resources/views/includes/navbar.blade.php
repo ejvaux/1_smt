@@ -119,7 +119,7 @@
                                 <b><i class="fas fa-id-badge"></i>&nbsp&nbspACCOUNT ID:</b>&nbsp{{Auth::user()->id}}<br>
                                 <b><i class="fas fa-user"></i>&nbsp&nbspUSER: </b>&nbsp{{ Auth::user()->name }}
                             </h1>
-                            <a class="dropdown-item" href="#"><i class="fas fa-key"></i>&nbspChange Password</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-key"></i>&nbsp;Change Password</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
