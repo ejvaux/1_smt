@@ -1230,6 +1230,7 @@ function InsertRecord(order_id){
             message: 'Error processing Reel Qr Code. Please try again.',
         });
         $('#scan_newPN').val('');
+        return 0;
     }
 
     for (b in temp2 ) {
@@ -1260,6 +1261,7 @@ function InsertRecord(order_id){
             message: 'Error processing Reel Qr Code. Please try again.',
         });
         $('#scan_newPN').val('');
+        return 0;
     }
 
     $.ajaxSetup({
