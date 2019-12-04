@@ -813,7 +813,9 @@ function resetval(){
         /* document.getElementById('scan_oldPN').value=""; */
         document.getElementById('scan_newPN').value="";
         /* $('#scan_pos').select2('open'); */
-        $("#scan_machine").focus().select();
+        /* $("#scan_machine").focus().select(); */
+        /* $('#scan_feed_slot').focus(); */
+        $('#scan_feed_slot').select2('open');
 
     }    
 }
