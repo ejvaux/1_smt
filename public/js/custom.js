@@ -25,6 +25,49 @@ function colorsets(){
     return $col;
 }
 
+/* ---------- AJAX SETUP ---------- */
+$.ajaxSetup({
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        var msg = '';
+        var file = '';
+        var line = '';
+        if(XMLHttpRequest.responseText != null){
+            msg = XMLHttpRequest.responseJSON.message;
+            file = XMLHttpRequest.responseJSON.file ;
+            line = XMLHttpRequest.responseJSON.line ;
+            console.log(XMLHttpRequest.responseText);
+            console.log(XMLHttpRequest);
+        }
+        if (XMLHttpRequest.readyState == 4) {
+            // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file + '<br>Line: ' + line,
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else if (XMLHttpRequest.readyState == 0) {                
+            // Network error (i.e. connection refused, access denied due to CORS, etc.)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: 'Network Error',
+                position: 'topCenter',
+                close: false,
+            });
+        }
+        else {
+            iziToast.warning({
+                title: 'ERROR',
+                message: 'Unknown Error',
+                position: 'topCenter',
+                close: false,
+            });
+            // something weird is happening
+        }
+    }
+});
+
 $(document).ready(function(){
     $(document).ajaxStart(function(){
         $("#wait").css("display", "block");
@@ -200,9 +243,9 @@ $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-    });
+});
 
-    $.ajax({
+$.ajax({
     url: ajax_url,
     type:'POST',
     dataType:'JSON',
@@ -221,11 +264,11 @@ $.ajaxSetup({
     success: function (data) {
         //dt = JSON.stringify(data);
         //alert('good');
-    },
+    }/* ,
     error: function (data) {
         marker = JSON.stringify(data);
         //alert(marker);
-    }
+    } */
 });
 }
 
@@ -260,7 +303,7 @@ $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-    });
+});
 
     $.ajax({
     url: 'ajax/Check_Record',
@@ -323,11 +366,11 @@ $.ajaxSetup({
                         $('#R_panel_input_type').prop('checked', true).change();
             document.getElementById("loadtbl").click();
 
-    },
+    }/* ,
     error: function (data) {
         marker = JSON.stringify(data);
         alert(marker);
-    }
+    } */
 });
 
 }
@@ -426,11 +469,11 @@ function LoadDataTable(){
             
         //$('#datatable tr').first().after(html);
         $('#datatable').append(html);
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 }
 
@@ -526,11 +569,11 @@ function LoadSAPDataTable(){
 
         //$('#datatable tr').first().after(html);
         $('#JOdatatable').append(html);
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 }
 
@@ -712,7 +755,7 @@ function event_emp(e){
                     document.getElementById("scan_employee").value = data;
 
                 } */
-            },
+            }/* ,
             error: function (data) {
                 marker = JSON.stringify(data);
                   swal.fire({
@@ -723,12 +766,12 @@ function event_emp(e){
                     confirmButtonText: 'OK'
                   }).then((result) => {
                     if (result.value) {
-                        /* window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2"; */
+                        //window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2";
                     }
                   })
                 
                
-            }
+            } */
         });
             
 
@@ -780,12 +823,12 @@ function event_PIN(e){
                     $('#scan_model').select2('open');
                 }
                 //alert(data);
-            },
+            }/* ,
             error: function (data) {
                 marker = JSON.stringify(data);
                 //alert(marker); 
                
-            }
+            } */
         });
     }
 }
@@ -1151,7 +1194,7 @@ function CheckFeeder(){
 
                 ErrorIns("Component not found in feeder list.");
             }
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
@@ -1163,10 +1206,10 @@ function CheckFeeder(){
                 confirmButtonText: 'OK'
               }).then((result) => {
                 if (result.value) {
-                    /* window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2"; */
+                    //window.location.href = "http://172.16.1.13:8000/1_smt/public/mscan2";
                 }
               })
-        }
+        } */
     });
 
 }
@@ -1306,11 +1349,11 @@ function InsertRecord(order_id){
                 });
                 $('#scan_newPN').val('');
             }             
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 
 }
@@ -1428,11 +1471,11 @@ function CheckRunning(order_id){
             }
 
 
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 }
 
@@ -1538,11 +1581,11 @@ function loaddata_panel_right(){
             
             $('#datatable2').append(html);
            
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
     load_running_machine_tbl();
 }
@@ -1701,11 +1744,11 @@ function load_running_machine_tbl(){
 
                
   
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
         
 }
@@ -1738,11 +1781,11 @@ function LoadFeederRunningTable(machine_id,table_id,position_id,mounter_id,model
             }
             FeedList += "</select>";
             $('#F'+machine_id+'-'+table_id+'-'+position_id+'-'+mounter_id).append(FeedList);
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 
 
@@ -1832,11 +1875,11 @@ function loaddetails(){
             
             $('#datatable2').append(html);
            
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 
 }
@@ -1876,11 +1919,11 @@ function exportMatloading(){
         },
         success: function (data) {
             //console.log(JSON.stringify(data));
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 
 
@@ -1979,11 +2022,11 @@ function ErrorIns(errorType){
             
             //alert(data);
            
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 
 }
@@ -2084,11 +2127,11 @@ function LoadErrorTbl(){
             
             $('#datatable2').append(html);
            
-        },
+        }/* ,
         error: function (data) {
             marker = JSON.stringify(data);
             //alert(marker);
-        }
+        } */
     });
 
 }
