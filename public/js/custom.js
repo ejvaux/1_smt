@@ -1145,7 +1145,7 @@ function CheckFeeder(){
                 document.getElementById('scan_newPN').value="";
                 swal.fire({
                     title: 'Check Feeder List or the QR Code to scan',
-                    text: 'Component not found in the feeder list. Please check your input data.',
+                    text: 'Component not found in the feeder list. Please check your input data or the MODEL in Line Config.',
                     type: 'error',
                   })
 

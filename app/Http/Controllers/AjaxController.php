@@ -148,6 +148,10 @@ class AjaxController extends Controller
             $comp_id = "0";
         }
         $model = modelSMT::where('lines','LIKE','%"'.$line_id.'"%')->first();
+
+        if(!isset($model)){
+            return "NO RECORD";
+        }
         
         $data=feeders::where('model_id',$model->id)
                     ->where('line_id',$line_id)
