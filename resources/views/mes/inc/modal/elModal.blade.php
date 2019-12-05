@@ -138,8 +138,8 @@
                 <div class="form-group row">
                     <div class="col-md">
                         <label for="employee-dd" class="col-form-label">Select Employees:</label>
-                        <select class="form-control" name="employees[]" id="employee-dd" multiple>
-                            @foreach ($emps as $emp)
+                        <select class="form-control select2" name="employees[]" id="employee-dd" multiple>
+                            @foreach ($empps as $emp)
                                 <option value="{{$emp->id}}">{{$emp->lname}}, {{$emp->fname}}</option>
                             @endforeach
                         </select>

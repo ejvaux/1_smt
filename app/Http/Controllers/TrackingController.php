@@ -12,6 +12,7 @@ use App\Http\Controllers\MES\model\Modname;
 use App\Http\Controllers\MES\model\Feeder;
 use App\Models\MatComp;
 use App\Http\Controllers\MES\model\Line;
+use DB;
 
 class TrackingController extends Controller
 {
@@ -96,7 +97,7 @@ class TrackingController extends Controller
         $f = MatComp::where('model_id', $model_id)->where('line_id',$request->line)->latest('id')->first();
 
         $mach = Line::where('line_name_id',$request->line)->pluck('machine_id');
-        $mm = MatLoadModel::where('model_id',$model_id)
+        /* $mm = MatLoadModel::where('model_id',$model_id)
                                 ->whereIN('machine_id',$mach)
                                 ->groupBy('pos_id')
                                 ->groupBy('mounter_id')
@@ -105,9 +106,9 @@ class TrackingController extends Controller
                                 ->orderBy('machine_id')
                                 ->orderBy('table_id')
                                 ->orderBy('mounter_id')
-                                ->orderBy('pos_id')
-                                ->get();
+                                ->orderBy('pos_id')                                
+                                ->get(); */
 
-        return view('includes.table.mlTable',compact('model_id','feeders','f','mm'));
+        return view('includes.table.mlTable',compact('model_id','feeders','f'/* ,'mm' */));
     }
 }

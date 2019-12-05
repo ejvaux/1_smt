@@ -42,7 +42,7 @@ class MaterialReports extends Command
     public function handle()
     {
         $today = Date('Y-m-d');
-        /* $today = Date('2019-11-21'); */
+        /* $today = Date('2019-12-03'); */
         $dt = Carbon::parse($today)->subday();
         $from = Carbon::parse($today)->subday()->addHours(6);
         $to = Carbon::parse($today)->addHours(6);

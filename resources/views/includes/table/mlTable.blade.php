@@ -41,11 +41,15 @@
                                 $qty = CustomFunctions::getQrData($matload->ReelInfo,'QTY');
                                 $total = 0;
                                 $serials = App\Models\MatSnComp::where('RID',$rid)->get();
+                                $sns = [];
                                 if($serials){
                                     foreach ($serials as $serial) {            
-                                        $total += count($serial->sn);
+                                        foreach ($serial->sn as $s) {
+                                            $sns[] = $s;
+                                        }
                                     }
                                 }
+                                $total = count(array_unique($sns));
                             }                               
                         @endphp
                         
@@ -184,13 +188,12 @@
     </table>
 </div>
 
-<div class="table table-responsive text-nowrap">
+{{-- <div class="table table-responsive text-nowrap">
     <table class="table" id="">
         <thead class="text-center">
             <tr><th colspan="9"><h4>Mat Load</h4></th></tr>
             <tr>
                 <th>#</th>
-                {{-- <th>Model</th> --}}
                 <th>Component</th>
                 <th>Machine</th>
                 <th>Table</th>
@@ -206,8 +209,7 @@
                 @if (count($mm) > 0)
                     @foreach ($mm as $m)                     
                         <tr>              
-                            <td>{{$loop->iteration}}</td>
-                            {{-- <td>{{$m->model_id}}</td> --}}
+                            <td>{{$loop->iteration}}</td>                            
                             <td>{{$m->component_rel->product_number}}</td>
                             <td>{{$m->machine->code}}</td>
                             <td>{{$m->table_id}}</td>
@@ -234,4 +236,4 @@
             @endisset
         </tbody>
     </table>
-</div>
+</div> --}}

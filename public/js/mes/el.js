@@ -5,10 +5,10 @@ $('#repair,#repair-add-check').bootstrapToggle({
     offstyle: 'danger'
 });
 
-$('#employee-dd').select2({
+/* $('#employee-dd').select2({
     width: '100%',
     maximumSelectionLength: 20
-});
+}); */
 
 $('.editEmployee').on('click', function(){
     /* alert('Test'); */

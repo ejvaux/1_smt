@@ -58,9 +58,13 @@ class InsertMatRep implements ShouldQueue
             $reel = CustomFunctions::getQrData($prev->ReelInfo,'RID');
             $total = 0;
             $serials = MatSnComp::where('RID',$reel)->get();
+            $sns = [];
             foreach ($serials as $serial) {            
-                $total += count($serial->sn);
+                foreach ($serial->sn as $s) {
+                    $sns[] = $s;
+                }
             }
+            $total = count(array_unique($sns));
             // End
 
             // Get Usage

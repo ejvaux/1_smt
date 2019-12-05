@@ -100,11 +100,35 @@ class PageController extends Controller
 
     public function testing()
     {
-        $r = MatComp::where('id',65471)->first();
+        $rs = MatSnComp::where('RID','00FK19073001761')->get();
 
-        $s = MatComp::where('id',65460)->first();
+        $total = 0;
+        $allsn = [];
+        $all = [];
+        $dup = [];
 
-        return count($r->materials) . " - " . count($s->materials);
+        foreach ($rs as $r) {
+            foreach ($r->sn as $s) {
+                $allsn[] = $s;
+            }
+        }
+        $all = $allsn;
+        /* foreach ($all as $al) {
+            foreach ($allsn as $sn) {
+                if(array_search($al,$dup)){
+                    break;
+                }
+                else{
+                    if($al == $sn){
+                        $dup[] = $al;
+                        break;
+                    }
+                }
+            }
+        } */
+        /* return $dup; */
+        return count(array_unique($all)) . " - " . count($allsn);
+        /* return $total; */
     }
     public function qrgen()
     {
