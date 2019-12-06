@@ -591,14 +591,14 @@ class ApiController extends Controller
                     $a->work_order = $request->work_order;
 
                 // Machine Component
-                    $mcid = MatComp::where('line_id',$a->line_id)->orderBy('id','DESC')->first();
+                    /* $mcid = MatComp::where('line_id',$a->line_id)->orderBy('id','DESC')->first();
 
                     if($mcid){
                         $a->mat_comp_id = $mcid->id;                            
                     }
                     else{
                         $a->mat_comp_id = null;
-                    }
+                    } */
 
                 // For Exporting        
                     if($request->division_id == 2){
@@ -635,13 +635,13 @@ class ApiController extends Controller
                     $a->save();
 
                 // Insert mat_sn_comps table
-                    if($mcid){                    
+                    /* if($mcid){                    
                         try {
                             CompSnInsert::dispatch($request->serial_number,$mcid->id);
                         } catch (\Throwable $th) {
                             Log::error($th);
                         }
-                    }                        
+                    } */                        
                     
                 }, 3);
                 return [
@@ -1035,8 +1035,8 @@ class ApiController extends Controller
         // -------------------
 
         try {
-            $archive = PcbArchive::select('div_process_id','type','defect')->where('serial_number',$request->serial_number);
-            $pcb = Pcb::select('div_process_id','type','defect')->where('serial_number',$request->serial_number)
+            $archive = PcbArchive::select('div_process_id','type','defect','mat_comp_id')->where('serial_number',$request->serial_number);
+            $pcb = Pcb::select('div_process_id','type','defect','mat_comp_id')->where('serial_number',$request->serial_number)
                             ->union($archive)
                             ->get();
         } catch (\Throwable $th) {
@@ -1099,7 +1099,7 @@ class ApiController extends Controller
         // Check JO remaining quantity
         // ---------------------------
 
-        function checkjoquantity($request)
+        function checkjoquantity($request,$pcb)
         {
             $w = WorkOrder::select('PLAN_QTY','JOB_ORDER_NO')->where('ID',$request->jo_id)->first();
             $q = $w->PLAN_QTY;
@@ -1116,7 +1116,7 @@ class ApiController extends Controller
 
             $t = $q - $o;
             if($t>0){
-                return insertsn($request);
+                return insertsn($request,$pcb);
             }
             else{
                 return [
@@ -1130,10 +1130,10 @@ class ApiController extends Controller
         // Insert pcb data
         // ---------------
         
-        function insertsn($request)
+        function insertsn($request,$pcb)
         {
             try {
-                DB::transaction(function () use($request) {
+                DB::transaction(function () use($request,$pcb) {
                     $a = new Pcb;
                     $a->serial_number = strtoupper($request->serial_number);
                     $a->jo_id = $request->jo_id;      
@@ -1157,14 +1157,21 @@ class ApiController extends Controller
                     $a->work_order = $request->work_order;
 
                 // Machine Component
-                    /* $mcid = MatComp::where('line_id',$a->line_id)->orderBy('id','DESC')->first();
+                    $mcomp1 = $pcb->filter(function ($value) use ($request) {
+                        return $value->div_process_id == $request->div_process_id && $value->type == 0;
+                    })->all();
+                    $mcomp2 = array_values($mcomp1);
+                    $mcomp = $mcomp2[0]['mat_comp_id'];
+                    if ($mcomp == null) {
+                        $mcid = MatComp::where('line_id',$a->line_id)->orderBy('id','DESC')->first();
 
-                    if($mcid){
-                        $a->mat_comp_id = $mcid->id;                            
-                    }
-                    else{
-                        $a->mat_comp_id = null;
-                    } */
+                        if($mcid){
+                            $a->mat_comp_id = $mcid->id;                            
+                        }
+                        else{
+                            $a->mat_comp_id = null;
+                        }
+                    }                    
 
                     /* For Exporting */        
                     if($request->division_id == 2){
@@ -1201,13 +1208,15 @@ class ApiController extends Controller
                     $a->save();
 
                 // Insert mat_sn_comps table
-                    /* if($mcid){                    
-                        try {
-                            CompSnInsert::dispatch($request->serial_number,$mcid->id);
-                        } catch (\Throwable $th) {
-                            Log::error($th);
+                    if ($mcomp == null){
+                        if($mcid){                    
+                            try {
+                                CompSnInsert::dispatch($request->serial_number,$mcid->id);
+                            } catch (\Throwable $th) {
+                                Log::error($th);
+                            }
                         }
-                    } */
+                    }                    
 
                 }, 3);
                 return [
