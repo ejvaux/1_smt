@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\ApiController;
 use Log;
 use App\Custom\CustomFunctions;
 use App\Jobs\MatCompInsert;
+use App\Models\MatComp;
 
 class MaterialLoadController extends Controller
 {
@@ -121,7 +122,7 @@ class MaterialLoadController extends Controller
         $insrecord->employee_id=$request->input('emp_id');
         $insrecord->ReelInfo=$request->input('reelInfo');
         $insrecord->results="MATCH";
-        $insrecord->save();
+        /* $insrecord->save();   */      
         
         $req = [
             'machine_id' => $request->input('machine_id'),
@@ -130,10 +131,35 @@ class MaterialLoadController extends Controller
             'feeder_slot' => $request->input('feeder_slot'),
             'comp_rid' => $request->input('comp_rid'),
             'comp_qty' => $request->input('comp_qty'),
-            'id' => $insrecord->id,
-            'model_id' => $insrecord->model_id
+            /* 'id' => $insrecord->id, */
+            'model_id' => $model->id
         ];
-        MatCompInsert::dispatch($req);
+        $matcomp_id = ApiController::insertmatcomp1($req);
+        if($matcomp_id){
+            $insrecord->save();
+            $mc = MatComp::find($matcomp_id);
+            $mc->mat_load_id = $insrecord->id;
+            $mt = $mc->materials;
+            foreach ($mt as $key => $value) {
+                if(
+                    strtoupper($value['machine']) == strtoupper($req['machine_id']) && 
+                    $value['position'] == $req['position'] && 
+                    $value['feeder'] == $req['feeder_slot']
+                    )
+                {
+                    $mt[$key]['matload_id'] = $insrecord->id;
+                }
+            }
+            $mc->materials = $mt;
+            $mc->save();
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Error Inserting Component. Please Contact MIS Support.'
+            ];
+        }
+        /* MatCompInsert::dispatch($req); */
         /* MatCompInsert::dispatch($req,$insrecord->id); */
         /* ApiController::insertmatcomp($request,$insrecord); */
         /* ApiController::insertmatcomp($request,$insrecord->id); */

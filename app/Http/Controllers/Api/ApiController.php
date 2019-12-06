@@ -1568,6 +1568,7 @@ class ApiController extends Controller
 
     public static function insertmatcomp1($req)
     {
+        $matcomp_id = 0;
         $machine = $req['machine_id'];
         $m_code =substr($machine,0,-1);
         $mach = Machine::where('barcode',$m_code)->first();
@@ -1593,7 +1594,7 @@ class ApiController extends Controller
             $im = new MatComp;
             $im->model_id = $req['model_id'];
             $im->line_id = $line_id;
-            $im->mat_load_id = $req['id'];
+            /* $im->mat_load_id = $req['id']; */
             $im->materials = $mt;
             $mt2 = $im->materials;
             $mt2[] = [
@@ -1603,17 +1604,18 @@ class ApiController extends Controller
                     'feeder' => $req['feeder_slot'],
                     'RID' => $req['comp_rid'],
                     'QTY' => $req['comp_qty'],
-                    'matload_id' => $req['id']
+                    'matload_id' => 'processing'
                     ];
             $zz = array_values($mt2);
             $im->materials = $zz;            
             $im->save();
+            $matcomp_id = $im->id;
         }
         else{
             $im = new MatComp;
             $im->model_id = $req['model_id'];
             $im->line_id = $line_id;
-            $im->mat_load_id = $req['id'];
+            /* $im->mat_load_id = $req['id']; */
             $mt = $im->materials;
             $mt[] = [
                     'component_id' => $component->id,
@@ -1622,11 +1624,13 @@ class ApiController extends Controller
                     'feeder' => $req['feeder_slot'],
                     'RID' => $req['comp_rid'],
                     'QTY' => $req['comp_qty'],
-                    'matload_id' => $req['id']
+                    'matload_id' => 'processing'
                     ];
             $zzz = array_values($mt);        
             $im->materials = $zzz;
             $im->save();
+            $matcomp_id = $im->id;
         }
+        return $matcomp_id;
     }
 }
