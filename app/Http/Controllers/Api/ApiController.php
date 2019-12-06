@@ -591,7 +591,6 @@ class ApiController extends Controller
                     $a->work_order = $request->work_order;
 
                 // Machine Component
-                    /* $mcid = MatComp::select('id')->where('line_id',$a->line_id)->orderBy('id','DESC')->first(); */
                     $mcid = MatComp::where('line_id',$a->line_id)->orderBy('id','DESC')->first();
 
                     if($mcid){
@@ -635,9 +634,8 @@ class ApiController extends Controller
                     $a->PROCESS_NAME = $pname;
                     $a->save();
 
-                    if($mcid){
-
-                    // Insert mat_sn_comps table
+                // Insert mat_sn_comps table
+                    if($mcid){                    
                         try {
                             CompSnInsert::dispatch($request->serial_number,$mcid->id);
                         } catch (\Throwable $th) {
@@ -1158,6 +1156,16 @@ class ApiController extends Controller
                     /* work order */
                     $a->work_order = $request->work_order;
 
+                // Machine Component
+                    /* $mcid = MatComp::where('line_id',$a->line_id)->orderBy('id','DESC')->first();
+
+                    if($mcid){
+                        $a->mat_comp_id = $mcid->id;                            
+                    }
+                    else{
+                        $a->mat_comp_id = null;
+                    } */
+
                     /* For Exporting */        
                     if($request->division_id == 2){
                         $pname = Division::where('DIVISION_ID',$request->division_id)->pluck('DIVISION_NAME')->first();
@@ -1191,6 +1199,16 @@ class ApiController extends Controller
                     $a->PDLINE_NAME = LineName::where('id',$request->line_id)->pluck('name')->first();
                     $a->PROCESS_NAME = $pname;
                     $a->save();
+
+                // Insert mat_sn_comps table
+                    /* if($mcid){                    
+                        try {
+                            CompSnInsert::dispatch($request->serial_number,$mcid->id);
+                        } catch (\Throwable $th) {
+                            Log::error($th);
+                        }
+                    } */
+
                 }, 3);
                 return [
                     'type' => 'success',
@@ -1498,20 +1516,6 @@ class ApiController extends Controller
         if($m){
             $mt = $m->materials;
             $tu = '';
-            /* foreach ($mt as $key => $value) {
-                if(!isset($value['component_id'])){
-                    $mt[] = [
-                            'component_id' => $key,
-                            'machine' => $value['machine'],
-                            'position' => $value['position'],
-                            'feeder' => $value['feeder'],
-                            'RID' => $value['RID'],
-                            'QTY' => $value['QTY'],
-                            'matload_id' => $ft
-                            ];
-                    unset($mt[$key]);
-                }
-            } */
             foreach ($mt as $key => $value) {
                 if(
                     strtoupper($value['machine']) == strtoupper($request->machine_id) && 
@@ -1521,10 +1525,8 @@ class ApiController extends Controller
                 {
                     $tu = $key;
                     unset($mt[$tu]);
-                    /* break; */
                 }
-            }                
-            /* unset($mt[$tu]); */
+            }
 
             $im = new MatComp;
             $im->model_id = $mat_load->model_id;
@@ -1541,23 +1543,8 @@ class ApiController extends Controller
                                 'QTY' => $request->comp_qty,
                                 'matload_id' => $mat_load->id
                                 ];
-            /* $mt2[$component->id] = [
-                                    'machine' => $request->machine_id,
-                                    'position' => $request->position,
-                                    'feeder' => $request->feeder_slot,
-                                    'RID' => $request->comp_rid,
-                                    'QTY' => $request->comp_qty
-                                    ]; */
             $im->materials = $mt2;
-            
-            /* $mt[] = $mt2;
-            $im->materials = $mt2; */
-            $im->save();                        
-            /* try {
-                $im->save();
-            } catch (\Throwable $th) {
-                Log::error($th);
-            } */
+            $im->save();
         }
         else{
             $im = new MatComp;
@@ -1574,20 +1561,72 @@ class ApiController extends Controller
                                 'QTY' => $request->comp_qty,
                                 'matload_id' => $mat_load->id
                                 ];
-            /* $mt[$component->id] = [
-                                    'machine' => $request->machine_id,
-                                    'position' => $request->position,
-                                    'feeder' => $request->feeder_slot,
-                                    'RID' => $request->comp_rid,
-                                    'QTY' => $request->comp_qty
-                                    ]; */
             $im->materials = $mt;
+            $im->save();         
+        }
+    }
+
+    public static function insertmatcomp1($req)
+    {
+        $machine = $req['machine_id'];
+        $m_code =substr($machine,0,-1);
+        $mach = Machine::where('barcode',$m_code)->first();
+        $line_id = $mach->line->linename->id;
+        $component= Component::where('product_number',$req['new_PN'])->first();
+        $m = MatComp::where('model_id',$req['model_id'])->where('line_id',$line_id)->latest('id')->first();
+        
+        if($m){
+            $mt = $m->materials;
+            $tu = '';
+            foreach ($mt as $key => $value) {
+                if(
+                    strtoupper($value['machine']) == strtoupper($req['machine_id']) && 
+                    $value['position'] == $req['position'] && 
+                    $value['feeder'] == $req['feeder_slot']
+                    )
+                {
+                    $tu = $key;
+                    unset($mt[$tu]);
+                }
+            }
+
+            $im = new MatComp;
+            $im->model_id = $req['model_id'];
+            $im->line_id = $line_id;
+            $im->mat_load_id = $req['id'];
+            $im->materials = $mt;
+            $mt2 = $im->materials;
+            $mt2[] = [
+                    'component_id' => $component->id,
+                    'machine' => strtoupper($req['machine_id']),
+                    'position' => $req['position'],
+                    'feeder' => $req['feeder_slot'],
+                    'RID' => $req['comp_rid'],
+                    'QTY' => $req['comp_qty'],
+                    'matload_id' => $req['id']
+                    ];
+            $zz = array_values($mt2);
+            $im->materials = $zz;            
             $im->save();
-            /* try {
-                $im->save();
-            } catch (\Throwable $th) {
-                Log::error($th);
-            }  */           
+        }
+        else{
+            $im = new MatComp;
+            $im->model_id = $req['model_id'];
+            $im->line_id = $line_id;
+            $im->mat_load_id = $req['id'];
+            $mt = $im->materials;
+            $mt[] = [
+                    'component_id' => $component->id,
+                    'machine' => strtoupper($req['machine_id']),
+                    'position' => $req['position'],
+                    'feeder' => $req['feeder_slot'],
+                    'RID' => $req['comp_rid'],
+                    'QTY' => $req['comp_qty'],
+                    'matload_id' => $req['id']
+                    ];
+            $zzz = array_values($mt);        
+            $im->materials = $zzz;
+            $im->save();
         }
     }
 }

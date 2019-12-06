@@ -87,24 +87,6 @@ class MaterialLoadController extends Controller
         }
 
         // Check duplicate
-        /* $dup = MatLoadModel::where('machine_id',$mach_type)
-                            ->where('model_id',$model->id)
-                            ->where('table_id',$table_id)
-                            ->where('mounter_id',$request->input('feeder_slot'))
-                            ->where('pos_id',$request->input('position'))
-                            ->where('component_id',$comp_id)
-                            ->latest('id')
-                            ->first();
-        if($dup){
-            $rid1 = CustomFunctions::getQrData($dup->ReelInfo,'RID');
-            $rid2 = CustomFunctions::getQrData($request->input('reelInfo'),'RID');
-            if ($rid1 == $rid2) {
-                return [
-                    'type' => 'error',
-                    'message' => 'Reel Already Scanned.'
-                ];
-            }
-        } */
 
         $dup = MatLoadModel::where('ReelInfo','LIKE',"%".CustomFunctions::getQrData($request->input('reelInfo'),'RID')."%")
                             ->first();
