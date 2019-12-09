@@ -27,8 +27,8 @@
                 @foreach ($reels as $reel)
                     @php
                         /* $created = App\Models\Pcb::where('serial_number',$sn)->where('mat_comp_id',$reel->id)->where('type',0)->pluck('created_at')->first(); */
-                        if(!$pcb = App\Models\Pcb::with(['employee'])->select('work_order','jo_number','employee_id','created_at','jo_id')->where('serial_number',$sn)->where('mat_comp_id',$reel->id)->where('type',0)->first()){
-                            $pcb = App\Models\PcbArchive::with(['employee'])->select('work_order','jo_number','employee_id','created_at','jo_id')->where('serial_number',$sn)->where('mat_comp_id',$reel->id)->where('type',0)->first();
+                        if(!$pcb = App\Models\Pcb::with(['employee'])->select('work_order','jo_number','employee_id','created_at','jo_id')->where('serial_number',$sn)->where('mat_comp_id',$reel->id)->first()){
+                            $pcb = App\Models\PcbArchive::with(['employee'])->select('work_order','jo_number','employee_id','created_at','jo_id')->where('serial_number',$sn)->where('mat_comp_id',$reel->id)->first();
                         }
                         if(!$pcb->work_order){
                             $wot = \App\Models\WorkOrder::where('ID',$pcb->jo_id)->pluck('SALES_ORDER')->first();

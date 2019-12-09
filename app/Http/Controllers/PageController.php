@@ -100,35 +100,9 @@ class PageController extends Controller
 
     public function testing()
     {
-        $rs = MatSnComp::where('RID','00FK19073001761')->get();
+        $pcb =  Pcb::where('serial_number','O.CAU9BC1BQU')->whereNotNull('mat_comp_id')->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
+        return $pcb;
 
-        $total = 0;
-        $allsn = [];
-        $all = [];
-        $dup = [];
-
-        foreach ($rs as $r) {
-            foreach ($r->sn as $s) {
-                $allsn[] = $s;
-            }
-        }
-        $all = $allsn;
-        /* foreach ($all as $al) {
-            foreach ($allsn as $sn) {
-                if(array_search($al,$dup)){
-                    break;
-                }
-                else{
-                    if($al == $sn){
-                        $dup[] = $al;
-                        break;
-                    }
-                }
-            }
-        } */
-        /* return $dup; */
-        return count(array_unique($all)) . " - " . count($allsn);
-        /* return $total; */
     }
     public function qrgen()
     {

@@ -32,8 +32,8 @@ class SnReelController extends Controller
         $reels = [];
         $mid = array();
 
-        $archive = PcbArchive::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC');
-        $pcbs = Pcb::where('serial_number',$request->input('sn'))->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')
+        $archive = PcbArchive::where('serial_number',$request->input('sn'))->whereNotNull('mat_comp_id')->whereiN('div_process_id',[1,2])->orderBy('id','DESC');
+        $pcbs = Pcb::where('serial_number',$request->input('sn'))->whereNotNull('mat_comp_id')->whereiN('div_process_id',[1,2])->orderBy('id','DESC')
                         ->union($archive)
                         ->get();
         
