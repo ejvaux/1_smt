@@ -9,7 +9,7 @@
                 <th>#</th>
                 <th>Machine</th>
                 <th>Table</th>
-                <th>Mounter</th>
+                <th>Feeder</th>
                 <th>Position</th>
                 <th class="border-right">Usage</th>
                 <th>Feed Time</th>
@@ -117,7 +117,7 @@
                 <th>Component</th>
                 <th>Machine</th>
                 <th>Table</th>
-                <th>Mounter</th>
+                <th>Feeder</th>
                 <th>Position</th>
                 <th>Feed Time</th>
                 <th>Reel ID</th>
