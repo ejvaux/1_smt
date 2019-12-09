@@ -263,7 +263,9 @@ class MasterController extends Controller
                         $ln[] = "$line";
                     }                    
                     $up->lines = $ln;
-                    $up->updated_by = $user;
+                    if($user){
+                        $up->updated_by = $user;
+                    }                    
                     $up->save();
                 }
                 else{

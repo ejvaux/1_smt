@@ -7,7 +7,16 @@
             {{-- LEFT PANEL --}}
             <div class="col-md-5">
                 <div class="card shadow-sm bg-white rounded">
-                    <div class="card-header bold-text"><i class="fas fa-barcode"></i> &nbspSCAN AREA</div>
+                    <div class="card-header bold-text">
+                        <div class="row">
+                            <div class="col-md">
+                                <i class="fas fa-barcode"></i> &nbspSCAN AREA
+                            </div>
+                            <div class="col-md text-right">
+                                <button id='line_mscan_button' class="btn btn-outline-secondary">Line Config</button>
+                            </div>
+                        </div>                        
+                    </div>
                     <div class="card-body">
                         <div class="row mb-1">
                             <div class="col-md-4">
@@ -309,4 +318,5 @@
     </div>
 </div>
 @include('modal.employeepin')
+@include('modal.lineconfig')
 @endsection
