@@ -17,8 +17,8 @@ class MachineType extends Model
 
     public $sortable = ['id'];    
 
-    /* public function updatedBy()
+    public function machine()
     {
-        return $this->belongsTo('App\Http\Controllers\MES\model\User','updated_by','NO');
-    } */
+        return $this->hasmany('App\Http\Controllers\MES\model\Machine'/* ,'id','machine_type_id' */);
+    }
 }

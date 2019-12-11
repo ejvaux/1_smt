@@ -9,10 +9,10 @@
                 <div class="card shadow-sm bg-white rounded">
                     <div class="card-header bold-text">
                         <div class="row">
-                            <div class="col-md">
+                            <div class="col">
                                 <i class="fas fa-barcode"></i> &nbspSCAN AREA
                             </div>
-                            <div class="col-md text-right">
+                            <div class="col text-right">
                                 <button id='line_mscan_button' class="btn btn-outline-secondary">Line Config</button>
                             </div>
                         </div>                        
