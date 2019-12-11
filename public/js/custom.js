@@ -851,15 +851,20 @@ function resetval(){
         document.getElementById("scan_emp").focus();
     }
     else{
-        $('#scan_pos').val("").trigger('change');
-        $('#scan_feed_slot').val("").trigger('change');
-        /* document.getElementById('scan_oldPN').value=""; */
-        document.getElementById('scan_newPN').value="";
-        /* $('#scan_pos').select2('open'); */
-        /* $("#scan_machine").focus().select(); */
-        /* $('#scan_feed_slot').focus(); */
-        $('#scan_feed_slot').select2('open');
-
+        if ($('#scan_pos').val() == 1) {
+            $('#scan_pos').val('2').trigger('change');
+            $('#scan_newPN').val('');
+        }
+        else{
+            $('#scan_pos').val("").trigger('change');
+            $('#scan_feed_slot').val("").trigger('change');
+            /* document.getElementById('scan_oldPN').value=""; */
+            document.getElementById('scan_newPN').value="";
+            /* $('#scan_pos').select2('open'); */
+            /* $("#scan_machine").focus().select(); */
+            /* $('#scan_feed_slot').focus(); */
+            $('#scan_feed_slot').select2('open');
+        }
     }    
 }
 function resetval1(){
