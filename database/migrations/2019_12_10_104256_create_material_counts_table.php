@@ -19,7 +19,7 @@ class CreateMaterialCountsTable extends Migration
             $table->integer('line_id');
             $table->integer('feeder_id');
             $table->integer('mat_load_id')->nullable();
-            $table->integer('usage')->nullable();
+            $table->string('usage')->nullable();
             $table->integer('reel_qty')->nullable();
             $table->integer('sn')->nullable();
             $table->integer('remaining_qty')->nullable();
