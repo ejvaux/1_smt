@@ -74,12 +74,17 @@
                                 <td>{{$rid}}</td>
                                 <td>{{$qty}}</td>                                
                                 @if ( $feeder->usage)
-                                    @if( $qty - $total * $feeder->usage < 0 )
+                                    @php
+                                        $rem_qty = $qty - $total * $feeder->usage;
+                                    @endphp
+                                    @if( $rem_qty < 0 )
                                         <td class="text-danger font-weight-bold">
+                                    @elseif( $rem_qty < $qty * .1 && $rem_qty > 0 )
+                                        <td class="text-warning font-weight-bold">
                                     @else
                                         <td>
                                     @endif
-                                    {{$qty - $total * $feeder->usage}}</td>
+                                    {{$rem_qty}}</td>
                                 @else
                                     <td class="text-info font-weight-bold">No Usage</td>
                                 @endif

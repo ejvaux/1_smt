@@ -44,7 +44,7 @@ class PcbExportScript extends Command
      */
     public function handle()
     {
-        for ($i=0; $i < 5; $i++) { 
+        for ($i=0; $i < 2; $i++) { 
             $filename = 'PRIMA_';
             $qty = 0;
             $pcb = Pcb::where('exported',0)->where('division_id',2)->where('type',1)->where('defect',0)->first();
@@ -89,7 +89,7 @@ class PcbExportScript extends Command
                     });
                 }
             }
-            sleep(5);
+            sleep(61);
         }                
     }
 }
