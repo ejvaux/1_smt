@@ -225,7 +225,7 @@
                                 <label for="u_usage" class="col-form-label-sm">Usage:</label>                  
                             </div>
                             <div class="col-7">
-                                <input type="number" class='form-control' name="usage" id="u_usage" min="0">                 
+                                <input type="number" class='form-control' name="usage" id="u_usage" min="0" step="any">                 
                             </div>
                         </div>
                     </div>                                
