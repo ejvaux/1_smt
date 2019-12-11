@@ -13,7 +13,7 @@
                                 <i class="fas fa-barcode"></i> &nbspSCAN AREA
                             </div>
                             <div class="col text-right">
-                                <button id='line_mscan_button' class="btn btn-outline-secondary">Line Config</button>
+                                <button id='line_mscan_button' class="btn btn-outline-secondary py-0">Line Config</button>
                             </div>
                         </div>                        
                     </div>
