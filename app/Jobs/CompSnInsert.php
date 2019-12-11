@@ -69,7 +69,7 @@ class CompSnInsert implements ShouldQueue
                     else{
                         $cc[] = $this->sn;
                         $comp->sn = $cc;
-                        $comp->mat_comp_id = $mat_comp->id;
+                        /* $comp->mat_comp_id = $mat_comp->id; */
                         $comp->save();
                     }                    
                 }

@@ -29,11 +29,12 @@ class ReelSnExport implements FromView, WithTitle
         $cid = MatSnComp::where('RID',$rid)->pluck('component_id')->first();
         $pn = Component::where('id',$cid)->pluck('product_number')->first();
         $pcbs = [];
-        $serials = MatSnComp::select('mat_comp_id','sn','RID','model_id','component_id')->where('RID',$rid)/* ->skip(5) *//* ->take(10) */->get();
+        $serials = MatSnComp::where('RID',$rid)->get();
         foreach ($serials as $serial) {
             $matcomp = Matcomp::where('id',$serial->mat_comp_id)->pluck('materials')->first();
             foreach ($matcomp as $cmp => $prop) {
-                if($cmp == $serial->component_id){
+                /* if($cmp == $serial->component_id){ */
+                if($prop['component_id'] == $serial->component_id){
                     $mach = $prop['machine'];
                     $fdr = $prop['feeder'];
                     $pos = Position::where('id',$prop['position'])->pluck('name')->first();
@@ -42,9 +43,9 @@ class ReelSnExport implements FromView, WithTitle
             }
             $prog = Modname::where('id',$serial->model_id)->pluck('program_name')->first();            
             foreach ($serial->sn as $key) {
-                $pcb = Pcb::where('serial_number',$key)->where('mat_comp_id',$serial->mat_comp_id)->first();
+                $pcb = Pcb::where('serial_number',$key)->where('line_id',$serial->line_id)->first();
                 if(!$pcb){
-                    $pcb = PcbArchive::where('serial_number',$key)->where('mat_comp_id',$serial->mat_comp_id)->first();
+                    $pcb = PcbArchive::where('serial_number',$key)->where('line_id',$serial->line_id)->first();
                 }
                 if($pcb){                    
                     if(!$pcb->work_order){

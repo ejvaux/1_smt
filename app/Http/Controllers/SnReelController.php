@@ -58,7 +58,7 @@ class SnReelController extends Controller
         $pn = Component::where('id',$cid)->pluck('product_number')->first();
         $total = 1;
         $pcbs = [];
-        $serials = MatSnComp::/* select('id','mat_comp_id','sn','RID','model_id','component_id')-> */where('RID',$rid)/* ->skip(5) *//* ->take(10) */->get();
+        $serials = MatSnComp::where('RID',$rid)->get();
         foreach ($serials as $serial) {
             $matcomp = Matcomp::where('id',$serial->mat_comp_id)->pluck('materials')->first();
             foreach ($matcomp as $cmp => $prop) {
