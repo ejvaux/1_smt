@@ -855,6 +855,12 @@ function resetval(){
             $('#scan_pos').val('2').trigger('change');
             $('#scan_newPN').val('');
         }
+        else if($('#scan_pos').val() == 2){
+            $nf = parseInt($('#scan_feed_slot').val());
+            $('#scan_feed_slot').val($nf+1).trigger('change');
+            $('#scan_pos').val('1').trigger('change');
+            $('#scan_newPN').val('');
+        }
         else{
             $('#scan_pos').val("").trigger('change');
             $('#scan_feed_slot').val("").trigger('change');
