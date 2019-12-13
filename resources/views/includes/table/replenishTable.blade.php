@@ -2,7 +2,7 @@
     <table class="table table-sm w-100" id="">
         <thead class="text-center">
             <tr>
-                <th colspan="2">LOCATION</th>
+                <th colspan="5">LOCATION</th>
             </tr>
         </thead>
         <tbody class='text-center'>
@@ -18,9 +18,10 @@
                             "
                             style="border: 2px"               
                         >
-                            <td width="70%">
-                                {{$rep['machine']}} - Tbl {{$rep['table']}} - {{$rep['feeder']}} - {{$rep['position']}}
-                            </td>
+                            <td>{{$rep['machine']}}</td>
+                            <td>Tbl {{$rep['table']}}</td>
+                            <td>{{$rep['feeder']}}</td>
+                            <td>{{$rep['position']}}</td>
                             <td width="30%">
                                 <input  class="qr-scan w-100" type="text" name="" id="" data-id='{{$rep['feeder_id']}}' placeholder=" SCAN HERE"  autocomplete="off">
                             </td>
@@ -28,14 +29,14 @@
                     @endforeach
                 @else
                     <tr>
-                        <th colspan="2">
+                        <th colspan="5">
                             NO DATA
                         </th>
                     </tr>
                 @endif
             @else
                 <tr>
-                    <th colspan="2">
+                    <th colspan="5">
                         NO DATA
                     </th>
                 </tr>
