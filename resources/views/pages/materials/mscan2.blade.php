@@ -5,191 +5,8 @@
     <div class="white_bkg">
         <div class="row">
             {{-- LEFT PANEL --}}
-            <div class="col-md-5">
-                <div class="card shadow-sm bg-white rounded">
-                    <div class="card-header bold-text">
-                        <div class="row">
-                            <div class="col">
-                                <i class="fas fa-barcode"></i> &nbspSCAN AREA
-                            </div>
-                            <div class="col text-right">
-                                <button id='line_mscan_button' class="btn btn-outline-secondary py-0">Line Config</button>
-                            </div>
-                        </div>                        
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-1">
-                            <div class="col-md-4">
-                                <label for='scan_emp' class="col-form-label bold-text">EMPLOYEE:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input type="text" id="scan_emp" placeholder="SCAN EMPLOYEE BARCODE" class="form-control" onkeypress="return event_emp(event)">
-                                    <input hidden  type="text" id="scan_employee" placeholder="SCAN EMPLOYEE BARCODE" class="form-control">
-                                    <button id='res_emp' type="button" class="btn btn-danger bold-text"><i class="fas fa-times"></i> CLEAR</button>
-                                </div>                                
-                            </div>
-                        </div>
-                        {{-- <div class="row">
-                            <div class="col-md-4">
-                                <label for='scan_model' class="col-form-label bold-text">MODEL NAME:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <select class="select2" id="scan_model" required>
-                                    <option value="" selected>SELECT MODEL</option>
-                                    @foreach ($models as $models_item)
-                                    <option value="{{$models_item->id}}">{{$models_item->program_name}} - {{$models_item->code}}</option>
-                                    @endforeach     
-                                </select>
-                            </div>
-                        </div> --}}
-                        {{-- <div class="row mb-1">
-                            <div class="col-md-4">
-                                <label for='scan_line' class="col-form-label bold-text">LINE</label>
-                            </div>
-                            <div class="col-md-8">
-                                <select class="select2" id="scan_line">
-                                    <option value="" selected>SELECT LINE</option>
-                                    @foreach ($lines2 as $line2)
-                                    <option value="{{$line2->id}}">{{$line2->name}}</option>
-                                    @endforeach 
-                                </select>
-                            </div>
-                        </div> --}}
-                        <div class="row mb-1">
-                            <div class="col-md-4">
-                                <label for='scan_machine' class="col-form-label bold-text">MACHINE CODE:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)" autocomplete='off' required>
-                            </div>
-                        </div>
-                        <div class="row mb-1">
-                            <div class="col-md-4">
-                                <label for='scan_feed_slot' class="col-form-label bold-text">FEEDER SLOT#:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <select class="select2" id="scan_feed_slot" required>
-                                    <option value="" selected>SELECT FEEDER #</option>
-                                    @foreach ($mounter as $mounter_item)
-                                    <option value="{{$mounter_item->id}}">{{$mounter_item->code}}</option>
-                                    @endforeach 
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for='scan_pos' class="col-form-label bold-text">POSITION:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <select class="select2" id="scan_pos" required>
-                                    <option value="" selected>SELECT POSITION</option>
-                                    @foreach ($position as $position_item)
-                                    <option value="{{$position_item->id}}">{{$position_item->name}}</option>
-                                    @endforeach 
-                                </select>
-                            </div>
-                        </div>
-                        {{-- <div class="row mb-1">
-                            <div class="col-md-4">
-                                <label for='replenish' class="col-form-label bold-text">FOR REPLENISH? </label>
-                            </div>
-                            <div class="col-md-8">
-                                <input id="replenish" class="form-check-input form-control" data-width="100%" type="checkbox" data-toggle="toggle" data-on="YES" data-off="NO" data-offstyle="danger" onchange="IsReplenish()" disabled>
-                            </div>                            
-                        </div> --}}
-                        {{-- <div class="row mb-1">
-                            <div class="col-md">
-                                <span style="font-size:0.8em">
-                                    <b>NOTE:</b> Check this toggle button if you will load the same reel component/partname. This will require you to scan both reel barcodes.
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row mb-1">
-                            <div class="col-md-4">
-                                <label for='scan_oldPN' class="col-form-label bold-text">LAST PRIMA PN:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)" autocomplete='off'>
-                            </div>
-                        </div> --}}
-                        <div class="row mb-1">
-                            <div class="col-md-4">
-                                <label for='scan_newPN' class="col-form-label bold-text">PRIMA PN TO LOAD:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" autocomplete='off'>
-                            </div>
-                        </div>
-                        <div class="row no-gutters">
-                            {{-- <div class="col-lg-3 vertical-center text-center bold-text">EMPLOYEE:</div>
-                            <div class="col-lg-7">
-                                <input type="text" id="scan_emp" placeholder="SCAN EMPLOYEE BARCODE" class="form-control" onkeypress="return event_emp(event)">
-                                <input hidden  type="text" id="scan_employee" placeholder="SCAN EMPLOYEE BARCODE" class="form-control">
-                            </div> --}}
-                            {{-- <div class="col-lg-2 text-center bold-text text-center vertical-center">
-                                <button type="button" class="btn btn-sm btn-danger bold-text" onclick='document.getElementById("scan_emp").value="";document.getElementById("scan_employee").value="";document.getElementById("scan_emp").focus();document.getElementById("scan_emp").readOnly = false;$("#scan_employee").val("").trigger("change");$("#scan_model").val("").trigger("change");'><i class="fas fa-times"></i>&nbspCLEAR</button>
-                            </div> --}}
-                            {{-- <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                            <div class="col-lg-3 vertical-center text-center bold-text">MODEL NAME:</div> --}}
-                            {{-- <div class="col-lg-7">
-                                <select class="select2" id="scan_model">
-                                    <option value="" selected>SELECT MODEL</option>
-                                    @foreach ($models as $models_item)
-                                    <option value="{{$models_item->id}}">{{$models_item->code}}</option>
-                                    @endforeach     
-                                </select>                                    
-                            </div> --}}
-                            {{-- <div class="col-lg-2"></div>
-                            <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                            <div class="col-lg-3 vertical-center text-center bold-text">MACHINE CODE:</div> --}}
-                            {{-- <div class="col-lg-7"><input type="text" id="scan_machine" placeholder="INPUT MACHINE CODE" class="form-control" onkeypress="return event_mach(event)"></div> --}}
-                            {{-- <div class="col-lg-2"></div>
-                            <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                            <div class="col-lg-3 vertical-center text-center bold-text">POSITION:</div>
-                            <div class="col-lg-7">
-                                <select class="select2" id="scan_pos">
-                                    <option value="" selected>SELECT POSITION</option>
-                                    @foreach ($position as $position_item)
-                                    <option value="{{$position_item->id}}">{{$position_item->name}}</option>
-                                    @endforeach 
-                                </select>
-                            </div> --}}
-                            {{-- <div class="col-lg-2"></div>
-                            <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                            <div class="col-lg-3 vertical-center text-center bold-text">FEEDER SLOT#:</div>
-                            <div class="col-lg-7">
-                                <select class="select2" id="scan_feed_slot">
-                                    <option value="" selected>SELECT FEEDER #</option>
-                                    @foreach ($mounter as $mounter_item)
-                                    <option value="{{$mounter_item->id}}">{{$mounter_item->code}}</option>
-                                    @endforeach 
-                                </select>
-                            </div> --}}
-                            {{-- <div class="col-lg-2"></div>
-                            <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                            <div class="col-lg-6  vertical-center text-center bold-text">
-                                <div class="form-check form-check-inline">
-                                    <label for="inlineCheckbox1" class="form-check-label">FOR REPLENISH? &nbsp</label>
-                                    <input id="replenish" class="form-check-input" type="checkbox" data-toggle="toggle" data-on="YES" data-off="NO" data-offstyle="danger" onchange="IsReplenish()" checked>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <span style="font-size:0.8em">
-                                    <b>NOTE:</b> Check this toggle button if you will load the same reel component/partname. This will require you to scan both reel barcodes.
-                                </span>
-                            </div> --}}                           
-                            {{-- <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                            <div class="col-lg-3 vertical-center text-center bold-text">LAST PRIMA PN:</div>
-                            <div class="col-lg-7"><input type="text" id="scan_oldPN" placeholder="INPUT LAST PRIMA PN" class="form-control"  onkeypress="return event_lastPN(event)"></div>
-                            <div class="col-lg-2"></div> --}}
-                            {{-- <div class="w-100 d-none d-md-block" style="margin-top:2%"></div>
-                            <div class="col-lg-3 vertical-center text-center bold-text">PRIMA PN TO LOAD:</div>
-                            <div class="col-lg-7"><input type="text" id="scan_newPN" placeholder="INPUT PRIMA PN TO LOAD" class="form-control" onkeypress="return event_loadPN(event)" ></div>
-                            <div class="col-lg-2"></div> --}}
-                        </div>                            
-                    </div>
-                </div>
+            <div class="col-md-5 mb-3 h-100">
+                @include('pages.materials.panels.leftPanel')
             </div>
             {{-- RIGHT PANEL --}}
             <div class="col-md-7">
@@ -258,7 +75,7 @@
             </div>
         </div>
         {{-- Bottom Panel --}}
-        <div class="row mt-3">
+        {{-- <div class="row mt-3">
             <div class="col-md">
                 <div class="card shadow-sm bg-white rounded">
                     <div class="card-header bold-text"><i class="fas fa-cogs"></i> &nbspCURRENTLY RUNNING IN MACHINES</div>
@@ -316,7 +133,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @include('modal.employeepin')
 @include('modal.lineconfig')
 @endsection

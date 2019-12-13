@@ -45,4 +45,8 @@ class Feeder extends Model
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Component','component_id');
     }
+    public function table()
+    {
+        return $this->belongsTo('App\tableSMT','table_id');
+    }
 }

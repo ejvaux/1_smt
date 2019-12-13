@@ -254,4 +254,14 @@ class CustomFunctions
             }
         }
     }
+    public static function getQrLength($rid){
+        if (strpos($rid,';') !== false) {
+            $rid1s = explode(';',$rid);
+            return count($rid1s);
+        }
+        elseif (strpos($rid,',') !== false) {
+            $rid1s = explode(',',$rid);
+            return count($rid1s);
+        }
+    }
 }

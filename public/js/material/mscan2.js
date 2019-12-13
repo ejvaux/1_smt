@@ -77,6 +77,80 @@ function lineconfigUpdate(){
     });
     /* alert(formdata); */
 }
+function verifyemployee(pin)
+{
+    $('#rep_scan_emp').val('Please Wait . . .');
+    $('#rep_scan_emp').attr('disabled', true);
+    chck = 1;
+    $.ajax({
+        url: 'api/scanpinemp',
+        type:'GET',
+        data:{
+            'pin': pin,
+            'check' : chck
+        },
+        global: false,
+        success: function (data) {
+            if(data != 0)
+            {
+                $('#rep_scan_emp').val(data.fname + ' ' + data.lname);
+                $('#employee_id').val(data.id);                
+            }
+            else
+            {
+                $('#rep_scan_emp').attr('disabled', false);
+                $('#rep_scan_emp').val('');
+                $('#rep_scan_emp').focus();
+                iziToast.warning({
+                    title: 'ERROR',
+                    message: 'Employee not found!',
+                    position: 'topCenter'
+                });                
+            }
+        }
+    });
+}
+function loadreplenish(line){
+    $.ajax({
+        url: 'loadreplenish',
+        type:'get',
+        data:{
+            'line_id': line
+        },
+        /* global: false, */
+        success: function (data) {
+            $('#replenish-div').html(data);
+        }
+    });
+}
+function checkreplenish(qr,id,eid){
+    $.ajax({
+        url: 'checkreplenish',
+        type:'get',
+        data:{
+            'id' : id,
+            'qr' : qr,
+            'eid' : eid
+        },
+        /* global: false, */
+        success: function (data) {
+            if(data.type == 'success'){                
+                iziToast.success({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+                loadreplenish($('#line_id_rep').val());
+            }
+            else if(data.type == 'error'){
+                iziToast.warning({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+                $('.qr-scan').val('');
+            }            
+        }
+    });
+}
 
 /* E V E N T */
 $('#line_mscan_button').on('click', function(e){
@@ -86,3 +160,23 @@ $('#line_mscan_button').on('click', function(e){
 $('#lineconfig_mscan_submit').on('click',function(e){
     lineconfigUpdate();
 })
+$('#rep_scan_emp').on('keypress', function(e){
+    if(e.keyCode == 13)
+    {
+        verifyemployee($('#rep_scan_emp').val());
+    }
+});
+$('#emp-reset-btn').on('click', function(){
+    $('#rep_scan_emp').attr('disabled', false);
+    $('#rep_scan_emp').val('');
+    $('#rep_scan_emp').focus();
+});
+$('#replenish-refresh-btn').on('click', function(e){
+    loadreplenish($('#line_id_rep').val());
+});
+$('#replenish-div').on('keypress','.qr-scan', function(e){
+    if(e.keyCode == 13)
+    {
+        checkreplenish($(this).val(),$(this).data('id'),$('#employee_id').val());
+    }
+});

@@ -24,6 +24,12 @@ use App\Exports\MaterialLoadExport;
 use App\Exports\ScanRecordExport;
 use App\Exports\ErrorExport;
 use Response;
+use App\Models\MaterialCount;
+use App\Custom\CustomFunctions;
+use App\Http\Controllers\MES\model\Modname;
+use App\Http\Controllers\MES\model\Feeder;
+use App\Http\Controllers\Api\ApiController;
+use App\Models\MatComp;
 
 class AjaxController extends Controller
 {
@@ -420,5 +426,229 @@ class AjaxController extends Controller
         ))->download('Error Logs.xlsx');
     }
 
+    public function loadreplenish(Request $request)
+    {
+        $reps = [];
+        $model = Modname::where('lines','LIKE','%"'.$request->input('line_id').'"%')->first();
+        if($model){
+            $feeders = Feeder::where('model_id',$model->id)
+                            ->where('line_id',$request->input('line_id'))
+                            ->where('table_id','!=',0)
+                            ->groupBy('pos_id','mounter_id','table_id','machine_type_id')
+                            ->orderBy('machine_type_id')
+                            ->orderBy('table_id')
+                            ->orderBy('mounter_id')
+                            ->orderBy('pos_id')
+                            ->get();
+
+            foreach ($feeders as $feeder) {
+                $lin = $feeder->machinetype->machine()->pluck('line_id');
+                $mach = \App\Http\Controllers\MES\model\Line::whereIN('id',$lin)->where('line_name_id',$feeder->line_id)->pluck('machine_id')->first();
+                $matload = MatLoadModel::where('model_id',$feeder->model_id)
+                        ->where('machine_id',$mach)
+                        ->where('table_id',$feeder->table_id)
+                        ->where('mounter_id',$feeder->mounter_id)
+                        ->where('pos_id',$feeder->pos_id)
+                        ->latest('id')
+                        ->first();
+
+                if($matload){
+                    $qty = CustomFunctions::getQrData($matload->ReelInfo,'QTY');
+                    $rid = CustomFunctions::getQrData($matload->ReelInfo,'RID');
+                    $total = 0;
+                    $serials = \App\Models\MatSnComp::where('RID',$rid)->get();
+                    $sns = [];
+                    if($serials){
+                        foreach ($serials as $serial) {            
+                            foreach ($serial->sn as $s) {
+                                $sns[] = $s;
+                            }
+                        }
+                    }
+                    $total = count(array_unique($sns));
+                    $sqty = $total * $feeder->usage;
+                    $rqty =  $qty - $sqty;
+                    $bqty = $qty * 0.1;
+                    if($rqty < $bqty){
+                        $reps[] = [
+                            "feeder_id" => $feeder->id,
+                            "machine" => $feeder->machinetype->name,
+                            "table" => $feeder->table_id,
+                            "feeder" => $feeder->mounter->code,
+                            "position" => $feeder->position->name,
+                            "rqty" => $rqty
+                        ];
+                    }
+                }
+            }
+        }        
+        return view('includes.table.replenishTable', compact('reps'));
+    }
+
+    public function checkreplenish(Request $request)
+    {        
+        if(CustomFunctions::getQrLength($request->input('qr')) > 12 || !CustomFunctions::getQrData($request->input('qr'),'RID')){
+            return [
+                'type' => 'error',
+                'message' => 'Error processing Reel Qr Code. Please try again.'
+            ];            
+        }
+        if (!$request->input('eid')) {
+            return [
+                'type' => 'error',
+                'message' => 'Scan Employee first.'
+            ];
+        }
+        $feeder = Feeder::find($request->input('id'));
+        $pn = CustomFunctions::getQrData($request->input('qr'),'PN');
+        $cid = component::where('product_number',$pn)->pluck('id')->first();
+        $chck = feeders::where('model_id',$feeder->model_id)
+                        ->where('line_id',$feeder->line_id)
+                        ->where('machine_type_id',$feeder->machine_type_id)
+                        ->where('table_id',$feeder->table_id)
+                        ->where('mounter_id',$feeder->mounter_id)
+                        ->where('pos_id',$feeder->pos_id)
+                        ->where('component_id',$cid)
+                        ->first();    
+        if($chck){
+            return $this->insertmatload($request,$chck);
+            return [
+                'type' => 'success',
+                'message' => 'MERON'
+            ];
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Component not found in the feeder list. Please check your input data or the MODEL in Line Config.'
+            ];
+        }
+        /* return [
+            'type' => 'success',
+            'message' => '"'.$cid.'"'
+        ]; */
+    }
+
+    public function insertmatload($request,$chck)
+    {
+        $feeder = Feeder::find($request->input('id'));
+        $rid = CustomFunctions::getQrData($request->input('qr'),'RID');        
+        $pn = CustomFunctions::getQrData($request->input('qr'),'PN');
+        $qty = CustomFunctions::getQrData($request->input('qr'),'QTY');
+        $cid = component::where('product_number',$pn)->pluck('id')->first();
+
+        // Input
+        $machine = machine::where('machine_type_id',$feeder->machine_type_id)->where('line_id',$feeder->line_id)->first();
+        $table = tableSMT::where('id',$feeder->table_id)->first();
+        $mach_id = $machine->id;
+        $model_id = $feeder->model_id;
+        $table_id = $feeder->table_id;
+        $mounter_id = $feeder->mounter_id;
+        $pos_id = $feeder->pos_id;
+        $component_id = $cid;
+        $order_id = $chck->order_id;
+        $employee_id = $request->input('eid');
+        $ReelInfo = $request->input('qr');
+        $scanmach = $machine->barcode.$table->name;
+        
+        // Check duplicate        
+        $dup =  MatLoadModel::where('ReelInfo','LIKE',"%".$rid."%")
+                            ->latest('id')
+                            ->first();
+        if($dup){
+            if($dup->machine_id == $feeder->machine_type_id && $dup->table_id == $feeder->table_id && $dup->mounter_id == $feeder->mounter_id && $dup->pos_id == $feeder->pos_id){
+                return [
+                    'type' => 'error',
+                    'message' => 'Reel Already Scanned.'
+                ];
+            }
+        }
+
+        // Insert Material
+        $insrecord=new MatLoadModel();
+        $insrecord->machine_id=$mach_id;
+        $insrecord->model_id=$model_id;
+        $insrecord->table_id=$table_id;
+        $insrecord->mounter_id=$mounter_id;
+        $insrecord->pos_id=$pos_id;
+        $insrecord->component_id=$component_id;
+        $insrecord->order_id=$order_id;
+        $insrecord->employee_id=$employee_id;
+        $insrecord->ReelInfo=$ReelInfo;
+        $insrecord->results="MATCH";
+        
+        $req = [
+            'machine_id' => $scanmach,
+            'new_PN' => $pn,
+            'position' => $pos_id,
+            'feeder_slot' => $mounter_id,
+            'comp_rid' => $rid,
+            'comp_qty' => $qty,
+            'model_id' => $model_id
+        ];
+        $matcomp_id = ApiController::insertmatcomp1($req);
+        if($matcomp_id){
+            $insrecord->save();
+            $mc = MatComp::find($matcomp_id);
+            $mc->mat_load_id = $insrecord->id;
+            $mt = $mc->materials;
+            foreach ($mt as $key => $value) {
+                if(
+                    strtoupper($value['machine']) == strtoupper($req['machine_id']) && 
+                    $value['position'] == $req['position'] && 
+                    $value['feeder'] == $req['feeder_slot']
+                    )
+                {
+                    $mt[$key]['matload_id'] = $insrecord->id;
+                }
+            }
+            $mc->materials = $mt;
+            $mc->save();
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Error Inserting Component. Please Contact MIS Support.'
+            ];
+        }
+
+        $running_mach = RunningOnMachine::where('machine_id',$mach_id)
+                                        ->where('model_id',$model_id)
+                                        ->where('table_id',$table_id)
+                                        ->where('mounter_id',$mounter_id)
+                                        ->where('pos_id',$pos_id)
+                                        ->first(); 
+
+        if($running_mach){            
+            $RunUpdate = RunningOnMachine::find($running_mach->id);
+            $RunUpdate->machine_id=$mach_id;
+            $RunUpdate->model_id=$model_id;
+            $RunUpdate->table_id=$table_id;
+            $RunUpdate->mounter_id=$mounter_id;
+            $RunUpdate->pos_id=$pos_id;
+            $RunUpdate->component_id=$component_id;
+            $RunUpdate->order_id=$order_id;
+            $RunUpdate->employee_id=$employee_id;
+            $RunUpdate->datetime_update= date("Y-m-d");
+            $RunUpdate->save();
+        }
+        else{
+            $RunInsert=new RunningOnMachine();
+            $RunInsert->machine_id=$mach_id;
+            $RunInsert->model_id=$model_id;
+            $RunInsert->table_id=$table_id;
+            $RunInsert->mounter_id=$mounter_id;
+            $RunInsert->pos_id=$pos_id;
+            $RunInsert->component_id=$component_id;
+            $RunInsert->order_id=$order_id;
+            $RunInsert->employee_id=$employee_id;
+            $RunInsert->datetime_update= date("Y-m-d");
+            $RunInsert->save();
+        }
+        return [
+            'type' => 'success',
+            'message' => 'Data Recorded!: All inputs are correct.'
+        ];
+    }
 
 }

@@ -54,6 +54,7 @@ class MaterialCountInsert extends Command
                                 ->orderBy('mounter_id')
                                 ->orderBy('pos_id')
                                 ->get();
+                    $fid = [];
                     foreach ($feeders as $feeder) {
                         $lin = $feeder->machinetype->machine()->pluck('line_id');
                         $mach = \App\Http\Controllers\MES\model\Line::whereIN('id',$lin)->where('line_name_id',$feeder->line_id)->pluck('machine_id')->first();
@@ -93,7 +94,17 @@ class MaterialCountInsert extends Command
                             $mat_count->remaining_qty = $qty - $total * $feeder->usage;
                             $mat_count->save();
                         }
+                        else{
+                            $mat_count->mat_load_id = null;
+                            $mat_count->usage = null;
+                            $mat_count->reel_qty = null;
+                            $mat_count->sn = null;
+                            $mat_count->remaining_qty = null;
+                            $mat_count->save();
+                        }
+                        $fid[] = $feeder->id;
                     }
+                    \App\Models\MaterialCount::whereNotIn('feeder_id',$fid)->delete();
                 }
             }
             sleep(5);

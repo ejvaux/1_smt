@@ -10,18 +10,18 @@ class MaterialCount extends Model
 
     public function feeder()
     {
-        return $this->hasMany('App\Http\Controllers\MES\model\Feeder','feeder_id');
+        return $this->belongsto('App\Http\Controllers\MES\model\Feeder','feeder_id');
     }
     public function matload()
     {
-        return $this->hasMany('App\MatLoadModel','mat_load_id');
+        return $this->belongsto('App\MatLoadModel','mat_load_id');
     }
     public function model()
     {
-        return $this->hasMany('App\Http\Controllers\MES\model\ModName','model_id');
+        return $this->belongsto('App\Http\Controllers\MES\model\ModName','model_id');
     }
     public function line()
     {
-        return $this->hasMany('App\Http\Controllers\MES\model\LineName','line_id');
+        return $this->belongsto('App\Http\Controllers\MES\model\LineName','line_id');
     }
 }

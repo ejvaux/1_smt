@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 Route::get('/mscan2', 'PageController@mscan2');
+Route::get('loadreplenish', 'AjaxController@loadreplenish');
+Route::get('checkreplenish', 'AjaxController@checkreplenish');
 Route::resource('materialload','MaterialLoadController');
 /* AjaxController */
 Route::post('ajax/errorcode', 'AjaxController@errorcode');
