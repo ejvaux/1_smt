@@ -28,6 +28,7 @@ use App\Models\MaterialCount;
 use App\Custom\CustomFunctions;
 use App\Http\Controllers\MES\model\Modname;
 use App\Http\Controllers\MES\model\Feeder;
+use App\Http\Controllers\MES\model\Line;
 use App\Http\Controllers\Api\ApiController;
 use App\Models\MatComp;
 
@@ -538,7 +539,8 @@ class AjaxController extends Controller
         $cid = component::where('product_number',$pn)->pluck('id')->first();
 
         // Input
-        $machine = machine::where('machine_type_id',$feeder->machine_type_id)->where('line_id',$feeder->line_id)->first();
+        $mid = Line::where('line_name_id',$feeder->line_id)->pluck('machine_id');
+        $machine = machine::where('machine_type_id',$feeder->machine_type_id)->whereIN('id',$mid)->first();
         $table = tableSMT::where('id',$feeder->table_id)->first();
         $mach_id = $machine->id;
         $model_id = $feeder->model_id;
