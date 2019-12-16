@@ -43,8 +43,8 @@ class SnComponentsExport implements FromView, WithTitle
             array_push($reels, $r->materials);
         } */
 
-        $pcb1 = Pcb::where('serial_number',$this->sn)->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
-        $pcb2 = PcbArchive::where('serial_number',$this->sn)->where('type',0)->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
+        $pcb1 = Pcb::where('serial_number',$this->sn)->whereNotNull('mat_comp_id')->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
+        $pcb2 = PcbArchive::where('serial_number',$this->sn)->whereNotNull('mat_comp_id')->whereiN('div_process_id',[1,2])->orderBy('id','DESC')->get();
         $pcbs = $pcb1->merge($pcb2);
 
         if($pcbs && $pcbs->count() != 0){
