@@ -487,7 +487,7 @@ class AjaxController extends Controller
     }
 
     public function checkreplenish(Request $request)
-    {        
+    {
         if(CustomFunctions::getQrLength($request->input('qr')) > 12 || !CustomFunctions::getQrData($request->input('qr'),'RID')){
             return [
                 'type' => 'error',
