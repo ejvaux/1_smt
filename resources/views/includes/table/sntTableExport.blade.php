@@ -33,7 +33,7 @@
                 <td>{{$wot}}</td>
                 <td>{{$sn}}</td>
                 <td>{{$r['RID']}}</td>
-                <td>{{App\Http\Controllers\MES\model\Component::where('id',$re)->pluck('product_number')->first()}}</td>                          
+                <td>{{App\Http\Controllers\MES\model\Component::where('id',$r['component_id'])->pluck('product_number')->first()}}</td>                          
                 <td>{{App\MatLoadModel::where('ReelInfo','LIKE','RID:'.$r['RID'].'%')->pluck('created_at')->first()}}</td>                
                 <td>{{App\modelSMT::where('id',$reel->model_id)->pluck('program_name')->first()}}</td>
                 <td>{{CustomFunctions::getmachcode($r['machine'])}}</td>

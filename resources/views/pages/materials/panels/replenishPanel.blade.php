@@ -18,25 +18,21 @@
     </div>
 </div> --}}
 <div class="row mb-1">
-    <div class="col-md">
-        <div class="row">
-            <div class="col">
-                <label for='rep_scan_emp' class="col-form-label bold-text">EMPLOYEE:</label>
-            </div>
-            <div class="col text-right">
-                <button class='btn btn-primary mt-1 py-0' id='replenish-refresh-btn'><i class="fas fa-sync-alt"></i> LOAD</button>
-            </div>
-        </div>        
+    <div class="col text-right">
+        <button class='btn btn-primary mt-1 py-0' id='replenish-refresh-btn'><i class="fas fa-sync-alt"></i> LOAD</button>
     </div>
 </div>
 <div class="row mb-1">
-    <div class="col-md">
+    <div class="col-3">
+        <label for='rep_scan_emp' class="col-form-label bold-text">EMPLOYEE:</label>
+    </div>
+    <div class="col-9">
         <div class="input-group">
             <input type="text" id="rep_scan_emp" placeholder="SCAN EMPLOYEE BARCODE" class="form-control" autocomplete="off">
             <input type="hidden" id="employee_id">
             <button id='emp-reset-btn' type="button" class="btn btn-danger bold-text"><i class="fas fa-times"></i></button>
-        </div>                                
-    </div>
+        </div>
+    </div>    
 </div>
 <div class="row mb-2">
     <div class="col-3">

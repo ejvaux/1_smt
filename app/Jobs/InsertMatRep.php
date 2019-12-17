@@ -88,7 +88,7 @@ class InsertMatRep implements ShouldQueue
             $sysQTY = $total;
             $matloadID = $prev->id;
             $date = $dt;
-            if ($usage) {
+            if ($usage && $usage > 0) {
                 $targetQTY = $reelQTY/$usage;
 
                 /* $rep = MaterialReport::where('mat_load_id',$matloadID)->where('reel_id',$reel)->first(); */

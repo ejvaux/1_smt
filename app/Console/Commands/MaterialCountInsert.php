@@ -41,7 +41,8 @@ class MaterialCountInsert extends Command
      */
     public function handle()
     {
-        for ($i=0; $i < 59; $i++) { 
+        for ($i=0; $i < 59; $i++) {
+            $fid = [];
             $models = Modname::where('lines','<>','[]')->get();
             foreach ($models as $model) {
                 foreach ($model->lines as $line) {
@@ -54,7 +55,7 @@ class MaterialCountInsert extends Command
                                 ->orderBy('mounter_id')
                                 ->orderBy('pos_id')
                                 ->get();
-                    $fid = [];
+                    /* $fid = []; */
                     foreach ($feeders as $feeder) {
                         $lin = $feeder->machinetype->machine()->pluck('line_id');
                         $mach = \App\Http\Controllers\MES\model\Line::whereIN('id',$lin)->where('line_name_id',$feeder->line_id)->pluck('machine_id')->first();
@@ -104,10 +105,11 @@ class MaterialCountInsert extends Command
                         }
                         $fid[] = $feeder->id;
                     }
-                    \App\Models\MaterialCount::whereNotIn('feeder_id',$fid)->delete();
+                    /* \App\Models\MaterialCount::whereNotIn('feeder_id',$fid)->delete(); */
                 }
             }
             sleep(5);
+            \App\Models\MaterialCount::whereNotIn('feeder_id',$fid)->delete();
         }                
     }
 }
