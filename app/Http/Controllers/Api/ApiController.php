@@ -8,6 +8,7 @@ use App\Http\Controllers\MES\model\Employee;
 use App\Http\Controllers\MES\model\LineName;
 use App\Http\Controllers\MES\model\Machine;
 use App\Http\Controllers\MES\model\Component;
+use App\Http\Controllers\MES\model\Modname;
 use App\Models\DivProcess;
 use App\Models\WorkOrder;
 use App\Models\Pcb;
@@ -24,6 +25,7 @@ use App\Jobs\CompSnInsert;
 use App\Jobs\RemoteInsert;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\MaterialCount;
 
 class ApiController extends Controller
 {
@@ -90,7 +92,7 @@ class ApiController extends Controller
     /* ---------------------- PCB SCANNING -------------------------- */
 
     public function scantype(Request $request)
-    {   
+    {
         if($request->division_id == 2)
         {
             // --------------------------
@@ -125,7 +127,7 @@ class ApiController extends Controller
             $sn = WoSn::select('WORK_ORDER')->where('SERIAL_NUMBER',$request->serial_number)->first();
             if($sn){
                 if($sn->WORK_ORDER == $wo){
-                    if($request->type == 0){
+                    /* if($request->type == 0){
                         return $this->scanIn($request);
                     }
                     else if($request->type == 1){
@@ -136,7 +138,8 @@ class ApiController extends Controller
                             'type' => 'error',
                             'message' => 'Scan Failed. Scan type not allowed.'
                         ];
-                    }
+                    } */
+                    return $this->checkreelqty($request);
                 }
                 else{
                     return [
@@ -166,7 +169,8 @@ class ApiController extends Controller
                         'type' => 'error',
                         'message' => 'Scan Failed. Scan type not allowed.'
                     ];
-                }  
+                }
+                /* return $this->checkreelqty($request); */
             }
             else{
                 return [
@@ -175,6 +179,33 @@ class ApiController extends Controller
                 ];
             }
         }                 
+    }
+
+    /* ----------------- VALIDATION --------------------- */
+
+    public function checkreelqty($request){
+        $model = Modname::where('lines','LIKE','%"'.$request->line_id.'"%')->first();
+        if($model){
+            $reps = MaterialCount::where('model_id',$model->id)->where('line_id',$request->line_id)->where('remaining_qty','<',0)->get();
+            if($reps->count() >= 0){
+                return [
+                    'type' => 'error',
+                    'message' => 'Please Check Reel for Replenish.'
+                ];
+            }
+        }
+        if($request->type == 0){
+            return $this->scanIn($request);
+        }
+        else if($request->type == 1){
+            return $this->scanOut($request);
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Scan Failed. Scan type not allowed.'
+            ];
+        }
     }
 
     /* --------------- INPUT SCANNING ------------------- */

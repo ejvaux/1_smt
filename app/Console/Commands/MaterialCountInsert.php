@@ -41,7 +41,7 @@ class MaterialCountInsert extends Command
      */
     public function handle()
     {
-        for ($i=0; $i < 59; $i++) {
+        function dafunc(){
             $fid = [];
             $models = Modname::where('lines','<>','[]')->get();
             foreach ($models as $model) {
@@ -75,25 +75,35 @@ class MaterialCountInsert extends Command
                             $mat_count->save();
                         }
                         if ($matload) {
-                            $rid = CustomFunctions::getQrData($matload->ReelInfo,'RID');
-                            $qty = CustomFunctions::getQrData($matload->ReelInfo,'QTY');
-                            $total = 0;
-                            $serials = \App\Models\MatSnComp::where('RID',$rid)->get();
-                            $sns = [];
-                            if($serials){
-                                foreach ($serials as $serial) {            
-                                    foreach ($serial->sn as $s) {
-                                        $sns[] = $s;
+                            if($feeder->usage > 0){
+                                $rid = CustomFunctions::getQrData($matload->ReelInfo,'RID');
+                                $qty = CustomFunctions::getQrData($matload->ReelInfo,'QTY');
+                                $total = 0;
+                                $serials = \App\Models\MatSnComp::where('RID',$rid)->get();
+                                $sns = [];
+                                if($serials){
+                                    foreach ($serials as $serial) {            
+                                        foreach ($serial->sn as $s) {
+                                            $sns[] = $s;
+                                        }
                                     }
                                 }
-                            }
-                            $total = count(array_unique($sns));
-                            $mat_count->mat_load_id = $matload->id;
-                            $mat_count->usage = $feeder->usage;
-                            $mat_count->reel_qty = $qty;
-                            $mat_count->sn = $total;
-                            $mat_count->remaining_qty = $qty - $total * $feeder->usage;
-                            $mat_count->save();
+                                $total = count(array_unique($sns));
+                                $mat_count->mat_load_id = $matload->id;
+                                $mat_count->usage = $feeder->usage;
+                                $mat_count->reel_qty = $qty;
+                                $mat_count->sn = $total;
+                                $mat_count->remaining_qty = $qty - $total * $feeder->usage;
+                                $mat_count->save();
+                            } 
+                            else{
+                                $mat_count->mat_load_id = null;
+                                $mat_count->usage = null;
+                                $mat_count->reel_qty = null;
+                                $mat_count->sn = null;
+                                $mat_count->remaining_qty = null;
+                                $mat_count->save();
+                            }                         
                         }
                         else{
                             $mat_count->mat_load_id = null;
@@ -110,6 +120,10 @@ class MaterialCountInsert extends Command
             }
             sleep(5);
             \App\Models\MaterialCount::whereNotIn('feeder_id',$fid)->delete();
-        }                
+        }
+        
+        while (true) {
+            dafunc();
+        }
     }
 }
