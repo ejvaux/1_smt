@@ -127,7 +127,7 @@ class ApiController extends Controller
             $sn = WoSn::select('WORK_ORDER')->where('SERIAL_NUMBER',$request->serial_number)->first();
             if($sn){
                 if($sn->WORK_ORDER == $wo){
-                    if($request->type == 0){
+                    /* if($request->type == 0){
                         return $this->scanIn($request);
                     }
                     else if($request->type == 1){
@@ -138,8 +138,8 @@ class ApiController extends Controller
                             'type' => 'error',
                             'message' => 'Scan Failed. Scan type not allowed.'
                         ];
-                    }
-                    /* return $this->checkreelqty($request); */
+                    } */
+                    return $this->checkreelqty($request);
                 }
                 else{
                     return [
@@ -184,16 +184,18 @@ class ApiController extends Controller
     /* ----------------- VALIDATION --------------------- */
 
     public function checkreelqty($request){
-        $model = Modname::where('lines','LIKE','%"'.$request->line_id.'"%')->first();
-        if($model){
-            $reps = MaterialCount::where('model_id',$model->id)->where('line_id',$request->line_id)->where('remaining_qty','<',0)->get();
-            if($reps->count() >= 0){
-                return [
-                    'type' => 'error',
-                    'message' => 'Please Check Reel for Replenish.'
-                ];
+        if($request->line_id == 17 || $request->line_id == 18){
+            $model = Modname::where('lines','LIKE','%"'.$request->line_id.'"%')->first();
+            if($model){
+                $reps = MaterialCount::where('model_id',$model->id)->where('line_id',$request->line_id)->whereNotNull('mat_load_id')->where('remaining_qty','<',0)->get();
+                if($reps->count() > 0){
+                    return [
+                        'type' => 'error',
+                        'message' => 'Please Check Reel for Replenish.'
+                    ];
+                }
             }
-        }
+        }        
         if($request->type == 0){
             return $this->scanIn($request);
         }
