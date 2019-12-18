@@ -190,7 +190,7 @@ class ApiController extends Controller
                 $reps = MaterialCount::where('model_id',$model->id)->where('line_id',$request->line_id)->whereNotNull('mat_load_id')->where('remaining_qty','<',0)->get();
                 if($reps->count() > 0){
                     foreach ($reps as $rep) {
-                        if($rep->remaining_qty < $rep->reel_qty * -0.3){
+                        if($rep->remaining_qty <= $rep->reel_qty * -3){
                             return [
                                 'type' => 'error',
                                 'message' => '<h3>Negative reel quantity found. Please Check Reel for Replenish.</h3>'

@@ -12,7 +12,7 @@
                 @if (count($reps) > 0)
                     @foreach ($reps as $rep)                        
                         <tr class="border-left
-                            @if ($rep['rqty'] < 0)
+                            @if ($rep['rqty'] < $rep['qty'] * -1)
                                 border-danger
                             @else
                                 border-warning

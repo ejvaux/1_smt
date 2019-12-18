@@ -69,7 +69,7 @@ class PageController extends Controller
         $mounters=mounter::all();
         $machine=machine::all();
         $line=lineSMT::all();
-        $lines2 = LineName::orderBy('division_id')->get();
+        $lines2 = LineName::where('division_id',2)->get();
         $data="";
 
         return view('pages.materials.mscan2',compact(

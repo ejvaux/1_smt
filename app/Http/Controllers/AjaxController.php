@@ -477,7 +477,8 @@ class AjaxController extends Controller
                             "table" => $feeder->table_id,
                             "feeder" => $feeder->mounter->code,
                             "position" => $feeder->position->name,
-                            "rqty" => $rqty
+                            "rqty" => $rqty,
+                            "qty" => $qty
                         ];
                     }
                 }
