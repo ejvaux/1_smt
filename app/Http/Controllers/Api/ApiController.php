@@ -191,7 +191,7 @@ class ApiController extends Controller
                 if($reps->count() > 0){
                     return [
                         'type' => 'error',
-                        'message' => 'Please Check Reel for Replenish.'
+                        'message' => '<h3>Negative reel quantity found. Please Check Reel for Replenish.</h3>'
                     ];
                 }
             }
