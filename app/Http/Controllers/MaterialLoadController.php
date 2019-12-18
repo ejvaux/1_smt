@@ -138,10 +138,11 @@ class MaterialLoadController extends Controller
         ];
         $matcomp_id = ApiController::insertmatcomp1($req);
         if($matcomp_id){
-            $insrecord->save();
+            $insrecord->save();      
             $mc = MatComp::find($matcomp_id);
             $mc->mat_load_id = $insrecord->id;
             $mt = $mc->materials;
+            $sys_qty = 0;
             foreach ($mt as $key => $value) {
                 if(
                     strtoupper($value['machine']) == strtoupper($req['machine_id']) && 
@@ -149,11 +150,16 @@ class MaterialLoadController extends Controller
                     $value['feeder'] == $req['feeder_slot']
                     )
                 {
+                    $sys_qty = $value['QTY'];
                     $mt[$key]['matload_id'] = $insrecord->id;
                 }
             }
+            
             $mc->materials = $mt;
             $mc->save();
+            
+            $insrecord->sys_qty = $sys_qty;
+            $insrecord->save();
         }
         else{
             return [

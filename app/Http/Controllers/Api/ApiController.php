@@ -26,6 +26,8 @@ use App\Jobs\RemoteInsert;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\MaterialCount;
+use App\tableSMT;
+use App\feeders;
 
 class ApiController extends Controller
 {
@@ -1616,15 +1618,31 @@ class ApiController extends Controller
     {
         $matcomp_id = 0;
         $machine = $req['machine_id'];
-        $m_code =substr($machine,0,-1);
+        $m_code =substr($machine,0,-1);        
+        $table=substr($machine,-1);
         $mach = Machine::where('barcode',$m_code)->first();
         $line_id = $mach->line->linename->id;
         $component= Component::where('product_number',$req['new_PN'])->first();
+        
+        $model = ModName::where('lines','LIKE','%"'.$line_id.'"%')->first();        
+        $table_id= tableSMT::where('name',$table)->pluck('id')->first();
+
+        $data=feeders::where('model_id',$model->id)
+                    ->where('line_id',$line_id)
+                    ->where('machine_type_id',$mach->id)
+                    ->where('table_id',$table_id)
+                    ->where('mounter_id',$req['feeder_slot'])
+                    ->where('pos_id',$req['position'])
+                    ->where('component_id',$component->id)
+                    ->first();        
+        
         $m = MatComp::where('model_id',$req['model_id'])->where('line_id',$line_id)->latest('id')->first();
         
         if($m){
             $mt = $m->materials;
             $tu = '';
+            $rq = 0;
+            $total  = 0;
             foreach ($mt as $key => $value) {
                 if(
                     strtoupper($value['machine']) == strtoupper($req['machine_id']) && 
@@ -1633,6 +1651,18 @@ class ApiController extends Controller
                     )
                 {
                     $tu = $key;
+
+                    $serials = \App\Models\MatSnComp::where('RID',$value['RID'])->get();
+                    $sns = [];
+                    if($serials){
+                        foreach ($serials as $serial) {            
+                            foreach ($serial->sn as $s) {
+                                $sns[] = $s;
+                            }
+                        }
+                    }
+                    $total = $value['QTY'] - count(array_unique($sns)) * $data->usage;
+
                     unset($mt[$tu]);
                 }
             }
@@ -1649,7 +1679,7 @@ class ApiController extends Controller
                     'position' => $req['position'],
                     'feeder' => $req['feeder_slot'],
                     'RID' => $req['comp_rid'],
-                    'QTY' => $req['comp_qty'],
+                    'QTY' => $req['comp_qty'] + $total,
                     'matload_id' => 'processing'
                     ];
             $zz = array_values($mt2);
@@ -1669,7 +1699,7 @@ class ApiController extends Controller
                     'position' => $req['position'],
                     'feeder' => $req['feeder_slot'],
                     'RID' => $req['comp_rid'],
-                    'QTY' => $req['comp_qty'],
+                    'QTY' => $req['comp_qty'] + $total,
                     'matload_id' => 'processing'
                     ];
             $zzz = array_values($mt);        
