@@ -150,16 +150,12 @@ class MaterialLoadController extends Controller
                     $value['feeder'] == $req['feeder_slot']
                     )
                 {
-                    $sys_qty = $value['QTY'];
                     $mt[$key]['matload_id'] = $insrecord->id;
                 }
             }
             
             $mc->materials = $mt;
             $mc->save();
-            
-            $insrecord->sys_qty = $sys_qty;
-            $insrecord->save();
         }
         else{
             return [

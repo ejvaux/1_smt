@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\MatComp;
 use App\Models\MatComp1;
 use App\Models\MatSnComp;
+use App\Http\Controllers\MES\model\Feeder;
 
 class CompSnInsert implements ShouldQueue
 {
@@ -48,10 +49,36 @@ class CompSnInsert implements ShouldQueue
                 else{
                     $cid = $key;
                 }
+
+                if(isset($value['feeder_id'])){
+                    $total = 0;
+                    $serials = MatSnComp::where('RID',$value['prev_RID'])->get();
+                    $sns = [];
+                    if($serials){
+                        foreach ($serials as $serial) {            
+                            foreach ($serial->sn as $s) {
+                                $sns[] = $s;
+                            }
+                        }
+                    }
+                    $total = count(array_unique($sns));
+                    $feeder = Feeder::where('id',$value['feeder_id'])->first();
+                    $sys_qty = $total * $feeder->usage;
+                    if($sys_qty < $value['prev_QTY']){
+                        $reel_id = $value['prev_RID'];
+                    }
+                    else{
+                        $reel_id = $value['RID'];
+                    }
+                }
+                else{
+                    $reel_id = $value['RID'];
+                }                
+
                 /* $comp = MatSnComp::where('mat_comp_id',$mat_comp->id)->where('component_id',$key)->where('RID',$value['RID'])->OrderBy('id','DESC')->first(); */
                 $comp = MatSnComp::/* where('mat_comp_id',$mat_comp->id)
                                 ->where('component_id',$cid)
-                                -> */where('RID',$value['RID'])
+                                -> */where('RID',$reel_id)
                                 ->OrderBy('id','DESC')
                                 ->first();
                 if($comp){
@@ -62,7 +89,7 @@ class CompSnInsert implements ShouldQueue
                         $c->line_id = $mat_comp->line_id;
                         $c->mat_comp_id = $mat_comp->id;
                         $c->component_id = $cid;
-                        $c->RID = $value['RID'];
+                        $c->RID = $reel_id;
                         $c->sn = array($this->sn);
                         $c->save();
                     }
@@ -79,7 +106,7 @@ class CompSnInsert implements ShouldQueue
                     $c->line_id = $mat_comp->line_id;
                     $c->mat_comp_id = $mat_comp->id;
                     $c->component_id = $cid;
-                    $c->RID = $value['RID'];
+                    $c->RID = $reel_id;
                     $c->sn = array($this->sn);
                     $c->save();
                 }
