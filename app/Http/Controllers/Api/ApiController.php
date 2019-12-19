@@ -1629,12 +1629,16 @@ class ApiController extends Controller
 
         $feeder=feeders::where('model_id',$model->id)
                     ->where('line_id',$line_id)
-                    ->where('machine_type_id',$mach->id)
+                    ->where('machine_type_id',$mach->machine_type_id)
                     ->where('table_id',$table_id)
                     ->where('mounter_id',$req['feeder_slot'])
                     ->where('pos_id',$req['position'])
                     ->where('component_id',$component->id)
-                    ->first();        
+                    ->first();
+                    
+        if(!$feeder){
+            return 0;
+        }
         
         $m = MatComp::where('model_id',$req['model_id'])->where('line_id',$line_id)->latest('id')->first();
         
