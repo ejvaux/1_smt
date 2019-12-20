@@ -129,7 +129,7 @@ class ApiController extends Controller
             $sn = WoSn::select('WORK_ORDER')->where('SERIAL_NUMBER',$request->serial_number)->first();
             if($sn){
                 if($sn->WORK_ORDER == $wo){
-                    /* if($request->type == 0){
+                    if($request->type == 0){
                         return $this->scanIn($request);
                     }
                     else if($request->type == 1){
@@ -140,8 +140,8 @@ class ApiController extends Controller
                             'type' => 'error',
                             'message' => 'Scan Failed. Scan type not allowed.'
                         ];
-                    } */
-                    return $this->checkreelqty($request);
+                    }
+                    /* return $this->checkreelqty($request); */
                 }
                 else{
                     return [

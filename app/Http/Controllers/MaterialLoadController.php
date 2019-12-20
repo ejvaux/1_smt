@@ -88,7 +88,7 @@ class MaterialLoadController extends Controller
         }
 
         // Check duplicate
-        $dup =  MatLoadModel::where('ReelInfo','LIKE',"%".CustomFunctions::getQrData($request->input('reelInfo'),'RID')."%")
+        /* $dup =  MatLoadModel::where('ReelInfo','LIKE',"%".CustomFunctions::getQrData($request->input('reelInfo'),'RID')."%")
                                 ->latest('id')
                                 ->first();
         if($dup){
@@ -98,6 +98,14 @@ class MaterialLoadController extends Controller
                     'message' => 'Reel Already Scanned.'
                 ];
             }         
+        } */
+        $dup = MatLoadModel::where('ReelInfo','LIKE',"%".CustomFunctions::getQrData($request->input('reelInfo'),'RID')."%")->first();                          
+        
+        if($dup){
+            return [
+                'type' => 'error',
+                'message' => 'Reel Already Scanned.'
+            ];
         }
         
         /* $insrecord=new MatLoadModel();

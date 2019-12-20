@@ -63,9 +63,21 @@ class CompSnInsert implements ShouldQueue
                     }
                     $total = count(array_unique($sns));
                     $feeder = Feeder::where('id',$value['feeder_id'])->first();
-                    $sys_qty = $total * $feeder->usage;
+                    $usagee = 0;
+                    if($feeder->usage <= 0){
+                        $usagee = 1;
+                    }
+                    else{
+                        $usagee = $feeder->usage;
+                    }
+                    $sys_qty = $total * $usagee;
                     if($sys_qty < $value['prev_QTY']){
-                        $reel_id = $value['prev_RID'];
+                        if ($sys_qty + $usagee * 2 < $value['prev_QTY']) {
+                            $reel_id = $value['prev_RID'];
+                        }
+                        else{
+                            $reel_id = $value['RID'];
+                        }                        
                     }
                     else{
                         $reel_id = $value['RID'];

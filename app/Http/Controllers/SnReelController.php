@@ -85,7 +85,7 @@ class SnReelController extends Controller
                 if(!$pcb){
                     $pcb = PcbArchive::where('serial_number',$key)->where('mat_comp_id',$serial->mat_comp_id)->first();
                 } */
-                $pcb = Pcb::where('serial_number',$key)->where('line_id',$serial->line_id)->first();
+                $pcb = Pcb::where('serial_number',$key)->where('line_id',$serial->line_id)->whereNotNull('mat_comp_id')->first();
                 if(!$pcb){
                     $pcb = PcbArchive::where('serial_number',$key)->where('line_id',$serial->line_id)->first();
                 }
