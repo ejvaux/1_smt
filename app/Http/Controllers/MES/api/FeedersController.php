@@ -250,7 +250,7 @@ class FeedersController extends Controller
         }
     }
     public function update_usage(Request $request)
-    {        
+    {
         if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->where('pos_id',$request->input('pos_id'))->update(['usage' => $request->input('usage')])){
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');

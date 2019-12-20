@@ -43,15 +43,39 @@ class InsertMatRep implements ShouldQueue
         /* $dt = Carbon::parse($today)->subday(); */
         $dt = $this->date;
 
-        // Get previous material load
+        // Get material Load
+        
+        $mload = MatLoadModel::where('id',$this->matload->id)->first();
 
-        $prev = MatLoadModel::where('id','<',$this->matload->id)
-                            ->where('machine_id',$this->matload->machine_id)
-                            ->where('model_id',$this->matload->model_id)
-                            ->where('table_id',$this->matload->table_id)
-                            ->where('mounter_id',$this->matload->mounter_id)
-                            ->where('pos_id',$this->matload->pos_id)
-                            ->orderBy('id','DESC')->first();
+            // Get total system quantity
+            $_reel = CustomFunctions::getQrData($mload->ReelInfo,'RID');
+            $_total = 0;
+            $_serials = MatSnComp::where('RID',$_reel)->get();
+            $_sns = [];
+            foreach ($_serials as $_serial) {            
+                foreach ($_serial->sn as $_s) {
+                    $_sns[] = $_s;
+                }
+            }
+            $_total = count(array_unique($_sns));
+            // End
+
+        $mt = MatLoadModel::where('id','<',$this->matload->id)
+                                ->where('machine_id',$this->matload->machine_id)
+                                ->where('model_id',$this->matload->model_id)
+                                ->where('table_id',$this->matload->table_id)
+                                ->where('mounter_id',$this->matload->mounter_id)
+                                ->where('pos_id',$this->matload->pos_id)
+                                ->orderBy('id','DESC');
+        
+        if($_total = 0){
+            // Get 2nd previous material load
+            $prev = $mt->skip(1)->first();
+        }
+        else{
+            // Get previous material load
+            $prev = $mt->first();
+        }      
 
         if($prev){
             // Get total system quantity
@@ -88,7 +112,7 @@ class InsertMatRep implements ShouldQueue
             $sysQTY = $total;
             $matloadID = $prev->id;
             $date = $dt;
-            if ($usage && $usage > 0) {
+            if ($usage != 0 || $usage > 0) {
                 $targetQTY = $reelQTY/$usage;
 
                 /* $rep = MaterialReport::where('mat_load_id',$matloadID)->where('reel_id',$reel)->first(); */
