@@ -58,21 +58,19 @@ class FeedersController extends Controller
             if($primary->where('order_id',1)->first()){
                 return redirect()->back()->with('error','Primary component already exists in '.$primary->first()->mounter->code.' - '.$primary->first()->position->name);
             }
+            $usage = $request->input('usage');
         }
-
-        if($primary->where('component_id',$request->input('component_id'))->first()){
-            return redirect()->back()->with('error','Component already exists in '.$primary->first()->mounter->code.' - '.$primary->first()->position->name);
-        }
-        if($request->input('order_id') != 1){
+        else{
             if($primary->where('order_id',1)->first()){
-                $usage = $primary->pluck('usage')->first();
+                $usage = $primary->where('order_id',1)->pluck('usage')->first();
             }
             else{
                 $usage = 0;
             }
         }
-        else{
-            $usage = $request->input('usage');
+
+        if($primary->where('component_id',$request->input('component_id'))->first()){
+            return redirect()->back()->with('error','Component already exists in '.$primary->first()->mounter->code.' - '.$primary->first()->position->name);
         }
 
         $f = new Feeder;

@@ -1618,7 +1618,7 @@ class ApiController extends Controller
     {
         $matcomp_id = 0;
         $machine = $req['machine_id'];
-        $m_code =substr($machine,0,-1);        
+        $m_code =substr($machine,0,-1);
         $table=substr($machine,-1);
         $mach = Machine::where('barcode',$m_code)->first();
         $line_id = $mach->line->linename->id;
