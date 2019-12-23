@@ -654,4 +654,30 @@ class AjaxController extends Controller
         ];
     }
 
+    public function compareReel(Request $request)
+    {
+        if(!CustomFunctions::getQrData($request->input('old'),'PN') || !CustomFunctions::getQrData($request->input('new'),'PN') || CustomFunctions::getQrLength($request->input('old')) > 12 || CustomFunctions::getQrLength($request->input('new')) > 12)
+        {
+            return [
+                'type' => 'error',
+                'message' => 'Error processing QR Code. Please rescan qr again.'
+            ];
+        }
+        else{
+            $old = CustomFunctions::getQrData($request->input('old'),'PN');
+            $new = CustomFunctions::getQrData($request->input('new'),'PN');
+            if($old == $new){
+                return [
+                    'type' => 'success',
+                    'message' => 'Same PN.<br><br><b>' . $new . '</b>'
+                ];
+            }
+            else{
+                return [
+                    'type' => 'error',
+                    'message' => 'Different PN.<br><br><b>OLD: ' . $old . '<br>NEW: ' . $new . '</b>'
+                ];
+            }
+        }
+    }
 }

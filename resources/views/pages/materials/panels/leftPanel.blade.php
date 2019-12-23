@@ -16,7 +16,10 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link bold-text" href="#replenish" role="tab" data-toggle="tab">Replenish</a>
-            </li>               
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bold-text" href="#compare" role="tab" data-toggle="tab">Compare</a>
+            </li>         
         </ul>        
         <!-- Tab panes -->
         <div class="tab-content">
@@ -25,7 +28,10 @@
             </div>
             <div class="tab-pane" id="replenish" style='height:100%'>
                 @include('pages.materials.panels.replenishPanel')
-            </div> 
+            </div>
+            <div class="tab-pane" id="compare" style='height:100%'>
+                @include('pages.materials.panels.comparePanel')
+            </div>
         </div>                                   
     </div>
 </div>

@@ -151,6 +151,34 @@ function checkreplenish(qr,id,eid){
         }
     });
 }
+function checkqr(){
+    $.ajax({
+        url: 'compareReel',
+        type:'get',
+        data:{
+            'old': $('#old-reel').val(),
+            'new' : $('#new-reel').val()
+        },
+        /* global: false, */
+        success: function (data) {
+            if(data.type == 'success'){                
+                iziToast.success({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+            }
+            else if(data.type == 'error'){
+                iziToast.warning({
+                    message: data.message,
+                    position: 'topCenter'
+                });
+            }
+            $('#old-reel').val('');
+            $('#new-reel').val('');
+            $('#old-reel').focus();
+        }
+    });
+}
 
 /* E V E N T */
 $('#line_mscan_button').on('click', function(e){
@@ -178,5 +206,15 @@ $('#replenish-div').on('keypress','.qr-scan', function(e){
     if(e.keyCode == 13)
     {
         checkreplenish($(this).val(),$(this).data('id'),$('#employee_id').val());
+    }
+});
+$('#old-reel').on('keypress', function(e){
+    if(e.keyCode == 13){
+        $('#new-reel').focus();
+    }
+});
+$('#new-reel').on('keypress', function(e){
+    if(e.keyCode == 13){
+        checkqr();
     }
 });

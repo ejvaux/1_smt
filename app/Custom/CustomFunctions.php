@@ -237,20 +237,14 @@ class CustomFunctions
     public static function getQrData($rid,$prop){
         if (strpos($rid,';') !== false) {
             $rid1s = explode(';',$rid);
-            foreach ($rid1s as $rid1) {
-                $ri = explode(':',$rid1);
-                if ($ri[0] == $prop) {
-                    return $ri[1];
-                }
-            }
         }
         elseif (strpos($rid,',') !== false) {
             $rid1s = explode(',',$rid);
-            foreach ($rid1s as $rid1) {
-                $ri = explode(':',$rid1);
-                if ($ri[0] == $prop) {
-                    return $ri[1];
-                }
+        }
+        foreach ($rid1s as $rid1) {
+            $ri = explode(':',$rid1);
+            if ($ri[0] == $prop) {
+                return $ri[1];
             }
         }
     }
