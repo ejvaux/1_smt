@@ -11,6 +11,7 @@ use App\Models\MatComp;
 use App\Models\MatComp1;
 use App\Models\MatSnComp;
 use App\Http\Controllers\MES\model\Feeder;
+use Illuminate\Support\Facades\Log;
 
 class CompSnInsert implements ShouldQueue
 {
@@ -51,29 +52,34 @@ class CompSnInsert implements ShouldQueue
                 }
 
                 if(isset($value['feeder_id'])){
-                    $total = 0;
-                    $serials = MatSnComp::where('RID',$value['prev_RID'])->get();
-                    $sns = [];
-                    if($serials){
-                        foreach ($serials as $serial) {            
-                            foreach ($serial->sn as $s) {
-                                $sns[] = $s;
+                    if($value['prev_RID']){
+                        $total = 0;
+                        $serials = MatSnComp::where('RID',$value['prev_RID'])->get();
+                        $sns = [];
+                        if($serials){
+                            foreach ($serials as $serial) {            
+                                foreach ($serial->sn as $s) {
+                                    $sns[] = $s;
+                                }
                             }
                         }
-                    }
-                    $total = count(array_unique($sns));
-                    $feeder = Feeder::where('id',$value['feeder_id'])->first();
-
-                    $sys_qty = $total * $feeder->usage;
-                    if($sys_qty >= 0 ){
-                        if($sys_qty < $value['prev_QTY'] - $value['prev_QTY'] * .02){
-                            /* if ($sys_qty + $usagee * 2 < $value['prev_QTY']) {
+                        $total = count(array_unique($sns));
+                        $feeder = Feeder::where('id',$value['feeder_id'])->first();
+                        
+                        $sys_qty = $total * $feeder->usage;
+                        if($sys_qty >= 0){
+                            if($sys_qty < $value['prev_QTY'] - $value['prev_QTY'] * .02){
+                                /* if ($sys_qty + $usagee * 2 < $value['prev_QTY']) {
+                                    $reel_id = $value['prev_RID'];
+                                }
+                                else{
+                                    $reel_id = $value['RID'];
+                                } */
                                 $reel_id = $value['prev_RID'];
                             }
                             else{
                                 $reel_id = $value['RID'];
-                            } */
-                            $reel_id = $value['prev_RID'];                  
+                            }                                            
                         }
                         else{
                             $reel_id = $value['RID'];
@@ -81,7 +87,7 @@ class CompSnInsert implements ShouldQueue
                     }
                     else{
                         $reel_id = $value['RID'];
-                    }                    
+                    }                                        
                 }
                 else{
                     $reel_id = $value['RID'];
