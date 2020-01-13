@@ -26,10 +26,18 @@ class ReelSnExport implements FromView, WithTitle
     public function view(): View
     {
         $rid = $reel = $this->rid;
-        $cid = MatSnComp::where('RID',$rid)->pluck('component_id')->first();
+        /* $cid = MatSnComp::where('RID',$rid)->pluck('component_id')->first(); */
+        $archive = MatSnCompsArchive::where('RID',$rid);
+        $cid = MatSnComp::where('RID',$rid)
+                        ->union($archive)
+                        ->first()->component_id;
         $pn = Component::where('id',$cid)->pluck('product_number')->first();
         $pcbs = [];
-        $serials = MatSnComp::where('RID',$rid)->get();
+        /* $serials = MatSnComp::where('RID',$rid)->get(); */
+        $archive1 = MatSnCompsArchive::where('RID',$rid);
+        $serials = MatSnComp::where('RID',$rid)
+                        ->union($archive1)
+                        ->get();
         foreach ($serials as $serial) {
             $matcomp = Matcomp::where('id',$serial->mat_comp_id)->pluck('materials')->first();
             foreach ($matcomp as $cmp => $prop) {

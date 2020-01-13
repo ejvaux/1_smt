@@ -23,6 +23,8 @@ $('#ml-btn-submit').on('click', function(){
             position: 'topCenter',
             message: 'Select Line First.',
         });
-    }
-    
+    }    
+});
+$('#ml_div').on('click', '.delMat', function(e){
+    alert('TEST');
 });

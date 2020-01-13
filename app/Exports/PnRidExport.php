@@ -44,7 +44,11 @@ class PnRidExport implements FromQuery, WithHeadings, WithMapping, WithStrictNul
     public function query()
     {
         $comp_id = Component::where('product_number',$this->pn)->pluck('id')->first();
-        $query = MatSnComp::where('component_id',$comp_id)->groupBy('RID');        
+        /* $query = MatSnComp::where('component_id',$comp_id)->groupBy('RID'); */
+        $archive = MatSnCompsArchive::where('component_id',$comp_id);
+        $query = MatSnComp::where('component_id',$comp_id)
+                        ->union($archive)
+                        ->groupBy('RID');       
         return $query;
     }
 

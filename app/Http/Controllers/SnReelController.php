@@ -18,6 +18,7 @@ use App\Http\Controllers\MES\model\Position;
 use App\Http\Controllers\MES\model\Modname;
 use App\Models\WorkOrder;
 use App\Custom\CustomFunctions;
+use App\Models\MatSnCompsArchive;
 
 class SnReelController extends Controller
 {
@@ -54,11 +55,19 @@ class SnReelController extends Controller
         if (strpos($rid,':') !== false) {            
             $rid = $reel = CustomFunctions::getQrData($rid,'RID');
         }
-        $cid = MatSnComp::where('RID',$rid)->pluck('component_id')->first();
+        $archive = MatSnCompsArchive::where('RID',$rid);
+        $cid = MatSnComp::where('RID',$rid)
+                        ->union($archive)
+                        ->first()->component_id;
+        /* $cid = MatSnComp::where('RID',$rid)->pluck('component_id')->first(); */
         $pn = Component::where('id',$cid)->pluck('product_number')->first();
         $total = 1;
         $pcbs = [];
-        $serials = MatSnComp::where('RID',$rid)->get();
+        /* $serials = MatSnComp::where('RID',$rid)->get(); */
+        $archive1 = MatSnCompsArchive::where('RID',$rid);
+        $serials = MatSnComp::where('RID',$rid)
+                        ->union($archive1)
+                        ->get();
         foreach ($serials as $serial) {
             $matcomp = Matcomp::where('id',$serial->mat_comp_id)->pluck('materials')->first();
             foreach ($matcomp as $cmp => $prop) {
@@ -120,7 +129,12 @@ class SnReelController extends Controller
     {
         $comp = '';
         $comp_id = Component::where('product_number',$request->input('pn'))->pluck('id')->first();
-        $rids = MatSnComp::where('component_id',$comp_id)->groupBy('RID')->get();
+        /* $rids = MatSnComp::where('component_id',$comp_id)->groupBy('RID')->get(); */
+        $archive = MatSnCompsArchive::where('component_id',$comp_id);
+        $rids = MatSnComp::where('component_id',$comp_id)
+                        ->union($archive)
+                        ->groupBy('RID')
+                        ->get();
         if($rids->count() != 0){
             $comp = $request->input('pn');
         }
@@ -141,7 +155,11 @@ class SnReelController extends Controller
         
         $cid = $request->input('cid');
         $c = Component::where('id',$cid)->pluck('product_number')->first();
-        $mats = MatSnComp::where('component_id',$cid)->get();
+        /* $mats = MatSnComp::where('component_id',$cid)->get(); */
+        $archive = MatSnCompsArchive::where('component_id',$cid);
+        $mats = MatSnComp::where('component_id',$cid)
+                        ->union($archive)
+                        ->get();
 
         foreach ($sns as $sn) {
             $bot = Pcb::select('created_at')->where('serial_number',$sn)                            

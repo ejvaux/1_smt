@@ -50,7 +50,11 @@ class SnPnExport implements WithHeadings, WithStrictNullComparison, WithTitle, F
         else{
             $sns = explode(" ",$this->sn);
         }
-        $mats = MatSnComp::where('component_id',$this->cid)->get();
+        /* $mats = MatSnComp::where('component_id',$this->cid)->get(); */
+        $archive = MatSnCompsArchive::where('component_id',$this->cid);
+        $mats = MatSnComp::where('component_id',$this->cid)
+                        ->union($archive)
+                        ->get();
         $c = Component::where('id',$this->cid)->pluck('product_number')->first();
         /* foreach ($sns as $sn) {
             $snrids[$sn] = [
