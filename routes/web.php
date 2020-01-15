@@ -150,6 +150,7 @@ Route::namespace('Api')->group(function () {
         Route::get('loadWOtable', 'ApiController@loadWOtable');
         Route::get('loadpcbtable', 'ApiController@loadpcbtable');
         Route::get('loadempscantotaltable', 'ApiController@loadempscantotaltable');
+        Route::get('loadlocation', 'DefectController@loadlocation');
 
         /* Total Scan */
         Route::get('totalscan', 'ApiController@totalscan');        
