@@ -1,7 +1,11 @@
 @isset($model_id)
     <h3>Program: {{App\Http\Controllers\MES\model\Modname::where('id',$model_id)->value('program_name')}}</h3>
 @endisset
-<ul class="nav nav-tabs mb-2 pt-0 " role="tablist">
+@isset($mline)
+    <input id="ml_line" type="hidden" name="" value="{{$mline}}">
+    <input id="ml_model" type="hidden" name="" value="{{$mmodel}}">
+@endisset
+<ul id="mll_tab" class="nav nav-tabs mb-2 pt-0 " role="tablist">
     <li class="nav-item">
         <a class="nav-link bold-text active" href="#feederlist" role="tab" data-toggle="tab">Feeder List</a>
     </li>

@@ -18,7 +18,7 @@
         <tbody class='text-center'>
             @isset($f)
                 @if (count($f->materials) > 0)
-                    @foreach ($f->materials as $ff)
+                    @foreach ($f->materials as $fkey => $ff)
                         @php
                             $machine = App\Http\Controllers\MES\model\Machine::where('code',CustomFunctions::getmachcode($ff['machine']))->first();
                             $line = App\Http\Controllers\MES\model\Line::where('id',$machine->line_id)->pluck('line_name_id')->first();
@@ -62,13 +62,15 @@
 
                             @if (!$feeder)
                                 <td>
-                                    <form id="matdelForm" action="">
-                                        <input type="hidden" name='RID' value="">
-                                    </form>
-                                    <button class="btn btn-danger delMat mt-0">
+                                    {{-- <form id="matdelForm_{{$fkey}}" action="">
+                                        <input type="hidden" name='matData' value="{{}}">
+                                    </form> --}}
+                                    <button class="btn btn-danger delMat mt-0" data-id="{{json_encode($ff)}}">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </td>
+                            @else
+                                <td>-</td>
                             @endif 
                             
                         </tr>
