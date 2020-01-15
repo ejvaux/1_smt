@@ -83,7 +83,8 @@ class TrackingController extends Controller
     }
     public function loadlist(Request $request)
     {
-        $model_id = Modname::where('lines','LIKE','%"'.$request->line.'"%')->pluck('id')->first();
+        $mline = $request->line;
+        $model_id = $mmodel = Modname::where('lines','LIKE','%"'.$request->line.'"%')->pluck('id')->first();
         $feeders = Feeder::where('model_id',$model_id)
                             ->where('line_id',$request->line)
                             ->where('table_id','!=',0)
@@ -109,6 +110,52 @@ class TrackingController extends Controller
                                 ->orderBy('pos_id')                                
                                 ->get(); */
 
-        return view('includes.table.mlTable',compact('model_id','feeders','f'/* ,'mm' */));
+        return view('includes.table.mlTable',compact('model_id','feeders','f'/* ,'mm' */,'mline','mmodel'));
+    }
+    public function matcompdel(Request $request)
+    {
+        $m = MatComp::where('model_id',$request->input('model'))->where('line_id',$request->input('line'))->latest('id')->first();
+        /* $dta = json_decode($request->input('key'),true); */
+        $dta = $request->input('key');
+        if($m){
+            $mt = $m->materials;
+            foreach ($mt as $key => $value) {
+                if(
+                    strtoupper($value['machine']) == strtoupper($dta['machine']) && 
+                    $value['position'] == $dta['position'] && 
+                    $value['feeder'] == $dta['feeder']
+                    )
+                {
+                    /* return [
+                        'type' => 'success',
+                        'message' =>  $dta['machine']
+                    ]; */
+                    unset($mt[$key]);
+                }
+                /* else{
+                    return [
+                        'type' => 'error',
+                        'message' =>  'No materials found.'
+                    ];
+                } */
+            }
+            $m->materials = $mt;
+            $m->save();
+            return [
+                'type' => 'success',
+                'message' => 'Successfully deleted' 
+            ];
+        }
+        else{
+            return [
+                'type' => 'error',
+                'message' => 'Error retrieving materials list.' 
+            ];
+        }
+        
+        /* return [
+            'type' => 'error',
+            'message' => $request->input('line').'-'.$request->input('model').'-'.$request->input('key') 
+        ]; */
     }
 }

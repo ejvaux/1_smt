@@ -113,6 +113,7 @@ Route::post('exportsnpn', 'SnReelController@exportsnpn');
 /* Material Load List */
 Route::get('mll', 'TrackingController@matloadlist');
 Route::get('mload', 'TrackingController@loadlist');
+Route::get('matcompdel', 'TrackingController@matcompdel');
 
 /* QR Generate */
 Route::get('qrcode', 'PageController@qrgen');
