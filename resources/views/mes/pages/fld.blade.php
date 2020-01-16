@@ -183,9 +183,10 @@
                                             </form>
                                         @else
                                             <div id="add_ml_input">
-                                                <button id='add_line' style='font-size:.8rem' title="Add New Blank Line"><i class="fas fa-plus"></i> Line</button>
+                                                <button id='add_line' style='font-size:.8rem' title="Add New Blank Line"><i class="fas fa-plus text-success"></i> Line</button>
                                                 {{-- <button id='copy_new_line' style='font-size:.8rem' title="Copy List into New Line"><i class="far fa-copy"></i> Copy <span class='text-danger font-weight-bold'>CURRENT</span> List into New Line</button> --}}
-                                                <button id='add_mach' style='font-size:.8rem' title="Add Machine"><i class="fas fa-plus"></i> Machine</button>
+                                                <button id='add_mach' style='font-size:.8rem' title="Add Machine"><i class="fas fa-plus text-success"></i> Machine</button>
+                                                <button id='del_mach' style='font-size:.8rem' title="Delete Machine"><i class="fas fa-minus text-danger"></i> Machine</button>
                                             </div>
                                             <div id="add_line_input2" style='display:none'>
                                                 {{-- Adding line Form --}}
@@ -263,6 +264,34 @@
                                                     <button type='button' id='cancel_mach' style='color:red;font-size:.8rem;'><i class="fas fa-ban"></i> CANCEL</button>
                                                 </form>
                                             </div>
+                                            {{-- adawdawdawdadadaw --}}
+
+                                            <div id="del_machine_input" style='display:none'>
+                                                {{-- Deleting machine Form --}}
+                                                <form id='del_machine_form' method='POST' action="{{url('del_machine')}}">
+                                                    <input id='model_id' type="hidden" name="model_id" value="{{$model->id}}">
+                                                    <input id='line_id' type="hidden" name="line_id" value="{{$lin}}">
+                                                    <input id='table_id' type="hidden" name="table_id" value="0">                                                    
+                                                    <input id='dlupdated_by' type="hidden" name="user_id" value="">
+                                                    @if ($machid != 0 && $lin != 0)                                                    
+                                                        @if (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->groupBy('machine_type_id')->count()>0)
+                                                            <select name="machine_type_id" id="delmachlist" value='{{$machid}}'>
+                                                                <option value="">- Select Machine -</option>
+                                                                @foreach (\App\Http\Controllers\MES\model\Feeder::where('model_id',$model->id)->where('line_id',$lin)->groupBy('machine_type_id')->get() as $mach1)                                                                        
+                                                                    <option value="{{$mach1->machine_type_id}}">{{$mach1->machinetype->name}}</option>                                                        
+                                                                @endforeach                                                    
+                                                            </select>  
+                                                        @endif
+                                                    @else
+                                                        <span>No data</span>
+                                                    @endif
+                                                    <button type='button' id='delete_mach' style='color:green;font-size:.8rem;'><i class="fas fa-minus"></i> DELETE</button>
+                                                    <button type='button' id='cancel_del_mach' style='color:red;font-size:.8rem;'><i class="fas fa-ban"></i> CANCEL</button>
+                                                </form>
+                                            </div>
+
+
+                                            {{-- adadadawdawdadadawd --}}
                                             <div id="copy_list" style='display:none'>
                                                 {{-- Copy list into new line --}}
                                                 <form id='add_machine_form' method='POST' action="{{url('feeders')}}">
@@ -312,6 +341,7 @@
                                         {{-- delete mounter form --}}
                                             <form class='form_to_submit' id='delmountform' method='POST' action='/1_smt/public/del_mount'>
                                                 <input id='del_model_id' name='model_id' type="hidden" value="">
+                                                <input id='del_line_id' name='line_id' type="hidden" value="">
                                                 <input id='del_machine_type_id' name='machine_type_id' type="hidden" value="">
                                                 <input id='del_table_id' name='table_id' type="hidden" value="">
                                                 <input id='del_mounter_id' name='mounter_id' type="hidden" value="">
@@ -320,6 +350,7 @@
                                         {{-- change mounter form --}}
                                             <form class='form_to_submit' id='chngemountform' method='POST' action='/1_smt/public/change_mount'>
                                                 <input id='exc_model_id' name='model_id' type="hidden" value="">
+                                                <input id='exc_line_id' name='line_id' type="hidden" value="">
                                                 <input id='exc_machine_type_id' name='machine_type_id' type="hidden" value="">
                                                 <input id='exc_table_id' name='table_id' type="hidden" value="">
                                                 <input id='exc_mounter_id_from' name='mounter_id_from' type="hidden" value="">
@@ -329,6 +360,7 @@
                                         {{-- transfer mounter form --}}
                                             <form class='form_to_submit' id='transfermountform' method='POST' action='/1_smt/public/transfer_mount'>
                                                 <input id='trns_model_id' name='model_id' type="hidden" value="">
+                                                <input id='trns_line_id' name='line_id' type="hidden" value="">
                                                 <input id='trns_machine_type_id' name='machine_type_id' type="hidden" value="">
                                                 <input id='trns_table_id' name='table_id' type="hidden" value="">
                                                 <input id='trns_table_id_to' name='table_id_to' type="hidden" value="">

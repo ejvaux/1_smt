@@ -38,6 +38,7 @@ class VerifyCsrfToken extends Middleware
         'del_mount',
         'change_mount',
         'transfer_mount',
+        'del_machine',
         'processes',
         'processes/*',
         'defects',

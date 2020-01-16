@@ -16,8 +16,8 @@
                         data-mach='{{$machid}}'
                         data-line='{{$lin}}'
                         data-table='{{$i}}'
-                    ><i class="fas fa-plus"></i> Component</button>
-                    <button class='label_mounter' id='label_mounter_{{$i}}' data-id='{{$i}}' style='font-size:.8rem' title="Delete Feeder and its components."><i class="far fa-trash-alt"></i> Delete Feeder</button>
+                    ><i class="fas fa-plus text-success"></i> Component</button>
+                    <button class='label_mounter' id='label_mounter_{{$i}}' data-id='{{$i}}' style='font-size:.8rem' title="Delete Feeder and its components."><i class="fas fa-minus text-danger"></i> Feeder</button>
                     <button class='change_mounter_button' id='change_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Change Feeder into another Feeder"><i class="fas fa-exchange-alt"></i> Change Feeder</button>
                     <button class='transfer_mounter_button' id='transfer_mounter_button_{{$i}}' data-id='{{$i}}' style='font-size:.8rem;' title="Transfer Feeder into another table"><i class="fas fa-long-arrow-alt-right"></i><i class="fas fa-table"></i> Transfer Feeder</button>
                 </div>
@@ -34,6 +34,7 @@
                             <button class='del_mounter form_submit_button' id='del_mounter_{{$i}}' 
                                 data-model='{{$model->id}}'
                                 data-mach='{{$machid}}'
+                                data-line='{{$lin}}'
                                 data-table='{{$i}}'
                             style='color:green;font-size:.8rem;'><i class="far fa-trash-alt"></i> DELETE</button>                                
                             <button class='cancel_del_mounter' id='cancel_del_mounter_{{$i}}' data-id='{{$i}}' style='color:red;font-size:.8rem'><i class="fas fa-ban"></i> CANCEL</button>
@@ -54,6 +55,7 @@
                             </select>
                             <button class='change_mounter form_submit_button' id='change_mounter_{{$i}}' 
                                 data-model='{{$model->id}}'
+                                data-line='{{$lin}}'
                                 data-mach='{{$machid}}'
                                 data-table='{{$i}}'
                             style='color:green;font-size:.8rem'><i class="fas fa-exchange-alt"></i> CHANGE</button>                                
@@ -75,6 +77,7 @@
                             </select>
                             <button class='transfer_mounter form_submit_button' id='transfer_mounter_{{$i}}' 
                                 data-model='{{$model->id}}'
+                                data-line='{{$lin}}'
                                 data-mach='{{$machid}}'
                                 data-table='{{$i}}'
                             style='color:green;font-size:.8rem;'><i class="fas fa-long-arrow-alt-right"></i><i class="fas fa-table"></i> TRANSFER</button>                                

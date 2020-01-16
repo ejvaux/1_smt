@@ -207,6 +207,8 @@ Route::post('change_mount', 'MES\api\FeedersController@change_mount');
 Route::post('transfer_mount', 'MES\api\FeedersController@transfer_mount');
 // update usage
 Route::post('update_usage', 'MES\api\FeedersController@update_usage');
+// delete maching
+Route::post('del_machine', 'MES\api\FeedersController@del_machine');
 
 // Testing
 Route::get('testt', 'PageController@testing');

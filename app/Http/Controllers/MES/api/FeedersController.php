@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MES\model\Feeder;
 use App\Http\Controllers\MES\model\ModName;
+use App\Models\MatComp;
 
 class FeedersController extends Controller
 {
@@ -183,6 +184,26 @@ class FeedersController extends Controller
     {
         $mid = Feeder::where('id',$id)->first(); 
         if(Feeder::where('id',$id)->delete()){
+
+            /* ---------- */
+
+            $mm = MatComp::where('model_id',$mid->model_id)->where('line_id',$mid->line_id)->latest('id')->first();
+            $dta = $request->input('key');
+            if($mm){
+                $mt = $mm->materials;
+                foreach ($mt as $key => $value) {
+                    if(isset($value['feeder_id'])){
+                        if ($value['feeder_id'] == $id) {
+                            unset($mt[$key]);
+                        }
+                    }                    
+                }
+                $mm->materials = $mt;
+                $mm->save();
+            }
+
+            /* ---------- */
+
             $m = ModName::where('id',$mid->model_id)->first();
             $m->updated_by = $request->input('user_id');
             $m->touch();
@@ -200,7 +221,7 @@ class FeedersController extends Controller
     public function del_mount(Request $request)
     {
         /* Feeder::where('model_id',$id)->where('model_id',$id)->where('model_id',$id)->where('model_id',$id); */        
-        if(Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->delete()){
+        if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->delete()){
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
@@ -219,7 +240,7 @@ class FeedersController extends Controller
     public function change_mount(Request $request)
     {
         /* $mts = Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id_from'))->update(['mounter_id' => $request->input('mounter_id_to')]); */
-        if(Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id_from'))->update(['mounter_id' => $request->input('mounter_id_to')])){
+        if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id_from'))->update(['mounter_id' => $request->input('mounter_id_to')])){
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
@@ -234,7 +255,7 @@ class FeedersController extends Controller
     }
     public function transfer_mount(Request $request)
     {
-        if(Feeder::where('model_id',$request->input('model_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->update(['table_id' => $request->input('table_id_to')])){
+        if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->update(['table_id' => $request->input('table_id_to')])){
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
@@ -261,5 +282,22 @@ class FeedersController extends Controller
         else{
             return redirect()->back()->with('error','Update Failed.');
         }
+    }
+    public function del_machine(Request $request)
+    {
+        if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->delete())
+        {
+            $m = ModName::find($request->input('model_id'));
+            $m->updated_by = $request->input('user_id');
+            $m->touch();
+            return redirect()->back()->with([
+                'success' => 'Machine Deleted Successfully.',
+                'Atbl' => $request->input('table_id')
+            ]);
+        }
+        else{
+            return redirect()->back()->with('error','Update Failed.');
+        }
+        /* return redirect()->back()->with('success','woooooooot'); */
     }
 }

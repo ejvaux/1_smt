@@ -1,3 +1,55 @@
+/* Ajax */
+$.ajaxSetup({
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        var msg = '';
+        var file = '';
+        var line = '';
+        if(XMLHttpRequest.responseText != null){
+            msg = XMLHttpRequest.responseJSON.message;
+            file = XMLHttpRequest.responseJSON.file ;
+            line = XMLHttpRequest.responseJSON.line ;
+            console.log(XMLHttpRequest.responseText);
+            console.log(XMLHttpRequest);
+        }
+        if (XMLHttpRequest.readyState == 4) {
+            // HTTP error (can be checked by XMLHttpRequest.status and XMLHttpRequest.statusText)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: XMLHttpRequest.statusText + '<br>' + msg + '<br>' + file + '<br>Line: ' + line,
+                position: 'topCenter',
+                close: false,
+            });
+            x[0].pause();
+            x[0].currentTime = 0;
+            x[0].play();
+        }
+        else if (XMLHttpRequest.readyState == 0) {                
+            // Network error (i.e. connection refused, access denied due to CORS, etc.)
+            iziToast.warning({
+                title: 'ERROR '+ XMLHttpRequest.status,
+                message: 'Network Error',
+                position: 'topCenter',
+                close: false,
+            });
+            x[0].pause();
+            x[0].currentTime = 0;
+            x[0].play();
+        }
+        else {
+            iziToast.warning({
+                title: 'ERROR',
+                message: 'Unknown Error',
+                position: 'topCenter',
+                close: false,
+            });
+            x[0].pause();
+            x[0].currentTime = 0;
+            x[0].play();
+            // something weird is happening
+        }
+    }
+});
+
 /* Variable */
 var userID = $('meta[name="user_num"]').attr('content');
 /* Auto */
@@ -335,6 +387,7 @@ $('#insert_mach').on('click',function(){
         $('.transfer_mounter').on('click', function(){
             if($('#trns_mounter_id').val() != '' && $('#trns_table_id_to').val() != ''){
                 $('#trns_model_id').val($(this).data('model'));
+                $('#trns_line_id').val($(this).data('line'));
                 $('#trns_machine_type_id').val($(this).data('mach'));
                 $('#trns_table_id').val($(this).data('table'));
                 $('#trns_user_id').val($('meta[name="user_num"]').attr('content'));
@@ -359,10 +412,11 @@ $('#insert_mach').on('click',function(){
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, close it!'
+                    confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {
                         $('#del_model_id').val($(this).data('model'));
+                        $('#del_line_id').val($(this).data('line'));
                         $('#del_machine_type_id').val($(this).data('mach'));
                         $('#del_table_id').val($(this).data('table'));
                         $('#del_user_id').val($('meta[name="user_num"]').attr('content'));
@@ -384,6 +438,7 @@ $('#insert_mach').on('click',function(){
             if($('#exc_mounter_id_from').val() != '' && $('#exc_mounter_id_to').val() != ''){
                 if($('#exc_mounter_id_from').val() != $('#exc_mounter_id_to').val()){
                     $('#exc_model_id').val($(this).data('model'));
+                    $('#exc_line_id').val($(this).data('line'));
                     $('#exc_machine_type_id').val($(this).data('mach'));
                     $('#exc_table_id').val($(this).data('table'));
                     $('#exc_mounter_id_from').val($('#exc_mounter_id_from').val());
@@ -431,4 +486,29 @@ $('.cmp_usage').on('click', function(e){
     $('#u_user_id').val($('meta[name="user_num"]').attr('content'));
     $('#u_usage').val($(this).data('usage'));
     $('#update_usage_modal').modal('show');
+});
+/* Delete machine */
+$('#del_mach').on('click', function(){
+    $('#add_ml_input').hide();
+    $('#del_machine_input').show();
+});
+$('#cancel_del_mach').on('click', function(){
+    $('#add_ml_input').show();
+    $('#del_machine_input').hide();
+});
+$('#delete_mach').on('click', function(){
+    swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $('#dlupdated_by').val($('meta[name="user_num"]').attr('content'));
+            $('#del_machine_form').trigger('submit');
+        }
+    })
 });
