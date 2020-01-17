@@ -145,7 +145,35 @@ class MaterialLoadController extends Controller
             'model_id' => $model->id
         ];
         $matcomp_id = ApiController::insertmatcomp1($req);
-        if($matcomp_id){
+
+        if($matcomp_id['id'] == 0){
+            return [
+                'type' => 'error',
+                'message' => $matcomp_id['message']
+            ];
+        }
+        else{
+            $insrecord->save();      
+            $mc = MatComp::find($matcomp_id['id']);
+            $mc->mat_load_id = $insrecord->id;
+            $mt = $mc->materials;
+            $sys_qty = 0;
+            foreach ($mt as $key => $value) {
+                if(
+                    strtoupper($value['machine']) == strtoupper($req['machine_id']) && 
+                    $value['position'] == $req['position'] && 
+                    $value['feeder'] == $req['feeder_slot']
+                    )
+                {
+                    $mt[$key]['matload_id'] = $insrecord->id;
+                }
+            }
+            
+            $mc->materials = $mt;
+            $mc->save();
+        }
+
+        /* if($matcomp_id){
             $insrecord->save();      
             $mc = MatComp::find($matcomp_id);
             $mc->mat_load_id = $insrecord->id;
@@ -170,7 +198,7 @@ class MaterialLoadController extends Controller
                 'type' => 'error',
                 'message' => 'Error Inserting Component. Please Contact MIS Support.'
             ];
-        }
+        } */
         /* MatCompInsert::dispatch($req); */
         /* MatCompInsert::dispatch($req,$insrecord->id); */
         /* ApiController::insertmatcomp($request,$insrecord); */

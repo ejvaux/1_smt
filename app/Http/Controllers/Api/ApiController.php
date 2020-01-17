@@ -1637,7 +1637,10 @@ class ApiController extends Controller
                     ->first();
                     
         if(!$feeder){
-            return 0;
+            return [
+                'id' => 0,
+                'message' => 'Error retrieving feeder. Try again. If error persist contact MIS.'
+            ];
         }
         
         $m = MatComp::where('model_id',$req['model_id'])->where('line_id',$line_id)->latest('id')->first();
@@ -1662,6 +1665,38 @@ class ApiController extends Controller
                     unset($mt[$tu]);
                 }
             }
+
+            // Check if prev reel is finished
+
+            /* $total = 0;
+            $serials = MatSnComp::where('RID',$p_rid)->get();
+            $sns = [];
+            if($serials){
+                foreach ($serials as $serial) {            
+                    foreach ($serial->sn as $s) {
+                        $sns[] = $s;
+                    }
+                }
+            }
+            $total = count(array_unique($sns));
+            $usagee = 0;
+            if($feeder->usage <= 0){
+                return [
+                    'id' => 0,
+                    'message' => 'Usage is not set on the feeder.'
+                ];
+            }
+            else{
+                $usagee = $feeder->usage;
+            }
+            $sys_qty = $total * $usagee;
+
+            if($sys_qty < $p_qty * 0.05){
+                return [
+                    'id' => 0,
+                    'message' => 'Previous Reel not yet ready for replenish.'
+                ];
+            } */
 
             $im = new MatComp;
             $im->model_id = $req['model_id'];
@@ -1715,6 +1750,10 @@ class ApiController extends Controller
             $im->save();
             $matcomp_id = $im->id;
         }
-        return $matcomp_id;
+        /* return $matcomp_id; */
+        return [
+            'id' => $matcomp_id,
+            'message' => ''
+        ];
     }
 }
