@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\DefectMat;
 use App\Models\WorkOrder;
 use App\Models\Pcb;
+use App\Models\Location;
 use App\Custom\CustomFunctions;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -39,6 +40,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
             'PROCESS',
             'S/N',
             'DEFECT',
+            'LOCATION',
             'DEFECT TYPE',
             'INSERTED BY',
             'DEFECTED AT',
@@ -86,6 +88,22 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         else{
             $mod = $model;
         }
+        $locs = '';
+        if(isset($query->d_locations)){
+            $locid = '';            
+            foreach ($query->d_locations as $key => $value) {
+                if(isset($value['location_id'])){
+                    $locid = $value['location_id']; 
+                }
+                else{
+                    $locid = $value;
+                }
+                $locs .= Location::where('id',$locid)->first()->name;
+                if($key != count($query->d_locations) - 1){
+                    $locs .= ', ';
+                }
+            }
+        }
 
         return [
             $stat,
@@ -97,6 +115,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
             $query->process->name,
             $query->pcb->serial_number,
             $query->defect->DEFECT_NAME,
+            $locs,
             $query->defectType->name,
             $query->employee->lname . ', ' . $query->employee->fname,
             $query->created_at,

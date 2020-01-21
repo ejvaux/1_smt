@@ -13,6 +13,7 @@
                         <th>SHIFT</th>
                         <th>PROCESS</th>
                         <th>DEFECT</th>
+                        <th>LOCATION</th>
                         <th>DEFECT TYPE</th>
                         <th>INSERTED BY</th>
                         <th>DEFECTED AT</th>
@@ -101,6 +102,23 @@
                                 {{-- Col --}}
                                     <td>{{$defect_mat->defect->DEFECT_NAME}}</td>
                                 {{-- Col --}}
+                                    <td>
+                                        @isset ($defect_mat->d_locations)
+                                            @foreach ($defect_mat->d_locations as $key => $loc)
+                                                @isset($loc['location_id'])
+                                                    {{App\Models\Location::where('id',$loc['location_id'])->first()->name}}
+                                                @else
+                                                    {{App\Models\Location::where('id',$loc)->first()->name}}
+                                                @endisset
+                                                @if ($key != count($defect_mat->d_locations) - 1)
+                                                    ,                                                                       
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            
+                                        @endif                                        
+                                    </td>
+                                {{-- Col --}}
                                     <td>{{$defect_mat->defectType->name}}</td>
                                 {{-- Col --}}
                                     <td>{{$defect_mat->employee->fname}} {{$defect_mat->employee->lname}}</td>
@@ -128,7 +146,7 @@
                     @else
                     <tr>
                         <td colspan="14">
-                            <h4>No data to display. Try to refresh the table.</h4>
+                            <h4>No data to display.</h4>
                         </td>
                     </tr>                    
                     @endif
