@@ -188,7 +188,6 @@ class FeedersController extends Controller
             /* ---------- */
 
             $mm = MatComp::where('model_id',$mid->model_id)->where('line_id',$mid->line_id)->latest('id')->first();
-            $dta = $request->input('key');
             if($mm){
                 $mt = $mm->materials;
                 foreach ($mt as $key => $value) {
@@ -198,7 +197,8 @@ class FeedersController extends Controller
                         }
                     }                    
                 }
-                $mm->materials = $mt;
+                $zz = array_values($mt);
+                $mm->materials = $zz;
                 $mm->save();
             }
 

@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\MatSnComp;
+use App\Models\MatSnCompsArchive;
 use App\Models\MatComp;
 use App\Models\Pcb;
 use App\Models\PcbArchive;

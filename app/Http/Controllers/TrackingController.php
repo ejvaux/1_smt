@@ -139,7 +139,8 @@ class TrackingController extends Controller
                     ];
                 } */
             }
-            $m->materials = $mt;
+            $zz = array_values($mt);
+            $m->materials = $zz;
             $m->save();
             return [
                 'type' => 'success',
