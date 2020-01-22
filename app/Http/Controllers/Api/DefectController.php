@@ -113,61 +113,7 @@ class DefectController extends Controller
             'process_id' => 'required',
             'line_id' => 'required',
             'd_locations' => 'required',
-        ]);
-        
-        /* if($a = Pcb::where('serial_number',$request->input('serial_number'))->orderBy('id','DESC')->first()){
-            if($a->heat <= 6){
-                $a->heat = $a->heat + 1;
-                $a->defect = 1;
-                $a->RESULT = 'NG';
-                $a->ERROR_CODE = Defect::where('DEFECT_ID',$request->input('defect_id'))->pluck('DEFECT_CODE')->first();
-            }
-            else{
-                $a->heat = $a->heat + 1;
-                return redirect()->back()->with('error','Max Heat Cycles Reached!');
-            }
-        }
-        
-        if($a->save())
-        {
-            $date = Date('H:i');
-            if($date > '05:59' && $date < '18:00'){
-                $shift = 1;
-            }
-            else if($date >= '18:00' || $date < '06:00'){
-                $shift = 2;
-            }
-            else{
-                $shift = 0;
-            }
-            $b = new DefectMat;
-            $b->pcb_id = $a->id;
-            $b->division_id = $request->input('division_id');
-            $b->defect_id = $request->input('defect_id');
-            $b->defect_type_id = $request->input('defect_type_id');
-            $b->process_id = $request->input('process_id');            
-            $b->line_id = $request->input('line_id');
-            $b->shift = $shift;
-            $b->employee_id = $request->input('employee_id');
-            $b->repair = 0;
-            if($b->save())
-            {
-                if($a->heat == 7){
-                    return redirect()->back()->with('success','Data Saved Successfully. Max Heat Cycles Reached!');
-                }
-                else{
-                    return redirect()->back()->with('success','Data Saved Successfully.');
-                }                
-            }
-            else
-            {
-                return redirect()->back()->with('error','Saving Defect Material Failed.');
-            }
-        }
-        else
-        {
-            return redirect()->back()->with('error','Saving Serial Number Failed.');
-        } */
+        ]);        
 
         if($a = Pcb::where('serial_number',$request->input('serial_number'))->first()){
             if($a->defect != 1){
@@ -201,9 +147,18 @@ class DefectController extends Controller
             $b->division_id = $request->input('division_id');
             $b->defect_id = $request->input('defect_id');
             $b->defect_type_id = $request->input('defect_type_id');
-            $b->d_locations = $request->input('d_locations');
+            /* $b->d_locations = $request->input('d_locations'); */
+            $lc = [];
+            foreach ($request->input('d_locations') as $loc) {
+                $lc[] = [
+                    'location_id' => $loc,
+                    'dc' => ''
+                ];
+            }
+            $b->d_locations = $lc;
             /* $b->d_locations = [
-                'location_id' => $request->input('d_locations')
+                'location_id' => $request->input('d_locations'),
+                'dc' => ''
             ]; */
             $b->process_id = $request->input('process_id');            
             $b->line_id = $request->input('line_id');
@@ -295,7 +250,16 @@ class DefectController extends Controller
         $sn = Pcb::where('serial_number',$request->input('serial_number'));
         $snid = $sn->pluck('id')->toArray();
         try {
-            $es = DefectMat::whereIN('pcb_id',$snid)->where('repair',0)
+            $es = DefectMat::whereIN('pcb_id',$snid)->where('repair',0);
+            $es->limit(1)
+            ->update([
+                "d_locations"   => $request->input('d_location_rep'),
+                "remarks"       => $request->input('remarks'),
+                "repair_by"     => $request->input('repaired_by'),
+                "repair"        => 1,
+                "repaired_at"   => \Carbon\Carbon::now()
+            ]);
+            $es->skip(1)
             ->update([
                 "remarks"       => $request->input('remarks'),
                 "repair_by"     => $request->input('repaired_by'),
@@ -332,13 +296,36 @@ class DefectController extends Controller
     {
         $a = Pcb::where('serial_number',$request->sn)->where('defect',1)->orderBy('id','DESC');
         if($a->first()){
-            return $a->first();            
+            return $a->first()->id;
         }
         else{
             return [
                 'type' => 'error',
-                'message' => 'Serial Number has no defect.'
+                'message' => 'Serial Number has no defect or does not exist.'
             ];
         }
+    }
+    public function loadlocation(Request $request)
+    {
+        $locs = [];
+        $lcs = [];
+        if($request->input('sn') != ""){
+            $sn = $request->input('sn');
+            $lcs = DefectMat::where('pcb_id',$sn)->first()->d_locations;
+        }
+        foreach ($lcs as $loc) {
+            if(isset($loc['location_id'])){
+                $locs[] = $loc;
+            }
+            else{
+                $locs[] = [
+                    'location_id' => $loc,
+                    'dc' => ''
+                ];
+            }
+        }
+        return view('includes.table.locTable',compact(
+            'locs'
+        ));
     }
 }

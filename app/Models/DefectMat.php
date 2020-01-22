@@ -10,13 +10,12 @@ class DefectMat extends Model
     protected $table = 'defect_mats';
 
     protected $casts = [
-        'd_locations' => 'json',
-        'r_locations' => 'json'
+        'd_locations' => 'json'
     ];
 
     use Sortable;
 
-    /* protected $fillable = ['id']; */
+    protected $fillable = ['d_locations','remarks','repair_by','repair','repaired_at'];
 
     public $sortable = [
         'id',

@@ -29,14 +29,7 @@
                     <input type="hidden" id='aemployee_id' name="repaired_by">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md text-right">
-                    <button type="button" class="btn btn-primary" name="submit" id="repair_defect_submit"><i class="fas fa-tools"></i> Repair Defect</button>        
-                </div>        
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="row">
+            <div class="row form-group">
                 <div class="col-4">
                     <label for="aremarks" class="col-form-label-sm">REMARKS:</label>                  
                 </div>
@@ -47,6 +40,21 @@
                             <option value="{{$defect->DEFECT_NAME}}">{{$defect->DEFECT_NAME}}</option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md text-right">
+                    <button type="button" class="btn btn-primary" name="submit" id="repair_defect_submit"><i class="fas fa-tools"></i> Repair Defect</button>        
+                </div>        
+            </div>
+        </div>
+        <div class="col-md-6">            
+            <div class="row form-group">
+                <div class="col">
+                    <div id="loc-table-div">
+                        @include('includes.table.locTable')                        
+                    </div>
+                    <input id="d_location_rep" type="hidden" name="d_location_rep" value="WHAAAAT">
                 </div>
             </div>
         </div>

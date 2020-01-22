@@ -219,9 +219,10 @@ function achecksn(sn){
             function(data) {
                 if(data.type != 'error'){
                     $('#ascan_sn').hide();
-                    $('#ascan_lbl').val(data.serial_number);
-                    $('#ascan_serial_number').val(data.serial_number);
+                    $('#ascan_lbl').val(sn);
+                    $('#ascan_serial_number').val(sn);
                     $('#ascan_lbl_div').show();
+                    loadlocation(data);
                     searchSN(sn);
                 }
                 else{
@@ -250,6 +251,8 @@ function resetsn(){
     $('#locations').val(null).trigger('change');
 }
 function aresetsn(){
+    loadlocation();
+    searchSN(0);
     $('#ascan_sn').val('');
     $('#ascan_serial_number').val('');
     $('#ascan_sn').attr('readonly', false);
@@ -301,32 +304,45 @@ function addDefect(){
     /* alert(formdata); */
 }
 function repairDefect(){
+    var locs = [];
+    $('.locs').each(function(e){        
+        locs.push({
+            location_id : this.dataset.location_id,
+            dc : this.value
+        });
+    });
+    $('#d_location_rep').val(JSON.stringify(locs));
+    /* alert(JSON.stringify(locs));
+    alert($('#d_location_rep').val()); */
     var formdata = $('#repair_defectmat_form').serialize();
     $.ajax({
         url: 'defectmats_rep1',
         type:'POST',
         data: formdata,
         success: function (data) {
+            aresetsn();
+            searchSN();
             if(data.type == 'success'){                
                 iziToast.success({
                     message: data.message,
-                    position: 'topCenter'
+                    position: 'topCenter',
+                    timeout: 6000
                 });
-                searchSN();
             }
             else if(data.type == 'error'){
                 iziToast.warning({
                     message: data.message,
-                    position: 'topCenter'
+                    position: 'topCenter',
+                    timeout: 6000
                 });
             }
             else{
                 iziToast.warning({
                     message: 'Unknown Error!',
-                    position: 'topCenter'
+                    position: 'topCenter',
+                    timeout: 6000
                 });
-            }
-            aresetsn();            
+            }                        
         },
         error: function(data) {
             var msg = '';
@@ -337,11 +353,12 @@ function repairDefect(){
             });
             iziToast.warning({
                 message: msg,
-                position: 'topCenter'
+                position: 'topCenter',
+                timeout: 6000
             });
         }
 
-    });
+    });    
     /* alert(formdata); */
 }
 function loadtable(){
@@ -387,6 +404,15 @@ function searchSN(sn){
             $('#text').val('');
         }
     });
+}
+function loadlocation(sn){
+    $.get("api/loadlocation",
+        { 
+            sn:  sn
+        }, 
+        function(data) {
+            $('#loc-table-div').html(data);
+        });    
 }
 /* ---------- EVENTS ---------- */
 $('#addDefect_btn').on('click', function(){
