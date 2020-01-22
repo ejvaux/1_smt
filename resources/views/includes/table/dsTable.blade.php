@@ -13,7 +13,7 @@
                         <th>SHIFT</th>
                         <th>PROCESS</th>
                         <th>DEFECT</th>
-                        <th>LOCATION</th>
+                        <th>LOCATION : DC</th>
                         <th>DEFECT TYPE</th>
                         <th>INSERTED BY</th>
                         <th>DEFECTED AT</th>
@@ -107,6 +107,9 @@
                                             @foreach ($defect_mat->d_locations as $key => $loc)
                                                 @isset($loc['location_id'])
                                                     {{App\Models\Location::where('id',$loc['location_id'])->first()->name}}
+                                                    @if ($loc['dc'])
+                                                        : {{$loc['dc']}}
+                                                    @endif
                                                 @else
                                                     {{App\Models\Location::where('id',$loc)->first()->name}}
                                                 @endisset

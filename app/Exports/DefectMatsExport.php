@@ -40,7 +40,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
             'PROCESS',
             'S/N',
             'DEFECT',
-            'LOCATION',
+            'LOCATION : DC',
             'DEFECT TYPE',
             'INSERTED BY',
             'DEFECTED AT',
@@ -98,7 +98,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
                 else{
                     $locid = $value;
                 }
-                $locs .= Location::where('id',$locid)->first()->name;
+                $locs .= Location::where('id',$locid)->first()->name.':'.$value['dc'];
                 if($key != count($query->d_locations) - 1){
                     $locs .= ', ';
                 }
