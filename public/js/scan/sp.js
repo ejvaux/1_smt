@@ -297,20 +297,14 @@ function setWO(wo){
     /* Load PCB */
     loadpcbtable('',$('#scanform-type').val(),$('#scanform-div_process_id').val());
 
-    /* Get Load Number */
-    /* getlotnumber($('#scanform-jo_id').val()); */
-
     /* Get Lot Config */
     lotconfig(wo.ITEM_CODE);
 
-    getlotnumber($('#scanform-jo_id').val());
+    /* Get Lot Number */
+    //getlotnumber($('#scanform-jo_id').val());
 
     /* Show Lot Number Panel */
-    /* if($('#scanform-type').val()==1){
-        if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
-            $('#lot_panel').show();       
-        }
-    }  */   
+    //showlotnumberpanel();
 }
 function unsetWO(){
     disablescan();
@@ -349,7 +343,7 @@ function unsetWO(){
 
     /* Hide Lot Number Panel */
     $('#close_lot_num').attr('disabled',true);
-    $('#lot_panel').hide();  
+    $('#lot_panel').hide();
 }
 function disablescan(msg){
     $('#scanstatuslabel').html('Set: ' + msg).removeClass('text-success').addClass('text-danger');
@@ -374,6 +368,19 @@ function checkscan(){
         chk = 1;
         msg += '[Work Order] ';
     }
+
+    /* if($('#scanform-type').val()==1 && $('#scanform-jo_id').val() != ''){
+        if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
+            if(lotset == 0){
+                chk = 1;
+                msg += '[Lot Number] ';
+            }
+            else{
+
+            }
+            $('#lot_panel').show();   
+        }
+    } */
 
     if($('#scanform-type').val()==1){
         if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
@@ -550,6 +557,7 @@ function getlotnumber(wo){
                 getlotnumbertotal(data.id);
                 /* $('#check_lot_num').attr('disabled',true); */
                 lotset = 1;
+                showlotnumberpanel();
             }
             else{
                 $('#lot_num').val('No Lot Number Found.');
@@ -673,8 +681,19 @@ function lotconfig(pc){
         global: false,
         success: function (data) {
             $('#lc-input').val(data);
+            getlotnumber($('#scanform-jo_id').val());
         }
     });
+}
+function showlotnumberpanel(){
+    /* if(inputt == 1){
+        if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
+            $('#lot_panel').show();
+        }
+    } */
+    if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val() ){
+        $('#lot_panel').show();
+    }
 }
 
 /* --------------- E-V-E-N-T-S -------------- */
@@ -777,11 +796,29 @@ $('#unsetWO').on('click', function(e){
         confirmButtonText: 'Yes, unset it!'
     }).then((result) => {
         if (result.value) {
-            unsetWO();
-            /* iziToast.success({
-                message: 'Work Order Unset!',
-                position: 'topCenter'
-            }); */
+            if($('#scanform-lot_id').val() != ''){
+                swal.fire({
+                    title: 'Open Lot Detected.',
+                    text: "You want to close the lot?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, close it!'
+                }).then((result) => {
+                    if (result.value) {
+                        closelotnumber(
+                            $('#scanform-lot_id').val(),
+                            $('#scanform-employee_id').val()
+                        );
+                        /* alert('OK'); */
+                    }
+                    unsetWO();
+                })
+            }
+            else{
+                unsetWO();
+            }                                   
         }
     })    
 });
@@ -840,7 +877,8 @@ $('#scan_serial').on('keypress', function(e){
 $('#configL').on('change', function(e){
     var t;
     var inputt;
-    if($(this).prop('checked')){
+
+    function unlock(){
         $('.configlock').hide();
         $('.configunlock').show();
 
@@ -873,7 +911,34 @@ $('#configL').on('change', function(e){
         /* check scan status */
         checkscan();
     }
-    else{        
+    
+    if($(this).prop('checked')){
+        if($('#scanform-lot_id').val() != ''){
+            swal.fire({
+                title: 'Open Lot Detected.',
+                text: "You want to close the lot?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, close it!'
+            }).then((result) => {
+                if (result.value) {
+                    closelotnumber(
+                        $('#scanform-lot_id').val(),
+                        $('#scanform-employee_id').val()
+                    );
+                    /* alert('OK'); */
+                }
+                unlock();
+            })
+        }
+        else{
+            unlock();
+        }
+    }
+    else{     
+
         if($('#pcb_input').prop('checked') == 1){
             t = 'IN';
             inputt = 0;
@@ -946,31 +1011,14 @@ $('#pcb_input').on('change', function(e){
     else{
         inputt = 1;
         if(WOset == 1){
-            if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val()){
+            showlotnumberpanel();
+            /* if($('#scanform-div_process_id').val()==5 || $('#lc-input').val() == $('#scanform-div_process_id').val()){
                 $('#lot_panel').show();
-            }
+            } */
         }
     }    
     $('#scanform-type').val(inputt);
     checkscan();
-});
-$('#close_lot_num').on('click', function(e){
-    swal.fire({
-        title: 'Are you sure?',
-        text: "You want to close the lot?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, close it!'
-    }).then((result) => {
-        if (result.value) {
-            iziToast.success({
-                message: 'TEST.',
-                position: 'topCenter'
-            });            
-        }
-    })
 });
 $('#pcbtable_div').on('click','.pagination a.page-link', function(e){
     e.preventDefault();
