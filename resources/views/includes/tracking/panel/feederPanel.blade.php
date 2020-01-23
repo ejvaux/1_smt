@@ -9,12 +9,12 @@
                 <th>Feeder</th>
                 <th>Position</th>
                 <th class="border-right">Usage</th>
-                <th>Feed Time</th>
-                <th>Employee</th>
-                <th>Component PN</th>
+                <th>Remaining Q'ty</th>
                 <th>Reel ID</th>
                 <th>Reel Q'ty</th>
-                <th>Remaining Q'ty</th>
+                <th>Component PN</th>
+                <th>Employee</th>
+                <th>Feed Time</th>
                 {{-- <th>Feed Time</th>
                 <th>Employee</th> --}}
             </tr>
@@ -65,11 +65,6 @@
                             <td>{{App\Http\Controllers\MES\model\Position::where('id',$feeder->pos_id)->pluck('name')->first()}}</td>
                             <td class="border-right">{{$feeder->usage}}</td>                            
                             @if ($matload)
-                                <td>{{$matload->created_at}}</td>
-                                <td>{{$matload->employee_rel->fname}} {{$matload->employee_rel->lname}}</td>
-                                <td>{{$matload->component_rel->product_number}}{{--  - {{$matload->id}} --}}</td>
-                                <td>{{$rid}}</td>
-                                <td>{{$qty}}</td>                                
                                 @if ( $feeder->usage)
                                     @php
                                         $rem_qty = $qty - $total * $feeder->usage;
@@ -85,7 +80,11 @@
                                 @else
                                     <td class="text-info font-weight-bold">No Usage</td>
                                 @endif
-                                
+                                <td>{{$rid}}</td>
+                                <td>{{$qty}}</td>
+                                <td>{{$matload->component_rel->product_number}}{{--  - {{$matload->id}} --}}</td>
+                                <td>{{$matload->employee_rel->fname}} {{$matload->employee_rel->lname}}</td>
+                                <td>{{$matload->created_at}}</td>
                             @else
                                 <td colspan="6" class="b-0 pb-0"> <h3>* * * NO SCAN * * *</h3></td>
                             @endif                            
