@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 /* --Loading ModelName Path-- */
 use App\Http\Controllers\MES2\model\Process;
-use App\Http\Controllers\MES2\model\Divisionid;
+use App\Models\Division;
 use Auth;
 
 
@@ -21,8 +21,8 @@ class ProcessController extends Controller
     {
         /* Requesting from model */
         /* Format : Variable = ModelName:: Eloquent; */
-        $processes = Process::sortable()->get();
-        $divisions = Divisionid::get();
+        $processes = Process::paginate(20);
+        $divisions = Division::all();
         return view('mes2.process',compact('divisions','processes'));
 
     }

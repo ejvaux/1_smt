@@ -144,7 +144,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @if(count($processes) > 0)
+                        @if($processes->count() > 0)
                         @foreach($processes as $process)
                         <tr class="tableClick" id = "tablerowvalue" data-id1='{{$process->id}}'
                                 data-code1='{{$process->code}}'
@@ -154,8 +154,8 @@
                         <td><strong>{{$process->code}}</strong></td>
                         <td><strong>{{$process->name}}</strong></td>
                         <td><strong>{{$process->division->DIVISION_NAME}}</strong></td>
-                        <td><strong>{{$process->updatedBy->USER_NAME}}</strong></td>
-                        {{-- <td><strong>{{$process->updated_by}}</strong></td> --}}
+                        {{-- <td><strong>{{$process->updatedBy->USER_NAME}}</strong></td> --}}
+                        <td><strong>{{$process->updated_by}}</strong></td>
                         <td><strong>{{$process->created_at}}</strong></td>
                         <td><strong>{{$process->updated_at}}</strong></td>
                         <!-- Button FOR ACTIONS -->

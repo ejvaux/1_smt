@@ -15,6 +15,7 @@ use App\Http\Controllers\MES\model\Component;
 use App\Http\Controllers\MES\model\Line;
 use App\Http\Controllers\MES\model\LineName;
 use App\Http\Controllers\MES\model\Employee;
+use App\Http\Controllers\MES\model\Process;
 
 class MasterController extends Controller
 {
@@ -263,10 +264,10 @@ class MasterController extends Controller
                         $ln[] = "$line";
                     }                    
                     $up->lines = $ln;
-                    if($user){
+                    /* if($user){
                         $up->updated_by = $user;
-                    }                    
-                    $up->save();
+                    }  */                   
+                    $up->save(['timestamps' => false]);
                 }
                 else{
                     $ln2 = [];
@@ -287,5 +288,12 @@ class MasterController extends Controller
             'type' => 'success',
             'message' => 'Data Saved'
         ]; 
+    }
+
+    /* PROCESS */
+    public function process(Request $request)
+    {
+        $processes = Process::paginate(20);
+        return view('mes.pages.pr',compact('processes'));
     }
 }

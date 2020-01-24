@@ -5,6 +5,6 @@
     <li><a id="tb4" class="nav-link tbl" href="{{url('el')}}">Employee</a></li>
     <li><a id="tb5" class="nav-link tbl" href="{{url('ml')}}">Machine</a></li>
     <li><a id="tb6" class="nav-link tbl" href="{{url('ln')}}">Lines</a></li>
-    <li><a id="tb7" class="nav-link tbl" href="{{url('process')}}">Process</a></li>
+    <li><a id="tb7" class="nav-link tbl" href="{{url('pr')}}">Process</a></li>
     <li><a id="tb8" class="nav-link tbl" href="{{url('defecttype')}}">Defect Type</a></li>
 </ul>
