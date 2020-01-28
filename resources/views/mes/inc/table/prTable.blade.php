@@ -1,12 +1,12 @@
 <div class='row mb-1'>
-    <div class='col-lg table-responsive-lg'>
-        <table class="table">
+    <div class='col-lg table-responsive'>
+        <table id="prTable" class="table no-wrap">
             <thead class="thead-light">
                 <tr class="labelfontbold">
                     <th>#</th>
                     <th>CODE</th>
                     <th>NAME</th>
-                    <th>DIVISION</th>
+                    <th>DEPARTMENT</th>
                     <th>UPDATED BY</th>
                     <th>CREATED AT</th>
                     <th>UPDATED AT</th>
@@ -19,19 +19,20 @@
                         @foreach($processes as $process)
                             <tr>
                                 <th>{{ $loop->iteration + (($processes->currentPage() - 1) * 20) }}</th>
-                                <th>{{$process->code}}</th>
-                                <th>{{$process->name}}</th>
-                                <th>{{$process->division->DIVISION_NAME}}</th>
-                                <th>
+                                <td>{{$process->code}}</td>
+                                <td>{{$process->name}}</td>
+                                <td>{{$process->division->DIVISION_NAME}}</td>
+                                <td>
                                     @if ($process->updatedBy)
                                         {{$process->updatedBy->USER_NAME}}
                                     @else
                                         - User not found -
                                     @endif                                    
-                                </th>
-                                <th>{{$process->created_at}}</th>
-                                <th>{{$process->updated_at}}</th>
+                                </td>
+                                <td>{{$process->created_at}}</td>
+                                <td>{{$process->updated_at}}</td>
                                 <th>
+                                    <a class="text-info process-edit-btn" data-id="{{$process->id}}" href="#"> EDIT</a>
                                     <a class="text-danger process-delete-btn" data-id="{{$process->id}}" href="#"> DELETE</a>
                                     {{-- <div class="btn-group" role="group">
                                         <button class='btn btn-outline-info editProcess' 

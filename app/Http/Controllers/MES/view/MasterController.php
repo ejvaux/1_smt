@@ -16,6 +16,7 @@ use App\Http\Controllers\MES\model\Line;
 use App\Http\Controllers\MES\model\LineName;
 use App\Http\Controllers\MES\model\Employee;
 use App\Http\Controllers\MES\model\Process;
+use App\Models\Division;
 
 class MasterController extends Controller
 {
@@ -293,7 +294,8 @@ class MasterController extends Controller
     /* PROCESS */
     public function process(Request $request)
     {
-        $processes = Process::paginate(20);
-        return view('mes.pages.pr',compact('processes'));
+        $divisions = Division::all();
+        
+        return view('mes.pages.pr',compact('divisions'));
     }
 }

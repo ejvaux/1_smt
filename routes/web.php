@@ -196,7 +196,7 @@ Route::resources([
     'machines' =>  'MES\api\MachinesController',
     'linenames' =>  'MES\api\LineNamesController',
     'defectmats' => 'Api\DefectController',
-    'processes' => 'Api\ProcessController',
+    'processes' => 'MES\api\ProcessController',
     'defects' => 'Api\DefectCodeController',
     'divprocesses' => 'Api\DivProcessController'
 ]);
@@ -219,7 +219,7 @@ Route::post('testt', 'PageController@testing');
 
 /* ----- MES2 start ----- */
 
-Route::resource('process','MES2\ProcessController');
+/* Route::resource('process','MES2\ProcessController'); */
 Route::get('processDelete', 'MES2\ProcessController@destroy');
 Route::resource('defecttype','MES2\DefectTypeController');
 Route::get('tracking','TrackingController@pcb');
