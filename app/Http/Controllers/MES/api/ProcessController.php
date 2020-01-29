@@ -68,7 +68,7 @@ class ProcessController extends Controller
      */
     public function show($id)
     {
-        //
+        return Process::where('division_id',$id)->get();
     }
 
     /**

@@ -73,7 +73,9 @@
                 <select id="department_id" class="form-control" name="division_id" placeholder="">
                     <option value="">- Please Select -</option>
                     @foreach ($divisions as $div)
-                        <option value="{{$div->DIVISION_ID}}">{{$div->DIVISION_NAME}}</option>
+                        @if ($div->DIVISION_ID != '17')
+                            <option value="{{$div->DIVISION_ID}}">{{$div->DIVISION_NAME}}</option>
+                        @endif                        
                     @endforeach
                 </select>                  
             </div>
