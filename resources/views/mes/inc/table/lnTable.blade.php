@@ -18,11 +18,18 @@
                             <th>{{$linename->updated_at}}</th>
                             <th>
                                 <div class="btn-group" role="group">
-                                    <button class='btn btn-outline-info editLinename' 
+                                    {{-- <button class='btn btn-outline-info editLinename' 
                                         data-id="{{$linename->id}}"
                                         data-name="{{$linename->name}}"
                                     title="Edit Line"><i class="far fa-edit"></i></button>
-                                    <button type='button' class='btn btn-outline-danger deleteLinename' data-id="{{$linename->id}}" type='button' title="Delete Line"><i class="far fa-trash-alt"></i></button>                                    
+                                    <button type='button' class='btn btn-outline-danger deleteLinename' data-id="{{$linename->id}}" type='button' title="Delete Line"><i class="far fa-trash-alt"></i></button> --}}
+                                    <a class='text-info editLinename' 
+                                        data-id="{{$linename->id}}"
+                                        data-name="{{$linename->name}}"
+                                    title="Edit Line" href="#">EDIT</a>
+                                    @if (session('auth') == 'A')
+                                        &nbsp;|&nbsp;<a class='text-danger deleteLinename' data-id="{{$linename->id}}" title="Delete Line" href="#">DELETE</a>
+                                    @endif
                                 </div>
                                 <form id='del_linename_form_{{$linename->id}}' action="{{url('linenames/'.$linename->id)}}" method="post">
                                     @method('DELETE')                                        

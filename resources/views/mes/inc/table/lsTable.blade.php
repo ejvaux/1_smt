@@ -20,12 +20,20 @@
                             <th>{{$line->updated_at}}</th>
                             <th>
                                 <div class="btn-group" role="group">
-                                    <button class='btn btn-outline-info editLine' 
+                                    {{-- <button class='btn btn-outline-info editLine' 
                                         data-id="{{$line->id}}"
                                         data-code="{{$line->code}}"
                                         data-machine="{{$line->machine_id}}"
                                     title="Edit Line"><i class="far fa-edit"></i></button>
-                                    <button type='button' class='btn btn-outline-danger deleteLine' data-id="{{$line->id}}" type='button' title="Delete Component"><i class="far fa-trash-alt"></i></button>                                    
+                                    <button type='button' class='btn btn-outline-danger deleteLine' data-id="{{$line->id}}" type='button' title="Delete Component"><i class="far fa-trash-alt"></i></button> --}}
+                                    <a class='text-info editLine' 
+                                        data-id="{{$line->id}}"
+                                        data-code="{{$line->code}}"
+                                        data-machine="{{$line->machine_id}}"
+                                    title="Edit Line" href="#">EDIT</a>
+                                    @if (session('auth') == 'A')
+                                        &nbsp;|&nbsp;<a type='button' class='text-danger deleteLine' data-id="{{$line->id}}" title="Delete Component" href="#">DELETE</a>
+                                    @endif                                                                     
                                 </div>
                                 <form id='del_line_form_{{$line->id}}' action="{{url('lines/'.$line->id)}}" method="post">
                                     @method('DELETE')                                        

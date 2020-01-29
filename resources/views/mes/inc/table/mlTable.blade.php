@@ -34,7 +34,10 @@
                                         data-code="{{$machine->code}}"
                                         data-machine="{{$machine->machine_id}}"
                                     title="Edit Line"><i class="far fa-edit"></i></button> --}}
-                                    <button type='button' class='btn btn-outline-danger deleteMach' data-id="{{$machine->id}}" type='button' title="Delete Machine"><i class="far fa-trash-alt"></i></button>                                    
+                                    {{-- <button type='button' class='btn btn-outline-danger deleteMach' data-id="{{$machine->id}}" type='button' title="Delete Machine"><i class="far fa-trash-alt"></i></button> --}}                                    
+                                    @if (session('auth') == 'A')
+                                    <a type='button' class='text-danger deleteMach' data-id="{{$machine->id}}" title="Delete Machine" href="#">DELETE</a>
+                                    @endif                                
                                 </div>
                                 <form id='del_mach_form_{{$machine->id}}' action="{{url('machines/'.$machine->id)}}" method="POST">
                                     @method('DELETE')                                        
