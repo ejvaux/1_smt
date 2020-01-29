@@ -264,10 +264,11 @@ class MasterController extends Controller
                         $ln[] = "$line";
                     }                    
                     $up->lines = $ln;
+                    $up->timestamps = false;
                     /* if($user){
                         $up->updated_by = $user;
                     }  */                   
-                    $up->save(['timestamps' => false]);
+                    $up->save();
                 }
                 else{
                     $ln2 = [];
@@ -279,7 +280,8 @@ class MasterController extends Controller
                     }
                     $ln3 = array_values($ln2);  
                     $up->lines = $ln3;
-                    $up->save(['timestamps' => false]);
+                    $up->timestamps = false;
+                    $up->save();
                 }
             }
         }
