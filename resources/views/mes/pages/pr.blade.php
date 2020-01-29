@@ -8,7 +8,7 @@
     <script src="{{ asset('js/mes/pr.js') }}" defer></script>
 @endsection
 @section('content')
-    <div class="container mt-5" id="table_display" style="width: 100%;">
+    <div class="container-fluid mt-5" id="table_display" style="width: 100%;">
         <div class="row mb-2">
             <div class="col-md">
                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -16,26 +16,20 @@
                 </div>
             </div>
             <div class="col-md-3 ml-0 pl-1 ">
-                <form method='GET' {{-- action="{{url('ln')}}" --}}>
-                    <div class="input-group">                    
-                        <input type="text" class="form-control" name='text' placeholder="Search process . . .">
-                        <button type="submit" id="search"><i class="fa fa-search"></i></button>
-                    </div>               
-                </form>
+                <div class="input-group">                    
+                    <input id="search-tb" type="text" class="form-control" name='text' placeholder="Search process . . .">
+                </div> 
             </div>
         </div>
-        {{-- <div class="row">
-            <div class="col-md">
-                @include('mes.inc.messages')
-            </div>
-        </div> --}}
         <div class="row">
             <div class="col-sm-12 py-0 mr-0" >
-                <div id='process-table-div'>
-                    @include('mes.inc.table.prTable')
+                <div id='process-table-div' class="text-center">
+                    {{-- @include('mes.inc.table.prTable') --}}
+                    <h3>LOADING TABLE.. PLEASE WAIT...</h3>
+                    <img src="{{asset('images/103.gif')}}" alt="">
                 </div>
             </div>
         </div>
     </div>
-    {{-- @include('mes.inc.modal.lnModal') --}}
+    @include('mes.inc.modal.prModal')
 @endsection

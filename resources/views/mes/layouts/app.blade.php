@@ -12,10 +12,16 @@
                 echo "<script type='text/javascript'>alert('Access Denied!');window.location.href='/1_mes/_php/portal.php';</script>";        
             }
             $user_num = $_SESSION['user_num'];
+            session(['auth' => $auth]);
         @endphp
+        
         <meta name="username" content="{{$username}}">
         <meta name="user_num" content="{{$user_num}}">{{-- @php echo $user_num; @endphp --}}
         <meta name="google" content="notranslate">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{-- <meta http-equiv="refresh" content="30"> --}}
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Header start -->
         <title>SMT Master Database</title>
         @include('mes.inc.header')
@@ -23,7 +29,6 @@
     </head>
 
     <body>
-    
         <!-- Navbar - START -->
             @php
                 include $_SERVER['DOCUMENT_ROOT']."/1_mes/_includes/navbar.php";            
