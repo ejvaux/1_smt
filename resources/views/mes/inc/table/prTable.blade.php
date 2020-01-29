@@ -33,7 +33,9 @@
                                 <td>{{$process->updated_at}}</td>
                                 <th>
                                     <a class="text-info process-edit-btn" data-id="{{$process->id}}" href="#"> EDIT</a>
-                                    <a class="text-danger process-delete-btn" data-id="{{$process->id}}" href="#"> DELETE</a>
+                                    @if (session('auth') == 'A')
+                                        <a class="text-danger process-delete-btn" data-id="{{$process->id}}" href="#"> DELETE</a>
+                                    @endif
                                     {{-- <div class="btn-group" role="group">
                                         <button class='btn btn-outline-info editProcess' 
                                             data-id="{{$linename->id}}"
