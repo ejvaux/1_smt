@@ -12,6 +12,7 @@
                 echo "<script type='text/javascript'>alert('Access Denied!');window.location.href='/1_mes/_php/portal.php';</script>";        
             }
             $user_num = $_SESSION['user_num'];
+            session(['auth' => $auth]);
         @endphp
         <meta name="username" content="{{$username}}">
         <meta name="user_num" content="{{$user_num}}">{{-- @php echo $user_num; @endphp --}}
