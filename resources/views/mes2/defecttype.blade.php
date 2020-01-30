@@ -142,8 +142,9 @@
                                         data-code='{{$defect->code}}'
                                         data-name='{{$defect->name}}'
                                         class="btn btn-outline-success editDefect"><i class="fa fa-edit"></i></button>
-
+                                @if (session('auth') == 'A')
                                 <button type='button' class="btn btn-outline-danger del_defect_btn" data-id='{{$defect->id}}'><i class="fa fa-trash"></i></button>
+                                @endif                                
                                 {{-- </div> --}}
                             </form>
                         </td>
