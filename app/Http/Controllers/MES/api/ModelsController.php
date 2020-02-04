@@ -106,6 +106,8 @@ class ModelsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(ModName::find($id)->delete()){
+            return redirect()->back()->with('success','Model Deleted Successfully.');
+        }
     }
 }

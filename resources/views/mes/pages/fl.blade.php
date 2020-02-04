@@ -21,7 +21,7 @@
             <div class="col-md-3 ml-0 pl-1 ">
                 <form method="get" action="{{url('fl')}}">
                     <div class="input-group">                        
-                        <input type="text" class="form-control" id="" name="text" placeholder="Search model . . .">
+                        <input type="text" class="form-control" name="text" placeholder="Search model . . .">
                         <button type="submit" class='btn btn-outline-secondary' id=""><i class="fa fa-search"></i></button>                                            
                     </div>
                 </form>
@@ -33,6 +33,10 @@
             </div>
         </div>
         <div class="row">
+            <form id="deletemodelform" method="post">
+                @csrf
+                @method('DELETE')                
+            </form> 
             <div class="col-md" >
                 @include('mes.inc.table.flTable')
             </div>

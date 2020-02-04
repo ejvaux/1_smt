@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\MES\model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Kyslik\ColumnSortable\Sortable;
 
 class ModName extends Model
@@ -16,6 +17,7 @@ class ModName extends Model
     ];
 
     use Sortable;
+    use SoftDeletes;
 
     /* protected $fillable = ['id']; */
 
