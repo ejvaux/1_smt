@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MES\model\Feeder;
 use App\Http\Controllers\MES\model\ModName;
+use App\Http\Controllers\MES\model\Employee;
 use App\Models\MatComp;
+use Illuminate\Support\Facades\Log;
+use App\Custom\CustomFunctions;
 
 class FeedersController extends Controller
 {
@@ -207,6 +210,7 @@ class FeedersController extends Controller
             $m = ModName::where('id',$mid->model_id)->first();
             $m->updated_by = $request->input('user_id');
             $m->touch();
+            CustomFunctions::logdelete('Feeder Slot Delete',$request->input('user_id'));
             return redirect()->back()->with([
                 'success' => 'Component Deleted Successfully.',
                 'Atbl' => $mid->table_id
@@ -222,6 +226,7 @@ class FeedersController extends Controller
     {
         /* Feeder::where('model_id',$id)->where('model_id',$id)->where('model_id',$id)->where('model_id',$id); */        
         if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->delete()){
+            CustomFunctions::logdelete('Feeder Delete',$request->input('user_id'));
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
@@ -287,6 +292,7 @@ class FeedersController extends Controller
     {
         if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->delete())
         {
+            CustomFunctions::logdelete('Machine Delete',$request->input('user_id'));
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();

@@ -88,6 +88,12 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'deletelog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/delete-log.log'),
+            'level' => 'info'
+        ]
     ],
 
 ];

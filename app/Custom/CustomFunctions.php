@@ -5,6 +5,8 @@ namespace App\Custom;
 use App\Models\Division;
 use App\Models\Lot;
 use App\Http\Controllers\MES\model\LineName;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\MES\model\User;
 
 /* Models for component monitoring */
 use App\ProdLine;
@@ -29,12 +31,14 @@ use App\Http\Controllers\MES2\model\componentqty;
 
 class CustomFunctions
 {
-    public static function plural($n){
+    public static function plural($n)
+    {
         if($n > 1){
             return 's';
         }
     } 
-    public static function datelapse($dt){
+    public static function datelapse($dt)
+    {
         $date1 = strtotime($dt);
         $date2 = strtotime(date('Y-m-d H:i:s'));
         $secs = $date2 - $date1;
@@ -69,7 +73,8 @@ class CustomFunctions
             } 
         }
     }
-    public static function datefinished($dt1,$dt2){
+    public static function datefinished($dt1,$dt2)
+    {
         $date1 = strtotime($dt1);
         $date2 = strtotime($dt2);
         $secs = $date2 - $date1;              
@@ -106,7 +111,8 @@ class CustomFunctions
         }
         return $time;
     }
-    public static function genshift(){
+    public static function genshift()
+    {
         $date = Date('H:i');
         $shift = '';
         if($date > '05:59' && $date < '18:00'){
@@ -120,7 +126,8 @@ class CustomFunctions
         }
         return $shift;
     }
-    public static function colorsets(){
+    public static function colorsets()
+    {
         
         $col =[
             '#99A3A4',
@@ -146,7 +153,8 @@ class CustomFunctions
         ];
         return $col;
     }
-    public static function genlotnumber($div_id,$line_id){
+    public static function genlotnumber($div_id,$line_id)
+    {
         $ln = '';
         $d = 0;
 
@@ -206,7 +214,8 @@ class CustomFunctions
 
         return $ln;
     }
-    public static function convertmonth($mnth){
+    public static function convertmonth($mnth)
+    {
         $months  = [
             '10' => 'A',
             '11' => 'B',
@@ -225,16 +234,19 @@ class CustomFunctions
             return substr($mnth,-1);
         }
     }
-    public static function getmachcode($machine){
+    public static function getmachcode($machine)
+    {
         $m_code =substr($machine,0,-1);
         $m_code = substr($m_code,0,-2) . '-' . substr($m_code,-2);
         return strtoupper($m_code);
     }
-    public static function getmachtable($machine){
+    public static function getmachtable($machine)
+    {
         $table=substr($machine,-1);
         return $table_id= tableSMT::where('name',$table)->pluck('id')->first();
     }
-    public static function getQrData($rid,$prop){
+    public static function getQrData($rid,$prop)
+    {
         if (strpos($rid,';') !== false) {
             $rid1s = explode(';',$rid);
         }
@@ -248,7 +260,8 @@ class CustomFunctions
             }
         }
     }
-    public static function getQrLength($rid){
+    public static function getQrLength($rid)
+    {
         if (strpos($rid,';') !== false) {
             $rid1s = explode(';',$rid);
             return count($rid1s);
@@ -257,5 +270,10 @@ class CustomFunctions
             $rid1s = explode(',',$rid);
             return count($rid1s);
         }
+    }
+    public static function logdelete($title,$userid)
+    {
+        $user = User::where('NO',$userid)->first();
+        Log::channel('deletelog')->info( '['.Date('Y-m-d H:i:s').'] '. $title.' -> '.$user->USER_NAME);
     }
 }
