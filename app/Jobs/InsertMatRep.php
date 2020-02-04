@@ -102,7 +102,12 @@ class InsertMatRep implements ShouldQueue
             // End
 
             $line = $prev->machine->line->linename->name;
-            $pcbPN = $prev->model->item_code;
+            if($prev->model->item_code){
+                $pcbPN = $prev->model->item_code;
+            }
+            else{
+                $pcbPN = '';
+            }            
             $program = $prev->model->program_name;
             $reelID = $reel;
             $compPN = CustomFunctions::getQrData($prev->ReelInfo,'PN');
