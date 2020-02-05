@@ -167,6 +167,7 @@ Route::get('el', 'MES\view\MasterController@employee');
 Route::get('ml', 'MES\view\MasterController@machine');
 Route::get('ln', 'MES\view\MasterController@line');
 Route::get('pr', 'MES\view\MasterController@process');
+Route::get('dt', 'MES\view\MasterController@defecttype');
 Route::get('lcl', 'MES\view\MasterController@lineconfig');
 Route::post('lcu', 'MES\view\MasterController@lineconfigUpdate');
 
@@ -195,6 +196,7 @@ Route::resources([
     'employees' =>  'MES\api\EmployeesController',
     'machines' =>  'MES\api\MachinesController',
     'linenames' =>  'MES\api\LineNamesController',
+    'defecttypes' =>  'MES\api\DefectTypesController',
     'defectmats' => 'Api\DefectController',
     'processes' => 'MES\api\ProcessController',
     'defects' => 'Api\DefectCodeController',
