@@ -127,6 +127,18 @@ class MasterController extends Controller
         }
         return view('mes.pages.ln',compact('linenames'));
     }
+    public function process(Request $request)
+    {
+        $divisions = Division::all();
+        
+        return view('mes.pages.pr',compact('divisions'));
+    }
+    public function defecttype(Request $request)
+    {
+        return view('mes.pages.dt');
+    }
+
+
     public function createfeederlisthome()
     {
         return view('mes.pages.cflh');
@@ -294,10 +306,5 @@ class MasterController extends Controller
     }
 
     /* PROCESS */
-    public function process(Request $request)
-    {
-        $divisions = Division::all();
-        
-        return view('mes.pages.pr',compact('divisions'));
-    }
+    
 }
