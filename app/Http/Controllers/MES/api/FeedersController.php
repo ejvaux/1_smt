@@ -224,6 +224,13 @@ class FeedersController extends Controller
     }
     public function del_mount(Request $request)
     {
+        $request->validate([
+            'model_id' => 'integer|required',
+            'line_id' => 'integer|required',
+            'machine_type_id' => 'integer|required',
+            'table_id' => 'integer|required',
+            'mounter_id' => 'integer|required',
+        ]);
         /* Feeder::where('model_id',$id)->where('model_id',$id)->where('model_id',$id)->where('model_id',$id); */        
         if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->delete()){
             CustomFunctions::logdelete('Feeder Delete',$request->input('user_id'));
@@ -290,6 +297,11 @@ class FeedersController extends Controller
     }
     public function del_machine(Request $request)
     {
+        $request->validate([
+            'model_id' => 'integer|required',
+            'line_id' => 'integer|required',
+            'machine_type_id' => 'integer|required',
+        ]);
         if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->delete())
         {
             CustomFunctions::logdelete('Machine Delete',$request->input('user_id'));
