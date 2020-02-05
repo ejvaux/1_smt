@@ -31,7 +31,7 @@
                             <th>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a href="{{ url('fld/'.$model->id.'/0/0')}}" title="View">VIEW</a>                                    
-                                    @if (session('auth') == 'A')
+                                    @if (session('auth') == 'A' || session('userid') == 128)
                                     &nbsp;|&nbsp;<a class="text-danger delete-model-btn" title="Delete" href="#" data-id='{{$model->id}}'>DELETE</a>                                       
                                     @endif
                                 </div>                                

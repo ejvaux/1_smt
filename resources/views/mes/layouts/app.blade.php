@@ -13,6 +13,7 @@
             }
             $user_num = $_SESSION['user_num'];
             session(['auth' => $auth]);
+            session(['userid' => $user_num])
         @endphp
         
         <meta name="username" content="{{$username}}">
