@@ -23,13 +23,16 @@ if(in_array(\Request::ip(),['172.16.1.14','172.16.4.32'])){
 }
 
 Auth::routes();
+Route::get('/', function(){
+    return redirect('/ov');
+});
 
 // Overview
 Route::get('/ov', 'HomeController@overview');
 
 Route::group(['middleware' => 'auth'], function () {
     // All my routes that needs a logged in user
-    Route::get('/', 'HomeController@index')->name('home');
+    /* Route::get('/', 'HomeController@index'); */
 
     /* PageController */
     Route::get('/scan', 'PageController@scan');

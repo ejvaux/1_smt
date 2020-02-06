@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Jobs\RemoteInsert;
 
+
 class HomeController extends Controller
 {
     /**

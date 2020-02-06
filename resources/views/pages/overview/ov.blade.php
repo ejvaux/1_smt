@@ -15,11 +15,11 @@
             {{-- <div class="col-md"></div> --}}
             <div class="col-md">
                 <div class="card">
-                    {{-- <div class="card-header">                        
-                        <h5>Material List</h5>
-                    </div> --}}
+                    <div class="card-header">                        
+                        <h5>Overview</h5>
+                    </div>
                     <div class="card-body">   
-                        {{-- @include('includes.tracking.mllPanel') --}}
+                        @include('pages.overview.panels.ovPanel')
                     </div>
                 </div>
             </div>
