@@ -24,11 +24,12 @@ if(in_array(\Request::ip(),['172.16.1.14','172.16.4.32'])){
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index2');
+// Overview
+Route::get('/ov', 'HomeController@overview');
 
 Route::group(['middleware' => 'auth'], function () {
     // All my routes that needs a logged in user
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/', 'HomeController@index')->name('home');
 
     /* PageController */
     Route::get('/scan', 'PageController@scan');
