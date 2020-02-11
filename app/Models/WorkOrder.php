@@ -11,6 +11,10 @@ class WorkOrder extends Model
 
     protected $table = 'mis_prod_plan_dl';
 
+    /* protected $casts = [
+        'DATE_' => 'datetime:Y-m-d',
+    ]; */
+
     use Sortable;
 
     public $sortable = ['JOB_ORDER_NO','ITEM_CODE','ITEM_NAME','MACHINE_CODE'];

@@ -18,7 +18,7 @@
                     <div class="card-header">                        
                         <h5>Overview</h5>
                     </div>
-                    <div class="card-body">   
+                    <div class="card-body">                                                
                         @include('pages.overview.panels.ovPanel')
                     </div>
                 </div>
