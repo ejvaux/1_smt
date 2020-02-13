@@ -24,7 +24,8 @@ use Illuminate\Http\Request;
 
 Auth::routes();
 Route::get('/', 'HomeController@index');
-Route::get('ArtisanOptimiz3', 'HomeController@sysOptimize');
+Route::get('sys_optimize', 'HomeController@sysOptimize');
+Route::get('sys_routes', 'HomeController@sysRoutes');
 
 // Overview
 Route::get('/ov', 'HomeController@overview');

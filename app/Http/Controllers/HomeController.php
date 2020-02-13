@@ -20,6 +20,17 @@ class HomeController extends Controller
     {
         /* $this->middleware('auth'); */
     }
+    
+    public function sysOptimize()
+    {
+        $rc = \Artisan::call('optimize');
+        return \Artisan::output();
+    }
+    public function sysRoutes()
+    {
+        $rc = \Artisan::call('route:list');
+        return \Artisan::output();
+    }
 
     /**
      * Show the application dashboard.
@@ -67,10 +78,5 @@ class HomeController extends Controller
     public function workorder()
     {
 
-    }
-    public function sysOptimize()
-    {
-        $rc = \Artisan::call('optimize');
-        return "Application Optimized";
     }
 }
