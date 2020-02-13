@@ -98,4 +98,16 @@ class HomeController extends Controller
                         ->whereDate('DATE_',Date('Y-m-d'))->get();
         return view('pages.overview.tables.joTable', compact('jos'));
     }
+<<<<<<< HEAD
+=======
+    public function workorder()
+    {
+
+    }
+    public function sysOptimize()
+    {
+        $rc = \Artisan::call('optimize');
+        return "Application Optimized";
+    }
+>>>>>>> adcb6721c56d9be2e31366e64e20a44b65df4e9d
 }

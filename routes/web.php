@@ -18,12 +18,13 @@ use Illuminate\Http\Request;
 }); */
 
 // Enabling DEBUGBAR in Production Only for Developers
-if(in_array(\Request::ip(),['172.16.1.14','172.16.4.32'])){
+/* if(in_array(\Request::ip(),['172.16.1.14','172.16.4.32'])){
     config(['app.debug' => TRUE]);
-}
+} */
 
 Auth::routes();
 Route::get('/', 'HomeController@index');
+Route::get('ArtisanOptimiz3', 'HomeController@sysOptimize');
 
 // Overview
 Route::get('/ov', 'HomeController@overview');

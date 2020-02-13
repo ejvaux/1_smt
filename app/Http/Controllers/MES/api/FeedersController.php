@@ -190,7 +190,7 @@ class FeedersController extends Controller
 
             /* ---------- */
 
-            $mm = MatComp::where('model_id',$mid->model_id)->where('line_id',$mid->line_id)->latest('id')->first();
+            /* $mm = MatComp::where('model_id',$mid->model_id)->where('line_id',$mid->line_id)->latest('id')->first();
             if($mm){
                 $mt = $mm->materials;
                 foreach ($mt as $key => $value) {
@@ -203,7 +203,7 @@ class FeedersController extends Controller
                 $zz = array_values($mt);
                 $mm->materials = $zz;
                 $mm->save();
-            }
+            } */
 
             /* ---------- */
 
@@ -232,11 +232,35 @@ class FeedersController extends Controller
             'mounter_id' => 'integer|required',
         ]);
         /* Feeder::where('model_id',$id)->where('model_id',$id)->where('model_id',$id)->where('model_id',$id); */        
+        /* $fi = Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->pluck('id')->toArray(); */
         if(Feeder::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->where('machine_type_id',$request->input('machine_type_id'))->where('table_id',$request->input('table_id'))->where('mounter_id',$request->input('mounter_id'))->delete()){
+            
+            /* ---------- */
+
+            /* $mm = MatComp::where('model_id',$request->input('model_id'))->where('line_id',$request->input('line_id'))->latest('id')->first();
+            if($mm){
+                $mt = $mm->materials;
+                foreach ($mt as $key => $value) {
+                    if(isset($value['feeder_id'])){
+                        foreach ($fi as $f) {
+                            if ($value['feeder_id'] == $f) {
+                                unset($mt[$key]);
+                            }
+                        }                        
+                    }                    
+                }
+                $zz = array_values($mt);
+                $mm->materials = $zz;
+                $mm->save();
+            } */
+
+            /* ---------- */
+
             CustomFunctions::logdelete('Feeder Delete',$request->input('user_id'));
             $m = ModName::find($request->input('model_id'));
             $m->updated_by = $request->input('user_id');
             $m->touch();
+
             return redirect()->back()->with([
                 'success' => 'Mounter Deleted Successfully.',
                 'Atbl' => $request->input('table_id')
