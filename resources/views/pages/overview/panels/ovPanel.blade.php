@@ -3,6 +3,9 @@
         <a class="nav-link bold-text active" href="#linetab" role="tab" data-toggle="tab">Line</a>
     </li>
     <li class="nav-item bold-text">
+        <a class="nav-link" href="#defecttab" role="tab" data-toggle="tab">Defect</a>
+    </li>
+    <li class="nav-item bold-text">
         <a class="nav-link" href="#jotab" role="tab" data-toggle="tab">Job Order</a>
     </li>
     {{-- <li class="nav-item bold-text">
@@ -20,23 +23,14 @@
             </div>
         </div>
     </div>  --}}   
-    <div class="tab-pane container-fluid border border-top-0 active h-100" id="linetab" style='height:100%' >
-        <div id="line-table-div">
-            <div class="row mt-2 mb-2">
-                <div class="col text-center">
-                    {{-- <button id='load-line-btn' class="btn btn-secondary load-line-btn py-0">LOAD TABLE</button> --}}                                        
-                </div>
-            </div>
-        </div>
+    <div class="tab-pane container-fluid border border-top-0 active" id="linetab" style='height:100%' >
+        <div id="line-table-div"></div>
+    </div>
+    <div class="tab-pane container-fluid border border-top-0" id="defecttab" style='height:100%' >
+        <div id="defect-table-div"></div>
     </div>
     <div class="tab-pane container-fluid border border-top-0" id="jotab" style='height:100%' >
-        <div id="jo-table-div">
-            <div class="row mt-2 mb-2">
-                <div class="col">
-                    {{-- <button id='load-jo-btn' class="btn btn-secondary load-jo-btn py-0">LOAD TABLE</button> --}}
-                </div>
-            </div>
-        </div>
+        <div id="jo-table-div"></div>
     </div>
     {{-- <div class="tab-pane container-fluid border border-top-0" id="wotab" style='height:100%' >
         <div id="wo-table-div"></div>

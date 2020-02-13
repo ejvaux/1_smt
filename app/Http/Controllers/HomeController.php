@@ -7,6 +7,7 @@ use App\Jobs\RemoteInsert;
 use App\Http\Controllers\MES\model\LineName;
 use App\Models\Pcb;
 use App\Models\WorkOrder;
+use App\Models\DefectMat;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -55,6 +56,39 @@ class HomeController extends Controller
         
         return view('pages.overview.tables.lineTable', compact('scans'));
     }
+    public function defect(Request $request)
+    {
+        $defects = [];
+        if($request->input('from') != '' && $request->input('to') != '')
+        {
+            $from = $request->input('from');
+            $to = $request->input('to');
+        }
+        else
+        { 
+            $to = Date('Y-m-d');
+            $from = Carbon::parse($to)->subWeek()->toDateString();
+        }
+        /* $def = DefectMat::where('created_at','>=',Carbon::parse($from)->addHours(6))->where('created_at','<',Carbon::parse($to)->addHours(6)->addDay())->get(); */
+        $datee = Carbon::parse($from)->toDateString();
+        while ($datee <= Carbon::parse($to)->toDateString()) {
+            $def = DefectMat::where('created_at','>=',Carbon::parse($datee)->addHours(6))->where('created_at','<',Carbon::parse($datee)->addHours(6)->addDay())->get();
+            $rep = $def->filter(function ($value) use ($request) {
+                return $value->repair == 1;
+            })->all();
+            $defects[] = [
+                'date' => $datee,
+                'defect' => $def->count(),
+                'repair' => count($rep)
+            ];
+            $datee = Carbon::parse($datee)->addDay()->toDateString();
+        }
+        /* $pcb->filter(function ($value) use ($request) {
+            return $value->div_process_id == $request->div_process_id && $value->type == 1;
+        })->all(); */
+        /* return $defects; */
+        return view('pages.overview.tables.defectTable', compact('defects','from','to'));
+    }
     public function joborder()
     {
         $jos = WorkOrder::where(function ($query) {
@@ -63,9 +97,5 @@ class HomeController extends Controller
                         })
                         ->whereDate('DATE_',Date('Y-m-d'))->get();
         return view('pages.overview.tables.joTable', compact('jos'));
-    }
-    public function workorder()
-    {
-
     }
 }

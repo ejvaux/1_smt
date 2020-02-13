@@ -1,4 +1,4 @@
-<div class="row mt-2 mb-2">
+<div class="row pt-2 mb-2">
     <div class="col">
         <button id="refresh-jotable-btn" class="btn btn-secondary py-0 load-jo-btn">RELOAD TABLE</button>
     </div>
@@ -36,7 +36,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td class="6">No data</td>
+                            <td colspan="6">No data</td>
                         </tr>
                     @endif
                 @endisset

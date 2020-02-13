@@ -50,6 +50,7 @@ $.ajaxSetup({
 $(document).ready(function() {
     loadlines();
     localStorage.setItem('ov_jo',0);
+    localStorage.setItem('ov_def',0);
 });
 
 /* FUNCTIONS */
@@ -65,6 +66,21 @@ function loadlines(text, url = 'lineov')
         /* global: false, */
         success		: function(data) {
             $('#line-table-div').html(data);
+        }
+    });
+}
+function loaddefect(from, to, url = 'defectov')
+{
+    $.ajax({
+        type		: "get",
+        url		    : url,
+        data: {
+            'from': from,
+            'to': to
+        },
+        /* global: false, */
+        success		: function(data) {            				
+            $('#defect-table-div').html(data);
         }
     });
 }
@@ -88,6 +104,9 @@ function loadjo(text, url = 'joov')
 $('#line-table-div').on('click', '.load-line-btn', function(e){
     loadlines();
 });
+$('#defect-table-div').on('click', '.load-defect-btn', function(e){
+    loaddefect($('#from').val(),$('#to').val());
+});
 $('#jo-table-div').on('click', '.load-jo-btn', function(e){
     loadjo();    
 });
@@ -97,6 +116,13 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if(localStorage.getItem('ov_jo') == 0){
             loadjo();
             localStorage.setItem('ov_jo',1);
+        }
+    }
+    else if(target == '#defecttab')
+    {
+        if(localStorage.getItem('ov_def') == 0){
+            loaddefect();
+            localStorage.setItem('ov_def',1);
         }
     }
     /* alert(localStorage.getItem('ov_jo')); */

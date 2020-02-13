@@ -34,7 +34,8 @@
                             Results <span class="caret"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="nav-link" href="{{url('lr')}}" target="_blank">Line</a>                             
+                            <a class="nav-link" href="{{url('lr')}}" target="_blank">Line</a>
+                            <a class="nav-link" href="{{url('lsr')}}" target="_blank">Line Summary</a>                           
                             <a class="nav-link" href="{{url('wor')}}" target="_blank">Work Order</a> 
                         </div>
                         {{-- <a class="nav-link" href="{{url('lr')}}" target="_blank"><span class='font-weight-bold'>Results</span></a> --}}
