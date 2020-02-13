@@ -68,4 +68,9 @@ class HomeController extends Controller
     {
 
     }
+    public function sysOptimize()
+    {
+        $rc = \Artisan::call('optimize');
+        return "Application Optimized";
+    }
 }
