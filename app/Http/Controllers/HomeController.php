@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function sysOptimize()
     {
         $rc = \Artisan::call('optimize');
-        return \Artisan::output();
+        return 'System Optimized.';
     }
     public function sysRoutes()
     {
