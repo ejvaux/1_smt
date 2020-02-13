@@ -28,6 +28,7 @@ Route::get('/', 'HomeController@index');
 // Overview
 Route::get('/ov', 'HomeController@overview');
 Route::get('/lineov', 'HomeController@line');
+Route::get('/defectov', 'HomeController@defect');
 Route::get('/joov', 'HomeController@joborder');
 
 Route::group(['middleware' => 'auth'], function () {
