@@ -80,13 +80,16 @@ class HomeController extends Controller
             $to = Date('Y-m-d');
             $from = Carbon::parse($to)->subWeek()->toDateString();
         }
-        /* $def = DefectMat::where('created_at','>=',Carbon::parse($from)->addHours(6))->where('created_at','<',Carbon::parse($to)->addHours(6)->addDay())->get(); */
+
         $datee = Carbon::parse($from)->toDateString();
         while ($datee <= Carbon::parse($to)->toDateString()) {
-            $def = DefectMat::where('created_at','>=',Carbon::parse($datee)->addHours(6))->where('created_at','<',Carbon::parse($datee)->addHours(6)->addDay())->get();
+            $def = DefectMat::where('created_at','>=',Carbon::parse($datee)->addHours(6))
+                            ->where('created_at','<',Carbon::parse($datee)->addHours(6)->addDay())
+                            ->get();
             $rep = $def->filter(function ($value) use ($request) {
                 return $value->repair == 1;
             })->all();
+            /* $location = DefectMat::select('') */
             $defects[] = [
                 'date' => $datee,
                 'defect' => $def->count(),
@@ -94,12 +97,10 @@ class HomeController extends Controller
             ];
             $datee = Carbon::parse($datee)->addDay()->toDateString();
         }
-        /* $pcb->filter(function ($value) use ($request) {
-            return $value->div_process_id == $request->div_process_id && $value->type == 1;
-        })->all(); */
-        /* return $defects; */
+
         return view('pages.overview.tables.defectTable', compact('defects','from','to'));
     }
+
     public function joborder()
     {
         $jos = WorkOrder::where(function ($query) {

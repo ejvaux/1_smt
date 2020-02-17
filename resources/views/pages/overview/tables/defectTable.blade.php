@@ -9,7 +9,7 @@
             </div>
             <input type="date" name="from" id="from" value="{{date('Y-m-d',strtotime($from))}}">
             <div class="input-group-prepend">
-                <div class="input-group-text py-0">To{{$to}}</div>
+                <div class="input-group-text py-0">To</div>
             </div>
             <input type="date" name="to" id="to" value="{{date('Y-m-d',strtotime($to))}}">
             <button class="load-defect-btn" id="defect-search-btn">GO</button>
@@ -18,16 +18,13 @@
 </div>
 <div class="row">
     <div class="col">
-        <table class="table">
+        <table class="table text-center">
             <thead>
-                <tr class="text-center">
+                <tr>
                     <th>Date</th>
                     <th>Defects</th>
                     <th>Repaired</th>
-                    {{-- <th>Item Code</th>
-                    <th>Item Name</th>
-                    <th>Line</th>
-                    <th>Quantity</th> --}}
+                    {{-- <th>Types</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -44,11 +41,14 @@
                                 <td>
                                     {{$defect['repair']}}
                                 </td>
+                                {{-- <td>
+                                    
+                                </td> --}}
                             </tr>
                         @endforeach
                     @else
                         <tr class="text-center">
-                            <td colspan="2">No data</td>
+                            <td colspan="3">No data</td>
                         </tr>
                     @endif
                 @endisset
@@ -56,5 +56,3 @@
         </table>
     </div>
 </div>
-
-
