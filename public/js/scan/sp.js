@@ -211,6 +211,16 @@ function serialscan()
                 x[0].currentTime = 0;
                 x[0].play();
             }
+            else if(data.type == 'error2'){
+                swal.fire({
+                    type: 'warning',
+                    title: data.title,
+                    text: data.message
+                  })
+                x[0].pause();
+                x[0].currentTime = 0;
+                x[0].play();
+            }
             else{
                 iziToast.warning({
                     message: data,
