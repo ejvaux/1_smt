@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Jobs\MaterialArchive;
+use App\Models\MatSnComp;
 
 class MaterialArchiving extends Command
 {
@@ -43,9 +44,17 @@ class MaterialArchiving extends Command
             usleep(500000);
         } */
         
-        while (true) {
+        /* while (true) {
             MaterialArchive::dispatch();
             sleep(1);
+        } */
+
+        $mats = MatSnComp::where('created_at','<=',Carbon::parse(Date('Y-m-d'))->submonth())->get();
+        /* $mats = MatSnComp::whereIn('id',[3731905,3731906])->get(); */
+        if($mats){
+            foreach ($mats as $mat) {
+                MaterialArchive::dispatch($mat);
+            }
         }
     }
 }

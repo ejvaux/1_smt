@@ -73,7 +73,7 @@ class CompSnInsert implements ShouldQueue
                         }
                         
                         if($sys_qty >= 0){
-                            if($sys_qty < $value['prev_QTY'] - $value['prev_QTY'] * .02){
+                            if($sys_qty < $value['prev_QTY'] - $value['prev_QTY'] * .05){
                                 /* $sys_qty < $value['prev_QTY'] - $value['prev_QTY'] * .02 */
                                 /* if ($sys_qty + $usagee * 2 < $value['prev_QTY']) {
                                     $reel_id = $value['prev_RID'];
