@@ -97,65 +97,7 @@ class PageController extends Controller
 
         return view('pages.materials.errorlogs',compact('models','position','mounter','emp','mounters','machine','line'));
     }
-
-    public function testing()
-    {
-        $models = Modname::where('lines','<>','[]')->get();
-        foreach ($models as $model) {
-            foreach ($model->lines as $line) {
-                $feeders = Feeder::where('model_id',$model->id)
-                            ->where('line_id',$line)
-                            ->where('table_id','!=',0)
-                            ->groupBy('pos_id','mounter_id','table_id','machine_type_id')
-                            ->orderBy('machine_type_id')
-                            ->orderBy('table_id')
-                            ->orderBy('mounter_id')
-                            ->orderBy('pos_id')
-                            ->get();
-                foreach ($feeders as $feeder) {
-                    $lin = $feeder->machinetype->machine()->pluck('line_id');
-                    $mach = \App\Http\Controllers\MES\model\Line::whereIN('id',$lin)->where('line_name_id',$feeder->line_id)->pluck('machine_id')->first();
-                    $matload = MatLoadModel::where('model_id',$feeder->model_id)
-                            ->where('machine_id',$mach)
-                            ->where('table_id',$feeder->table_id)
-                            ->where('mounter_id',$feeder->mounter_id)
-                            ->where('pos_id',$feeder->pos_id)
-                            ->latest('id')
-                            ->first();
-                    $mat_count = \App\Models\MaterialCount::where('model_id',$model->id)->where('line_id',$line)->where('feeder_id',$feeder->id)->first();
-                    if (!$mat_count) {
-                        $mat_count = new \App\Models\MaterialCount;
-                        $mat_count->model_id = $model->id;
-                        $mat_count->line_id = $line;
-                        $mat_count->feeder_id = $feeder->id;
-                        $mat_count->save();
-                    }
-                    if ($matload) {
-                        $rid = CustomFunctions::getQrData($matload->ReelInfo,'RID');
-                        $qty = CustomFunctions::getQrData($matload->ReelInfo,'QTY');
-                        $total = 0;
-                        $serials = \App\Models\MatSnComp::where('RID',$rid)->get();
-                        $sns = [];
-                        if($serials){
-                            foreach ($serials as $serial) {            
-                                foreach ($serial->sn as $s) {
-                                    $sns[] = $s;
-                                }
-                            }
-                        }
-                        $total = count(array_unique($sns));
-                        $mat_count->mat_load_id = $matload->id;
-                        $mat_count->usage = $feeder->usage;
-                        $mat_count->reel_qty = $qty;
-                        $mat_count->sn = $total;
-                        $mat_count->remaining_qty = $qty - $total * $feeder->usage;
-                        $mat_count->save();
-                    }
-                }
-            }
-        }
-        return $mat_count;
-    }
+    
     public function qrgen()
     {
         return \QrCode::size(200)
@@ -163,6 +105,15 @@ class PageController extends Controller
                 ->generate('
                 The first argument passed to the select method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the where clause constraints. Parameter binding provides protection against SQL injection.
                 ');
+    }
+
+    public function testing()
+    {
+        $ms = \App\Http\Controllers\MES\model\Machine::all();
+        foreach ($ms as $m) {
+            \App\Http\Controllers\MES\model\Machine::where('id',$m->id)->update(['_line_id' => $m->line->line_name_id]);
+        }
+        return 'Success';
     }
 
 }
