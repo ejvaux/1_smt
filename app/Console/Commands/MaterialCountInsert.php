@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Http\Controllers\MES\model\Modname;
 use App\Http\Controllers\MES\model\Feeder;
+use App\Http\Controllers\MES\model\Machine;
 use App\MatLoadModel;
 use App\Custom\CustomFunctions;
 
@@ -57,8 +58,9 @@ class MaterialCountInsert extends Command
                                 ->get();
                     /* $fid = []; */
                     foreach ($feeders as $feeder) {
-                        $lin = $feeder->machinetype->machine()->pluck('line_id');
-                        $mach = \App\Http\Controllers\MES\model\Line::whereIN('id',$lin)->where('line_name_id',$feeder->line_id)->pluck('machine_id')->first();
+                        /* $lin = $feeder->machinetype->machine()->pluck('line_id');
+                        $mach = \App\Http\Controllers\MES\model\Line::whereIN('id',$lin)->where('line_name_id',$feeder->line_id)->pluck('machine_id')->first(); */
+                        $mach = Machine::where('machine_type_id',$feeder->machine_type_id)->where('_line_id',$feeder->line_id)->pluck('id')->first();
                         $matload = MatLoadModel::where('model_id',$feeder->model_id)
                                 ->where('machine_id',$mach)
                                 ->where('table_id',$feeder->table_id)
