@@ -116,7 +116,6 @@ class ApiController extends Controller
         {
             if ($request->div_process_id == 1)
             {
-                $msg = '';
                 $to = $pcb->filter(function ($value){
                     return $value->div_process_id == 2 && $value->type == 1;
                 })->all();
