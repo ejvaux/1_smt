@@ -24,6 +24,10 @@ class machine extends Model
     {
         return $this->belongsTo('App\Http\Controllers\MES\model\Line','line_id');
     }
+    public function line2()
+    {
+        return $this->belongsTo('App\Http\Controllers\MES\model\LineName','_line_id');
+    }
 
 
 }

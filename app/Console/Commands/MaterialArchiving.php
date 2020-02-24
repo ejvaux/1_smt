@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Jobs\MaterialArchive;
 use App\Models\MatSnComp;
+use Carbon\Carbon;
 
 class MaterialArchiving extends Command
 {

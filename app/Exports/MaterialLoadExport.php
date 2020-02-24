@@ -28,8 +28,9 @@ class MaterialLoadExport implements FromQuery, WithHeadings, WithMapping
             'DATE',
             'COMPONENT PN',
             'VENDOR',
-            'MACHINE',
             'MODEL',
+            'LINE',
+            'MACHINE',            
             'TABLE',
             'MOUNTER',
             'POSITION',
@@ -44,7 +45,7 @@ class MaterialLoadExport implements FromQuery, WithHeadings, WithMapping
     }
     public function map($query): array
     {
-        if($query->smt_table_rel->name=="A"){
+        /* if($query->smt_table_rel->name=="A"){
             $table = "TABLE 1";
         }
         else if($query->smt_table_rel->name=="B"){
@@ -55,13 +56,15 @@ class MaterialLoadExport implements FromQuery, WithHeadings, WithMapping
         }
         else if($query->smt_table_rel->name=="D"){
             $table = "TABLE 4";
-        }
+        } */
+        $table = 'Table ' . $query->table_id;
         return [
             $query->created_at,
             $query->component_rel->product_number,
             $query->component_rel->authorized_vendor,
-            $query->machine_rel->code,
             $query->smt_model_rel->code,
+            $query->machine_rel->line2->description,
+            $query->machine_rel->machine_type_rel->name,
             $table,
             $query->mounter_rel->code,
             $query->smt_pos_rel->name,

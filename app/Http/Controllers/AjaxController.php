@@ -285,7 +285,7 @@ class AjaxController extends Controller
     }
 
     public function ExportMatHistory(Request $request){
-        return (new MaterialLoadExport($request->input('s_date')))->download('Material History.xlsx');
+        return (new MaterialLoadExport($request->input('s_date')))->download('Material_History_'.Date('Ymdhis').'.xlsx');
     }
 
     public function LoadRunningTbl(Request $request){

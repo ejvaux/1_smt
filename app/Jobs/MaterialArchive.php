@@ -52,7 +52,9 @@ class MaterialArchive implements ShouldQueue
         $arc->save();
 
         // Delete from main table
-        MatSnComp::where('id',$id)->delete();
+        try {
+            MatSnComp::where('id',$id)->delete();
+        } catch (\Throwable $th) {}        
 
         /* try {
                         
