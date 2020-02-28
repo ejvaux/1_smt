@@ -33,12 +33,13 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         return [
             'STATUS',
             'LEAD TIME',
+            'S/N',
+            'PART CODE',
             'PART NAME',
             'DIVISION',
             'LINE',
             'SHIFT',
             'PROCESS',
-            'S/N',
             'DEFECT',
             'LOCATION : DC',
             'DEFECT TYPE',
@@ -58,7 +59,7 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         $rname = '';
         $ltime = '';
         if($query->repair == 1){
-            $stat = 'GOOD';
+            $stat = 'REPAIRED';
             $rname = $query->repairby->lname . ', ' . $query->repairby->fname;
         }
         else{
@@ -75,7 +76,10 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
             $shift = 'NIGHT';
         }
         $joid = Pcb::where('id',$query->pcb_id)->pluck('jo_id')->first();
-        $model = WorkOrder::where('ID', $joid)->pluck('ITEM_NAME')->first();
+        $wo = WorkOrder::where('ID', $joid)->first();
+        /* $model = WorkOrder::where('ID', $joid)->pluck('ITEM_NAME')->first(); */
+        $model = $wo->ITEM_NAME;
+        $pcode = $wo->ITEM_CODE;
         if (strpos($model, ',') !== false) {
             $m = explode(",", $model);
             if($m[1] == 'Secure'){
@@ -98,7 +102,13 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
                 else{
                     $locid = $value;
                 }
-                $locs .= Location::where('id',$locid)->first()->name.':'.$value['dc'];
+                $dc = '';
+                if (isset($value['dc'])) {
+                    if($value['dc'] != ''){
+                        $dc = ':'.$value['dc'];
+                    }
+                }
+                $locs .= Location::where('id',$locid)->first()->name.$dc;
                 if($key != count($query->d_locations) - 1){
                     $locs .= ', ';
                 }
@@ -108,12 +118,13 @@ class DefectMatsExport implements FromQuery, WithHeadings, WithMapping, WithStri
         return [
             $stat,
             $ltime,
+            $query->pcb->serial_number,
+            $pcode,
             $mod,
             $query->defect->division->DIVISION_NAME,
             $query->line->name,
             $shift,
             $query->process->name,
-            $query->pcb->serial_number,
             $query->defect->DEFECT_NAME,
             $locs,
             $query->defectType->name,
