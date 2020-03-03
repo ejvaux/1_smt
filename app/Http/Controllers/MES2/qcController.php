@@ -54,7 +54,8 @@ class qcController extends Controller
         }
 
         /* return dd($lots); */
-        return view('mes2.qc',compact('lots','date','sort'));       
+        /* return view('mes2.qc',compact('lots','date','sort')); */ 
+        return view('pages.qc.qc',compact('lots','date','sort'));      
     }
 
     /**
